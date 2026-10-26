@@ -66,3 +66,7 @@ vcpkg_installed/
 # test output & cache
 Testing/
 .cache/
+.vs/
+gp1/Debug/
+gp1/Release/gp1.exe.recipe
+gp1/Release/
