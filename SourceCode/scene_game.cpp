@@ -16,10 +16,6 @@
 int game_state = 0;     // 状態
 int game_timer = 0;     // タイマー
 
-
-int timer = 0;
-
-
 //--------------------------------------
 //  初期設定
 //--------------------------------------
@@ -51,9 +47,8 @@ void game_update()
 		/*fallthrough*/
 	case 2:
 		//////// 通常時 ////////
-		++timer;
 
-		if (timer == 300)
+		if (TRG(0) & PAD_START)
 		{
 			nextScene = SCENE_RESULT;
 			break;
