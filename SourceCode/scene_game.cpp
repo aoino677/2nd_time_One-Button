@@ -10,6 +10,7 @@
 #include "all.h"
 #include "player.h"
 #include "enemy.h"
+#include "Pause.h"
 
 //------< 定数 >----------------------------------------------------------------
 
@@ -18,6 +19,8 @@
 int game_state = 0;     // 状態
 int game_timer = 0;     // タイマー
 int time_limit = 0;       // 制限時間
+
+bool pause = false;
 //--------------------------------------
 //  初期設定
 //--------------------------------------
@@ -25,9 +28,11 @@ void game_init()
 {
 	game_state = 0;
 	game_timer = 0;
-	time_limit = 0;
+	time_limit = 600;
+	pause = false;
 	player_init();
 	enemy_init();
+	pause_init();
 }
 
 //--------------------------------------
@@ -52,19 +57,36 @@ void game_update()
 		/*fallthrough*/
 	case 2:
 		//////// 通常時 ////////
-		time_limit++;
-		player_update();
-		enemy_update();
+		pause_update();
 		
+		//========================================
+	   // ゲーム中
+	   //========================================
+
+		if (pause == false)
+		{
+			time_limit--;
+			player_update();
+			enemy_update();
+		
+		}
 		if (TRG(0) & PAD_TRG1)
 		{
 			nextScene = SCENE_RESULT;
 			break;
 		}
-		else if (time_limit > 600)
+		else if (time_limit == 0)
 		{
+			time_limit = 0;
 			nextScene = SCENE_RESULT;
 			break;
+		}
+	//========================================
+	 // ポーズ中
+	 //========================================
+		if (pause == true)
+		{
+
 		}
 
 		break;
@@ -84,7 +106,7 @@ void game_render()
 
 	player_render();
 	enemy_render();
-	
+	pause_render();
 	font::textOut(2, "GAME", 100, 200, 2, 2);
 
 }
@@ -96,4 +118,5 @@ void game_deinit()
 {
 	player_deinit();
 	enemy_deinit();
+	pause_deinit();
 }

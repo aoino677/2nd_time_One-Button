@@ -2,8 +2,8 @@
 #define COMMON_H
 
 // ‰æ–Ê‚Ì‘å‚«‚³
-#define SCREEN_W        1280
-#define SCREEN_H        720
+#define SCREEN_W        1920
+#define SCREEN_H        1080
 
 //------------------------------------------------------------------------------
 // TODO:05 common.h‚ÉƒV[ƒ“—p‚Ì’è”‚ğì¬‚·‚é
