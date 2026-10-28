@@ -3,6 +3,7 @@
 
 class Bullet
 {
+public:
     VECTOR2 pos;
     VECTOR2 velocity;
 };
