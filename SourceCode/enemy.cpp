@@ -23,7 +23,7 @@ void enemy_update()
 	{
 	case 0:
 		sprEnemy = sprite_load(L"Data/Images/enemy.png");
-
+		enemy_state++;
 		break;
 		//case 1:
 

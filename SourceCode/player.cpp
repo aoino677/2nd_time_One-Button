@@ -10,6 +10,8 @@ void player_init()
 {
 	player_state = 0;
 	player_timer = 0;
+
+	sprPlayer = sprite_load(L"Data/Images/player.png");
 }
 
 void player_deinit()
@@ -19,15 +21,8 @@ void player_deinit()
 
 void player_update()
 {
-	switch (player_state)
-	{
-	case 0:
-		sprPlayer = sprite_load(L"Data/Images/player.png");
-	
-		break;
-	//case 1:
-		
-	}
+	VECTOR2 cursorPos = { (float)getCursorPosX(), (float)getCursorPosY() };
+	cursorPos;
 }
 
 void player_render()
