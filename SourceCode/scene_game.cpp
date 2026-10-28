@@ -17,7 +17,7 @@
 //------< 変数 >----------------------------------------------------------------
 int game_state = 0;     // 状態
 int game_timer = 0;     // タイマー
-
+int time_limit = 0;       // 制限時間
 //--------------------------------------
 //  初期設定
 //--------------------------------------
@@ -25,6 +25,7 @@ void game_init()
 {
 	game_state = 0;
 	game_timer = 0;
+	time_limit = 0;
 	player_init();
 	enemy_init();
 }
@@ -51,11 +52,16 @@ void game_update()
 		/*fallthrough*/
 	case 2:
 		//////// 通常時 ////////
-		
+		time_limit++;
 		player_update();
 		enemy_update();
 		
-		if (TRG(0) & PAD_START)
+		if (TRG(0) & PAD_TRG1)
+		{
+			nextScene = SCENE_RESULT;
+			break;
+		}
+		else if (time_limit > 600)
 		{
 			nextScene = SCENE_RESULT;
 			break;
