@@ -29,7 +29,7 @@ void game_init()
 {
 	game_state = 0;
 	game_timer = 0;
-	time_limit = 600;
+	time_limit = 600000;
 	pause = false;
 	player_init();
 	enemy_init();

@@ -13,8 +13,11 @@ int player_timer;
 float shot_timer;
 float rapid_timer;
 int count;
-float shot_per_second = 5.0f;
-float rapid_cool_down;
+bool is_rapid;
+int cast_bullet;
+
+float shot_per_second = 4.0f; //‚P•bŠÔ‚É”­ŽË‚·‚é’e‚Ì”
+float rapid_coolDown = 0.75f; //˜AŽËŠJŽnŽžŠÔ
 
 void player_init()
 {
@@ -29,6 +32,7 @@ void player_init()
 
 	shot_timer = 0;
 	count = 0;
+	is_rapid = false;
 }
 
 void player_deinit()
@@ -58,28 +62,51 @@ void player_update()
 {
 	if (TRG(0) & PAD_START)
 	{
+		if (shot_timer > 1 / shot_per_second)
+		{
+			shot_timer = 0;
+			shot_bullet();
+		}
+		else if (cast_bullet == 0)
+		{
+			cast_bullet++;
+		}
+		rapid_timer = 0;
+	}
+	
+	if (cast_bullet && shot_timer > 1 / shot_per_second)
+	{
+		cast_bullet--;
+		shot_timer = 0;
 		shot_bullet();
 	}
+
 	if (STATE(0) & PAD_START)
 	{
-		if (shot_timer < 0)
+		if (is_rapid)
 		{
-			if (count <= 0)
+			if (shot_timer > 1 / shot_per_second)
 			{
-				shot_timer = 0.5f;
+				shot_timer -= 1 / shot_per_second;
+				shot_bullet();
 			}
-			shot_timer = 0.2f / (count + 1);
-			if (shot_timer < 1 / shot_per_second) shot_timer = 1 / shot_per_second;
-			shot_bullet();
+		}
+		else if (rapid_timer > rapid_coolDown)
+		{
+			is_rapid = true;
+			shot_timer = 0;
 		}
 	}
 
-	shot_timer -= 1 / 60.0f;
+	shot_timer += 1 / 60.0f;
+	rapid_timer += 1 / 60.0f;
+	debug::setString("%f", shot_timer);
+	debug::setString("%d", cast_bullet);
 
 	if (TRG_RELEASE(0) & PAD_START)
 	{
 		 count = 0;
-		 shot_timer = 0;
+		 is_rapid = false;
 	}
 
 	for (auto*& bullet : player_bullets)
