@@ -6,8 +6,7 @@ class Player
 public:
     int hp;
     int attack;
-    float posX = 960;
-    float posY = 540;
+    VECTOR2 pos = { 960, 540 };
 };
   
 void player_init();
