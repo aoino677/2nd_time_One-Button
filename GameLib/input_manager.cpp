@@ -31,7 +31,7 @@ namespace GameLib
         //{ PAD_LEFT      , Keyboard::Left },         // VK_LEFT
         //{ PAD_RIGHT     , Keyboard::Right },        // VK_RIGHT
 
-        { PAD_START     , Keyboard::Enter },        // VK_RETURN
+      //  { PAD_START     , Keyboard::Enter },        // VK_RETURN
         { PAD_SELECT    , Keyboard::Back },         // VK_BACK
 
         { PAD_TRG1      , Keyboard::Space },        // ' '
@@ -44,7 +44,7 @@ namespace GameLib
         { PAD_R1        , Keyboard::F3 },           // VK_F3
         { PAD_R3        , Keyboard::F4 },           // VK_F4
 
-        //{ PAD_START    , VK_LBUTTON },              // マウス左ボタン
+        { PAD_START    , VK_LBUTTON },              // マウス左ボタン
         //{ PAD_TRG4     , VK_RBUTTON },              // マウス右ボタン
         //{ PAD_R3       , VK_MBUTTON },              // マウス中ボタン
 
