@@ -80,7 +80,7 @@ void game_render()
 {
 	// ‰æ–Ê‚ğƒNƒŠƒA‚·‚é
 	GameLib::clear(0.2f, 0.0f, 0.75f);
-
+	debug::setString("title_state:%d", time_limit);
 
 	player_render();
 	enemy_render();
