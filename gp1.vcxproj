@@ -115,6 +115,8 @@ attrib +h SourceCode\gp1.log
     <ClInclude Include="SourceCode\all.h" />
     <ClInclude Include="SourceCode\common.h" />
     <ClInclude Include="SourceCode\enemy.h" />
+    <ClInclude Include="SourceCode\EXP.h" />
+    <ClInclude Include="SourceCode\Level.h" />
     <ClInclude Include="SourceCode\OBJ2D.h" />
     <ClInclude Include="SourceCode\Pause.h" />
     <ClInclude Include="SourceCode\player.h" />
@@ -139,6 +141,8 @@ attrib +h SourceCode\gp1.log
     <ClCompile Include="GameLib\view_settings.cpp" />
     <ClCompile Include="GameLib\wnd_proc.cpp" />
     <ClCompile Include="SourceCode\enemy.cpp" />
+    <ClCompile Include="SourceCode\EXP.cpp" />
+    <ClCompile Include="SourceCode\Level.cpp" />
     <ClCompile Include="SourceCode\main.cpp" />
     <ClCompile Include="SourceCode\Pause.cpp" />
     <ClCompile Include="SourceCode\player.cpp" />

@@ -41,125 +41,49 @@ void pause_init()
     //----------------------------------
     // 右下のポーズボタン画像
     //----------------------------------
-    sprPauseIcon =
-        sprite_load(L"./Data/Images/pause_button.png");
-
+    sprPauseIcon = sprite_load(L"./Data/Images/pause_button.png");
     //----------------------------------
     // ポーズ画面のボタン画像
     //----------------------------------
-    sprPauseButton[0] =
-        sprite_load(L"./Data/Images/game_back_sin.png");
-
-    sprPauseButton[1] =
-        sprite_load(L"./Data/Images/retry.png");
-
-    sprPauseButton[2] =
-        sprite_load(L"./Data/Images/title_sin.png");
-
+    sprPauseButton[0] = sprite_load(L"./Data/Images/game_back_sin.png");
+    sprPauseButton[1] = sprite_load(L"./Data/Images/retry.png");
+    sprPauseButton[2] = sprite_load(L"./Data/Images/title_sin.png");
     //----------------------------------
     // 右下のポーズボタン
     //----------------------------------
     pauseIcon = {};
-
-    pauseIcon.pos = {
-        static_cast<float>(PAUSEBUTTON_POS_X),
-        static_cast<float>(PAUSEBUTTON_POS_Y)
-    };
-
-    pauseIcon.scale = {
-        static_cast<float>(PAUSEBUTTON_SCALE),
-        static_cast<float>(PAUSEBUTTON_SCALE)
-    };
-
-    pauseIcon.texSize = {
-        static_cast<float>(PAUSEBUTTON_TEX_W),
-        static_cast<float>(PAUSEBUTTON_TEX_H)
-    };
-
-    pauseIcon.pivot = {
-        static_cast<float>(PAUSEBUTTON_PIVOT_X),
-        static_cast<float>(PAUSEBUTTON_PIVOT_Y)
-    };
-
+    pauseIcon.pos = { static_cast<float>(PAUSEBUTTON_POS_X),static_cast<float>(PAUSEBUTTON_POS_Y) };
+    pauseIcon.scale = { static_cast<float>(PAUSEBUTTON_SCALE),static_cast<float>(PAUSEBUTTON_SCALE) };
+    pauseIcon.texSize = { static_cast<float>(PAUSEBUTTON_TEX_W),static_cast<float>(PAUSEBUTTON_TEX_H) };
+    pauseIcon.pivot = { static_cast<float>(PAUSEBUTTON_PIVOT_X),static_cast<float>(PAUSEBUTTON_PIVOT_Y) };
     pauseIcon.color = { 1.0f, 1.0f, 1.0f, 1.0f };
-
     //----------------------------------
     // CONTINUE
     //----------------------------------
-    pauseButton[0] = {};
-
-    pauseButton[0].pos = { 1000.0f, 400.0f };
-
-    pauseButton[0].scale = {
-        static_cast<float>(PAUSE_SCALE),
-        static_cast<float>(PAUSE_SCALE)
-    };
-
-    pauseButton[0].texSize = {
-        static_cast<float>(PAUSE_TEX_W),
-        static_cast<float>(PAUSE_TEX_H)
-    };
-
-    pauseButton[0].pivot = {
-        static_cast<float>(PAUSE_PIVOT_X),
-        static_cast<float>(PAUSE_PIVOT_Y)
-    };
-
-    pauseButton[0].color = {
-        1.0f, 1.0f, 1.0f, 1.0f
-    };
-
+    pauseButton[0]           = {};
+    pauseButton[0].pos      = { 1000.0f, 400.0f };
+    pauseButton[0].scale    = { static_cast<float>(PAUSE_SCALE),static_cast<float>(PAUSE_SCALE) };
+    pauseButton[0].texSize  = { static_cast<float>(PAUSE_TEX_W),static_cast<float>(PAUSE_TEX_H) };
+    pauseButton[0].pivot    = { static_cast<float>(PAUSE_PIVOT_X),static_cast<float>(PAUSE_PIVOT_Y) };
+    pauseButton[0].color    = { 1.0f, 1.0f, 1.0f, 1.0f };
     //----------------------------------
     // RESTART
     //----------------------------------
     pauseButton[1] = {};
-
     pauseButton[1].pos = { 1000.0f, 600.0f };
-
-    pauseButton[1].scale = {
-        static_cast<float>(PAUSE_SCALE),
-        static_cast<float>(PAUSE_SCALE)
-    };
-
-    pauseButton[1].texSize = {
-        static_cast<float>(PAUSE_TEX_W),
-        static_cast<float>(PAUSE_TEX_H)
-    };
-
-    pauseButton[1].pivot = {
-        static_cast<float>(PAUSE_PIVOT_X),
-        static_cast<float>(PAUSE_PIVOT_Y)
-    };
-
-    pauseButton[1].color = {
-        1.0f, 1.0f, 1.0f, 1.0f
-    };
-
+    pauseButton[1].scale = { static_cast<float>(PAUSE_SCALE),static_cast<float>(PAUSE_SCALE) };
+    pauseButton[1].texSize = { static_cast<float>(PAUSE_TEX_W),static_cast<float>(PAUSE_TEX_H) };
+    pauseButton[1].pivot = { static_cast<float>(PAUSE_PIVOT_X),static_cast<float>(PAUSE_PIVOT_Y) };
+    pauseButton[1].color = { 1.0f, 1.0f, 1.0f, 1.0f };
     //----------------------------------
     // TITLE
     //----------------------------------
     pauseButton[2] = {};
-
     pauseButton[2].pos = { 1000.0f, 800.0f };
-
-    pauseButton[2].scale = {
-        static_cast<float>(PAUSE_SCALE),
-        static_cast<float>(PAUSE_SCALE)
-    };
-
-    pauseButton[2].texSize = {
-        static_cast<float>(PAUSE_TEX_W),
-        static_cast<float>(PAUSE_TEX_H)
-    };
-
-    pauseButton[2].pivot = {
-        static_cast<float>(PAUSE_PIVOT_X),
-        static_cast<float>(PAUSE_PIVOT_Y)
-    };
-
-    pauseButton[2].color = {
-        1.0f, 1.0f, 1.0f, 1.0f
-    };
+    pauseButton[2].scale = { static_cast<float>(PAUSE_SCALE),static_cast<float>(PAUSE_SCALE) };
+    pauseButton[2].texSize = { static_cast<float>(PAUSE_TEX_W),static_cast<float>(PAUSE_TEX_H) };
+    pauseButton[2].pivot = { static_cast<float>(PAUSE_PIVOT_X),static_cast<float>(PAUSE_PIVOT_Y) };
+    pauseButton[2].color = { 1.0f, 1.0f, 1.0f, 1.0f };
 }
 
 //--------------------------------------
@@ -172,69 +96,40 @@ void pause_update()
     //----------------------------------
     if (!pause)
     {
-        if (TRG(0) & PAD_UP)
+        float mouseX = static_cast<float>(getCursorPosX());
+        float mouseY = static_cast<float>(getCursorPosY());
+
+        float left = pauseIcon.pos.x - pauseIcon.pivot.x * PAUSEBUTTON_SCALE;
+        float right = pauseIcon.pos.x + (pauseIcon.texSize.x - pauseIcon.pivot.x) * PAUSEBUTTON_SCALE;
+        float top = pauseIcon.pos.y - pauseIcon.pivot.y * PAUSEBUTTON_SCALE;
+        float bottom = pauseIcon.pos.y + (pauseIcon.texSize.y - pauseIcon.pivot.y) * PAUSEBUTTON_SCALE;
+        //----------------------------------
+        // ポーズボタンの判定
+        //----------------------------------
+        if (mouseX >= left &&
+            mouseX <= right &&
+            mouseY >= top &&
+            mouseY <= bottom)
         {
-            pause = true;
-            pause_timer = 0;
-            pause_state = 0;
+            pauseIcon.scale.x = PAUSEBUTTON_SCALE + 0.2f;
+            pauseIcon.scale.y = PAUSEBUTTON_SCALE + 0.2f;
 
+            if (TRG(0) & PAD_START)
+            {
+                pause = true;
+
+                pause_effect_y = static_cast<float>(SCREEN_H);
+                pause_effect_alpha = 0.0f;
+
+                pause_timer = 0;
+                pause_state = 0;
+            }
         }
-
-        //float mouseX = static_cast<float>(getCursorPosX());
-        //float mouseY = static_cast<float>(getCursorPosY());
-
-        //float left =
-        //    pauseIcon.pos.x -
-        //    pauseIcon.pivot.x * PAUSEBUTTON_SCALE;
-
-        //float right =
-        //    pauseIcon.pos.x +
-        //    (pauseIcon.texSize.x - pauseIcon.pivot.x)
-        //    * PAUSEBUTTON_SCALE;
-
-        //float top =
-        //    pauseIcon.pos.y -
-        //    pauseIcon.pivot.y * PAUSEBUTTON_SCALE;
-
-        //float bottom =
-        //    pauseIcon.pos.y +
-        //    (pauseIcon.texSize.y - pauseIcon.pivot.y)
-        //    * PAUSEBUTTON_SCALE;
-
-        ////----------------------------------
-        //// ポーズボタンの判定
-        ////----------------------------------
-        //if (mouseX >= left &&
-        //    mouseX <= right &&
-        //    mouseY >= top &&
-        //    mouseY <= bottom)
-        //{
-        //    pauseIcon.scale.x = PAUSEBUTTON_SCALE + 0.2f;
-        //    pauseIcon.scale.y = PAUSEBUTTON_SCALE + 0.2f;
-
-        //    if (TRG(1) & PAD_START)
-        //    {
-        //        pause = true;
-        //        music::play(2, false);
-
-        //        pause_effect_y = static_cast<float>(SCREEN_H);
-        //        pause_effect_alpha = 0.0f;
-
-        //        pause_timer = 0;
-        //        pause_state = 0;
-
-        //        // ポーズ中はカーソルを表示
-        //        while (ShowCursor(TRUE) < 0)
-        //        {
-        //        }
-        //    }
-        //}
-        //else
-        //{
-        //    pauseIcon.scale.x = PAUSEBUTTON_SCALE;
-        //    pauseIcon.scale.y = PAUSEBUTTON_SCALE;
-        //}
-
+        else
+        {
+            pauseIcon.scale.x = PAUSEBUTTON_SCALE;
+            pauseIcon.scale.y = PAUSEBUTTON_SCALE;
+        }
         return;
     }
 
@@ -294,31 +189,11 @@ void pause_update()
             float mouseX = static_cast<float>(getCursorPosX());
             float mouseY = static_cast<float>(getCursorPosY());
 
-            float buttonY =
-                pauseButton[i].pos.y + pause_effect_y;
-
-            float left =
-                pauseButton[i].pos.x -
-                pauseButton[i].pivot.x *
-                pauseButton[i].scale.x;
-
-            float right =
-                pauseButton[i].pos.x +
-                (pauseButton[i].texSize.x -
-                    pauseButton[i].pivot.x) *
-                pauseButton[i].scale.x;
-
-            float top =
-                buttonY -
-                pauseButton[i].pivot.y *
-                pauseButton[i].scale.y;
-
-            float bottom =
-                buttonY +
-                (pauseButton[i].texSize.y -
-                    pauseButton[i].pivot.y) *
-                pauseButton[i].scale.y;
-
+            float buttonY =pauseButton[i].pos.y + pause_effect_y;
+            float left =pauseButton[i].pos.x -pauseButton[i].pivot.x *pauseButton[i].scale.x;
+            float right =pauseButton[i].pos.x +(pauseButton[i].texSize.x -pauseButton[i].pivot.x) *pauseButton[i].scale.x;
+            float top =buttonY -pauseButton[i].pivot.y *pauseButton[i].scale.y;
+            float bottom =buttonY +(pauseButton[i].texSize.y -pauseButton[i].pivot.y) *pauseButton[i].scale.y; 
             //----------------------------------
             // マウスがボタンの中にある
             //----------------------------------
@@ -329,11 +204,10 @@ void pause_update()
             {
                 pauseButton[i].scale.x = PAUSE_SCALE + 0.1f;
                 pauseButton[i].scale.y = PAUSE_SCALE + 0.1f;
-
                 //----------------------------------
                 // クリック
                 //----------------------------------
-                if (TRG(1) & PAD_START)
+                if (TRG(0) & PAD_START)
                 {
                     switch (i)
                     {
@@ -342,17 +216,10 @@ void pause_update()
                         //----------------------------------
                     case 0:
                         pause = false;
-                        music::play(2, false);
-
+               
                         pause_state = 0;
                         pause_effect_y = 0.0f;
                         pause_effect_alpha = 0.0f;
-
-                        // ゲーム中はカーソルを非表示
-                        while (ShowCursor(FALSE) >= 0)
-                        {
-                        }
-
                         break;
 
                         //----------------------------------
@@ -362,20 +229,16 @@ void pause_update()
                         game_deinit();
                         game_init();
 
-                        music::play(2, false);
-
                         pause = false;
                         pause_state = 0;
                         pause_effect_y = 0.0f;
                         pause_effect_alpha = 0.0f;
 
                         break;
-
                         //----------------------------------
                         // TITLE
                         //----------------------------------
                     case 2:
-                        music::play(2, false);
                         nextScene = SCENE_TITLE;
                         break;
                     }
@@ -387,7 +250,6 @@ void pause_update()
                 pauseButton[i].scale.y = PAUSE_SCALE;
             }
         }
-
         break;
     }
 }
@@ -423,7 +285,6 @@ void pause_render()
                 pauseIcon.color.w
             );
         }
-
         return;
     }
 
@@ -450,21 +311,13 @@ void pause_render()
 
         sprite_render(
             sprPauseButton[i],
-            pauseButton[i].pos.x,
-            pauseButton[i].pos.y + pause_effect_y,
-            pauseButton[i].scale.x,
-            pauseButton[i].scale.y,
-            pauseButton[i].texPos.x,
-            pauseButton[i].texPos.y,
-            pauseButton[i].texSize.x,
-            pauseButton[i].texSize.y,
-            pauseButton[i].pivot.x,
-            pauseButton[i].pivot.y,
+            pauseButton[i].pos.x,     pauseButton[i].pos.y + pause_effect_y,
+            pauseButton[i].scale.x,   pauseButton[i].scale.y,
+            pauseButton[i].texPos.x, pauseButton[i].texPos.y,
+            pauseButton[i].texSize.x ,pauseButton[i].texSize.y,
+            pauseButton[i].pivot.x,   pauseButton[i].pivot.y,
             ToRadian(0.0f),
-            pauseButton[i].color.x,
-            pauseButton[i].color.y,
-            pauseButton[i].color.z,
-            pauseButton[i].color.w
+            pauseButton[i].color.x,pauseButton[i].color.y,pauseButton[i].color.z,pauseButton[i].color.w
         );
     }
 }
