@@ -11,6 +11,7 @@
 #include "player.h"
 #include "enemy.h"
 #include "Pause.h"
+#include "Level.h"
 
 //------< ’è” >----------------------------------------------------------------
 
@@ -33,6 +34,7 @@ void game_init()
 	player_init();
 	enemy_init();
 	pause_init();
+	level_init();
 }
 
 //--------------------------------------
@@ -68,7 +70,7 @@ void game_update()
 			time_limit--;
 			player_update();
 			enemy_update();
-		
+			level_update();
 		}
 		if (TRG(0) & PAD_TRG1)
 		{
