@@ -8,6 +8,8 @@
 
 //----< インクルード >-----------------------------------------------------------
 #include "all.h"
+#include "player.h"
+#include "enemy.h"
 
 //------< 定数 >----------------------------------------------------------------
 
@@ -23,6 +25,8 @@ void game_init()
 {
 	game_state = 0;
 	game_timer = 0;
+	player_init();
+	enemy_init();
 }
 
 //--------------------------------------
@@ -47,7 +51,10 @@ void game_update()
 		/*fallthrough*/
 	case 2:
 		//////// 通常時 ////////
-
+		
+		player_update();
+		enemy_update();
+		
 		if (TRG(0) & PAD_START)
 		{
 			nextScene = SCENE_RESULT;
@@ -69,6 +76,9 @@ void game_render()
 	GameLib::clear(0.2f, 0.0f, 0.75f);
 
 
+	player_render();
+	enemy_render();
+	
 	font::textOut(2, "GAME", 100, 200, 2, 2);
 
 }
@@ -78,6 +88,6 @@ void game_render()
 //--------------------------------------
 void game_deinit()
 {
-
-
+	player_deinit();
+	enemy_deinit();
 }
