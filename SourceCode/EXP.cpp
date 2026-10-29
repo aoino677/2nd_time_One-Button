@@ -47,7 +47,7 @@ void EXP_update()
         for (int i = 0; i < EXP_COUNT; i++)
         {
             // “G‚ÌF‚ª‚Oi“G‚ªŽ€‚ñ‚¾‚çj‚É‚È‚Á‚½‚çEXP‚ª—Ž‚¿‚é
-            if (enemy->color.w == 0.0f)
+            if (enemy[ENEMY_NUMBER].hp != 0)
             {
                 EXP[i].color.w = 1.0f;
                 EXP[i].timer++;
@@ -56,7 +56,7 @@ void EXP_update()
                     move_block_player(&EXP[i], &player, EXP[i].moveSpeed);
                 }
             }
-            else if (enemy->color.w == 1.0f)
+            else if (enemy[ENEMY_NUMBER].hp == 0)
             {
                 EXP[i].color.w = 0.0f;
             }
@@ -73,7 +73,7 @@ void EXP_render()
     {
         sprite_render(
             sprEXP,
-            EXP[i].pos.x, EXP[i].pos.y,
+            enemy[i].pos.x, enemy[i].pos.y,
             EXP_SCALE, EXP_SCALE,
             0, 0,
             EXP_TEX_W, EXP_TEX_H,
