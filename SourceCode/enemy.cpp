@@ -7,7 +7,7 @@
 
 
 Sprite* sprEnemy;
-OBJ2D enemy[50];
+OBJ2D enemy[ENEMY_NUMBER];
 int enemy_state;
 int enemy_timer;
 int enemy_number = 0;
@@ -45,7 +45,14 @@ void enemy_update()
 		break;
 
 	case 1:
-	
+		// パラメーターの設定
+		for (int i = 0; i < ENEMY_NUMBER; i++)
+		{
+			enemy->scale = { ENEMY_SCALE , ENEMY_SCALE };
+			enemy->texSize = { ENEMY_TEX_W , ENEMY_TEX_H };
+			enemy->pivot = { ENEMY_PIVOT_X , ENEMY_PIVOT_Y };
+			enemy->color = { 1, 1, 1, 1 };
+		}
 		//enemy_walk();
 		//enemy_position();
 		
@@ -66,10 +73,12 @@ void enemy_render()
 	sprite_render(
 		sprEnemy,
 		enemy[enemy_number].pos.x, enemy[enemy_number].pos.y,
-		1, 1,
+		enemy->scale.x, enemy->scale.y,
 		0, 0,
-		128, 128,
-		64, 64
+		enemy->texSize.x, enemy->texSize.y,
+		enemy->pivot.x, enemy->pivot.y,
+		ToRadian(0),
+		enemy->color.x, enemy->color.y, enemy->color.z, enemy->color.w
 	);
 	
 

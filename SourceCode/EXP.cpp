@@ -29,7 +29,7 @@ void EXP_update()
 		break;
 	case 1:
 		EXP = {};
-		//EXP.pos = { enemy.pos.x, enemy.pos.y };
+		EXP.pos = { enemy->pos.x, enemy->pos.y };
 		EXP.scale    = { EXP_SCALE    , EXP_SCALE };
 		EXP.texSize = { EXP_TEX_W    , EXP_TEX_H };
 		EXP.pivot    = { EXP_PIVOT_X , EXP_PIVOT_Y };
@@ -41,18 +41,18 @@ void EXP_update()
 		EXP_state++;
 		break;
 	case 2:
-		// if (enemy.color.w == 0.0f )
-		// {
-		//		EXP.color.w = 1.0f;
-		//		EXP.timer++;
-		//		if (EXP.timer == 60 )
-		//		{
-		//			move_block_player( &EXP, &Player, EXP.moveSpeed );
-		//		}
-		// }else if (enemy.color.w == 1.0f )
-		// {
-		//		EXP.color.w = 0.0f;
-		// }
+		/* if (enemy->color.w == 0.0f )
+		 {
+				EXP.color.w = 1.0f;
+				EXP.timer++;
+				if (EXP.timer == 60 )
+				{
+					move_block_player( &EXP, &player, EXP.moveSpeed );
+				}
+		 }else if (enemy->color.w == 1.0f )
+		 {
+				EXP.color.w = 0.0f;
+		 }*/
 
 		EXP_state++;
 		break;
@@ -84,16 +84,16 @@ void EXP_deinit()
 //==================================================
 //bool move_block_player(
 //    OBJ2D* EXP,
-//    OBJ2D* Player,
+//    OBJ2D* player,
 //    float speed
 //)
 //{
 //    // X方向の距離
-//    float dx = EXP->pos.x - Player->pos.x;
+//    float dx = EXP->pos.x - player->pos.x;
 //    if (dx < 0.0f){dx = -dx;}
 //
 //    // Y方向の距離
-//    float dy = EXP->pos.y - Player->pos.y;
+//    float dy = EXP->pos.y - player->pos.y;
 //    if (dy < 0.0f){dy = -dy;}
 //
 //    // プレイヤーとブロックが重なる範囲
@@ -106,43 +106,43 @@ void EXP_deinit()
 //    //==================================================
 //    // X方向に近づく
 //    //==================================================
-//    if (EXP->pos.x < Player->pos.x)
+//    if (EXP->pos.x < player->pos.x)
 //    {
 //        EXP->pos.x += speed;
 //        // プレイヤーを飛び越えないようにする
-//        if (EXP->pos.x > Player->pos.x)
+//        if (EXP->pos.x > player->pos.x)
 //        {
-//            EXP->pos.x = Player->pos.x;
+//            EXP->pos.x = player->pos.x;
 //        }
 //    }
-//    else if (EXP->pos.x > Player->pos.x)
+//    else if (EXP->pos.x > player->pos.x)
 //    {
 //        EXP->pos.x -= speed;
 //        // プレイヤーを飛び越えないようにする
-//        if (EXP->pos.x < Player->pos.x)
+//        if (EXP->pos.x < player->pos.x)
 //        {
-//            EXP->pos.x = Player->pos.x;
+//            EXP->pos.x = player->pos.x;
 //        }
 //    }
 //    //==================================================
 //    // Y方向に近づく
 //    //==================================================
-//    if (EXP->pos.y < Player->pos.y)
+//    if (EXP->pos.y < player->pos.y)
 //    {
 //        EXP->pos.y += speed;
 //        // プレイヤーを飛び越えないようにする
-//        if (EXP->pos.y > Player->pos.y)
+//        if (EXP->pos.y > player->pos.y)
 //        {
-//            EXP->pos.y = Player->pos.y;
+//            EXP->pos.y = player->pos.y;
 //        }
 //    }
-//    else if (EXP->pos.y > Player->pos.y)
+//    else if (EXP->pos.y > player->pos.y)
 //    {
 //        EXP->pos.y -= speed;
 //        // プレイヤーを飛び越えないようにする
-//        if (EXP->pos.y < Player->pos.y)
+//        if (EXP->pos.y < player->pos.y)
 //        {
-//            EXP->pos.y = Player->pos.y;
+//            EXP->pos.y = player->pos.y;
 //        }
 //    }
 //    return false;
