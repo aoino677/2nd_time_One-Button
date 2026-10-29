@@ -12,6 +12,7 @@
 #include "enemy.h"
 #include "Pause.h"
 #include "Level.h"
+#include "EXP.h"
 
 //------< ’è” >----------------------------------------------------------------
 
@@ -35,6 +36,7 @@ void game_init()
 	enemy_init();
 	pause_init();
 	level_init();
+	EXP_init();
 }
 
 //--------------------------------------
@@ -71,6 +73,7 @@ void game_update()
 			player_update();
 			enemy_update();
 			level_update();
+			EXP_update();
 		}
 		if (TRG(0) & PAD_TRG1)
 		{
@@ -106,6 +109,7 @@ void game_render()
 	GameLib::clear(0.2f, 0.0f, 0.75f);
 	debug::setString("title_state:%d", time_limit);
 
+	EXP_render();
 	player_render();
 	enemy_render();
 	pause_render();
@@ -121,4 +125,5 @@ void game_deinit()
 	player_deinit();
 	enemy_deinit();
 	pause_deinit();
+	EXP_deinit();
 }
