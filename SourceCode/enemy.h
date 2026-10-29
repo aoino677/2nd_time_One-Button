@@ -1,6 +1,6 @@
 #pragma once
 
-#define ENEMY_NUMBER  (3)
+#define ENEMY_NUMBER  (50)
 
 #define ENEMY_SCALE      (1)
 #define ENEMY_TEX_W     (128)
@@ -12,7 +12,5 @@ void enemy_init();
 void enemy_deinit();
 void enemy_update();
 void enemy_render();
-void enemy_walk();
-void enemy_position();
-
+void enemy_respawn(int i);
 extern OBJ2D enemy[ENEMY_NUMBER];

@@ -5,22 +5,21 @@
 #include <vector>
 #include <cstdlib>
 
-
 Sprite* sprEnemy;
 OBJ2D enemy[ENEMY_NUMBER];
 int enemy_state;
 int enemy_timer;
 int enemy_number = 0;
-float enemy_speed=3;
+float enemy_speed = 3.0f; // 敵の移動速度
 float angle[50];
-int enemy_max = ENEMY_NUMBER;
+int enemy_max =3;
+
 
 
 void enemy_init()
 {
 	enemy_state = 0;
 	enemy_timer = 0;
-	
 }
 
 void enemy_deinit()
@@ -38,32 +37,77 @@ void enemy_update()
 		break;
 
 	case 1:
-		// パラメーターの設定
+		// パラメーターの設定と初期出現
 		for (int i = 0; i < ENEMY_NUMBER; i++)
 		{
 			enemy[i].scale = { ENEMY_SCALE , ENEMY_SCALE };
 			enemy[i].texSize = { ENEMY_TEX_W , ENEMY_TEX_H };
 			enemy[i].pivot = { ENEMY_PIVOT_X , ENEMY_PIVOT_Y };
 			enemy[i].color = { 1, 1, 1, 1 };
-			enemy[i].hp = 1;
+
+			//初期位置にランダムにスポーン
+			enemy_respawn(i);
 		}
-		//enemy_walk();
-		//enemy_position();
 		enemy_state++;
 		break;
+
 	case 2:
 		for (int i = 0; i < enemy_max; i++)
 		{
-			if (enemy[i].hp <= 0) { continue; }
-			angle[i] = atan2f(540 - enemy[i].pos.y, 960 - enemy[i].pos.x);
-			enemy[i].pos.x += cosf(angle[i]);
-			enemy[i].pos.y += sinf(angle[i]);
+			//HPが0以下になった時に別の敵として再出現させる
+			if (enemy[i].hp <= 0)
+			{
+				enemy_respawn(i);
+			}
+
+			//中心に向かう角度を計算して移動
+			angle[i] = atan2f(540.0f - enemy[i].pos.y, 960.0f - enemy[i].pos.x);
+			enemy[i].pos.x += cosf(angle[i]) * enemy_speed;
+			enemy[i].pos.y += sinf(angle[i]) * enemy_speed;
 		}
+		
+		if (enemy_timer > 300)
+		{
+			enemy_max++;
+			enemy_timer = 0;
+		}
+		
+		
+		break;
 	}
 
 	enemy_timer++;
-
 }
+
+//敵を画面外のランダムな位置に出現させる
+void enemy_respawn(int i)
+{
+	enemy[i].hp = 1; // HPを復活させる
+
+	//画面外のランダムな位置を決める
+	int side = rand() % 4;  
+	switch (side)
+	{
+	case 0: // 上の外側
+		enemy[i].pos.x = rand() % 1920;
+		enemy[i].pos.y = -50.0f;
+		break;
+	case 1: // 下の外側
+		enemy[i].pos.x = rand() % 1920;
+		enemy[i].pos.y = 1080.0f + 50.0f;
+		break;
+	case 2: // 左の外側
+		enemy[i].pos.x = -50.0f;
+		enemy[i].pos.y = rand() % 1080;
+		break;
+	case 3: // 右の外側
+		enemy[i].pos.x = 1920.0f + 50.0f;
+		enemy[i].pos.y = rand() % 1080;
+		break;
+	}
+}
+
+
 
 void enemy_render()
 {
@@ -81,6 +125,4 @@ void enemy_render()
 			enemy[i].color.x, enemy[i].color.y, enemy[i].color.z, enemy[i].color.w
 		);
 	}
-	
-
 }
