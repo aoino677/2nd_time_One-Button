@@ -10,9 +10,11 @@ struct OBJ2D
     VECTOR2 pivot{};                // 基準点
     VECTOR4 color{ 1,1,1,1 };      // 色（白）
 
-    VECTOR2 moveSpeed{};        // キャラクターの移動速度
-    VECTOR2 velocity{};             // 球の速度
-    VECTOR2 firingSpeed{};        // 球の連射速度
+    int moveSpeed{};        // キャラクターの移動速度
+    int velocity{};             // 球の速度
+    int firingSpeed{};        // 球の連射速度
     int hp;                              // 体力
     int attack;                         // 攻撃力
+
+    int timer;                          // タイマー
 };
