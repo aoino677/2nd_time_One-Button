@@ -3,8 +3,8 @@
 
 struct Bullet
 {
-	GameLib::Sprite* spr;
+	GameLib::Sprite* spr = nullptr;
 	VECTOR2 pos;//åªç›à íu
 	VECTOR2 velocity;//ë¨ìx
-	float angle;//äpìx
+	float angle = 0;//äpìx
 };

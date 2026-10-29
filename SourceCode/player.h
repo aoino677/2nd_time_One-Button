@@ -16,5 +16,5 @@ void player_update();
 void player_render();
 
 void set_canRapidShot(bool);
-void set_shotPerSecond(int);
+void set_shotPerSecond(float);
 

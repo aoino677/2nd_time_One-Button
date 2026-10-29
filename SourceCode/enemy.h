@@ -1,6 +1,6 @@
 #pragma once
 
-#define ENEMY_NUMBER  (50)
+#define ENEMY_NUMBER  (3)
 
 #define ENEMY_SCALE      (1)
 #define ENEMY_TEX_W     (128)

@@ -13,7 +13,7 @@ int enemy_timer;
 int enemy_number = 0;
 float enemy_speed=3;
 float angle[50];
-int enemy_max = 4;
+int enemy_max = ENEMY_NUMBER;
 
 
 void enemy_init()
@@ -21,13 +21,6 @@ void enemy_init()
 	enemy_state = 0;
 	enemy_timer = 0;
 	
-	for (int i = 0; i <enemy_max ; i++)
-	{
-		angle[enemy_number] = atan2f(540 - enemy[enemy_number].pos.y, 960 - enemy[enemy_number].pos.x);
-		enemy[enemy_number].pos.x += cosf(angle[enemy_number]);
-		enemy[enemy_number].pos.y += sinf(angle[enemy_number]);
-		enemy_number++;
-	}
 }
 
 void enemy_deinit()
@@ -48,20 +41,24 @@ void enemy_update()
 		// パラメーターの設定
 		for (int i = 0; i < ENEMY_NUMBER; i++)
 		{
-			enemy->scale = { ENEMY_SCALE , ENEMY_SCALE };
-			enemy->texSize = { ENEMY_TEX_W , ENEMY_TEX_H };
-			enemy->pivot = { ENEMY_PIVOT_X , ENEMY_PIVOT_Y };
-			enemy->color = { 1, 1, 1, 1 };
+			enemy[i].scale = { ENEMY_SCALE , ENEMY_SCALE };
+			enemy[i].texSize = { ENEMY_TEX_W , ENEMY_TEX_H };
+			enemy[i].pivot = { ENEMY_PIVOT_X , ENEMY_PIVOT_Y };
+			enemy[i].color = { 1, 1, 1, 1 };
+			enemy[i].hp = 1;
 		}
 		//enemy_walk();
 		//enemy_position();
-		
-		
-		
-	
+		enemy_state++;
 		break;
-	
-
+	case 2:
+		for (int i = 0; i < enemy_max; i++)
+		{
+			if (enemy[i].hp <= 0) { continue; }
+			angle[i] = atan2f(540 - enemy[i].pos.y, 960 - enemy[i].pos.x);
+			enemy[i].pos.x += cosf(angle[i]);
+			enemy[i].pos.y += sinf(angle[i]);
+		}
 	}
 
 	enemy_timer++;
@@ -70,16 +67,20 @@ void enemy_update()
 
 void enemy_render()
 {
-	sprite_render(
-		sprEnemy,
-		enemy[enemy_number].pos.x, enemy[enemy_number].pos.y,
-		enemy->scale.x, enemy->scale.y,
-		0, 0,
-		enemy->texSize.x, enemy->texSize.y,
-		enemy->pivot.x, enemy->pivot.y,
-		ToRadian(0),
-		enemy->color.x, enemy->color.y, enemy->color.z, enemy->color.w
-	);
+	for (int i = 0; i < enemy_max; i++)
+	{
+		if (enemy[i].hp <= 0) { continue; }
+		sprite_render(
+			sprEnemy,
+			enemy[i].pos.x, enemy[i].pos.y,
+			enemy[i].scale.x, enemy[i].scale.y,
+			0, 0,
+			enemy[i].texSize.x, enemy[i].texSize.y,
+			enemy[i].pivot.x, enemy[i].pivot.y,
+			ToRadian(0),
+			enemy[i].color.x, enemy[i].color.y, enemy[i].color.z, enemy[i].color.w
+		);
+	}
 	
 
 }

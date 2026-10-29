@@ -222,7 +222,7 @@ void set_canRapidShot(bool b)
 	can_rapid_shot = b;
 }
 
-void set_shotPerSecond(int value)
+void set_shotPerSecond(float value)
 {
 	shot_per_second = value;
 }
