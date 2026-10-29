@@ -4,7 +4,7 @@
 
 Sprite* sprPlayer;
 Sprite* sprBullet;
-Player player;
+OBJ2D player;
 std::vector<Bullet*> player_bullets;
 
 int player_state;
@@ -19,7 +19,7 @@ int rapidShoted_bullet_count;//˜AŽË‚µ‚½’e”
 int cast_bullet;			//”­ŽË‚ð‘Ò‹@‚µ‚Ä‚¢‚é’e
 
 float shot_per_second = 4.0f; //‚P•bŠÔ‚É”­ŽË‚·‚é’e‚Ì”
-float rapid_coolDown = 0.75f; //˜AŽËŠJŽnŽžŠÔ
+float rapid_coolDown = 0.2f; //˜AŽËŠJŽnŽžŠÔ
 
 void player_init()
 {
@@ -29,16 +29,13 @@ void player_init()
 	sprPlayer = sprite_load(L"Data/Images/player.png");
 	sprBullet = sprite_load(L"Data/Images/bullet.png");
 
-	player.pos.x = SCREEN_W * 0.5f;
-	player.pos.y = SCREEN_H * 0.5f;
+	player.pos = PLAYER_POS;
 
 	shot_timer = 0;
 	rapidShoted_bullet_count = 0;
 	is_rapid = false;
 
 	can_rapid_shot = false;
-
-	set_shotPerSecond(50);
 }
 
 void player_deinit()
@@ -125,8 +122,6 @@ void player_shot_bullet()
 
 	shot_timer += 1 / 60.0f;
 	rapid_timer += 1 / 60.0f;
-	debug::setString("%f", shot_timer);
-	debug::setString("%d", cast_bullet);
 
 	if (TRG_RELEASE(0) & PAD_START)
 	{
@@ -143,6 +138,7 @@ void player_update()
 		bullet->pos += bullet->velocity;
 	}
 	delete_outWindow_bullet();
+	debug::setString("shot_per_second:%f", shot_per_second);
 	debug::setString("bullet_count:%d", player_bullets.size());
 
 	if (TRG(0) & PAD_UP)
