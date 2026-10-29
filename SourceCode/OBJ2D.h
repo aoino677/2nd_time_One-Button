@@ -14,7 +14,9 @@ struct OBJ2D
     float velocity = 0;                     // 球の速度
     float firingSpeed = 0;                // 球の連射速度
     int hp = 0;                       // 体力
-    int attack = 0;                   // 攻撃力
+    int attack = 0;                 // 攻撃力
+    int type;
+    int move_timer;
 
     float timer = 0;                    // タイマー
 };

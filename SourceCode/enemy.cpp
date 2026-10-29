@@ -5,15 +5,14 @@
 #include <vector>
 #include <cstdlib>
 
-Sprite* sprEnemy;
+Sprite* sprEnemy;         
 OBJ2D enemy[ENEMY_NUMBER];
 int enemy_state;
 int enemy_timer;
 int enemy_number = 0;
 float enemy_speed = 3.0f; // 敵の移動速度
 float angle[50];
-int enemy_max =3;
-
+int enemy_max = 3;
 
 
 void enemy_init()
@@ -32,7 +31,10 @@ void enemy_update()
 	switch (enemy_state)
 	{
 	case 0:
+		// スプライトの読み込み
 		sprEnemy = sprite_load(L"Data/Images/enemy.png");
+		
+
 		enemy_state++;
 		break;
 
@@ -45,7 +47,7 @@ void enemy_update()
 			enemy[i].pivot = { ENEMY_PIVOT_X , ENEMY_PIVOT_Y };
 			enemy[i].color = { 1, 1, 1, 1 };
 
-			//初期位置にランダムにスポーン
+			// 初期位置にランダムにスポーン
 			enemy_respawn(i);
 		}
 		enemy_state++;
@@ -54,38 +56,73 @@ void enemy_update()
 	case 2:
 		for (int i = 0; i < enemy_max; i++)
 		{
-			//HPが0以下になった時に別の敵として再出現させる
+			// HPが0以下になった時に別の敵として再出現させる
 			if (enemy[i].hp <= 0)
 			{
 				enemy_respawn(i);
 			}
 
-			//中心に向かう角度を計算して移動
-			angle[i] = atan2f(540.0f - enemy[i].pos.y, 960.0f - enemy[i].pos.x);
-			enemy[i].pos.x += cosf(angle[i]) * enemy_speed;
-			enemy[i].pos.y += sinf(angle[i]) * enemy_speed;
+			// 中心に向かう基本角度を計算
+			float base_angle = atan2f(540.0f - enemy[i].pos.y, 960.0f - enemy[i].pos.x);
+
+			// 敵の種類ごとの動きの処理
+			if (enemy[i].type == ENEMY_TYPE_NORMAL)
+			{
+				// --- 通常の敵：まっすぐ進む ---
+				enemy[i].pos.x += cosf(base_angle) * enemy_speed;
+				enemy[i].pos.y += sinf(base_angle) * enemy_speed;
+			}
+			else if (enemy[i].type == ENEMY_TYPE_TRICKY)
+			{
+				//トリッキーな敵：うねうね揺れながら進む 
+				enemy[i].move_timer++; // 個別タイマーを進める
+
+				//サイン波を使って左右に揺れる幅を計算
+				float wobble = sinf(enemy[i].move_timer * 0.15f) * 15.0f;
+
+				enemy[i].pos.x += cosf(base_angle)*enemy_speed;
+				enemy[i].pos.y += sinf(base_angle)*enemy_speed;
+
+				//進行方向に対して垂直な方向に揺れを足す
+				enemy[i].pos.x += -sinf(base_angle) * wobble;
+				enemy[i].pos.y += cosf(base_angle) * wobble;
+			}
 		}
-		
+
 		if (enemy_timer > 300)
 		{
-			enemy_max++;
+			if (enemy_max < ENEMY_NUMBER) 
+			{
+				enemy_max++;
+				enemy_speed += 0.5;
+			}
 			enemy_timer = 0;
 		}
-		
-		
+
 		break;
 	}
 
 	enemy_timer++;
 }
 
-//敵を画面外のランダムな位置に出現させる
+// 敵を画面外のランダムな位置に出現させる
 void enemy_respawn(int i)
 {
 	enemy[i].hp = 1; // HPを復活させる
+	enemy[i].move_timer = 0; //タイマーをリセット
 
-	//画面外のランダムな位置を決める
-	int side = rand() % 4;  
+	//敵の選別
+	if (rand() % 100 < 30)
+	{
+		enemy[i].type = ENEMY_TYPE_TRICKY;
+	}
+	else
+	{
+		enemy[i].type = ENEMY_TYPE_NORMAL;
+	}
+
+	// 画面外のランダムな位置を決める
+	int side = rand() % 4;
 	switch (side)
 	{
 	case 0: // 上の外側
@@ -107,13 +144,12 @@ void enemy_respawn(int i)
 	}
 }
 
-
-
 void enemy_render()
 {
 	for (int i = 0; i < enemy_max; i++)
 	{
 		if (enemy[i].hp <= 0) { continue; }
+
 		sprite_render(
 			sprEnemy,
 			enemy[i].pos.x, enemy[i].pos.y,
