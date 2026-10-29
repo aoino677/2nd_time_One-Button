@@ -1,12 +1,6 @@
 #pragma once
 #include "all.h"
 
-struct Bullet
-{
-    VECTOR2 pos;//åªç›à íu
-    VECTOR2 velocity;//ë¨ìx
-};
-
 struct Player
 {
 	VECTOR2 pos;

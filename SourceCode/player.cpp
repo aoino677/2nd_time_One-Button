@@ -1,9 +1,13 @@
 #include "all.h"
 #include "player.h"
+#include "Bullet.h"
+
+#include "enemy.h"
+#include "AttackCollision.h"
 #include <vector>
 
 Sprite* sprPlayer;
-Sprite* sprBullet;
+Sprite* sprBullet[3];
 OBJ2D player;
 std::vector<Bullet*> player_bullets;
 
@@ -18,8 +22,10 @@ bool can_rapid_shot;		//˜AË‰Â”\‚©
 int rapidShoted_bullet_count;//˜AË‚µ‚½’e”
 int cast_bullet;			//”­Ë‚ğ‘Ò‹@‚µ‚Ä‚¢‚é’e
 
-float shot_per_second = 40.0f; //‚P•bŠÔ‚É”­Ë‚·‚é’e‚Ì”
+float shot_per_second = 5.0f; //‚P•bŠÔ‚É”­Ë‚·‚é’e‚Ì”
 float rapid_coolDown = 0.2f; //˜AËŠJnŠÔ
+
+float precision_rad = ToRadian(5); //‘_‚Á‚½•ûŒü‚É”ò‚Ô¸“x
 
 void player_init()
 {
@@ -27,8 +33,10 @@ void player_init()
 	player_timer = 0;
 
 	sprPlayer = sprite_load(L"Data/Images/player.png");
-	sprBullet = sprite_load(L"Data/Images/10yen.png");
-
+	sprBullet[0] = sprite_load(L"Data/Images/1yen.png");
+	sprBullet[1] = sprite_load(L"Data/Images/10yen.png");
+	sprBullet[2] = sprite_load(L"Data/Images/100yen.png");
+	
 	player.pos = PLAYER_POS;
 	player.texSize = { 128, 128 };
 
@@ -42,7 +50,10 @@ void player_init()
 void player_deinit()
 {
 	safe_delete(sprPlayer);
-	safe_delete(sprBullet);
+	for (int i = 0; i < 3; i++)
+	{
+		safe_delete(sprBullet[i]);
+	}
 
 	for (auto*& bullet : player_bullets)
 	{
@@ -76,10 +87,16 @@ void shot_bullet()
 	VECTOR2 vec = cursorPos - player.pos;
 	//float r = ToRadian(rand() % 360);
 	//vec = {cosf(r), sinf(r)};
+	float f = (rand() / (float)RAND_MAX) * 2 - 1;
+float k = atan2f(vec.y, vec.x) + f * precision_rad;
+	vec = { cosf(k), sinf(k) };
 
 	auto* b = new Bullet();
 	b->pos = player.pos;
 	b->velocity = vec2Normalize(vec) * 240 / 60.0f;
+	b->angle = atan2f(vec.x, -vec.y);
+	b->spr = sprBullet[(rand() % 3)];
+//	b->angle = ToRadian(rand() % 360);
 	player_bullets.push_back(b);
 	rapidShoted_bullet_count++;
 }
@@ -139,7 +156,7 @@ void player_update()
 	player_shot_bullet();
 	for (auto*& bullet : player_bullets)
 	{
-		//bullet->velocity.y += 1 / 60.0f;
+		//bullet->velocity.y += 1.5f / 60.0f;
 		bullet->pos += bullet->velocity;
 	}
 	delete_outWindow_bullet();
@@ -151,6 +168,22 @@ void player_update()
 		can_rapid_shot = true;
 	}
 	debug::setString("is rapid : %d", can_rapid_shot);
+
+	int enemy_count = 0;
+	for (int e = 0; e < ENEMY_NUMBER; e++)
+	{
+		AttackCollision::player_vs_enemy(player, enemy[e]);
+		for (auto*& bullet : player_bullets)
+		{
+			AttackCollision::enemy_vs_bullet(enemy[e], *bullet);
+		}
+		if (enemy[e].scale.x > 0.0001f)
+		{
+			enemy_count++;
+		}
+	}
+	debug::setString("enemies : %d", enemy_count);
+
 }
 
 void player_render()
@@ -173,12 +206,13 @@ void player_render()
 	for (auto*& bullet : player_bullets)
 	{
 		sprite_render(
-			sprBullet,
+			bullet->spr,
 			bullet->pos.x, bullet->pos.y,
 			1, 1,
 			0, 0,
 			64, 64,
-			32, 32
+			32, 32,
+			bullet->angle
 		);
 	}
 }

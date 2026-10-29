@@ -114,6 +114,7 @@ attrib +h SourceCode\gp1.log
     <ClInclude Include="GameLib\view_settings.h" />
     <ClInclude Include="SourceCode\all.h" />
     <ClInclude Include="SourceCode\AttackCollision.h" />
+    <ClInclude Include="SourceCode\Bullet.h" />
     <ClInclude Include="SourceCode\Collision2D.h" />
     <ClInclude Include="SourceCode\common.h" />
     <ClInclude Include="SourceCode\enemy.h" />
