@@ -23,9 +23,10 @@ int rapidShoted_bullet_count;//連射した弾数
 int cast_bullet;			//発射を待機している弾
 
 float shot_per_second = 5.0f; //１秒間に発射する弾の数
-float rapid_coolDown = 0.2f; //連射開始時間
+float rapid_coolDown = RAPID_COOLDOWN; //連射開始時間
 
 float precision_rad = ToRadian(5); //狙った方向に飛ぶ精度
+int bullet_flover = 0;//弾の種類（仮でint型で管理）
 
 void player_init()
 {
@@ -38,7 +39,7 @@ void player_init()
 	sprBullet[2] = sprite_load(L"Data/Images/100yen.png");
 	
 	player.pos = PLAYER_POS;
-	player.texSize = { 128, 128 };
+	player.texSize = PLAYER_TEX_SIZE;
 
 	shot_timer = 0;
 	rapidShoted_bullet_count = 0;
@@ -225,4 +226,9 @@ void set_canRapidShot(bool b)
 void set_shotPerSecond(float value)
 {
 	shot_per_second = value;
+}
+
+void set_bullet_flavor(int flavor)
+{
+
 }
