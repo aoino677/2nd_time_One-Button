@@ -18,5 +18,5 @@ void EXP_deinit();
 bool move_block_player(OBJ2D* EXP, OBJ2D* Player, float speed);
 
 // externêÈåæ
-extern Sprite* sprEXP[EXP_COUNT];
+extern Sprite* sprEXP;
 extern OBJ2D EXP[EXP_COUNT];
