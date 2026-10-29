@@ -113,6 +113,8 @@ attrib +h SourceCode\gp1.log
     <ClInclude Include="GameLib\vector.h" />
     <ClInclude Include="GameLib\view_settings.h" />
     <ClInclude Include="SourceCode\all.h" />
+    <ClInclude Include="SourceCode\AttackCollision.h" />
+    <ClInclude Include="SourceCode\Collision2D.h" />
     <ClInclude Include="SourceCode\common.h" />
     <ClInclude Include="SourceCode\enemy.h" />
     <ClInclude Include="SourceCode\EXP.h" />
@@ -140,6 +142,8 @@ attrib +h SourceCode\gp1.log
     <ClCompile Include="GameLib\vector.cpp" />
     <ClCompile Include="GameLib\view_settings.cpp" />
     <ClCompile Include="GameLib\wnd_proc.cpp" />
+    <ClCompile Include="SourceCode\AttackCollision.cpp" />
+    <ClCompile Include="SourceCode\Collision2D.cpp" />
     <ClCompile Include="SourceCode\enemy.cpp" />
     <ClCompile Include="SourceCode\EXP.cpp" />
     <ClCompile Include="SourceCode\Level.cpp" />
