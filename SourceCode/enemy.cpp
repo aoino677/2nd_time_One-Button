@@ -12,11 +12,22 @@ int enemy_state;
 int enemy_timer;
 int enemy_number = 0;
 float enemy_speed=3;
+float angle[50];
+int enemy_max = 4;
+
 
 void enemy_init()
 {
 	enemy_state = 0;
 	enemy_timer = 0;
+	
+	for (int i = 0; i <enemy_max ; i++)
+	{
+		angle[enemy_number] = atan2f(540 - enemy[enemy_number].pos.y, 960 - enemy[enemy_number].pos.x);
+		enemy[enemy_number].pos.x += cosf(angle[enemy_number]);
+		enemy[enemy_number].pos.y += sinf(angle[enemy_number]);
+		enemy_number++;
+	}
 }
 
 void enemy_deinit()
@@ -35,13 +46,10 @@ void enemy_update()
 
 	case 1:
 	
-		enemy_walk();
-		enemy_position();
+		//enemy_walk();
+		//enemy_position();
 		
 		
-			
-		
-
 		
 	
 		break;
@@ -53,50 +61,16 @@ void enemy_update()
 
 }
 
-
-
-
-
-void enemy_position()
-{
-	if (enemy_timer > 240)
-	{
-		for (int i = 0; i < 4; i++)
-		{
-			enemy[enemy_number].pos.x = rand();
-			enemy[enemy_number].pos.y = rand();
-			enemy_number++;
-		}
-
-	}
-	else
-		enemy_timer = 0;
-
-}
-
-
-void enemy_walk()
-{
-    //Šp“x‚ğŒvZ‚µ‚ÄˆÚ“®
-	//Œã‚Åplayer.pos‚É•ÏX‚·‚é
-	float angle = atan2f(540 - enemy[enemy_number].pos.y, 960 - enemy[enemy_number].pos.x);
-	enemy[enemy_number].pos.x += cosf(angle) * enemy_speed;
-	enemy[enemy_number].pos.y += sinf(angle) * enemy_speed;
-}
-
-
 void enemy_render()
 {
-	for (int i=0; i < 4; i++)
-	{
-		sprite_render(
-			sprEnemy,
-			enemy[enemy_number].pos.x, enemy[enemy_number].pos.y,
-			1, 1,
-			0, 0,
-			128, 128,
-			64, 64
-		);
-	}
+	sprite_render(
+		sprEnemy,
+		enemy[enemy_number].pos.x, enemy[enemy_number].pos.y,
+		1, 1,
+		0, 0,
+		128, 128,
+		64, 64
+	);
+	
 
 }
