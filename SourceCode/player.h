@@ -10,6 +10,7 @@ struct Bullet
 struct Player
 {
 	VECTOR2 pos;
+	VECTOR2 texSize;
 };
 
 extern OBJ2D player;

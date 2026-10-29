@@ -18,7 +18,7 @@ bool can_rapid_shot;		//˜AË‰Â”\‚©
 int rapidShoted_bullet_count;//˜AË‚µ‚½’e”
 int cast_bullet;			//”­Ë‚ğ‘Ò‹@‚µ‚Ä‚¢‚é’e
 
-float shot_per_second = 4.0f; //‚P•bŠÔ‚É”­Ë‚·‚é’e‚Ì”
+float shot_per_second = 40.0f; //‚P•bŠÔ‚É”­Ë‚·‚é’e‚Ì”
 float rapid_coolDown = 0.2f; //˜AËŠJnŠÔ
 
 void player_init()
@@ -27,9 +27,10 @@ void player_init()
 	player_timer = 0;
 
 	sprPlayer = sprite_load(L"Data/Images/player.png");
-	sprBullet = sprite_load(L"Data/Images/bullet.png");
+	sprBullet = sprite_load(L"Data/Images/10yen.png");
 
 	player.pos = PLAYER_POS;
+	player.texSize = { 128, 128 };
 
 	shot_timer = 0;
 	rapidShoted_bullet_count = 0;
@@ -73,9 +74,12 @@ void shot_bullet()
 {
 	VECTOR2 cursorPos = { static_cast<float>(getCursorPosX()), static_cast<float>(getCursorPosY()) };
 	VECTOR2 vec = cursorPos - player.pos;
+	//float r = ToRadian(rand() % 360);
+	//vec = {cosf(r), sinf(r)};
+
 	auto* b = new Bullet();
 	b->pos = player.pos;
-	b->velocity = vec2Normalize(vec) * 200 / 60.0f;
+	b->velocity = vec2Normalize(vec) * 240 / 60.0f;
 	player_bullets.push_back(b);
 	rapidShoted_bullet_count++;
 }
@@ -107,7 +111,7 @@ void player_shot_bullet()
 	{
 		if (is_rapid)
 		{
-			if (shot_timer > 1 / shot_per_second)
+			while (shot_timer > 1 / shot_per_second)
 			{
 				shot_timer -= 1 / shot_per_second;
 				shot_bullet();
@@ -135,6 +139,7 @@ void player_update()
 	player_shot_bullet();
 	for (auto*& bullet : player_bullets)
 	{
+		//bullet->velocity.y += 1 / 60.0f;
 		bullet->pos += bullet->velocity;
 	}
 	delete_outWindow_bullet();
@@ -160,8 +165,8 @@ void player_render()
 		player.pos.x, player.pos.y,
 		1, 1,
 		0, 0,
-		128, 128,
-		64, 64,
+		player.texSize.x, player.texSize.y,
+		player.texSize.x * 0.5f, player.texSize.y * 0.5f,
 		atan2f(vec.x, -vec.y)
 	);
 
@@ -175,8 +180,6 @@ void player_render()
 			64, 64,
 			32, 32
 		);
-
-		primitive::circle(bullet->pos, 32, { 1, 1 }, 0, { 1, 0,0 ,0.2f });
 	}
 }
 
