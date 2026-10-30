@@ -39,7 +39,7 @@ void EXP_update()
             EXP[i].color = { 1, 1, 1, EXP[i].color.w};
 
             EXP[i].timer = 0;                // ŒoŒ±’l‚ª—Ž‚¿‚Ä“®‚­‚Ü‚Å‚ÌŽžŠÔ
-            EXP[i].moveSpeed = 1.0f;     // —Ž‚¿‚½XP‚Ì‹zŽû‚³‚ê‚é‘¬“x
+            EXP[i].moveSpeed = 5.0f;     // —Ž‚¿‚½XP‚Ì‹zŽû‚³‚ê‚é‘¬“x
         }
 		EXP_state++;
 		break;
@@ -47,8 +47,10 @@ void EXP_update()
         for (int i = 0; i < EXP_COUNT; i++)
         {
             // “G‚ÌF‚ª‚Oi“G‚ªŽ€‚ñ‚¾‚çj‚É‚È‚Á‚½‚çEXP‚ª—Ž‚¿‚é
-            if (enemy[ENEMY_NUMBER].hp != 0)
+            if (enemy[i].hp == 0)
             {
+                EXP[i].pos.x = enemy[i].pos.x;
+                EXP[i].pos.y = enemy[i].pos.y;
                 EXP[i].color.w = 1.0f;
                 EXP[i].timer++;
                 if (EXP[i].timer == 60) // ‚P•b‚½‚Á‚½‚çƒvƒŒƒCƒ„[‚É‹ß‚Ã‚­
@@ -56,7 +58,7 @@ void EXP_update()
                     move_block_player(&EXP[i], &player, EXP[i].moveSpeed);
                 }
             }
-            else if (enemy[ENEMY_NUMBER].hp == 0)
+            else if (enemy[i].hp != 0)
             {
                 EXP[i].color.w = 0.0f;
             }
@@ -74,10 +76,10 @@ void EXP_render()
         sprite_render(
             sprEXP,
             enemy[i].pos.x, enemy[i].pos.y,
-            EXP_SCALE, EXP_SCALE,
+            enemy[i].scale.x, enemy[i].scale.y,
             0, 0,
-            EXP_TEX_W, EXP_TEX_H,
-            EXP_PIVOT_X, EXP_PIVOT_Y,
+            enemy[i].texSize.x, enemy[i].texSize.y,
+            enemy[i].pivot.x, enemy[i].pivot.y,
             ToRadian(0),
             1, 1, 1, EXP[i].color.w
         );
