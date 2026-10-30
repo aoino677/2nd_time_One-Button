@@ -9,9 +9,10 @@ Sprite* sprEnemy;
 OBJ2D enemy[ENEMY_NUMBER];
 int enemy_state;
 int enemy_timer;
+int enemy_turbo[ENEMY_NUMBER];
 int enemy_number = 0;
 float enemy_speed = 3.0f; // 敵の移動速度
-float angle[50];
+float angle[ENEMY_NUMBER];
 int enemy_max = 3;
 
 
@@ -19,6 +20,7 @@ void enemy_init()
 {
 	enemy_state = 0;
 	enemy_timer = 0;
+	enemy_turbo[50] = 0;
 }
 
 void enemy_deinit()
@@ -34,12 +36,11 @@ void enemy_update()
 		// スプライトの読み込み
 		sprEnemy = sprite_load(L"Data/Images/enemy.png");
 		
-
 		enemy_state++;
 		break;
 
 	case 1:
-		// パラメーターの設定と初期出現
+		//パラメーターの設定と初期出現
 		for (int i = 0; i < ENEMY_NUMBER; i++)
 		{
 			enemy[i].scale = { ENEMY_SCALE , ENEMY_SCALE };
@@ -47,24 +48,26 @@ void enemy_update()
 			enemy[i].pivot = { ENEMY_PIVOT_X , ENEMY_PIVOT_Y };
 			enemy[i].color = { 1, 1, 1, 1 };
 
-			// 初期位置にランダムにスポーン
+			//初期位置にランダムにスポーン
 			enemy_respawn(i);
 		}
+		
 		enemy_state++;
 		break;
 
 	case 2:
 		for (int i = 0; i < enemy_max; i++)
 		{
-			// HPが0以下になった時に別の敵として再出現させる
+			//HPが0以下になった時に別の敵として再出現させる
 			if (enemy[i].hp <= 0)
 			{
 				enemy_respawn(i);
 			}
             enemy_move(i);
+			enemy_turbo[i]++;
 		}
 
-		if (enemy_timer > 300)
+		if (enemy_timer > 600)
 		{
 			if (enemy_max < ENEMY_NUMBER) 
 			{
@@ -78,6 +81,7 @@ void enemy_update()
 	}
 
 	enemy_timer++;
+	
 }
 
 void enemy_move(int i)
@@ -107,6 +111,16 @@ void enemy_move(int i)
 		enemy[i].pos.x += -sinf(base_angle) * wobble;
 		enemy[i].pos.y += cosf(base_angle) * wobble;
 	}
+	else if (enemy[i].type == ENEMY_TYPE_TURBO)
+	{
+		if (enemy_turbo[i] > 60)
+		{
+			enemy[i].pos.x += cosf(base_angle) * enemy_speed*10 ;
+			enemy[i].pos.y += sinf(base_angle) * enemy_speed*10 ;
+			enemy_turbo[i] = 0;
+		}
+		
+	}
 }
 
 
@@ -119,9 +133,12 @@ void enemy_respawn(int i)
 
 	//敵の選別
 	if (rand() % 100 < 30)
-	    enemy[i].type = ENEMY_TYPE_TRICKY;
+		enemy[i].type = ENEMY_TYPE_TRICKY;
+
+	else if (rand() % 100 >= 30 && rand() % 100 < 60)
+		enemy[i].type = ENEMY_TYPE_TURBO;
 	
-	else
+	else if(rand() % 100 > 60)
 	    enemy[i].type = ENEMY_TYPE_NORMAL;
 	
 
