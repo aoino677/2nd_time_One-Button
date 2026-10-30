@@ -16,11 +16,13 @@ float angle[ENEMY_NUMBER];
 int enemy_max = 3;
 
 
+
 void enemy_init()
 {
 	enemy_state = 0;
 	enemy_timer = 0;
 	enemy_turbo[50] = 0;
+	
 }
 
 void enemy_deinit()
@@ -113,13 +115,15 @@ void enemy_move(int i)
 	}
 	else if (enemy[i].type == ENEMY_TYPE_TURBO)
 	{
-		if (enemy_turbo[i] > 60)
+		if (enemy_turbo[i] < 15)
 		{
-			enemy[i].pos.x += cosf(base_angle) * enemy_speed*10 ;
-			enemy[i].pos.y += sinf(base_angle) * enemy_speed*10 ;
+			enemy[i].pos.x += cosf(base_angle) * enemy_speed * 5;
+			enemy[i].pos.y += sinf(base_angle) * enemy_speed * 5;
+		}
+		else if (enemy_turbo[i] > 100)
+		{
 			enemy_turbo[i] = 0;
 		}
-		
 	}
 }
 
