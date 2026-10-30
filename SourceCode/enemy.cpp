@@ -61,32 +61,7 @@ void enemy_update()
 			{
 				enemy_respawn(i);
 			}
-
-			// 中心に向かう基本角度を計算
-			float base_angle = atan2f(540.0f - enemy[i].pos.y, 960.0f - enemy[i].pos.x);
-
-			// 敵の種類ごとの動きの処理
-			if (enemy[i].type == ENEMY_TYPE_NORMAL)
-			{
-				// --- 通常の敵：まっすぐ進む ---
-				enemy[i].pos.x += cosf(base_angle) * enemy_speed;
-				enemy[i].pos.y += sinf(base_angle) * enemy_speed;
-			}
-			else if (enemy[i].type == ENEMY_TYPE_TRICKY)
-			{
-				//トリッキーな敵：うねうね揺れながら進む 
-				enemy[i].move_timer++; // 個別タイマーを進める
-
-				//サイン波を使って左右に揺れる幅を計算
-				float wobble = sinf(enemy[i].move_timer * 0.15f) * 15.0f;
-
-				enemy[i].pos.x += cosf(base_angle)*enemy_speed;
-				enemy[i].pos.y += sinf(base_angle)*enemy_speed;
-
-				//進行方向に対して垂直な方向に揺れを足す
-				enemy[i].pos.x += -sinf(base_angle) * wobble;
-				enemy[i].pos.y += cosf(base_angle) * wobble;
-			}
+            enemy_move(i);
 		}
 
 		if (enemy_timer > 300)
@@ -105,6 +80,37 @@ void enemy_update()
 	enemy_timer++;
 }
 
+void enemy_move(int i)
+{
+	// 中心に向かう基本角度を計算
+	float base_angle = atan2f(540.0f - enemy[i].pos.y, 960.0f - enemy[i].pos.x);
+
+	// 敵の種類ごとの動きの処理
+	if (enemy[i].type == ENEMY_TYPE_NORMAL)
+	{
+		// --- 通常の敵：まっすぐ進む ---
+		enemy[i].pos.x += cosf(base_angle) * enemy_speed;
+		enemy[i].pos.y += sinf(base_angle) * enemy_speed;
+	}
+	else if (enemy[i].type == ENEMY_TYPE_TRICKY)
+	{
+		//トリッキーな敵：うねうね揺れながら進む 
+		enemy[i].move_timer++; // 個別タイマーを進める
+
+		//サイン波を使って左右に揺れる幅を計算
+		float wobble = sinf(enemy[i].move_timer * 0.15f) * 15.0f;
+
+		enemy[i].pos.x += cosf(base_angle) * enemy_speed;
+		enemy[i].pos.y += sinf(base_angle) * enemy_speed;
+
+		//進行方向に対して垂直な方向に揺れを足す
+		enemy[i].pos.x += -sinf(base_angle) * wobble;
+		enemy[i].pos.y += cosf(base_angle) * wobble;
+	}
+}
+
+
+
 // 敵を画面外のランダムな位置に出現させる
 void enemy_respawn(int i)
 {
@@ -113,13 +119,11 @@ void enemy_respawn(int i)
 
 	//敵の選別
 	if (rand() % 100 < 30)
-	{
-		enemy[i].type = ENEMY_TYPE_TRICKY;
-	}
+	    enemy[i].type = ENEMY_TYPE_TRICKY;
+	
 	else
-	{
-		enemy[i].type = ENEMY_TYPE_NORMAL;
-	}
+	    enemy[i].type = ENEMY_TYPE_NORMAL;
+	
 
 	// 画面外のランダムな位置を決める
 	int side = rand() % 4;

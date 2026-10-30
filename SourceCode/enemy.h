@@ -16,6 +16,6 @@ void enemy_init();
 void enemy_deinit();
 void enemy_update();
 void enemy_render();
-void enemy_move();
+void enemy_move(int i);
 void enemy_respawn(int i);
 extern OBJ2D enemy[ENEMY_NUMBER];
