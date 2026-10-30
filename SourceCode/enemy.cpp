@@ -5,7 +5,7 @@
 #include <vector>
 #include <cstdlib>
 
-Sprite* sprEnemy;         
+Sprite* sprEnemy;
 OBJ2D enemy[ENEMY_NUMBER];
 int enemy_state;
 int enemy_timer;
@@ -22,8 +22,6 @@ void enemy_init()
 	enemy_state = 0;
 	enemy_timer = 0;
 	enemy_max = 3;
-	enemy_turbo[50] = 0;
-	
 }
 
 void enemy_deinit()
@@ -38,7 +36,7 @@ void enemy_update()
 	case 0:
 		// スプライトの読み込み
 		sprEnemy = sprite_load(L"Data/Images/enemy.png");
-		
+
 		enemy_state++;
 		break;
 
@@ -54,7 +52,7 @@ void enemy_update()
 			//初期位置にランダムにスポーン
 			enemy_respawn(i);
 		}
-		
+
 		enemy_state++;
 		break;
 
@@ -66,13 +64,13 @@ void enemy_update()
 			{
 				enemy_respawn(i);
 			}
-            enemy_move(i);
+			enemy_move(i);
 			enemy_turbo[i]++;
 		}
 
 		if (enemy_timer > 600)
 		{
-			if (enemy_max < ENEMY_NUMBER) 
+			if (enemy_max < ENEMY_NUMBER)
 			{
 				enemy_max++;
 				enemy_speed += 0.5;
@@ -84,36 +82,34 @@ void enemy_update()
 	}
 
 	enemy_timer++;
-	
+
 }
 
+
+//敵の種類ごとの動きの処理
 void enemy_move(int i)
 {
-	// 中心に向かう基本角度を計算
+	//中心に向かう基本角度を計算
 	float base_angle = atan2f(540.0f - enemy[i].pos.y, 960.0f - enemy[i].pos.x);
 
-	// 敵の種類ごとの動きの処理
+	//普通の敵
 	if (enemy[i].type == ENEMY_TYPE_NORMAL)
 	{
 		// --- 通常の敵：まっすぐ進む ---
 		enemy[i].pos.x += cosf(base_angle) * enemy_speed;
 		enemy[i].pos.y += sinf(base_angle) * enemy_speed;
 	}
-	else if (enemy[i].type == ENEMY_TYPE_TRICKY)
+	//渦巻く敵
+	else if (enemy[i].type == ENEMY_TYPE_EDDY)
 	{
-		//トリッキーな敵：うねうね揺れながら進む 
-		enemy[i].move_timer++; // 個別タイマーを進める
-
-		//サイン波を使って左右に揺れる幅を計算
-		float wobble = sinf(enemy[i].move_timer * 0.15f) * 15.0f;
-
 		enemy[i].pos.x += cosf(base_angle) * enemy_speed;
 		enemy[i].pos.y += sinf(base_angle) * enemy_speed;
 
 		//進行方向に対して垂直な方向に揺れを足す
-		enemy[i].pos.x += -sinf(base_angle) * wobble;
-		enemy[i].pos.y += cosf(base_angle) * wobble;
+		enemy[i].pos.x += -sinf(base_angle) * enemy_speed;
+		enemy[i].pos.y += cosf(base_angle) * enemy_speed;
 	}
+	//一定の間隔で進む敵
 	else if (enemy[i].type == ENEMY_TYPE_TURBO)
 	{
 		if (enemy_turbo[i] < 15)
@@ -121,10 +117,27 @@ void enemy_move(int i)
 			enemy[i].pos.x += cosf(base_angle) * enemy_speed * 5;
 			enemy[i].pos.y += sinf(base_angle) * enemy_speed * 5;
 		}
+
 		else if (enemy_turbo[i] > 100)
 		{
 			enemy_turbo[i] = 0;
 		}
+	}
+	//揺れ動く敵
+	else if (enemy[i].type == ENEMY_TYPE_TRICKY)
+	{
+		//トリッキーな敵：うねうね揺れながら進む 
+		enemy[i].move_timer++; // 個別タイマーを進める
+
+		//サイン波を使って左右に揺れる幅を計算
+		float wobble = sinf(enemy[i].move_timer * 0.15f) * 20.0f;
+
+		enemy[i].pos.x += cosf(base_angle) * enemy_speed;
+		enemy[i].pos.y += sinf(base_angle) * enemy_speed;
+
+		//進行方向に対して垂直な方向に揺れを足す
+		enemy[i].pos.x += -sinf(base_angle) * wobble;
+		enemy[i].pos.y += cosf(base_angle) * wobble;
 	}
 }
 
@@ -137,32 +150,38 @@ void enemy_respawn(int i)
 	enemy[i].move_timer = 0; //タイマーをリセット
 
 	//敵の選別
-	if (rand() % 100 < 30)
+	if (rand() % 100 < 25)
 		enemy[i].type = ENEMY_TYPE_TRICKY;
 
-	else if (rand() % 100 >= 30 && rand() % 100 < 60)
+	else if (rand() % 100 >= 25 && rand() % 100 < 50)
 		enemy[i].type = ENEMY_TYPE_TURBO;
 	
-	else if(rand() % 100 > 60)
-	    enemy[i].type = ENEMY_TYPE_NORMAL;
-	
+	else if (rand() % 100 >= 50 && rand() % 100 < 75)
+		enemy[i].type = ENEMY_TYPE_EDDY;
+
+	else if (rand() % 100 >= 75)
+		enemy[i].type = ENEMY_TYPE_NORMAL;
+
 
 	// 画面外のランダムな位置を決める
-	int side = rand() % 4;
+	int side = rand() % 4;		
 	switch (side)
-	{
-	case 0: // 上の外側
-		enemy[i].pos.x = rand() % 1920;
+	{	
+    case 0: // 上の外側
+	    enemy[i].pos.x = rand() % 1920;
 		enemy[i].pos.y = -50.0f;
 		break;
+		
 	case 1: // 下の外側
 		enemy[i].pos.x = rand() % 1920;
 		enemy[i].pos.y = 1080.0f + 50.0f;
 		break;
+		
 	case 2: // 左の外側
 		enemy[i].pos.x = -50.0f;
 		enemy[i].pos.y = rand() % 1080;
 		break;
+		
 	case 3: // 右の外側
 		enemy[i].pos.x = 1920.0f + 50.0f;
 		enemy[i].pos.y = rand() % 1080;
