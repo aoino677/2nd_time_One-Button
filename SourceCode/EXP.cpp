@@ -52,18 +52,20 @@ void EXP_update()
                 EXP[i].pos.x = enemy[i].pos.x;
                 EXP[i].pos.y = enemy[i].pos.y;
                 EXP[i].color.w = 1.0f;
-                EXP[i].timer++;
-                if (EXP[i].timer == 60) // ÇPïbÇΩÇ¡ÇΩÇÁÉvÉåÉCÉÑÅ[Ç…ãﬂÇ√Ç≠
-                {
-                    move_block_player(&EXP[i], &player, EXP[i].moveSpeed);
-                }
             }
             else if (enemy[i].hp != 0)
             {
-                EXP[i].color.w = 0.0f;
+                //EXP[i].color.w = 0.0f;
+            }
+
+            EXP[i].timer++;
+            if (EXP[i].timer == 60) // ÇPïbÇΩÇ¡ÇΩÇÁÉvÉåÉCÉÑÅ[Ç…ãﬂÇ√Ç≠
+            {
+                move_block_player(&EXP[i], &player, EXP[i].moveSpeed);
             }
         }
-		EXP_state++;
+
+		//EXP_state++;
 		break;
 	}
 
@@ -75,11 +77,11 @@ void EXP_render()
     {
         sprite_render(
             sprEXP,
-            enemy[i].pos.x, enemy[i].pos.y,
-            enemy[i].scale.x, enemy[i].scale.y,
+            EXP[i].pos.x, EXP[i].pos.y,
+            EXP[i].scale.x, EXP[i].scale.y,
             0, 0,
-            enemy[i].texSize.x, enemy[i].texSize.y,
-            enemy[i].pivot.x, enemy[i].pivot.y,
+            EXP[i].texSize.x, EXP[i].texSize.y,
+            EXP[i].pivot.x, EXP[i].pivot.y,
             ToRadian(0),
             1, 1, 1, EXP[i].color.w
         );

@@ -71,9 +71,9 @@ void game_update()
 		{
 			time_limit--;
 			player_update();
+			EXP_update();
 			enemy_update();
 			level_update();
-			EXP_update();
 		}
 		if (TRG(0) & PAD_TRG1)
 		{
