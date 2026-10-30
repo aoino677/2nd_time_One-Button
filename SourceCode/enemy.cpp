@@ -21,6 +21,7 @@ void enemy_init()
 {
 	enemy_state = 0;
 	enemy_timer = 0;
+	enemy_max = 3;
 	enemy_turbo[50] = 0;
 	
 }
