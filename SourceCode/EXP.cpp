@@ -32,7 +32,7 @@ void EXP_update()
         for (int i = 0; i < EXP_COUNT; i++)
         {
             EXP[i] = {};
-            EXP[i].pos = { enemy->pos.x, enemy->pos.y };
+            EXP[i].pos = { enemy[i].pos.x, enemy[i].pos.y};
             EXP[i].scale = { EXP_SCALE    , EXP_SCALE };
             EXP[i].texSize = { EXP_TEX_W    , EXP_TEX_H };
             EXP[i].pivot = { EXP_PIVOT_X , EXP_PIVOT_Y };
@@ -49,20 +49,21 @@ void EXP_update()
             // “G‚ÌF‚ª‚Oi“G‚ªŽ€‚ñ‚¾‚çj‚É‚È‚Á‚½‚çEXP‚ª—Ž‚¿‚é
             if (enemy[i].hp == 0)
             {
-                EXP[i].pos.x = enemy[i].pos.x;
-                EXP[i].pos.y = enemy[i].pos.y;
+                EXP[i].pos = enemy[i].preserve;
                 EXP[i].color.w = 1.0f;
-            }
-            else if (enemy[i].hp != 0)
-            {
-                //EXP[i].color.w = 0.0f;
+
+                //for (; EXP[i].timer >= 0 || EXP[i].timer <= 60; EXP[i].timer++)
+                //{
+                //    if (EXP[i].timer == 60) // ‚P•b‚½‚Á‚½‚çƒvƒŒƒCƒ„[‚É‹ß‚Ã‚­
+                //    {
+                //        move_block_player(&EXP[i], &player, EXP[i].moveSpeed);
+                //        EXP[i].timer = 0;
+                //    }
+                //}
             }
 
-            EXP[i].timer++;
-            if (EXP[i].timer == 60) // ‚P•b‚½‚Á‚½‚çƒvƒŒƒCƒ„[‚É‹ß‚Ã‚­
-            {
-                move_block_player(&EXP[i], &player, EXP[i].moveSpeed);
-            }
+            
+            
         }
 
 		//EXP_state++;
