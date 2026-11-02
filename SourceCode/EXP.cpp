@@ -2,12 +2,14 @@
 #include "EXP.h"
 #include "enemy.h"
 #include "player.h"
+#include <vector>
 
 int EXP_timer = 0;
 int EXP_state = 0;
 
 Sprite* sprEXP;
 OBJ2D EXP[EXP_COUNT];
+//std::vector<OBJ2D> EXP;
 
 void EXP_init()
 {
@@ -36,25 +38,37 @@ void EXP_update()
             EXP[i].scale = { EXP_SCALE    , EXP_SCALE };
             EXP[i].texSize = { EXP_TEX_W    , EXP_TEX_H };
             EXP[i].pivot = { EXP_PIVOT_X , EXP_PIVOT_Y };
-            EXP[i].color = { 1, 1, 1, EXP[i].color.w};
+            EXP[i].color = { 1, 1, 1, 0};
 
             EXP[i].timer = 0;                // ŒoŒ±’l‚ª—Ž‚¿‚Ä“®‚­‚Ü‚Å‚ÌŽžŠÔ
-            EXP[i].moveSpeed = 5.0f;     // —Ž‚¿‚½XP‚Ì‹zŽû‚³‚ê‚é‘¬“x
+            EXP[i].moveSpeed = 0.0f;     // —Ž‚¿‚½XP‚Ì‹zŽû‚³‚ê‚é‘¬“x
         }
 		EXP_state++;
 		break;
 	case 2:
-        for (int i = 0; i < EXP_COUNT; i++)
+        for (int i = 0; i < enemy_max; i++)
         {
             // “G‚ÌF‚ª‚Oi“G‚ªŽ€‚ñ‚¾‚çj‚É‚È‚Á‚½‚çEXP‚ª—Ž‚¿‚é
             if (enemy[i].hp == 0)
             {
-                EXP[i].pos = enemy[i].pos;
-                EXP[i].color.w = 1.0f;
+                for (int j = 0; j < EXP_COUNT; j++)
+                {
+                    if (EXP[j].color.w != 1.0f)
+                    {
+                        EXP[j].pos = enemy[i].pos;
+                        EXP[j].color.w = 1.0f;
+                        EXP[j].moveSpeed = 0;
+                        break;
+                    }
+                }
             }
+        }
 
-            
-            
+        for (int j = 0; j < EXP_COUNT; j++)
+        {
+            EXP[j].moveSpeed += 1.5f / 60.0f;
+            EXP[j].pos.y += EXP[j].moveSpeed;
+            if (EXP[j].pos.y > 1000) { EXP[j].color.w = 0.0f;/*EXP[j].pos.y = 1000;*/ }
         }
 
 		//EXP_state++;
