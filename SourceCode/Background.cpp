@@ -11,7 +11,7 @@ void background_deinit()
 	safe_delete(sprBackground);
 }
 
-void background_update()
+void background_init()
 {
 	sprBackground = sprite_load(L"Data/Images/BackGround.png");
 }

@@ -38,6 +38,7 @@ void game_init()
 	pause_init();
 	level_init();
 	EXP_init();
+	background_init();
 }
 
 //--------------------------------------
@@ -75,7 +76,6 @@ void game_update()
 			EXP_update();
 			enemy_update();
 			level_update();
-			background_update();
 		}
 		if (TRG(0) & PAD_TRG1)
 		{

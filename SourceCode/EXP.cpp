@@ -96,7 +96,6 @@ void EXP_render()
 
 void EXP_deinit()
 {
-    for (int i = 0; i < EXP_COUNT; i++)
     {
         safe_delete(sprEXP);
     }
