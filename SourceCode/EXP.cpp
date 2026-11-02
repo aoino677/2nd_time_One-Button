@@ -2,12 +2,14 @@
 #include "EXP.h"
 #include "enemy.h"
 #include "player.h"
+#include <vector>
 
 int EXP_timer = 0;
 int EXP_state = 0;
 
 Sprite* sprEXP;
 OBJ2D EXP[EXP_COUNT];
+//std::vector<OBJ2D> EXP;
 
 void EXP_init()
 {
@@ -36,34 +38,37 @@ void EXP_update()
             EXP[i].scale = { EXP_SCALE    , EXP_SCALE };
             EXP[i].texSize = { EXP_TEX_W    , EXP_TEX_H };
             EXP[i].pivot = { EXP_PIVOT_X , EXP_PIVOT_Y };
-            EXP[i].color = { 1, 1, 1, EXP[i].color.w};
+            EXP[i].color = { 1, 1, 1, 0};
 
             EXP[i].timer = 0;                // 経験値が落ちて動くまでの時間
-            EXP[i].moveSpeed = 5.0f;     // 落ちたXPの吸収される速度
+            EXP[i].moveSpeed = 0.0f;     // 落ちたXPの吸収される速度
         }
 		EXP_state++;
 		break;
 	case 2:
-        for (int i = 0; i < EXP_COUNT; i++)
+        for (int i = 0; i < enemy_max; i++)
         {
             // 敵の色が０（敵が死んだら）になったらEXPが落ちる
             if (enemy[i].hp == 0)
             {
-                EXP[i].pos = enemy[i].preserve;
-                EXP[i].color.w = 1.0f;
-
-                //for (; EXP[i].timer >= 0 || EXP[i].timer <= 60; EXP[i].timer++)
-                //{
-                //    if (EXP[i].timer == 60) // １秒たったらプレイヤーに近づく
-                //    {
-                //        move_block_player(&EXP[i], &player, EXP[i].moveSpeed);
-                //        EXP[i].timer = 0;
-                //    }
-                //}
+                for (int j = 0; j < EXP_COUNT; j++)
+                {
+                    if (EXP[j].color.w != 1.0f)
+                    {
+                        EXP[j].pos = enemy[i].pos;
+                        EXP[j].color.w = 1.0f;
+                        EXP[j].moveSpeed = 0;
+                        break;
+                    }
+                }
             }
+        }
 
-            
-            
+        for (int j = 0; j < EXP_COUNT; j++)
+        {
+            EXP[j].moveSpeed += 1.5f / 60.0f;
+            EXP[j].pos.y += EXP[j].moveSpeed;
+            if (EXP[j].pos.y > 1000) { EXP[j].color.w = 0.0f;/*EXP[j].pos.y = 1000;*/ }
         }
 
 		//EXP_state++;
@@ -95,73 +100,4 @@ void EXP_deinit()
     {
         safe_delete(sprEXP);
     }
-}
-
-//==================================================
-// プレイヤーに近づくEXP
-//==================================================
-bool move_block_player(
-    OBJ2D* exp,
-    OBJ2D* Eplayer,
-    float speed
-)
-{
-    // X方向の距離
-    float dx = exp->pos.x - Eplayer->pos.x;
-    if (dx < 0.0f){dx = -dx;}
-
-    // Y方向の距離
-    float dy = exp->pos.y - Eplayer->pos.y;
-    if (dy < 0.0f){dy = -dy;}
-
-    // プレイヤーとブロックが重なる範囲
-    float limitX =(static_cast<float>(EXP_TEX_W) +static_cast<float>(128)) / 2.0f;
-    float limitY =(static_cast<float>(EXP_TEX_H)  +static_cast<float>(128)) / 2.0f;
-
-    // プレイヤーに当たった
-    if (dx < limitX && dy < limitY){return true;}
-
-    //==================================================
-    // X方向に近づく
-    //==================================================
-    if (exp->pos.x < Eplayer->pos.x)
-    {
-        exp->pos.x += speed;
-        // プレイヤーを飛び越えないようにする
-        if (exp->pos.x > Eplayer->pos.x)
-        {
-            exp->pos.x = Eplayer->pos.x;
-        }
-    }
-    else if (exp->pos.x > Eplayer->pos.x)
-    {
-        exp->pos.x -= speed;
-        // プレイヤーを飛び越えないようにする
-        if (exp->pos.x < Eplayer->pos.x)
-        {
-            exp->pos.x = Eplayer->pos.x;
-        }
-    }
-    //==================================================
-    // Y方向に近づく
-    //==================================================
-    if (exp->pos.y < Eplayer->pos.y)
-    {
-        exp->pos.y += speed;
-        // プレイヤーを飛び越えないようにする
-        if (exp->pos.y > Eplayer->pos.y)
-        {
-            exp->pos.y = Eplayer->pos.y;
-        }
-    }
-    else if (exp->pos.y > Eplayer->pos.y)
-    {
-        exp->pos.y -= speed;
-        // プレイヤーを飛び越えないようにする
-        if (exp->pos.y < Eplayer->pos.y)
-        {
-            exp->pos.y = Eplayer->pos.y;
-        }
-    }
-    return false;
 }
