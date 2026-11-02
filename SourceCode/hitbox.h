@@ -1,0 +1,44 @@
+#pragma once
+#include "all.h"
+struct CIRCLEHITBOX
+{
+	float x;
+	float y;
+	float radius;
+};
+
+struct RECTHITBOX
+{
+	float left;
+	float right;
+	float top;
+	float bottom;
+	float angle;
+};
+
+// â~HitBoxÇçÏÇÈ
+CIRCLEHITBOX CreateCircleHitBox(
+	float x,
+	float y,
+	float radius);
+
+// éläpHitBoxÇçÏÇÈ
+RECTHITBOX CreateRectHitBox(
+	float left,
+	float right,
+	float top,
+	float bottom,
+	float angle);
+
+struct POINT2
+{
+	float x;
+	float y;
+};
+
+POINT2 RotatePoint(
+	float x,
+	float y,
+	float centerX,
+	float centerY,
+	float angle);
