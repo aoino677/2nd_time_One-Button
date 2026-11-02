@@ -89,7 +89,7 @@ void shot_bullet()
 	//float r = ToRadian(rand() % 360);
 	//vec = {cosf(r), sinf(r)};
 	float f = (rand() / (float)RAND_MAX) * 2 - 1;
-float k = atan2f(vec.y, vec.x) + f * precision_rad;
+	float k = atan2f(vec.y, vec.x) + f * precision_rad;
 	vec = { cosf(k), sinf(k) };
 
 	auto* b = new Bullet();
@@ -97,7 +97,7 @@ float k = atan2f(vec.y, vec.x) + f * precision_rad;
 	b->velocity = vec2Normalize(vec) * 240 / 60.0f;
 	b->angle = atan2f(vec.x, -vec.y);
 	b->spr = sprBullet[(rand() % 3)];
-//	b->angle = ToRadian(rand() % 360);
+	//	b->angle = ToRadian(rand() % 360);
 	player_bullets.push_back(b);
 	rapidShoted_bullet_count++;
 }
