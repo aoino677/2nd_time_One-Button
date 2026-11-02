@@ -3,6 +3,7 @@
 #include "enemy.h"
 #include "player.h"
 #include <vector>
+#include "Collision2D.h"
 
 int EXP_timer = 0;
 int EXP_state = 0;
@@ -68,7 +69,19 @@ void EXP_update()
         {
             EXP[j].moveSpeed += 1.5f / 60.0f;
             EXP[j].pos.y += EXP[j].moveSpeed;
-            if (EXP[j].pos.y > 1000) { EXP[j].color.w = 0.0f;/*EXP[j].pos.y = 1000;*/ }
+            if (EXP[j].pos.y > 1000) 
+            {
+                EXP[j].pos.y = 1000; 
+                VECTOR2 cursorPos = { static_cast<float>(getCursorPosX()), static_cast<float>(getCursorPosY()) };
+                float posX = EXP[j].pos.x - EXP[j].pivot.x * EXP[j].scale.x;
+                float posY = EXP[j].pos.y - EXP[j].pivot.y * EXP[j].scale.y;
+                float lengthX = EXP[j].texSize.x * EXP[j].scale.x;
+                float lengthY = EXP[j].texSize.y * EXP[j].scale.y;
+                if (Collision2D::point_in_rect(cursorPos, VECTOR2{posX,posY}, VECTOR2{ lengthX, lengthY }))
+                {
+                    EXP[j].color.w = 0;
+                }
+            }
         }
 
 		//EXP_state++;
