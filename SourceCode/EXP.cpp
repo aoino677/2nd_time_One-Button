@@ -49,17 +49,8 @@ void EXP_update()
             // 敵の色が０（敵が死んだら）になったらEXPが落ちる
             if (enemy[i].hp == 0)
             {
-                EXP[i].pos = enemy[i].preserve;
+                EXP[i].pos = enemy[i].pos;
                 EXP[i].color.w = 1.0f;
-
-                //for (; EXP[i].timer >= 0 || EXP[i].timer <= 60; EXP[i].timer++)
-                //{
-                //    if (EXP[i].timer == 60) // １秒たったらプレイヤーに近づく
-                //    {
-                //        move_block_player(&EXP[i], &player, EXP[i].moveSpeed);
-                //        EXP[i].timer = 0;
-                //    }
-                //}
             }
 
             
@@ -95,73 +86,4 @@ void EXP_deinit()
     {
         safe_delete(sprEXP);
     }
-}
-
-//==================================================
-// プレイヤーに近づくEXP
-//==================================================
-bool move_block_player(
-    OBJ2D* exp,
-    OBJ2D* Eplayer,
-    float speed
-)
-{
-    // X方向の距離
-    float dx = exp->pos.x - Eplayer->pos.x;
-    if (dx < 0.0f){dx = -dx;}
-
-    // Y方向の距離
-    float dy = exp->pos.y - Eplayer->pos.y;
-    if (dy < 0.0f){dy = -dy;}
-
-    // プレイヤーとブロックが重なる範囲
-    float limitX =(static_cast<float>(EXP_TEX_W) +static_cast<float>(128)) / 2.0f;
-    float limitY =(static_cast<float>(EXP_TEX_H)  +static_cast<float>(128)) / 2.0f;
-
-    // プレイヤーに当たった
-    if (dx < limitX && dy < limitY){return true;}
-
-    //==================================================
-    // X方向に近づく
-    //==================================================
-    if (exp->pos.x < Eplayer->pos.x)
-    {
-        exp->pos.x += speed;
-        // プレイヤーを飛び越えないようにする
-        if (exp->pos.x > Eplayer->pos.x)
-        {
-            exp->pos.x = Eplayer->pos.x;
-        }
-    }
-    else if (exp->pos.x > Eplayer->pos.x)
-    {
-        exp->pos.x -= speed;
-        // プレイヤーを飛び越えないようにする
-        if (exp->pos.x < Eplayer->pos.x)
-        {
-            exp->pos.x = Eplayer->pos.x;
-        }
-    }
-    //==================================================
-    // Y方向に近づく
-    //==================================================
-    if (exp->pos.y < Eplayer->pos.y)
-    {
-        exp->pos.y += speed;
-        // プレイヤーを飛び越えないようにする
-        if (exp->pos.y > Eplayer->pos.y)
-        {
-            exp->pos.y = Eplayer->pos.y;
-        }
-    }
-    else if (exp->pos.y > Eplayer->pos.y)
-    {
-        exp->pos.y -= speed;
-        // プレイヤーを飛び越えないようにする
-        if (exp->pos.y < Eplayer->pos.y)
-        {
-            exp->pos.y = Eplayer->pos.y;
-        }
-    }
-    return false;
 }
