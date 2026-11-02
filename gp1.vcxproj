@@ -114,6 +114,7 @@ attrib +h SourceCode\gp1.log
     <ClInclude Include="GameLib\view_settings.h" />
     <ClInclude Include="SourceCode\all.h" />
     <ClInclude Include="SourceCode\AttackCollision.h" />
+    <ClInclude Include="SourceCode\Background.h" />
     <ClInclude Include="SourceCode\Bullet.h" />
     <ClInclude Include="SourceCode\Collision2D.h" />
     <ClInclude Include="SourceCode\common.h" />
@@ -126,6 +127,7 @@ attrib +h SourceCode\gp1.log
     <ClInclude Include="SourceCode\scene_game.h" />
     <ClInclude Include="SourceCode\scene_resulet.h" />
     <ClInclude Include="SourceCode\scene_title.h" />
+    <ClInclude Include="SourceCode\shake.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameLib\debug.cpp" />
@@ -144,6 +146,7 @@ attrib +h SourceCode\gp1.log
     <ClCompile Include="GameLib\view_settings.cpp" />
     <ClCompile Include="GameLib\wnd_proc.cpp" />
     <ClCompile Include="SourceCode\AttackCollision.cpp" />
+    <ClCompile Include="SourceCode\Background.cpp" />
     <ClCompile Include="SourceCode\Collision2D.cpp" />
     <ClCompile Include="SourceCode\enemy.cpp" />
     <ClCompile Include="SourceCode\EXP.cpp" />
@@ -154,6 +157,7 @@ attrib +h SourceCode\gp1.log
     <ClCompile Include="SourceCode\scene_game.cpp" />
     <ClCompile Include="SourceCode\scene_resulet.cpp" />
     <ClCompile Include="SourceCode\scene_title.cpp" />
+    <ClCompile Include="SourceCode\shake.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

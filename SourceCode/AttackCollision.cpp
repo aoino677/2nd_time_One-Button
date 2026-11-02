@@ -1,5 +1,6 @@
 #include "AttackCollision.h"
 #include "Collision2D.h"
+#include  "shake.h"
 
 void AttackCollision::player_vs_enemy(OBJ2D& player, OBJ2D& enemy)
 {
@@ -23,5 +24,6 @@ void AttackCollision::enemy_vs_bullet(OBJ2D& enemy, Bullet& bullet)
 	{
 		enemy.hp -= 1;
 		bullet.pos = { -500, -500 };
+		
 	}
 }

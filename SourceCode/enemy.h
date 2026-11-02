@@ -2,9 +2,10 @@
 
 // --- 敵の種類を定義 ---
 #define ENEMY_TYPE_NORMAL 0  // 通常の敵
-#define ENEMY_TYPE_EDDY   1  // トリッキーな敵
+#define ENEMY_TYPE_FAST   1  // トリッキーな敵
 #define ENEMY_TYPE_TURBO  2  
 #define ENEMY_TYPE_TRICKY 3
+#define ENEMY_TYPE_EDDY   4
 
 #define ENEMY_NUMBER  (50)
 

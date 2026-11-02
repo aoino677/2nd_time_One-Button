@@ -2,32 +2,38 @@
 #include "player.h"
 #include "enemy.h"
 #include "OBJ2D.h"
+#include "shake.h"
 #include <vector>
 #include <cstdlib>
 
 Sprite* sprEnemy;
+Sprite* back;
 OBJ2D enemy[ENEMY_NUMBER];
 int enemy_state;
 int enemy_timer;
+int enemy_max;
 int enemy_turbo[ENEMY_NUMBER];
-int enemy_number = 0;
-float enemy_speed = 3.0f; // “G‚ÌˆÚ“®‘¬“x
 float angle[ENEMY_NUMBER];
-int enemy_max = 3;
+float enemy_speed; 
 
 
 
+
+//ƒGƒlƒ~[‰Šú‰»
 void enemy_init()
 {
 	enemy_state = 0;
 	enemy_timer = 0;
 	enemy_max = 3;
+	enemy_speed = 3.0f;
 }
+
 
 void enemy_deinit()
 {
 	safe_delete(sprEnemy);
 }
+
 
 void enemy_update()
 {
@@ -90,24 +96,21 @@ void enemy_update()
 void enemy_move(int i)
 {
 	//’†S‚ÉŒü‚©‚¤Šî–{Šp“x‚ğŒvZ
-	float base_angle = atan2f(540.0f - enemy[i].pos.y, 960.0f - enemy[i].pos.x);
+	//float base_angle = atan2f(540.0f - enemy[i].pos.y, 960.0f - enemy[i].pos.x);
+	float base_angle = atan2f(378.0f - enemy[i].pos.y, 50.0f - enemy[i].pos.x);
 
-	//•’Ê‚Ì“G
+	//’Êí‚Ì“G
 	if (enemy[i].type == ENEMY_TYPE_NORMAL)
 	{
-		// --- ’Êí‚Ì“GF‚Ü‚Á‚·‚®i‚Ş ---
+		
 		enemy[i].pos.x += cosf(base_angle) * enemy_speed;
 		enemy[i].pos.y += sinf(base_angle) * enemy_speed;
 	}
-	//‰QŠª‚­“G
-	else if (enemy[i].type == ENEMY_TYPE_EDDY)
+	//‘¬‚¢“G
+	if (enemy[i].type == ENEMY_TYPE_FAST)
 	{
-		enemy[i].pos.x += cosf(base_angle) * enemy_speed;
-		enemy[i].pos.y += sinf(base_angle) * enemy_speed;
-
-		//is•ûŒü‚É‘Î‚µ‚Ä‚’¼‚È•ûŒü‚É—h‚ê‚ğ‘«‚·
-		enemy[i].pos.x += -sinf(base_angle) * enemy_speed;
-		enemy[i].pos.y += cosf(base_angle) * enemy_speed;
+		enemy[i].pos.x += cosf(base_angle) * enemy_speed*2;
+		enemy[i].pos.y += sinf(base_angle) * enemy_speed*2;
 	}
 	//ˆê’è‚ÌŠÔŠu‚Åi‚Ş“G
 	else if (enemy[i].type == ENEMY_TYPE_TURBO)
@@ -139,8 +142,17 @@ void enemy_move(int i)
 		enemy[i].pos.x += -sinf(base_angle) * wobble;
 		enemy[i].pos.y += cosf(base_angle) * wobble;
 	}
-}
+	//‰QŠª‚­“G
+	else if (enemy[i].type == ENEMY_TYPE_EDDY)
+	{
+		enemy[i].pos.x += cosf(base_angle) * enemy_speed;
+		enemy[i].pos.y += sinf(base_angle) * enemy_speed;
 
+		//is•ûŒü‚É‘Î‚µ‚Ä‚’¼‚È•ûŒü‚É—h‚ê‚ğ‘«‚·
+		enemy[i].pos.x += -sinf(base_angle) * enemy_speed;
+		enemy[i].pos.y += cosf(base_angle) * enemy_speed;
+	}
+}
 
 
 // “G‚ğ‰æ–ÊŠO‚Ìƒ‰ƒ“ƒ_ƒ€‚ÈˆÊ’u‚ÉoŒ»‚³‚¹‚é
@@ -151,20 +163,25 @@ void enemy_respawn(int i)
 
 	//“G‚Ì‘I•Ê
 	if (rand() % 100 < 25)
-		enemy[i].type = ENEMY_TYPE_TRICKY;
-
-	else if (rand() % 100 >= 25 && rand() % 100 < 50)
-		enemy[i].type = ENEMY_TYPE_TURBO;
-	
-	else if (rand() % 100 >= 50 && rand() % 100 < 75)
-		enemy[i].type = ENEMY_TYPE_EDDY;
-
-	else if (rand() % 100 >= 75)
 		enemy[i].type = ENEMY_TYPE_NORMAL;
 
+	else if (rand() % 100 >= 25 && rand() % 100 < 50)
+		enemy[i].type = ENEMY_TYPE_FAST;
+	
+	else if (rand() % 100 >= 50 && rand() % 100 < 75)
+		enemy[i].type = ENEMY_TYPE_TURBO;
 
+	else if (rand() % 100 >= 75)
+		enemy[i].type = ENEMY_TYPE_TRICKY;
+
+
+	enemy[i].pos.x = 1920.0f + 50.0f;
+	enemy[i].pos.y = rand() % 756;
+	
+	
+	
 	// ‰æ–ÊŠO‚Ìƒ‰ƒ“ƒ_ƒ€‚ÈˆÊ’u‚ğŒˆ‚ß‚é
-	int side = rand() % 4;		
+	/*int side = rand() % 4;
 	switch (side)
 	{	
     case 0: // ã‚ÌŠO‘¤
@@ -186,8 +203,9 @@ void enemy_respawn(int i)
 		enemy[i].pos.x = 1920.0f + 50.0f;
 		enemy[i].pos.y = rand() % 1080;
 		break;
-	}
+	}*/
 }
+
 
 void enemy_render()
 {
@@ -206,4 +224,6 @@ void enemy_render()
 			enemy[i].color.x, enemy[i].color.y, enemy[i].color.z, enemy[i].color.w
 		);
 	}
+
+	
 }
