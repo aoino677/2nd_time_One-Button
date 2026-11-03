@@ -14,6 +14,7 @@
 #include "Level.h"
 #include "EXP.h"
 #include "Background.h"
+#include "cursor_main.h"
 
 //------< ’è” >----------------------------------------------------------------
 
@@ -39,6 +40,7 @@ void game_init()
 	level_init();
 	EXP_init();
 	background_init();
+	cursor_main_init();
 }
 
 //--------------------------------------
@@ -64,7 +66,7 @@ void game_update()
 	case 2:
 		//////// ’Êí ////////
 		pause_update();
-		
+		cursor_main_update();
 		//========================================
 	   // ƒQ[ƒ€’†
 	   //========================================
@@ -116,6 +118,7 @@ void game_render()
 	EXP_render();
 	player_render();
 	pause_render();
+	cursor_main_render();
 	font::textOut(2, "GAME", 100, 200, 2, 2);
 
 }
@@ -130,4 +133,5 @@ void game_deinit()
 	pause_deinit();
 	EXP_deinit();
 	background_deinit();
+	cursor_main_deinit();
 }
