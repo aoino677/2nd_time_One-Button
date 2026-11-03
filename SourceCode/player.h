@@ -10,7 +10,8 @@ struct Player
 extern OBJ2D player;
 
 //const VECTOR2 PLAYER_POS = { SCREEN_W * 0.5f, SCREEN_H * 0.5f };
-const VECTOR2 PLAYER_POS = { SCREEN_W * 0.5f, SCREEN_H - 100 };
+//const VECTOR2 PLAYER_POS = { SCREEN_W * 0.5f, SCREEN_H - 100 };
+const VECTOR2 PLAYER_POS = { 30,400  };
 const VECTOR2 PLAYER_TEX_SIZE = { 128, 128 };
 
 void player_init();

@@ -116,6 +116,7 @@ attrib +h SourceCode\gp1.log
     <ClInclude Include="SourceCode\AttackCollision.h" />
     <ClInclude Include="SourceCode\Background.h" />
     <ClInclude Include="SourceCode\Bullet.h" />
+    <ClInclude Include="SourceCode\choice.h" />
     <ClInclude Include="SourceCode\Collision2D.h" />
     <ClInclude Include="SourceCode\common.h" />
     <ClInclude Include="SourceCode\cursor_main.h" />
@@ -149,6 +150,7 @@ attrib +h SourceCode\gp1.log
     <ClCompile Include="GameLib\wnd_proc.cpp" />
     <ClCompile Include="SourceCode\AttackCollision.cpp" />
     <ClCompile Include="SourceCode\Background.cpp" />
+    <ClCompile Include="SourceCode\choice.cpp" />
     <ClCompile Include="SourceCode\Collision2D.cpp" />
     <ClCompile Include="SourceCode\cursor_main.cpp" />
     <ClCompile Include="SourceCode\enemy.cpp" />
