@@ -17,6 +17,8 @@
 #include "cursor_main.h"
 #include "shake.h"
 #include "level_up.h"
+#include "Hp.h"
+
 
 //------< ’è” >----------------------------------------------------------------
 
@@ -44,6 +46,7 @@ void game_init()
 	background_init();
 	cursor_main_init();
 	level_up_init();
+	hp_init();
 }
 
 //--------------------------------------
@@ -125,6 +128,7 @@ void game_render()
 	pause_render();
 	cursor_main_render();
 	level_up_render();
+	hp_render();
 	font::textOut(2, "GAME", 100, 200, 2, 2);
 
 }
