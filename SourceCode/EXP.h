@@ -1,6 +1,6 @@
 #pragma once
 
-#define EXP_COUNT      (50)      // EXP‚ÌŒÂ”
+#define EXP_COUNT      (256)      // EXP‚ÌŒÂ”
 
 #define EXP_SCALE        (1.0f)
 #define EXP_TEX_W        (32.0f)
