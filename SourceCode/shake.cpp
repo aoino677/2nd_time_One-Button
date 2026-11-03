@@ -1,36 +1,36 @@
 #include "all.h"
 
-extern int shakeTimer;
-extern float shakePower;
-extern float shakeX;
-extern float shakeY;
+int shake_timer;
+float Power;
+float shakeX;
+float shakeY;
 
 void shake_update()
 {
-    if (shakeTimer > 0)
+    if (shake_timer > 0)
     {
-        shakeTimer--;
+        shake_timer--;
 
-        shakeX = (float)(rand() % ((int)shakePower * 2 + 1))
-            -shakePower;
+        shakeX = (float)(rand() % ((int)Power * 2 + 1))
+            -Power;
 
-        shakeY = (float)(rand() % ((int)shakePower * 2 + 1))
-            - shakePower;
+        shakeY = (float)(rand() % ((int)Power * 2 + 1))
+            - Power;
 
         //è≠ÇµÇ∏Ç¬é„Ç≠Ç∑ÇÈ
-        shakePower *= 0.9f;
+        Power *= 0.9f;
     }
     else
     {
         shakeX = 0;
         shakeY = 0;
-        shakePower = 0;
+        Power = 0;
      }
 }
 
-//-------------------------------------------------------------------------------
-void camera_shake(int time, float power)
+
+void shake(int time, float power)
 {
-    shakeTimer = time;
-    shakePower = power;
+    shake_timer = time;
+    Power = power;
 }

@@ -15,6 +15,8 @@
 #include "EXP.h"
 #include "Background.h"
 #include "cursor_main.h"
+#include "shake.h"
+#include "level_up.h"
 
 //------< ’è” >----------------------------------------------------------------
 
@@ -41,6 +43,7 @@ void game_init()
 	EXP_init();
 	background_init();
 	cursor_main_init();
+	level_up_init();
 }
 
 //--------------------------------------
@@ -78,6 +81,8 @@ void game_update()
 			EXP_update();
 			enemy_update();
 			level_update();
+			shake_update();
+			level_up_update();
 		}
 		if (TRG(0) & PAD_TRG1)
 		{
@@ -119,6 +124,7 @@ void game_render()
 	player_render();
 	pause_render();
 	cursor_main_render();
+	level_up_render();
 	font::textOut(2, "GAME", 100, 200, 2, 2);
 
 }

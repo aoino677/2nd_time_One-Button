@@ -1,10 +1,10 @@
 #include "all.h"
 
 Sprite* sprBackground;
-int shakeTimer;
-float shakePower;
-float shakeX;
-float shakeY;
+extern int shakeTimer;
+extern float shakePower;
+extern float shakeX;
+extern float shakeY;
 
 void background_deinit()
 {

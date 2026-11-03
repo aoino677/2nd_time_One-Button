@@ -74,7 +74,8 @@ void enemy_update()
 			enemy_turbo[i]++;
 		}
 
-		if (enemy_timer > 600)
+		//
+		if (enemy_timer> 600)
 		{
 			if (enemy_max < ENEMY_NUMBER)
 			{
@@ -97,7 +98,7 @@ void enemy_move(int i)
 {
 	//’†S‚ÉŒü‚©‚¤Šî–{Šp“x‚ðŒvŽZ
 	//float base_angle = atan2f(540.0f - enemy[i].pos.y, 960.0f - enemy[i].pos.x);
-	float base_angle = atan2f(378.0f - enemy[i].pos.y, 50.0f - enemy[i].pos.x);
+	float base_angle = atan2f(328 - enemy[i].pos.y, -50.0f - enemy[i].pos.x);
 
 	//’Êí‚Ì“G
 	if (enemy[i].type == ENEMY_TYPE_NORMAL)
