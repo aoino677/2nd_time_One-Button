@@ -4,6 +4,7 @@
 
 #include "enemy.h"
 #include "AttackCollision.h"
+#include "shake.h"
 #include <vector>
 
 Sprite* sprPlayer;
@@ -108,6 +109,7 @@ void player_shot_bullet()
 	{
 		if (shot_timer > 1 / shot_per_second)
 		{
+			shake(30, 45);
 			shot_timer = 0;
 			shot_bullet();
 		}

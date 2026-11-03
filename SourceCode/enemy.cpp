@@ -15,6 +15,7 @@ int enemy_max;
 int enemy_turbo[ENEMY_NUMBER];
 float angle[ENEMY_NUMBER];
 float enemy_speed; 
+int player_hp;
 
 
 
@@ -70,11 +71,23 @@ void enemy_update()
 			{
 				enemy_respawn(i);
 			}
+			if (enemy[i].pos.x < -128)
+			{
+				enemy[i].pos.x = 1920.0f + 50.0f;
+				enemy[i].pos.y = rand() % 756;
+				player_hp--;
+				shake(10, 20.0f);
+			}
+			
+			
 			enemy_move(i);
 			enemy_turbo[i]++;
 		}
+		
+		
 
-		if (enemy_timer > 600)
+
+		if (enemy_timer> 600)
 		{
 			if (enemy_max < ENEMY_NUMBER)
 			{
@@ -97,7 +110,7 @@ void enemy_move(int i)
 {
 	//’†S‚ÉŒü‚©‚¤Šî–{Šp“x‚ðŒvŽZ
 	//float base_angle = atan2f(540.0f - enemy[i].pos.y, 960.0f - enemy[i].pos.x);
-	float base_angle = atan2f(378.0f - enemy[i].pos.y, 50.0f - enemy[i].pos.x);
+	float base_angle = atan2f(328 - enemy[i].pos.y, -200.0f - enemy[i].pos.x);
 
 	//’Êí‚Ì“G
 	if (enemy[i].type == ENEMY_TYPE_NORMAL)

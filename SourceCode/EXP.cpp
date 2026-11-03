@@ -7,6 +7,7 @@
 
 int EXP_timer = 0;
 int EXP_state = 0;
+int exp_count;
 
 Sprite* sprEXP;
 OBJ2D EXP[EXP_COUNT];
@@ -79,6 +80,7 @@ void EXP_update()
                 float lengthY = EXP[j].texSize.y * EXP[j].scale.y;
                 if (Collision2D::point_in_rect(cursorPos, VECTOR2{posX,posY}, VECTOR2{ lengthX, lengthY }))
                 {
+                    exp_count++;
                     EXP[j].color.w = 0;
                 }
             }
