@@ -10,8 +10,9 @@
 //------------------------------------------------------------------------------
 #define SCENE_NONE   0 //シーンなし
 #define SCENE_TITLE  1 //タイトル
-#define SCENE_GAME   2 //ゲーム
-#define SCENE_RESULT 3 //リザルト
+#define SCENE_MENU   2 //メニュー
+#define SCENE_GAME   3 //ゲーム
+#define SCENE_RESULT 4 //リザルト
 
 
 // マクロ

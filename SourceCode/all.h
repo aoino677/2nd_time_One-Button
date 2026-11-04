@@ -15,6 +15,7 @@
 #include "OBJ2D.h"
 #include "scene_game.h"
 #include "scene_title.h"
+#include "scene_menu.h"
 #include "scene_resulet.h"
 
 // namespace

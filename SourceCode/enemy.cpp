@@ -7,7 +7,6 @@
 #include <cstdlib>
 
 Sprite* sprEnemy;
-Sprite* back;
 OBJ2D enemy[ENEMY_NUMBER];
 int enemy_state;
 int enemy_timer;
@@ -187,7 +186,7 @@ void enemy_respawn(int i)
 
 	//¶¬êŠ
 	enemy[i].pos.x = 1920.0f + 50.0f;
-	enemy[i].pos.y = rand() % 756;
+	enemy[i].pos.y = rand() %648 ;
 	
 	
 	

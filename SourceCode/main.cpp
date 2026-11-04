@@ -45,6 +45,10 @@ int APIENTRY wWinMain(HINSTANCE, HINSTANCE, LPWSTR, int)// g—p‚µ‚È‚¢•Ï”‚Í‹Lq‚
 				title_deinit();
 				break;
 
+			case SCENE_MENU:
+				menu_deinit();
+				break;
+
 			case SCENE_GAME:
 				game_deinit();
 				break;
@@ -63,6 +67,11 @@ int APIENTRY wWinMain(HINSTANCE, HINSTANCE, LPWSTR, int)// g—p‚µ‚È‚¢•Ï”‚Í‹Lq‚
 			case SCENE_TITLE:
 				title_init();
 				break;
+			
+			case SCENE_MENU:
+				menu_init();
+				break;
+			
 			case SCENE_GAME:
 				game_init();
 				break;
@@ -92,6 +101,12 @@ int APIENTRY wWinMain(HINSTANCE, HINSTANCE, LPWSTR, int)// g—p‚µ‚È‚¢•Ï”‚Í‹Lq‚
 				title_update();
 				title_render();
 				break;
+		
+		case SCENE_MENU:
+			menu_update();
+			menu_render();
+			break;
+		
 		case SCENE_GAME:
 				game_update();
 				game_render();

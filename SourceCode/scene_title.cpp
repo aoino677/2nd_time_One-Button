@@ -53,7 +53,7 @@ void title_update()
 		//////// �ʏ펞 ////////
 		if (TRG(0) & PAD_START)
 		{
-			nextScene = SCENE_GAME;
+			nextScene = SCENE_MENU;
 			break;
 		}
 
