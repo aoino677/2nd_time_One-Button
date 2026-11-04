@@ -10,7 +10,7 @@ void AttackCollision::player_vs_enemy(OBJ2D& player, OBJ2D& enemy)
 	VECTOR2 enemy_size = { enemy.scale.x * enemy.texSize.x, enemy.scale.y * enemy.texSize.y };
 	if (Collision2D::rect_vs_rect(player_begin, player_size, enemy_begin, enemy_size))
 	{
-		enemy.hp = 0;
+		//enemy.hp = 0;
 		player.hp--;
 	}
 }

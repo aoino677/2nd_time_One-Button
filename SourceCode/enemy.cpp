@@ -14,7 +14,7 @@ int enemy_max;
 int enemy_turbo[ENEMY_NUMBER];
 float angle[ENEMY_NUMBER];
 float enemy_speed; 
-int player_hp;
+extern int player_hp;
 
 
 //エネミー初期化

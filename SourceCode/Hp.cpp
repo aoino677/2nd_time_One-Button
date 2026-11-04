@@ -1,6 +1,6 @@
 #include "all.h"
 
-extern int player_hp;
+int player_hp;
 int max_hp;
 
 void hp_init()

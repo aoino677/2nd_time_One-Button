@@ -18,6 +18,7 @@
 #include "shake.h"
 #include "level_up.h"
 #include "Hp.h"
+#include "effect_danger.h"
 
 
 //------< ’è” >----------------------------------------------------------------
@@ -47,6 +48,7 @@ void game_init()
 	cursor_main_init();
 	level_up_init();
 	hp_init();
+	effect_danger_init();
 }
 
 //--------------------------------------
@@ -86,6 +88,7 @@ void game_update()
 			level_update();
 			shake_update();
 			level_up_update();
+			effect_danger_update();
 		}
 		if (TRG(0) & PAD_TRG1)
 		{
@@ -129,6 +132,7 @@ void game_render()
 	cursor_main_render();
 	level_up_render();
 	hp_render();
+	effect_danger_render();
 	font::textOut(2, "GAME", 100, 200, 2, 2);
 
 }
