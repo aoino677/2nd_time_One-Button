@@ -19,6 +19,7 @@
 #include "level_up.h"
 #include "Hp.h"
 #include "effect_danger.h"
+#include "choice.h"
 
 
 //------< íËêî >----------------------------------------------------------------
@@ -49,6 +50,7 @@ void game_init()
 	level_up_init();
 	hp_init();
 	effect_danger_init();
+	choice_init();
 }
 
 //--------------------------------------
@@ -89,6 +91,7 @@ void game_update()
 			shake_update();
 			level_up_update();
 			effect_danger_update();
+			choice_update();
 		}
 		if (TRG(0) & PAD_TRG1)
 		{
@@ -128,13 +131,13 @@ void game_render()
 	enemy_render();
 	EXP_render();
 	player_render();
-	pause_render();
 	cursor_main_render();
 	level_up_render();
 	hp_render();
 	effect_danger_render();
 	font::textOut(2, "GAME", 100, 200, 2, 2);
-
+	choice_render();
+	pause_render(); // Ç±ÇÍà»è„â∫Ç…èëÇ©Ç»Ç¢
 }
 
 //--------------------------------------
@@ -148,4 +151,5 @@ void game_deinit()
 	EXP_deinit();
 	background_deinit();
 	cursor_main_deinit();
+	choice_deinit();
 }
