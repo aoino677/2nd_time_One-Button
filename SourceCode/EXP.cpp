@@ -48,18 +48,19 @@ void EXP_update()
 		EXP_state++;
 		break;
 	case 2:
-        for (int i = 0; i < enemy_max; i++)
+        for (int enemy_index = 0; enemy_index < enemy_max; enemy_index++)
         {
             // “G‚ÌF‚ª‚Oi“G‚ªŽ€‚ñ‚¾‚çj‚É‚È‚Á‚½‚çEXP‚ª—Ž‚¿‚é
-            if (enemy[i].hp == 0)
+            if (enemy[enemy_index].hp == 0)
             {
-                for (int j = 0; j < EXP_COUNT; j++)
+                for (int exp_index = 0; exp_index < EXP_COUNT; exp_index++)
                 {
-                    if (EXP[j].color.w != 1.0f)
+                    if (EXP[exp_index].color.w != 1.0f)
                     {
-                        EXP[j].pos = enemy[i].pos;
-                        EXP[j].color.w = 1.0f;
-                        EXP[j].moveSpeed = 0;
+                        EXP[exp_index].pos = enemy[enemy_index].pos;
+                        EXP[exp_index].color.w = 1.0f;
+                        EXP[exp_index].moveSpeed = 0;
+                        EXP[exp_index].r = rand() % 200 + 801;
                         break;
                     }
                 }
@@ -75,9 +76,9 @@ void EXP_update()
             }
             EXP[j].moveSpeed += 1.5f / 60.0f;
             EXP[j].pos.y += EXP[j].moveSpeed;
-            if (EXP[j].pos.y > 1000) 
+            if (EXP[j].pos.y > EXP[j].r)
             {
-                EXP[j].pos.y = 1000; 
+                EXP[j].pos.y = EXP[j].r;
                 VECTOR2 cursorPos = { static_cast<float>(getCursorPosX()), static_cast<float>(getCursorPosY()) };
                 float posX = EXP[j].pos.x - EXP[j].pivot.x * EXP[j].scale.x- 50;
                 float posY = EXP[j].pos.y - EXP[j].pivot.y * EXP[j].scale.y- 50;
