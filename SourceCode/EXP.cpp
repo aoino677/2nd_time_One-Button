@@ -79,10 +79,10 @@ void EXP_update()
             {
                 EXP[j].pos.y = 1000; 
                 VECTOR2 cursorPos = { static_cast<float>(getCursorPosX()), static_cast<float>(getCursorPosY()) };
-                float posX = EXP[j].pos.x - EXP[j].pivot.x * EXP[j].scale.x;
-                float posY = EXP[j].pos.y - EXP[j].pivot.y * EXP[j].scale.y;
-                float lengthX = EXP[j].texSize.x * EXP[j].scale.x;
-                float lengthY = EXP[j].texSize.y * EXP[j].scale.y;
+                float posX = EXP[j].pos.x - EXP[j].pivot.x * EXP[j].scale.x- 50;
+                float posY = EXP[j].pos.y - EXP[j].pivot.y * EXP[j].scale.y- 50;
+                float lengthX = EXP[j].texSize.x * EXP[j].scale.x + 100;
+                float lengthY = EXP[j].texSize.y * EXP[j].scale.y + 100;
                 if (Collision2D::point_in_rect(cursorPos, VECTOR2{posX,posY}, VECTOR2{ lengthX, lengthY }))
                 {
                     exp_count++;
