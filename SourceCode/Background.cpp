@@ -1,6 +1,8 @@
 #include "all.h"
 
 Sprite* sprBackground;
+Sprite* sprEXP_Background;
+
 extern int shakeTimer;
 extern float shakePower;
 extern float shakeX;
@@ -14,6 +16,7 @@ void background_deinit()
 void background_init()
 {
 	sprBackground = sprite_load(L"Data/Images/BackGround.png");
+	sprEXP_Background = sprite_load(L"Data/Images/EXP_BackGround.png");
 }
 
 void background_render()
@@ -21,5 +24,10 @@ void background_render()
 	sprite_render(
 		sprBackground,
 		0+shakeX, 0+shakeY
+	);
+
+	sprite_render(
+		sprEXP_Background,
+		0, 648
 	);
 }

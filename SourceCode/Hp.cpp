@@ -16,11 +16,11 @@ void hp_render()
 	if (hp_rate < 0.0f) hp_rate = 0.0f;
 	if (hp_rate > 1.0f) hp_rate = 1.0f;
 	
-	float hp_Width = 500.0f * hp_rate;
+	float hp_bar_max = 500.0f * hp_rate;
 
 	primitive::rect(
 	    1400, 50,
-		hp_Width, 100,
+		hp_bar_max, 100,
 		0, 0,
 		0,
 		1, 0, 0);

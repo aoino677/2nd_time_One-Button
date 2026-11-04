@@ -18,8 +18,6 @@ float enemy_speed;
 int player_hp;
 
 
-
-
 //エネミー初期化
 void enemy_init()
 {
@@ -79,7 +77,6 @@ void enemy_update()
 				shake(10, 20.0f);
 			}
 			
-			
 			enemy_move(i);
 			enemy_turbo[i]++;
 		}
@@ -122,8 +119,8 @@ void enemy_move(int i)
 	//速い敵
 	if (enemy[i].type == ENEMY_TYPE_FAST)
 	{
-		enemy[i].pos.x += cosf(base_angle) * enemy_speed*2;
-		enemy[i].pos.y += sinf(base_angle) * enemy_speed*2;
+		enemy[i].pos.x += cosf(base_angle) * enemy_speed * 2;
+		enemy[i].pos.y += sinf(base_angle) * enemy_speed * 2;
 	}
 	//一定の間隔で進む敵
 	else if (enemy[i].type == ENEMY_TYPE_TURBO)
@@ -168,7 +165,7 @@ void enemy_move(int i)
 }
 
 
-// 敵を画面外のランダムな位置に出現させる
+//敵を画面外のランダムな位置に出現させる
 void enemy_respawn(int i)
 {
 	enemy[i].hp = 1; // HPを復活させる
@@ -188,6 +185,7 @@ void enemy_respawn(int i)
 		enemy[i].type = ENEMY_TYPE_TRICKY;
 
 
+	//生成場所
 	enemy[i].pos.x = 1920.0f + 50.0f;
 	enemy[i].pos.y = rand() % 756;
 	

@@ -25,11 +25,11 @@ void level_up_render()
 {
 	float rate = (float)exp_count / (float)level_max;
 	if (rate > 1.0f) rate = 1.0f; 
-	float barWidth = 750.0f * rate;
+	float levelbar_max = 750.0f * rate;
 
 	primitive::rect(
 		530.0f, 50.0f,
-		barWidth, 100.0f
+		levelbar_max, 100.0f
 		
 	);
 
