@@ -1,7 +1,7 @@
 #include "all.h"
+#include "level_up.h"
 
 int level_up_count;
-extern int exp_count;
 int level_max;
 
 void level_up_init()
