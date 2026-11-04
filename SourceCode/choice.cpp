@@ -1,5 +1,5 @@
-#include "all.h"
 #include "choice.h"
+#include "level_up.h"
 #include <ctime>
 #include <stdlib.h>
 
@@ -8,6 +8,7 @@ Sprite* sprchoicebar;
 
 int choice_state = 0;
 int choice_timer = 0;
+int level_up_count = 0;
 
 float choice_effect_y = 0.0f;
 float choice_effect_alpha = 0.0f;
@@ -18,6 +19,7 @@ void choice_init()
 {
 	choice_state = 0;
 	choice_timer = 0;
+	level_up_count = 0;
 
 	choice_effect_y = 0.0f;
 	choice_effect_alpha = 0.0f;
@@ -142,6 +144,25 @@ void choice_update()
 			break;
 		}
 	}
+	if (exp_count >= level_max)
+	{
+		level_up_count++;
+		for (int i = 1; i <= level_up_count; i++)
+		{
+			for (; T_or_F(level_up_count);)
+			{
+				choice_pause = true;
+				choice_effect_y = static_cast<float>(SCREEN_H);
+				choice_effect_alpha = 0.0f;
+				choice_state = 0;
+				level_up_count--;
+			}
+			if (i == level_up_count)
+			{
+				level_up_count = 0;
+			}
+		}
+	}
 }
 
 void choice_render()
@@ -179,4 +200,10 @@ void choice_render()
 void choice_deinit()
 {
 	safe_delete(sprchoicebar);
+}
+
+bool T_or_F(int level_up_count)
+{
+	if (level_up_count == 0) { return false; }
+	else { return true; }
 }

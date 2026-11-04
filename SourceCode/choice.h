@@ -12,3 +12,5 @@ void choice_init();
 void choice_update();
 void choice_render();
 void choice_deinit();
+bool T_or_F(int level_up_count);
+

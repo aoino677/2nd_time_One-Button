@@ -76,6 +76,7 @@ void game_update()
 	case 2:
 		//////// ’Êí ////////
 		pause_update();
+		choice_update();
 		cursor_main_update();
 		//========================================
 	   // ƒQ[ƒ€’†
@@ -89,9 +90,8 @@ void game_update()
 			enemy_update();
 			level_update();
 			shake_update();
-			level_up_update();
 			effect_danger_update();
-			choice_update();
+			level_up_update();
 		}
 		if (TRG(0) & PAD_TRG1)
 		{
