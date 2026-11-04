@@ -68,6 +68,11 @@ void EXP_update()
 
         for (int j = 0; j < EXP_COUNT; j++)
         {
+            if (EXP[j].color.w != 1.0f)
+            {
+                EXP[j].pos = { -500, -500 };
+                continue;
+            }
             EXP[j].moveSpeed += 1.5f / 60.0f;
             EXP[j].pos.y += EXP[j].moveSpeed;
             if (EXP[j].pos.y > 1000) 
