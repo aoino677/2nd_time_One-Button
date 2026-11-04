@@ -29,9 +29,9 @@ public:
 	/// <summary>
 	/// 
 	/// </summary>
-	/// <param name="P">点の座標</param>
-	/// <param name="A, SCORE_ATTACK, TIME_ATTACK">三角形の頂点</param>
+	/// <param name="point_pos">点の座標</param>
+	/// <param name="A, B, C">三角形の頂点</param>
 	/// <returns></returns>
-	static bool point_in_triangle(const VECTOR2& point_pos, const VECTOR2& A, const VECTOR2& SCORE_ATTACK, const VECTOR2& TIME_ATTACK);
+	static bool point_in_triangle(const VECTOR2& P, const VECTOR2& A, const VECTOR2& B, const VECTOR2& C);
 	static bool point_in_triangle(const VECTOR2& point_pos, const VECTOR2 vertex_pos[]);
 };

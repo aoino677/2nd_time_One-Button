@@ -17,7 +17,7 @@ void AttackCollision::player_vs_enemy(OBJ2D& player, OBJ2D& enemy)
 
 void AttackCollision::enemy_vs_bullet(OBJ2D& enemy, Bullet& bullet)
 {
-	VECTOR2 enemy_begin = enemy.pos - enemy.pivot;//enemyÇÃç∂è„
+	VECTOR2 enemy_begin = enemy.pos - VECTOR2{ enemy.scale.x* enemy.pivot.x, enemy.scale.y* enemy.pivot.y };//enemyÇÃç∂è„
 	VECTOR2 enemy_size = { enemy.scale.x * enemy.texSize.x, enemy.scale.y * enemy.texSize.y };
 	VECTOR2 bullet_center = bullet.pos;
 	float bullet_radius = 32;
