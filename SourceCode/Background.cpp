@@ -11,6 +11,7 @@ extern float shakeY;
 void background_deinit()
 {
 	safe_delete(sprBackground);
+	safe_delete(sprEXP_Background);
 }
 
 void background_init()

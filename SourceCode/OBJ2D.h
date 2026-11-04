@@ -21,4 +21,6 @@ struct OBJ2D
     int move_timer;
 
     float timer = 0;                    // タイマー
+
+    float r;
 };
