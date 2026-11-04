@@ -109,7 +109,6 @@ void player_shot_bullet()
 	{
 		if (shot_timer > 1 / shot_per_second)
 		{
-			shake(30, 45);
 			shot_timer = 0;
 			shot_bullet();
 		}
@@ -118,6 +117,8 @@ void player_shot_bullet()
 			cast_bullet++;
 		}
 		rapid_timer = 0;
+
+		shake(30, 45);
 	}
 
 	if (cast_bullet > 0 && shot_timer > 1 / shot_per_second)
