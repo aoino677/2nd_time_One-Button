@@ -84,7 +84,7 @@ void game_update()
 	   // ƒQ[ƒ€’†
 	   //========================================
 
-		if (pause == false || choice_pause == true)
+		if (pause == false || choice_pause == false)
 		{
 			time_limit--;
 			player_update();
