@@ -170,19 +170,20 @@ void enemy_respawn(int i)
 	enemy[i].hp = 1; // HPを復活させる
 	enemy[i].move_timer = 0; //タイマーをリセット
 
+	int r = rand() % 125;
+
 	//敵の選別
-	if (rand() % 100 < 25)
+	if (r < 25)
 		enemy[i].type = ENEMY_TYPE_NORMAL;
 
-	else if (rand() % 100 >= 25 && rand() % 100 < 50)
+	else if (r >= 25 && r < 50)
 		enemy[i].type = ENEMY_TYPE_FAST;
-	
-	else if (rand() % 100 >= 50 && rand() % 100 < 75)
+
+	else if (r >= 50 && r < 75)
 		enemy[i].type = ENEMY_TYPE_TURBO;
 
-	else if (rand() % 100 >= 75)
+	else if (r >= 75 && r < 100)
 		enemy[i].type = ENEMY_TYPE_TRICKY;
-
 
 	//生成場所
 	enemy[i].pos.x = 1920.0f + 50.0f;
