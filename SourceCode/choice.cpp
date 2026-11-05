@@ -13,8 +13,6 @@ int level_up_count = 0;
 float choice_effect_y = 0.0f;
 float choice_effect_alpha = 0.0f;
 
-bool choice_pause = false;
-
 void choice_init()
 {
 	choice_state = 0;
@@ -23,8 +21,6 @@ void choice_init()
 
 	choice_effect_y = 0.0f;
 	choice_effect_alpha = 0.0f;
-
-	choice_pause = false;
 
 	// choiceButtonÇÃì«Ç›çûÇ›
 	sprchoicebar = sprite_load(L"./Data/Images/choicebar.png");
@@ -151,6 +147,8 @@ void choice_update()
 		{
 			for (; T_or_F(level_up_count);)
 			{
+				level_max += 5;
+				exp_count = 0;
 				choice_pause = true;
 				choice_effect_y = static_cast<float>(SCREEN_H);
 				choice_effect_alpha = 0.0f;

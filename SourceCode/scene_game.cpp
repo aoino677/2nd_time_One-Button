@@ -30,6 +30,7 @@ int game_state = 0;     // 状態
 int game_timer = 0;     // タイマー
 int time_limit = 0;       // 制限時間
 
+bool choice_pause = false;
 bool pause = false;
 //--------------------------------------
 //  初期設定
@@ -40,6 +41,7 @@ void game_init()
 	game_timer = 0;
 	time_limit = 600000;
 	pause = false;
+	choice_pause = false;
 	player_init();
 	enemy_init();
 	pause_init();
@@ -77,12 +79,12 @@ void game_update()
 		//////// 通常時 ////////
 		pause_update();
 		choice_update();
-		cursor_main_update();
+		
 		//========================================
 	   // ゲーム中
 	   //========================================
 
-		if (pause == false)
+		if (pause == false || choice_pause == true)
 		{
 			time_limit--;
 			player_update();
@@ -91,7 +93,7 @@ void game_update()
 			level_update();
 			shake_update();
 			effect_danger_update();
-			level_up_update();
+			cursor_main_update();
 		}
 		if (TRG(0) & PAD_TRG1)
 		{
