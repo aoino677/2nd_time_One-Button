@@ -7,6 +7,8 @@
 #include "shake.h"
 #include <vector>
 
+const float BULLET_SPEED = 2000;//‚P•bŠÔ‚É”­ŽË‚·‚é’e‚ÌƒXƒs[ƒh
+
 Sprite* sprPlayer;
 Sprite* sprBullet[3];
 OBJ2D player;
@@ -23,7 +25,7 @@ bool can_rapid_shot;		//˜AŽË‰Â”\‚©
 int rapidShoted_bullet_count;//˜AŽË‚µ‚½’e”
 int cast_bullet;			//”­ŽË‚ð‘Ò‹@‚µ‚Ä‚¢‚é’e
 
-float shot_per_second = 5.0f; //‚P•bŠÔ‚É”­ŽË‚·‚é’e‚Ì”
+float shot_per_second = 20.0f; //‚P•bŠÔ‚É”­ŽË‚·‚é’e‚Ì”
 float rapid_coolDown = RAPID_COOLDOWN; //˜AŽËŠJŽnŽžŠÔ
 
 float precision_rad = ToRadian(5); //‘_‚Á‚½•ûŒü‚É”ò‚Ô¸“x
@@ -95,7 +97,7 @@ void shot_bullet()
 
 	auto* b = new Bullet();
 	b->pos = player.pos;
-	b->velocity = vec2Normalize(vec) * 240 / 60.0f;
+	b->velocity = vec2Normalize(vec) * BULLET_SPEED / 60.0f;
 	b->angle = atan2f(vec.x, -vec.y);
 	b->spr = sprBullet[(rand() % 3)];
 	//	b->angle = ToRadian(rand() % 360);
@@ -171,7 +173,12 @@ void player_update()
 	{
 		can_rapid_shot = true;
 	}
-	debug::setString("is rapid : %d", can_rapid_shot);
+	{
+		VECTOR2 cursorPos = { static_cast<float>(getCursorPosX()), static_cast<float>(getCursorPosY()) };
+		VECTOR2 vec = vec2Normalize(cursorPos - player.pos);
+
+		player.pos.y += vec.y * 1000.0f / 60.0f;
+	}
 
 	int enemy_count = 0;
 	for (int e = 0; e < ENEMY_NUMBER; e++)
