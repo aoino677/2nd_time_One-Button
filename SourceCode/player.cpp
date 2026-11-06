@@ -1,7 +1,5 @@
-#include "all.h"
 #include "player.h"
 #include "Bullet.h"
-
 #include "enemy.h"
 #include "AttackCollision.h"
 #include "shake.h"
@@ -25,11 +23,13 @@ bool can_rapid_shot;		//˜AË‰Â”\‚©
 int rapidShoted_bullet_count;//˜AË‚µ‚½’e”
 int cast_bullet;			//”­Ë‚ğ‘Ò‹@‚µ‚Ä‚¢‚é’e
 
-float shot_per_second = 20.0f; //‚P•bŠÔ‚É”­Ë‚·‚é’e‚Ì”
+float shot_per_second = 200.0f; //‚P•bŠÔ‚É”­Ë‚·‚é’e‚Ì”
 float rapid_coolDown = RAPID_COOLDOWN; //˜AËŠJnŠÔ
 
 float precision_rad = ToRadian(5); //‘_‚Á‚½•ûŒü‚É”ò‚Ô¸“x
 int bullet_flover = 0;//’e‚Ìí—Şi‰¼‚ÅintŒ^‚ÅŠÇ—j
+
+VECTOR2 cursor_pos{};
 
 void player_init()
 {
@@ -159,6 +159,14 @@ void player_shot_bullet()
 
 void player_update()
 {
+	VECTOR2 cursorPos = { static_cast<float>(getCursorPosX()), static_cast<float>(getCursorPosY()) };
+	VECTOR2 vec = cursorPos - player.pos;
+	cursor_pos = cursorPos;
+	//player.pos.y += vec.y * 1000.0f / 60.0f;
+	player.pos.y = cursorPos.y;
+
+	player.angle = atan2f(vec.x, -vec.y);
+
 	player_shot_bullet();
 	for (auto*& bullet : player_bullets)
 	{
@@ -172,12 +180,6 @@ void player_update()
 	if (TRG(0) & PAD_UP)
 	{
 		can_rapid_shot = true;
-	}
-	{
-		VECTOR2 cursorPos = { static_cast<float>(getCursorPosX()), static_cast<float>(getCursorPosY()) };
-		VECTOR2 vec = vec2Normalize(cursorPos - player.pos);
-
-		player.pos.y += vec.y * 1000.0f / 60.0f;
 	}
 
 	int enemy_count = 0;
@@ -199,10 +201,7 @@ void player_update()
 
 void player_render()
 {
-	VECTOR2 cursorPos = { static_cast<float>(getCursorPosX()), static_cast<float>(getCursorPosY()) };
-	VECTOR2 vec = cursorPos - player.pos;
-
-	primitive::line(player.pos, cursorPos);
+	primitive::line(player.pos, cursor_pos);
 
 	sprite_render(
 		sprPlayer,
@@ -211,7 +210,7 @@ void player_render()
 		0, 0,
 		player.texSize.x, player.texSize.y,
 		player.texSize.x * 0.5f, player.texSize.y * 0.5f,
-		atan2f(vec.x, -vec.y)
+		player.angle
 	);
 
 	for (auto*& bullet : player_bullets)

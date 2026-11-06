@@ -60,7 +60,7 @@ void EXP_update()
                         EXP[exp_index].pos = enemy[enemy_index].pos;
                         EXP[exp_index].color.w = 1.0f;
                         EXP[exp_index].moveSpeed = 0;
-                        EXP[exp_index].r = rand() % 200 + 801;
+                        EXP[exp_index].r = rand() % 100 + 50;
                         break;
                     }
                 }
@@ -75,10 +75,10 @@ void EXP_update()
                 continue;
             }
             EXP[j].moveSpeed += 1.5f / 60.0f;
-            EXP[j].pos.y += EXP[j].moveSpeed;
-            if (EXP[j].pos.y > EXP[j].r)
+            EXP[j].pos.x -= EXP[j].moveSpeed;
+            if (EXP[j].pos.x < EXP[j].r)
             {
-                EXP[j].pos.y = EXP[j].r;
+                EXP[j].pos.x = EXP[j].r;
                 VECTOR2 cursorPos = { static_cast<float>(getCursorPosX()), static_cast<float>(getCursorPosY()) };
                 float posX = EXP[j].pos.x - EXP[j].pivot.x * EXP[j].scale.x- 50;
                 float posY = EXP[j].pos.y - EXP[j].pivot.y * EXP[j].scale.y- 50;

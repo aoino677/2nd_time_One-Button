@@ -1,4 +1,4 @@
-#include "all.h"
+#include "shake.h"
 
 int shake_timer;
 float Power;
