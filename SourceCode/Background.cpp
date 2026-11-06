@@ -21,11 +21,11 @@ void background_render()
 {
 	sprite_render(
 		sprBackground,
-		0+shakeX, 0+shakeY
+		0, 0
 	);
 
 	sprite_render(
 		sprEXP_Background,
-		-100, 0
+		0 + shakeX, 0 + shakeY
 	);
 }
