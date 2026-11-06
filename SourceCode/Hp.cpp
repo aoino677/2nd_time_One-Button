@@ -1,4 +1,4 @@
-#include "all.h"
+#include "Hp.h"
 
 int player_hp;
 int max_hp;

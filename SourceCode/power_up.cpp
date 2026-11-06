@@ -1,8 +1,12 @@
 #include "power_up.h"
 #include "player.h"
+#include "Hp.h"
 
 int power_up_state = 0;
 int power_up_timer = 0;
+
+OBJ2D efficacy[EFFICACY_MAX];
+Sprite* sprefficacy;
 
 void power_up_init()
 {
@@ -49,5 +53,5 @@ void power()
 
 void HP()
 {
-
+	player_hp += 3;
 }

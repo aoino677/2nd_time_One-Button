@@ -1,5 +1,6 @@
 #include "choice.h"
 #include "level_up.h"
+#include "power_up.h"
 #include <ctime>
 #include <stdlib.h>
 
@@ -112,6 +113,7 @@ void choice_update()
 						choice_effect_y = 0.0f;
 						choice_effect_alpha = 0.0f;
 						// ‚±‚±‚É‹­‰»‚·‚éŒø‰Ê‚ğ‘‚­
+						HP();
 						break;
 
 					case 1:
