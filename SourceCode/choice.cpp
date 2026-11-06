@@ -113,7 +113,7 @@ void choice_update()
 						choice_effect_y = 0.0f;
 						choice_effect_alpha = 0.0f;
 						// ‚±‚±‚É‹­‰»‚·‚éŒø‰Ê‚ğ‘‚­
-						HP();
+						//HP();
 						break;
 
 					case 1:
