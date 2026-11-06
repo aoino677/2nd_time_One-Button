@@ -1,6 +1,5 @@
 #include "choice.h"
 #include "level_up.h"
-#include "player.h"
 #include <ctime>
 #include <stdlib.h>
 

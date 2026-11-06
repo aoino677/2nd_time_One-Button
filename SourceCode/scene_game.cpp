@@ -132,13 +132,13 @@ void game_render()
 	background_render();
 	enemy_render();
 	EXP_render();
-	player_render();
 	level_up_render();
 	hp_render();
 	effect_danger_render();
 	font::textOut(2, "GAME", 100, 200, 2, 2);
 	choice_render();
 	pause_render(); // ‚±‚êˆÈã‰º‚É‘‚©‚È‚¢
+	player_render();
 	cursor_main_render();
 }
 

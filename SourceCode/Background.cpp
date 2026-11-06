@@ -1,12 +1,9 @@
-#include "all.h"
+#include "Background.h"
+#include "shake.h"
 
 Sprite* sprBackground;
 Sprite* sprEXP_Background;
 
-extern int shakeTimer;
-extern float shakePower;
-extern float shakeX;
-extern float shakeY;
 
 void background_deinit()
 {
@@ -29,6 +26,6 @@ void background_render()
 
 	sprite_render(
 		sprEXP_Background,
-		0, 648
+		-100, 0
 	);
 }
