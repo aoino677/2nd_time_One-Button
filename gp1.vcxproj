@@ -130,12 +130,12 @@ attrib +h SourceCode\gp1.log
     <ClInclude Include="SourceCode\OBJ2D.h" />
     <ClInclude Include="SourceCode\Pause.h" />
     <ClInclude Include="SourceCode\player.h" />
-    <ClInclude Include="SourceCode\power_up.h" />
     <ClInclude Include="SourceCode\scene_game.h" />
     <ClInclude Include="SourceCode\scene_menu.h" />
     <ClInclude Include="SourceCode\scene_resulet.h" />
     <ClInclude Include="SourceCode\scene_title.h" />
     <ClInclude Include="SourceCode\shake.h" />
+    <ClInclude Include="SourceCode\Time_limit.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameLib\debug.cpp" />
@@ -168,12 +168,12 @@ attrib +h SourceCode\gp1.log
     <ClCompile Include="SourceCode\main.cpp" />
     <ClCompile Include="SourceCode\Pause.cpp" />
     <ClCompile Include="SourceCode\player.cpp" />
-    <ClCompile Include="SourceCode\power_up.cpp" />
     <ClCompile Include="SourceCode\scene_game.cpp" />
     <ClCompile Include="SourceCode\scene_menu.cpp" />
     <ClCompile Include="SourceCode\scene_resulet.cpp" />
     <ClCompile Include="SourceCode\scene_title.cpp" />
     <ClCompile Include="SourceCode\shake.cpp" />
+    <ClCompile Include="SourceCode\Time_limit.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
