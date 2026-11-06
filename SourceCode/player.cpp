@@ -5,7 +5,7 @@
 #include "shake.h"
 #include <vector>
 
-const float BULLET_SPEED = 2000;//‚P•bŠÔ‚É”­ŽË‚·‚é’e‚ÌƒXƒs[ƒh
+float bullet_speed = 1000.0f;//‚P•bŠÔ‚É”­ŽË‚·‚é’e‚ÌƒXƒs[ƒh
 
 Sprite* sprPlayer;
 Sprite* sprBullet[3];
@@ -97,7 +97,7 @@ void shot_bullet()
 
 	auto* b = new Bullet();
 	b->pos = player.pos;
-	b->velocity = vec2Normalize(vec) * BULLET_SPEED / 60.0f;
+	b->velocity = vec2Normalize(vec) * bullet_speed / 60.0f;
 	b->angle = atan2f(vec.x, -vec.y);
 	b->spr = sprBullet[(rand() % 3)];
 	//	b->angle = ToRadian(rand() % 360);
