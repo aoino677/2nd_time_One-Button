@@ -25,7 +25,7 @@ bool can_rapid_shot;		//˜AË‰Â”\‚©
 int rapidShoted_bullet_count;//˜AË‚µ‚½’e”
 int cast_bullet;			//”­Ë‚ğ‘Ò‹@‚µ‚Ä‚¢‚é’e
 
-float shot_per_second = 20.0f; //‚P•bŠÔ‚É”­Ë‚·‚é’e‚Ì”
+float shot_per_second = 200.0f; //‚P•bŠÔ‚É”­Ë‚·‚é’e‚Ì”
 float rapid_coolDown = RAPID_COOLDOWN; //˜AËŠJnŠÔ
 
 float precision_rad = ToRadian(5); //‘_‚Á‚½•ûŒü‚É”ò‚Ô¸“x
@@ -164,6 +164,8 @@ void player_update()
 	VECTOR2 cursorPos = { static_cast<float>(getCursorPosX()), static_cast<float>(getCursorPosY()) };
 	VECTOR2 vec = cursorPos - player.pos;
 	cursor_pos = cursorPos;
+	//player.pos.y += vec.y * 1000.0f / 60.0f;
+	player.pos.y = cursorPos.y;
 
 	player.angle = atan2f(vec.x, -vec.y);
 
@@ -180,12 +182,6 @@ void player_update()
 	if (TRG(0) & PAD_UP)
 	{
 		can_rapid_shot = true;
-	}
-	{
-		VECTOR2 cursorPos = { static_cast<float>(getCursorPosX()), static_cast<float>(getCursorPosY()) };
-		VECTOR2 vec = vec2Normalize(cursorPos - player.pos);
-
-		player.pos.y += vec.y * 1000.0f / 60.0f;
 	}
 
 	int enemy_count = 0;
