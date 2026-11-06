@@ -1,8 +1,7 @@
-#include "all.h"
 #include "player.h"
 #include "enemy.h"
-#include "OBJ2D.h"
 #include "shake.h"
+#include "Hp.h"
 #include <vector>
 #include <cstdlib>
 
@@ -16,8 +15,6 @@ int enemy_boss_timer;
 int enemy_turbo[ENEMY_NUMBER];
 float angle[ENEMY_NUMBER];
 float enemy_speed; 
-extern int player_hp;
-
 
 //ƒGƒlƒ~[‰Šú‰»
 void enemy_init()
@@ -68,7 +65,7 @@ void enemy_update()
 		for (int i = 0; i < enemy_max; i++)
 		{
 			//ƒGƒlƒ~[‚Ì“®‚«
-			enemy_move(i);
+			enemy_ability(i);
 			
 			
 			//HP‚ª0‚É‚È‚Á‚½‚É•Ê‚Ì“G‚Æ‚µ‚ÄÄoŒ»‚³‚¹‚é
@@ -89,13 +86,12 @@ void enemy_update()
 				shake(10, 20.0f);
 			}
 			
-			
 			enemy_turbo[i]++;
 		}
 		
 		
 		//•b”‚ª‚½‚Á‚½‚ç‹­‰»
-		if (enemy_timer> 600)
+		if (enemy_timer> 6000)
 		{
 			enemy_max++;
 			enemy_hp++;
@@ -112,11 +108,13 @@ void enemy_update()
 }
 
 
-//“G‚Ìí—Ş‚²‚Æ‚Ì“®‚«‚Ìˆ—
-void enemy_move(int i)
+//“G‚Ìí—Ş‚²‚Æ‚Ì”\—Í
+void enemy_ability(int i)
 {
 	//’†S‚ÉŒü‚©‚¤Šî–{Šp“x‚ğŒvZ
-	float base_angle = atan2f(328 - enemy[i].pos.y, -200.0f - enemy[i].pos.x);
+	srand((unsigned int)time(NULL));
+	
+	float base_angle = atan2f(540 - enemy[i].pos.y, -200.0f - enemy[i].pos.x);
 
 	//’Êí‚Ì“G
 	if (enemy[i].type == ENEMY_TYPE_NORMAL)
@@ -124,12 +122,14 @@ void enemy_move(int i)
 		enemy[i].pos.x += cosf(base_angle) * enemy_speed;
 		enemy[i].pos.y += sinf(base_angle) * enemy_speed;
 	}
+	
 	//‘¬‚¢“G
 	if (enemy[i].type == ENEMY_TYPE_FAST)
 	{
 		enemy[i].pos.x += cosf(base_angle) * enemy_speed * 2;
 		enemy[i].pos.y += sinf(base_angle) * enemy_speed * 2;
 	}
+	
 	//ˆê’è‚ÌŠÔŠu‚Åi‚Ş“G
 	else if (enemy[i].type == ENEMY_TYPE_TURBO)
 	{
@@ -141,6 +141,7 @@ void enemy_move(int i)
         else if (enemy_turbo[i] > 100)
 		    enemy_turbo[i] = 0;
 	}
+	
 	//—h‚ê“®‚­“G
 	else if (enemy[i].type == ENEMY_TYPE_TRICKY)
 	{
@@ -157,6 +158,19 @@ void enemy_move(int i)
 		enemy[i].pos.x += -sinf(base_angle) * wobble;
 		enemy[i].pos.y += cosf(base_angle) * wobble;
 	}
+	
+	//‰QŠª‚­“G
+	else if (enemy[i].type == ENEMY_TYPE_EDDY)
+	{
+		enemy[i].pos.x += cosf(base_angle) * enemy_speed;
+		enemy[i].pos.y += sinf(base_angle) * enemy_speed;
+
+		//is•ûŒü‚É‘Î‚µ‚Ä‚’¼‚È•ûŒü‚É—h‚ê‚ğ‘«‚·
+		enemy[i].pos.x += -sinf(base_angle) * enemy_speed;
+		enemy[i].pos.y += cosf(base_angle) * enemy_speed;
+	}
+	
+	//ƒ{ƒ€“G
 	else if (enemy[i].type == ENEMY_TYPE_BOBM)
 	{
 		enemy[i].pos.x += cosf(base_angle) * enemy_speed;
@@ -186,6 +200,8 @@ void enemy_move(int i)
 			}
 		}
 	}
+	
+	//ƒ{ƒX“G
 	else if (enemy[i].type == ENEMY_TYPE_BOSS)
 	{
 		enemy[i].pos.x += cosf(base_angle) * enemy_speed * 0.5f;
@@ -194,16 +210,7 @@ void enemy_move(int i)
 	
 	
 	
-	//‰QŠª‚­“G
-	/*else if (enemy[i].type == ENEMY_TYPE_EDDY)
-	{
-		enemy[i].pos.x += cosf(base_angle) * enemy_speed;
-		enemy[i].pos.y += sinf(base_angle) * enemy_speed;
-
-		//is•ûŒü‚É‘Î‚µ‚Ä‚’¼‚È•ûŒü‚É—h‚ê‚ğ‘«‚·
-		enemy[i].pos.x += -sinf(base_angle) * enemy_speed;
-		enemy[i].pos.y += cosf(base_angle) * enemy_speed;
-	}*/
+	
 }
 
 
@@ -212,30 +219,35 @@ void enemy_respawn(int i)
 {
 	enemy[i].move_timer = 0; //ƒ^ƒCƒ}[‚ğƒŠƒZƒbƒg
 
+	//“G‚Ì‘I•Ê
 	if (enemy_boss_timer < 3000)
 	{
 		enemy[i].hp =enemy_hp;
 		int enemy_random = rand() % 100;
 		
 		//“G‚Ì‘I•Ê
-		/*if (enemy_random < 20)
+		if (enemy_random < 20)
 			enemy[i].type = ENEMY_TYPE_NORMAL;
 
 		else if (enemy_random >= 20 && enemy_random < 40)
 			enemy[i].type = ENEMY_TYPE_FAST;
 
-		else if (enemy_random >= 40 && enemy_random < 60)
+		else if (enemy_random >= 40 && enemy_random < 55)
 			enemy[i].type = ENEMY_TYPE_TURBO;
 
-		else if (enemy_random >= 60 && enemy_random < 80)
+		else if (enemy_random >= 55 && enemy_random < 70)
 			enemy[i].type = ENEMY_TYPE_TRICKY;
-		else if (enemy_random >= 80)
-			enemy[i].type = ENEMY_TYPE_BOBM;*/
 
-		if (enemy_random < 50)
+		else if (enemy_random >= 70 && enemy_random < 85)
+			enemy[i].type == ENEMY_TYPE_EDDY;
+
+		else if (enemy_random >= 85)
+			enemy[i].type = ENEMY_TYPE_BOBM;
+
+		/*if (enemy_random < 50)
 			enemy[i].type = ENEMY_TYPE_NORMAL;
 		else 
-			enemy[i].type = ENEMY_TYPE_BOBM;
+			enemy[i].type = ENEMY_TYPE_BOBM;*/
 	}
 	else
 	{
@@ -245,7 +257,7 @@ void enemy_respawn(int i)
 	
 //¶¬êŠ
 	enemy[i].pos.x = 1920.0f + 50.0f;
-	enemy[i].pos.y = rand() %648 ;
+	enemy[i].pos.y = rand() % 648;
 }
 
 
@@ -294,5 +306,5 @@ void enemy_render()
 	}
 
 	debug::setString("enemy_boss_timer:%d", enemy_boss_timer);
-	debug::setString("enemy_boss_timer:%d", enemy_boss_timer);
+
 }

@@ -1,6 +1,6 @@
 #include"effect_danger.h"
+#include "Hp.h"
 
-extern int player_hp;
 float danger_clear = 0.0f;
 float danger_timer = 0.0f;
 float danger_wave = 0.0f;

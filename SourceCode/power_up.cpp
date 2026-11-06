@@ -1,5 +1,4 @@
 #include "power_up.h"
-#include "player.h"
 #include "Hp.h"
 
 int power_up_state = 0;
