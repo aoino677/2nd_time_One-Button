@@ -31,6 +31,8 @@ float rapid_coolDown = RAPID_COOLDOWN; //連射開始時間
 float precision_rad = ToRadian(5); //狙った方向に飛ぶ精度
 int bullet_flover = 0;//弾の種類（仮でint型で管理）
 
+VECTOR2 cursor_pos{};
+
 void player_init()
 {
 	player_state = 0;
@@ -159,6 +161,12 @@ void player_shot_bullet()
 
 void player_update()
 {
+	VECTOR2 cursorPos = { static_cast<float>(getCursorPosX()), static_cast<float>(getCursorPosY()) };
+	VECTOR2 vec = cursorPos - player.pos;
+	cursor_pos = cursorPos;
+
+	player.angle = atan2f(vec.x, -vec.y);
+
 	player_shot_bullet();
 	for (auto*& bullet : player_bullets)
 	{
@@ -199,10 +207,7 @@ void player_update()
 
 void player_render()
 {
-	VECTOR2 cursorPos = { static_cast<float>(getCursorPosX()), static_cast<float>(getCursorPosY()) };
-	VECTOR2 vec = cursorPos - player.pos;
-
-	primitive::line(player.pos, cursorPos);
+	primitive::line(player.pos, cursor_pos);
 
 	sprite_render(
 		sprPlayer,
@@ -211,7 +216,7 @@ void player_render()
 		0, 0,
 		player.texSize.x, player.texSize.y,
 		player.texSize.x * 0.5f, player.texSize.y * 0.5f,
-		atan2f(vec.x, -vec.y)
+		player.angle
 	);
 
 	for (auto*& bullet : player_bullets)

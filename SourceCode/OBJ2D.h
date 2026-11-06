@@ -8,6 +8,7 @@ struct OBJ2D
     VECTOR2 texPos{};               // 画像位置
     VECTOR2 texSize{};              // 画像サイズ
     VECTOR2 pivot{};                // 基準点
+    float angle;                    // 角度(ラジアン角)
     VECTOR4 color{ 1,1,1,1 };      // 色（白）
 
     VECTOR2 preserve{ 0.0f, 0.0f }; // 場所を保持する
