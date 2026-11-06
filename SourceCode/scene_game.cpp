@@ -19,6 +19,7 @@
 #include "level_up.h"
 #include "Hp.h"
 #include "effect_danger.h"
+#include "choice.h"
 
 
 //------< 定数 >----------------------------------------------------------------
@@ -29,6 +30,7 @@ int game_state = 0;     // 状態
 int game_timer = 0;     // タイマー
 int time_limit = 0;       // 制限時間
 
+bool choice_pause = false;
 bool pause = false;
 //--------------------------------------
 //  初期設定
@@ -39,6 +41,7 @@ void game_init()
 	game_timer = 0;
 	time_limit = 600000;
 	pause = false;
+	choice_pause = false;
 	player_init();
 	enemy_init();
 	pause_init();
@@ -49,6 +52,7 @@ void game_init()
 	level_up_init();
 	hp_init();
 	effect_danger_init();
+	choice_init();
 }
 
 //--------------------------------------
@@ -73,13 +77,14 @@ void game_update()
 		/*fallthrough*/
 	case 2:
 		//////// 通常時 ////////
+		choice_update();
 		pause_update();
-		cursor_main_update();
+		
 		//========================================
 	   // ゲーム中
 	   //========================================
 
-		if (pause == false)
+		if (pause == false && choice_pause == false)
 		{
 			time_limit--;
 			player_update();
@@ -87,8 +92,8 @@ void game_update()
 			enemy_update();
 			level_update();
 			shake_update();
-			level_up_update();
 			effect_danger_update();
+			cursor_main_update();
 		}
 		if (TRG(0) & PAD_TRG1)
 		{
@@ -104,9 +109,9 @@ void game_update()
 	//========================================
 	 // ポーズ中
 	 //========================================
-		if (pause == true)
+		if (pause == true || choice_pause == true)
 		{
-
+			cursor_main_update();
 		}
 
 		break;
@@ -128,13 +133,13 @@ void game_render()
 	enemy_render();
 	EXP_render();
 	player_render();
-	cursor_main_render();
 	level_up_render();
 	hp_render();
 	effect_danger_render();
-	pause_render();
 	font::textOut(2, "GAME", 100, 200, 2, 2);
-
+	choice_render();
+	pause_render(); // これ以上下に書かない
+	cursor_main_render();
 }
 
 //--------------------------------------
@@ -148,4 +153,5 @@ void game_deinit()
 	EXP_deinit();
 	background_deinit();
 	cursor_main_deinit();
+	choice_deinit();
 }

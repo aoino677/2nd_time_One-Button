@@ -21,6 +21,7 @@ void game_update();
 void game_render();
 void game_deinit();
 
+extern bool choice_pause;
 extern bool pause;
 
 #endif//SCENE_GAME_H

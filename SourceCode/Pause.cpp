@@ -52,11 +52,11 @@ void pause_init()
     // 右下のポーズボタン
     //----------------------------------
     pauseIcon = {};
-    pauseIcon.pos = { static_cast<float>(PAUSEBUTTON_POS_X),static_cast<float>(PAUSEBUTTON_POS_Y) };
-    pauseIcon.scale = { static_cast<float>(PAUSEBUTTON_SCALE),static_cast<float>(PAUSEBUTTON_SCALE) };
-    pauseIcon.texSize = { static_cast<float>(PAUSEBUTTON_TEX_W),static_cast<float>(PAUSEBUTTON_TEX_H) };
-    pauseIcon.pivot = { static_cast<float>(PAUSEBUTTON_PIVOT_X),static_cast<float>(PAUSEBUTTON_PIVOT_Y) };
-    pauseIcon.color = { 1.0f, 1.0f, 1.0f, 1.0f };
+    pauseIcon.pos     =  { static_cast<float>(PAUSEBUTTON_POS_X),static_cast<float>(PAUSEBUTTON_POS_Y) };
+    pauseIcon.scale   =  { static_cast<float>(PAUSEBUTTON_SCALE),static_cast<float>(PAUSEBUTTON_SCALE) };
+    pauseIcon.texSize =  { static_cast<float>(PAUSEBUTTON_TEX_W),static_cast<float>(PAUSEBUTTON_TEX_H) };
+    pauseIcon.pivot   =  { static_cast<float>(PAUSEBUTTON_PIVOT_X),static_cast<float>(PAUSEBUTTON_PIVOT_Y) };
+    pauseIcon.color   =  { 1.0f, 1.0f, 1.0f, 1.0f };
     //----------------------------------
     // CONTINUE
     //----------------------------------
@@ -190,9 +190,9 @@ void pause_update()
             float mouseY = static_cast<float>(getCursorPosY());
 
             float buttonY =pauseButton[i].pos.y + pause_effect_y;
-            float left =pauseButton[i].pos.x -pauseButton[i].pivot.x *pauseButton[i].scale.x;
-            float right =pauseButton[i].pos.x +(pauseButton[i].texSize.x -pauseButton[i].pivot.x) *pauseButton[i].scale.x;
-            float top =buttonY -pauseButton[i].pivot.y *pauseButton[i].scale.y;
+            float left       =pauseButton[i].pos.x -pauseButton[i].pivot.x *pauseButton[i].scale.x;
+            float right     =pauseButton[i].pos.x +(pauseButton[i].texSize.x -pauseButton[i].pivot.x) *pauseButton[i].scale.x;
+            float top       =buttonY -pauseButton[i].pivot.y *pauseButton[i].scale.y;
             float bottom =buttonY +(pauseButton[i].texSize.y -pauseButton[i].pivot.y) *pauseButton[i].scale.y; 
             //----------------------------------
             // マウスがボタンの中にある
