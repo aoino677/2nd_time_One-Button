@@ -2,9 +2,9 @@
 
 #define EXP_COUNT      (256)      // EXPÇÃå¬êî
 
-#define EXP_SCALE        (1.0f)
-#define EXP_TEX_W        (32.0f)
-#define EXP_TEX_H        (32.0f)
+#define EXP_SCALE        (0.5f)
+#define EXP_TEX_W        (64.0f)
+#define EXP_TEX_H        (64.0f)
 #define EXP_PIVOT_X      (16.0f)
 #define EXP_PIVOT_Y      (16.0f)
 

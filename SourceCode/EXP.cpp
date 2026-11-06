@@ -27,7 +27,7 @@ void EXP_update()
 		//////// èâä˙ê›íË ////////
 
 		// EXPÇÃì«Ç›çûÇ›
-		sprEXP = sprite_load(L"./Data/Images/EXP.png");
+		sprEXP = sprite_load(L"./Data/Images/1yen.png");
 
 		EXP_state++;
 		break;
@@ -60,7 +60,7 @@ void EXP_update()
                         EXP[exp_index].pos = enemy[enemy_index].pos;
                         EXP[exp_index].color.w = 1.0f;
                         EXP[exp_index].moveSpeed = 0;
-                        EXP[exp_index].r = rand() % 100 + 50;
+                        EXP[exp_index].r = 0;
                         break;
                     }
                 }
@@ -76,9 +76,9 @@ void EXP_update()
             }
             EXP[j].moveSpeed += 1.5f / 60.0f;
             EXP[j].pos.x -= EXP[j].moveSpeed;
-            if (EXP[j].pos.x < EXP[j].r)
+            if (EXP[j].pos.x < (SCREEN_H - EXP[j].pos.y) * 0.3584f / 0.9336f)
             {
-                EXP[j].pos.x = EXP[j].r;
+                EXP[j].pos.x = (SCREEN_H - EXP[j].pos.y) * 0.3584f / 0.9336f;
                 VECTOR2 cursorPos = { static_cast<float>(getCursorPosX()), static_cast<float>(getCursorPosY()) };
                 float posX = EXP[j].pos.x - EXP[j].pivot.x * EXP[j].scale.x- 50;
                 float posY = EXP[j].pos.y - EXP[j].pivot.y * EXP[j].scale.y- 50;

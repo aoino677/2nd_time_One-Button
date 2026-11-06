@@ -166,6 +166,7 @@ void player_update()
 	cursor_pos = cursorPos;
 	//player.pos.y += vec.y * 1000.0f / 60.0f;
 	player.pos.y = cursorPos.y;
+	player.pos.x = (SCREEN_H - player.pos.y) * 0.3584f / 0.9336f;
 
 	player.angle = atan2f(vec.x, -vec.y);
 
