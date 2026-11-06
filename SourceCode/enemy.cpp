@@ -79,9 +79,6 @@ void enemy_update()
 			enemy_move(i);
 			enemy_turbo[i]++;
 		}
-		
-		
-
 
 		if (enemy_timer> 600)
 		{
