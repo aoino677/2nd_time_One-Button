@@ -1,4 +1,3 @@
-#include "all.h"
 #include"effect_danger.h"
 
 extern int player_hp;
