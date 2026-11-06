@@ -20,6 +20,7 @@
 #include "Hp.h"
 #include "effect_danger.h"
 #include "choice.h"
+#include "Time_limit.h"
 
 
 //------< íËêî >----------------------------------------------------------------
@@ -39,7 +40,6 @@ void game_init()
 {
 	game_state = 0;
 	game_timer = 0;
-	time_limit = 600000;
 	pause = false;
 	choice_pause = false;
 	player_init();
@@ -53,6 +53,7 @@ void game_init()
 	hp_init();
 	effect_danger_init();
 	choice_init();
+	time_limit_init();
 }
 
 //--------------------------------------
@@ -86,7 +87,7 @@ void game_update()
 
 		if (pause == false && choice_pause == false)
 		{
-			time_limit--;
+			time_limit_update();
 			player_update();
 			EXP_update();
 			enemy_update();
@@ -97,12 +98,6 @@ void game_update()
 		}
 		if (TRG(0) & PAD_TRG1)
 		{
-			nextScene = SCENE_RESULT;
-			break;
-		}
-		else if (time_limit == 0)
-		{
-			time_limit = 0;
 			nextScene = SCENE_RESULT;
 			break;
 		}
@@ -137,6 +132,7 @@ void game_render()
 	effect_danger_render();
 	font::textOut(2, "GAME", 100, 200, 2, 2);
 	choice_render();
+	time_limit_render();
 	pause_render(); // Ç±ÇÍà»è„â∫Ç…èëÇ©Ç»Ç¢
 	player_render();
 	cursor_main_render();
@@ -154,4 +150,5 @@ void game_deinit()
 	background_deinit();
 	cursor_main_deinit();
 	choice_deinit();
+	
 }
