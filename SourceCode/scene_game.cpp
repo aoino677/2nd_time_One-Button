@@ -21,7 +21,7 @@
 #include "effect_danger.h"
 #include "choice.h"
 #include "Time_limit.h"
-#include "power_up.h"
+#include "power_efficacy.h"
 
 
 //------< ’è” >----------------------------------------------------------------
