@@ -80,11 +80,13 @@ void EXP_update()
             {
                 EXP[j].pos.x = (SCREEN_H - EXP[j].pos.y) * 0.3584f / 0.9336f;
                 VECTOR2 cursorPos = { static_cast<float>(getCursorPosX()), static_cast<float>(getCursorPosY()) };
-                float posX = EXP[j].pos.x - EXP[j].pivot.x * EXP[j].scale.x- 50;
-                float posY = EXP[j].pos.y - EXP[j].pivot.y * EXP[j].scale.y- 50;
-                float lengthX = EXP[j].texSize.x * EXP[j].scale.x + 100;
-                float lengthY = EXP[j].texSize.y * EXP[j].scale.y + 100;
-                if (Collision2D::point_in_rect(cursorPos, VECTOR2{posX,posY}, VECTOR2{ lengthX, lengthY }))
+                float posX = EXP[j].pos.x - EXP[j].pivot.x * EXP[j].scale.x;
+                float posY = EXP[j].pos.y - EXP[j].pivot.y * EXP[j].scale.y;
+                float LengthX = EXP[j].texSize.x * EXP[j].scale.x;
+                float LengthY = EXP[j].texSize.y * EXP[j].scale.y;
+                VECTOR2 playerLeftUp = player.pos - VECTOR2{ player.pivot.x * player.scale.x, player.pivot.y * player.scale.y };
+                VECTOR2 playerLength = { player.texSize.x * player.scale.x, player.texSize.y * player.scale.y };
+                if (Collision2D::rect_vs_rect({posX, posY}, {LengthX, LengthY}, playerLeftUp, playerLength))
                 {
                     exp_count++;
                     EXP[j].color.w = 0;
