@@ -1,4 +1,5 @@
 #pragma once
+#include "all.h"
 
 // --- “G‚Ìí—Ş‚ğ’è‹` ---
 #define ENEMY_TYPE_NORMAL 0  // ’Êí‚Ì“G

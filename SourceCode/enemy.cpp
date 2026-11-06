@@ -1,8 +1,7 @@
-#include "all.h"
 #include "player.h"
 #include "enemy.h"
-#include "OBJ2D.h"
 #include "shake.h"
+#include "Hp.h"
 #include <vector>
 #include <cstdlib>
 
@@ -16,8 +15,6 @@ int enemy_boss_timer;
 int enemy_turbo[ENEMY_NUMBER];
 float angle[ENEMY_NUMBER];
 float enemy_speed; 
-extern int player_hp;
-
 
 //エネミー初期化
 void enemy_init()

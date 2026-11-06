@@ -1,7 +1,5 @@
-#include "all.h"
 #include "player.h"
 #include "Bullet.h"
-
 #include "enemy.h"
 #include "AttackCollision.h"
 #include "shake.h"
