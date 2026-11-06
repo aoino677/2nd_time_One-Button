@@ -43,6 +43,7 @@ void player_init()
 	
 	player.pos = PLAYER_POS;
 	player.texSize = PLAYER_TEX_SIZE;
+	player.pivot = player.texSize / 2;
 
 	shot_timer = 0;
 	rapidShoted_bullet_count = 0;
@@ -210,7 +211,7 @@ void player_render()
 		1, 1,
 		0, 0,
 		player.texSize.x, player.texSize.y,
-		player.texSize.x * 0.5f, player.texSize.y * 0.5f,
+		player.pivot.x, player.pivot.y,
 		player.angle
 	);
 
