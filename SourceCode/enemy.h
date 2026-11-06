@@ -6,6 +6,8 @@
 #define ENEMY_TYPE_TURBO  2  
 #define ENEMY_TYPE_TRICKY 3
 #define ENEMY_TYPE_EDDY   4
+#define ENEMY_TYPE_BOBM   5
+#define ENEMY_TYPE_BOSS   6
 
 #define ENEMY_NUMBER  (50)
 
