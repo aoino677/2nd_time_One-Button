@@ -77,14 +77,14 @@ void game_update()
 		/*fallthrough*/
 	case 2:
 		//////// 通常時 ////////
-		pause_update();
 		choice_update();
+		pause_update();
 		
 		//========================================
 	   // ゲーム中
 	   //========================================
 
-		if (pause == false || choice_pause == false)
+		if (pause == false && choice_pause == false)
 		{
 			time_limit--;
 			player_update();
@@ -109,9 +109,9 @@ void game_update()
 	//========================================
 	 // ポーズ中
 	 //========================================
-		if (pause == true)
+		if (pause == true || choice_pause == true)
 		{
-
+			cursor_main_update();
 		}
 
 		break;
@@ -133,13 +133,13 @@ void game_render()
 	enemy_render();
 	EXP_render();
 	player_render();
-	cursor_main_render();
 	level_up_render();
 	hp_render();
 	effect_danger_render();
 	font::textOut(2, "GAME", 100, 200, 2, 2);
 	choice_render();
 	pause_render(); // これ以上下に書かない
+	cursor_main_render();
 }
 
 //--------------------------------------
