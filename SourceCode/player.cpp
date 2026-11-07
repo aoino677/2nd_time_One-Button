@@ -23,7 +23,7 @@ bool can_rapid_shot;		//˜AË‰Â”\‚©
 int rapidShoted_bullet_count;//˜AË‚µ‚½’e”
 int cast_bullet;			//”­Ë‚ğ‘Ò‹@‚µ‚Ä‚¢‚é’e
 
-float shot_per_second = 200.0f; //‚P•bŠÔ‚É”­Ë‚·‚é’e‚Ì”
+float shot_per_second = 20.0f; //‚P•bŠÔ‚É”­Ë‚·‚é’e‚Ì”
 float rapid_coolDown = RAPID_COOLDOWN; //˜AËŠJnŠÔ
 
 float precision_rad = ToRadian(5); //‘_‚Á‚½•ûŒü‚É”ò‚Ô¸“x
