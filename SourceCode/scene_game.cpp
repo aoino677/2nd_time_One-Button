@@ -55,7 +55,6 @@ void game_init()
 	effect_danger_init();
 	choice_init();
 	time_limit_init();
-	//power_up_init();
 }
 
 //--------------------------------------
@@ -82,7 +81,6 @@ void game_update()
 		//////// ’Êí ////////
 		choice_update();
 		pause_update();
-		//power_up_update();
 		
 		//========================================
 	   // ƒQ[ƒ€’†
@@ -130,6 +128,7 @@ void game_render()
 	background_render();
 	enemy_render();
 	EXP_render();
+	player_render();
 	level_up_render();
 	hp_render();
 	effect_danger_render();
@@ -137,9 +136,7 @@ void game_render()
 	choice_render();
 	time_limit_render();
 	pause_render(); // ‚±‚êˆÈã‰º‚É‘‚©‚È‚¢
-	player_render();
 	cursor_main_render();
-	//power_up_render();
 }
 
 //--------------------------------------
@@ -154,5 +151,4 @@ void game_deinit()
 	background_deinit();
 	cursor_main_deinit();
 	choice_deinit();
-	//power_up_deinit();
 }
