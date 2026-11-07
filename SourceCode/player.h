@@ -8,6 +8,7 @@ struct Player
 };
 
 extern OBJ2D player;
+extern float bullet_speed;
 
 //const VECTOR2 PLAYER_POS = { SCREEN_W * 0.5f, SCREEN_H * 0.5f };
 //const VECTOR2 PLAYER_POS = { SCREEN_W * 0.5f, SCREEN_H - 100 };
