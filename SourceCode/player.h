@@ -22,6 +22,5 @@ void player_render();
 
 void set_canRapidShot(bool);
 void set_shotPerSecond(float);
-void set_bullet_flavor(int);
 
 #define RAPID_COOLDOWN (0.2f)

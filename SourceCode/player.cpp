@@ -166,6 +166,7 @@ void player_update()
 	//player.pos.y += vec.y * 1000.0f / 60.0f;
 	player.pos.y = cursorPos.y;
 	player.pos.x = (SCREEN_H - player.pos.y) * 0.3584f / 0.9336f;
+	player.scale.x = player.scale.y = 1.0f - ((SCREEN_H - player.pos.y) / SCREEN_H) * 0.2f;//âìÇ≠Ç…çsÇØÇŒçsÇ≠ÇŸÇ«è¨Ç≥Ç≠Ç»ÇÈÅB
 
 	player.angle = atan2f(vec.x, -vec.y);
 
@@ -208,7 +209,7 @@ void player_render()
 	sprite_render(
 		sprPlayer,
 		player.pos.x, player.pos.y,
-		1, 1,
+		player.scale.x, player.scale.y,
 		0, 0,
 		player.texSize.x, player.texSize.y,
 		player.pivot.x, player.pivot.y,
@@ -237,9 +238,4 @@ void set_canRapidShot(bool b)
 void set_shotPerSecond(float value)
 {
 	shot_per_second = value;
-}
-
-void set_bullet_flavor(int flavor)
-{
-
 }
