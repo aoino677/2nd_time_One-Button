@@ -20,7 +20,7 @@ int rapidShoted_bullet_count;//˜AŽË‚µ‚½’e”
 int cast_bullet;			//”­ŽË‚ð‘Ò‹@‚µ‚Ä‚¢‚é’e
 
 int bullet_lay_count = 3;
-float bullet_lay_gap = ToRadian(10);//’e‚ÌŠÔŠu
+float bullet_lay_gap = ToRadian(7);//’e‚ÌŠÔŠu
 
 Sprite* sprPlayer;
 Sprite* sprBullet[1];
@@ -93,13 +93,15 @@ void shot_bullet()
 		auto* b = new Bullet();
 		b->pos = player.pos;
 
-		float f = (rand() / (float)RAND_MAX) * 2 - 1;
-		float k = atan2f(vec.y, vec.x) + f * precision_rad;
+		float f = (rand() / (float)RAND_MAX) * 2 - 1;//—”Ý’è
+		float k = atan2f(vec.y, vec.x) + f * precision_rad;//ŠgŽUŠp“xÝ’è
 		b->angle = k;
-		b->angle += bullet_lay_gap * i - bullet_lay_gap * (bullet_lay_count - 1) / 2;
+		b->angle += bullet_lay_gap * i - bullet_lay_gap * (bullet_lay_count - 1) / 2;//’[‚É‚È‚é‚Ù‚ÇŽÎ‚ß‚É‚È‚éB
 		vec = { cosf(b->angle), sinf(b->angle) };
 		b->velocity = vec2Normalize(vec) * bullet_speed / 60.0f;
 		b->angle += ToRadian(180);
+
+		b->pos += vec * shot_timer;
 		b->spr = sprBullet[0];
 		player_bullets.push_back(b);
 		rapidShoted_bullet_count++;
