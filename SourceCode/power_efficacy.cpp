@@ -27,6 +27,11 @@ void Bullet_scale()
 {
 	bullet_scale += 0.01f;
 }
+// ’e‚Ì‘_‚Á‚½•ûŒü‚É”ò‚Ô¸“x
+void Bullet_rad()
+{
+	precision_rad -= ToRadian(0.5f);
+}
 // ’e‚ÌŠÔŠu
 void Bullet_diffusion()
 {

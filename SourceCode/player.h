@@ -12,6 +12,7 @@ extern float bullet_speed;
 extern int bullet_lay_count;
 extern float bullet_lay_gap;
 extern float bullet_scale;
+extern float precision_rad;
 
 //const VECTOR2 PLAYER_POS = { SCREEN_W * 0.5f, SCREEN_H * 0.5f };
 //const VECTOR2 PLAYER_POS = { SCREEN_W * 0.5f, SCREEN_H - 100 };

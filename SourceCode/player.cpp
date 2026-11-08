@@ -9,7 +9,7 @@
 float bullet_speed = 1000.0f;//”­Ë‚·‚é’e‚Ì1•b“–‚½‚è‚Ì‘¬“x
 float shot_per_second = 20.0f; //‚P•bŠÔ‚É”­Ë‚·‚é’e‚Ì”
 float rapid_coolDown = RAPID_COOLDOWN; //˜AËŠJnŠÔ
-float precision_rad = ToRadian(5); //‘_‚Á‚½•ûŒü‚É”ò‚Ô¸“x
+float precision_rad = ToRadian(5.0f); //‘_‚Á‚½•ûŒü‚É”ò‚Ô¸“x
 
 float shot_timer;			//’e”­Ë‚Ì‘Ò‹@ŠÔ
 float rapid_timer;			//Š®—¹‚µ‚½‚ç˜AË‚ÉˆÚs‚·‚é
@@ -43,6 +43,7 @@ void player_init()
 	shot_timer = 0;
 	rapidShoted_bullet_count = 0;
 	bullet_lay_gap = ToRadian(0);
+	precision_rad = ToRadian(5.0f);
 	bullet_lay_count = 1;
 	is_rapid = false;
 

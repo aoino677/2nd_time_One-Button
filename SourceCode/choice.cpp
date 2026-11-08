@@ -153,6 +153,7 @@ void choice_update()
 						choice_effect_alpha = 0.0f;
 						// ‚±‚±‚É‹­‰»‚·‚éŒø‰Ê‚ğ‘‚­
 						Bullet_speed();
+						Bullet_rad();
 						break;
 
 					case 2:

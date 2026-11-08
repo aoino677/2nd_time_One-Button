@@ -9,3 +9,4 @@ extern void Bullet_speed();
 extern void Bullet_quantity();
 extern void Bullet_diffusion();
 extern void Bullet_scale();
+extern void Bullet_rad();
