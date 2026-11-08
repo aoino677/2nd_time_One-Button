@@ -19,8 +19,9 @@ bool can_rapid_shot;		//˜AŽË‰Â”\‚©
 int rapidShoted_bullet_count;//˜AŽË‚µ‚½’e”
 int cast_bullet;			//”­ŽË‚ð‘Ò‹@‚µ‚Ä‚¢‚é’e
 
-int bullet_lay_count = 3;
-float bullet_lay_gap = ToRadian(7);//’e‚ÌŠÔŠu
+int bullet_lay_count = 1;
+float bullet_lay_gap = ToRadian(0);//’e‚ÌŠÔŠu
+float bullet_scale = 1.0f;//’e‚Ì‘å‚«‚³
 
 Sprite* sprPlayer;
 Sprite* sprBullet[1];
@@ -38,9 +39,11 @@ void player_init()
 	player.pos = PLAYER_POS;
 	player.texSize = PLAYER_TEX_SIZE;
 	player.pivot = player.texSize / 2;
-
+	bullet_scale = 1.0f;
 	shot_timer = 0;
 	rapidShoted_bullet_count = 0;
+	bullet_lay_gap = ToRadian(0);
+	bullet_lay_count = 1;
 	is_rapid = false;
 
 	can_rapid_shot = false;
@@ -92,7 +95,7 @@ void shot_bullet()
 
 		auto* b = new Bullet();
 		b->pos = player.pos;
-
+		b->scale = { bullet_scale , bullet_scale };
 		float f = (rand() / (float)RAND_MAX) * 2 - 1;//—”Ý’è
 		float k = atan2f(vec.y, vec.x) + f * precision_rad;//ŠgŽUŠp“xÝ’è
 		b->angle = k;
@@ -223,7 +226,7 @@ void player_render()
 		sprite_render(
 			bullet->spr,
 			bullet->pos.x, bullet->pos.y,
-			1, 1,
+			bullet->scale.x, bullet->scale.x,
 			0, 0,
 			64, 64,
 			32, 32,
