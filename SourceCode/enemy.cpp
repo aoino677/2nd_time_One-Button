@@ -112,7 +112,7 @@ void enemy_update()
 void enemy_ability(int i)
 {
 	//中心に向かう基本角度を計算
-	srand((unsigned int)time(NULL));
+	//srand((unsigned int)time(NULL));
 	
 	float base_angle = atan2f(540 - enemy[i].pos.y, -200.0f - enemy[i].pos.x);
 

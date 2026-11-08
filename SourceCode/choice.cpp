@@ -104,7 +104,7 @@ void choice_update()
 
 				if (TRG(0) & PAD_START)
 				{
-					srand((unsigned int)time(NULL));
+					//srand((unsigned int)time(NULL));
 					switch (i)
 					{
 					case 0:
