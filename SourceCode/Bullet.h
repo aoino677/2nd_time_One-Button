@@ -6,5 +6,6 @@ struct Bullet
 	GameLib::Sprite* spr = nullptr;
 	VECTOR2 pos;//åªç›à íu
 	VECTOR2 velocity;//ë¨ìx
+	VECTOR2 scale;//ëÂÇ´Ç≥
 	float angle = 0;//äpìx
 };
