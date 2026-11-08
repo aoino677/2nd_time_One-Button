@@ -19,9 +19,8 @@ bool can_rapid_shot;		//˜AŽË‰Â”\‚©
 int rapidShoted_bullet_count;//˜AŽË‚µ‚½’e”
 int cast_bullet;			//”­ŽË‚ð‘Ò‹@‚µ‚Ä‚¢‚é’e
 
-int bullet_lay_count = 1;
-float bullet_lay_gap = ToRadian(0);//’e‚ÌŠÔŠu
-float bullet_scale = 1.0f; //’e‚Ì‘å‚«‚³
+int bullet_lay_count = 3;
+float bullet_lay_gap = ToRadian(7);//’e‚ÌŠÔŠu
 
 Sprite* sprPlayer;
 Sprite* sprBullet[1];
@@ -39,7 +38,7 @@ void player_init()
 	player.pos = PLAYER_POS;
 	player.texSize = PLAYER_TEX_SIZE;
 	player.pivot = player.texSize / 2;
-	bullet_scale = 1.0f;
+
 	shot_timer = 0;
 	rapidShoted_bullet_count = 0;
 	is_rapid = false;
@@ -93,14 +92,16 @@ void shot_bullet()
 
 		auto* b = new Bullet();
 		b->pos = player.pos;
-		b->scale = { bullet_scale, bullet_scale };
-		float f = (rand() / (float)RAND_MAX) * 2 - 1;
-		float k = atan2f(vec.y, vec.x) + f * precision_rad;
+
+		float f = (rand() / (float)RAND_MAX) * 2 - 1;//—”Ý’è
+		float k = atan2f(vec.y, vec.x) + f * precision_rad;//ŠgŽUŠp“xÝ’è
 		b->angle = k;
-		b->angle += bullet_lay_gap * i - bullet_lay_gap * (bullet_lay_count - 1) / 2;
+		b->angle += bullet_lay_gap * i - bullet_lay_gap * (bullet_lay_count - 1) / 2;//’[‚É‚È‚é‚Ù‚ÇŽÎ‚ß‚É‚È‚éB
 		vec = { cosf(b->angle), sinf(b->angle) };
 		b->velocity = vec2Normalize(vec) * bullet_speed / 60.0f;
 		b->angle += ToRadian(180);
+
+		b->pos += vec * shot_timer;
 		b->spr = sprBullet[0];
 		player_bullets.push_back(b);
 		rapidShoted_bullet_count++;
@@ -222,7 +223,7 @@ void player_render()
 		sprite_render(
 			bullet->spr,
 			bullet->pos.x, bullet->pos.y,
-			bullet->scale.x, bullet->scale.y,
+			1, 1,
 			0, 0,
 			64, 64,
 			32, 32,
