@@ -4,16 +4,12 @@
 #include "AttackCollision.h"
 #include "shake.h"
 #include <vector>
+#include "Collision2D.h"
 
-float bullet_speed = 1000.0f;//‚P•bŠÔ‚É”­Ë‚·‚é’e‚ÌƒXƒs[ƒh
-
-Sprite* sprPlayer;
-Sprite* sprBullet[3];
-OBJ2D player;
-std::vector<Bullet*> player_bullets;
-
-int player_state;
-int player_timer;
+float bullet_speed = 1000.0f;//”­Ë‚·‚é’e‚Ì1•b“–‚½‚è‚Ì‘¬“x
+float shot_per_second = 20.0f; //‚P•bŠÔ‚É”­Ë‚·‚é’e‚Ì”
+float rapid_coolDown = RAPID_COOLDOWN; //˜AËŠJnŠÔ
+float precision_rad = ToRadian(5); //‘_‚Á‚½•ûŒü‚É”ò‚Ô¸“x
 
 float shot_timer;			//’e”­Ë‚Ì‘Ò‹@ŠÔ
 float rapid_timer;			//Š®—¹‚µ‚½‚ç˜AË‚ÉˆÚs‚·‚é
@@ -23,23 +19,21 @@ bool can_rapid_shot;		//˜AË‰Â”\‚©
 int rapidShoted_bullet_count;//˜AË‚µ‚½’e”
 int cast_bullet;			//”­Ë‚ğ‘Ò‹@‚µ‚Ä‚¢‚é’e
 
-float shot_per_second = 20.0f; //‚P•bŠÔ‚É”­Ë‚·‚é’e‚Ì”
-float rapid_coolDown = RAPID_COOLDOWN; //˜AËŠJnŠÔ
+int bullet_lay_count = 3;
+float bullet_lay_gap = ToRadian(10);//’e‚ÌŠÔŠu
 
-float precision_rad = ToRadian(5); //‘_‚Á‚½•ûŒü‚É”ò‚Ô¸“x
-int bullet_flover = 0;//’e‚Ìí—Şi‰¼‚ÅintŒ^‚ÅŠÇ—j
+Sprite* sprPlayer;
+Sprite* sprBullet[1];
+OBJ2D player;
+std::vector<Bullet*> player_bullets;
+
 
 VECTOR2 cursor_pos{};
 
 void player_init()
 {
-	player_state = 0;
-	player_timer = 0;
-
 	sprPlayer = sprite_load(L"Data/Images/player.png");
-	sprBullet[0] = sprite_load(L"Data/Images/1yen.png");
-	sprBullet[1] = sprite_load(L"Data/Images/10yen.png");
-	sprBullet[2] = sprite_load(L"Data/Images/100yen.png");
+	sprBullet[0] = sprite_load(L"Data/Images/bullet.png");
 	
 	player.pos = PLAYER_POS;
 	player.texSize = PLAYER_TEX_SIZE;
@@ -55,7 +49,7 @@ void player_init()
 void player_deinit()
 {
 	safe_delete(sprPlayer);
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < 1; i++)
 	{
 		safe_delete(sprBullet[i]);
 	}
@@ -89,21 +83,27 @@ void delete_outWindow_bullet()
 void shot_bullet()
 {
 	VECTOR2 cursorPos = { static_cast<float>(getCursorPosX()), static_cast<float>(getCursorPosY()) };
-	VECTOR2 vec = cursorPos - player.pos;
 	//float r = ToRadian(rand() % 360);
 	//vec = {cosf(r), sinf(r)};
-	float f = (rand() / (float)RAND_MAX) * 2 - 1;
-	float k = atan2f(vec.y, vec.x) + f * precision_rad;
-	vec = { cosf(k), sinf(k) };
 
-	auto* b = new Bullet();
-	b->pos = player.pos;
-	b->velocity = vec2Normalize(vec) * bullet_speed / 60.0f;
-	b->angle = atan2f(vec.x, -vec.y);
-	b->spr = sprBullet[(rand() % 3)];
-	//	b->angle = ToRadian(rand() % 360);
-	player_bullets.push_back(b);
-	rapidShoted_bullet_count++;
+	for (int i = 0; i < bullet_lay_count; i++)
+	{
+		VECTOR2 vec = cursorPos - player.pos;
+
+		auto* b = new Bullet();
+		b->pos = player.pos;
+
+		float f = (rand() / (float)RAND_MAX) * 2 - 1;
+		float k = atan2f(vec.y, vec.x) + f * precision_rad;
+		b->angle = k;
+		b->angle += bullet_lay_gap * i - bullet_lay_gap * (bullet_lay_count - 1) / 2;
+		vec = { cosf(b->angle), sinf(b->angle) };
+		b->velocity = vec2Normalize(vec) * bullet_speed / 60.0f;
+		b->angle += ToRadian(180);
+		b->spr = sprBullet[0];
+		player_bullets.push_back(b);
+		rapidShoted_bullet_count++;
+	}
 }
 
 void player_shot_bullet()
