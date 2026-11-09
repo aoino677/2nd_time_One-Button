@@ -34,7 +34,7 @@ void effect_danger_render()
     {
         primitive::rect(
             0.0f, 0.0f,
-            1920.0f, 648.0f,
+            1920.0f, 1080.0f,
             0.0f, 0.0f,
             0.0f,
             1.0f, 0.0f, 0.0f, danger_clear
