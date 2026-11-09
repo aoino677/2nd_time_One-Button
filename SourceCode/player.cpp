@@ -9,7 +9,7 @@
 float bullet_speed = 1000.0f;//”­Ë‚·‚é’e‚Ì1•b“–‚½‚è‚Ì‘¬“x
 float shot_per_second = 20.0f; //‚P•bŠÔ‚É”­Ë‚·‚é’e‚Ì”
 float rapid_coolDown = RAPID_COOLDOWN; //˜AËŠJnŠÔ
-float precision_rad = ToRadian(5.0f); //‘_‚Á‚½•ûŒü‚É”ò‚Ô¸“x
+float precision_rad = ToRadian(5); //‘_‚Á‚½•ûŒü‚É”ò‚Ô¸“x
 
 float shot_timer;			//’e”­Ë‚Ì‘Ò‹@ŠÔ
 float rapid_timer;			//Š®—¹‚µ‚½‚ç˜AË‚ÉˆÚs‚·‚é
@@ -19,15 +19,13 @@ bool can_rapid_shot;		//˜AË‰Â”\‚©
 int rapidShoted_bullet_count;//˜AË‚µ‚½’e”
 int cast_bullet;			//”­Ë‚ğ‘Ò‹@‚µ‚Ä‚¢‚é’e
 
-int bullet_lay_count = 1;
-float bullet_lay_gap = ToRadian(0);//’e‚ÌŠÔŠu
-float bullet_scale = 1.0f;//’e‚Ì‘å‚«‚³
+int bullet_lay_count = 9;
+float bullet_lay_gap = ToRadian(7);//’e‚ÌŠÔŠu
 
 Sprite* sprPlayer;
 Sprite* sprBullet[1];
 OBJ2D player;
 std::vector<Bullet*> player_bullets;
-
 
 VECTOR2 cursor_pos{};
 
@@ -39,12 +37,9 @@ void player_init()
 	player.pos = PLAYER_POS;
 	player.texSize = PLAYER_TEX_SIZE;
 	player.pivot = player.texSize / 2;
-	bullet_scale = 1.0f;
+
 	shot_timer = 0;
 	rapidShoted_bullet_count = 0;
-	bullet_lay_gap = ToRadian(0);
-	precision_rad = ToRadian(5.0f);
-	bullet_lay_count = 1;
 	is_rapid = false;
 
 	can_rapid_shot = false;
@@ -65,15 +60,25 @@ void player_deinit()
 	player_bullets.clear();
 }
 
-void delete_outWindow_bullet()
+void delete_bullet()
 {
 	for (auto itr =  player_bullets.begin(); itr != player_bullets.end();)
 	{
+		//‰æ–ÊŠO‚Éo‚Ä‚¢‚½‚çB
 		if ((*itr)->pos.x + 32 < 0
 			|| (*itr)->pos.x - 32 > SCREEN_W
 			|| (*itr)->pos.y + 32 < 0
 			|| (*itr)->pos.y - 32 > SCREEN_H)
 		{
+			delete* itr;
+			itr = player_bullets.erase(itr);
+		}
+		else if ((*itr)->pos.y > (*itr)->end_pos.y)
+		{
+			//for (int e = 0; e < ENEMY_NUMBER; e++)
+			//{
+			//	AttackCollision::enemy_vs_bullet(enemy[e], **itr);
+			//}
 			delete* itr;
 			itr = player_bullets.erase(itr);
 		}
@@ -83,29 +88,59 @@ void delete_outWindow_bullet()
 		}
 	}
 }
+bool OLDSHOT = false;
 
 void shot_bullet()
 {
 	VECTOR2 cursorPos = { static_cast<float>(getCursorPosX()), static_cast<float>(getCursorPosY()) };
+	if (cursorPos.y < 380) cursorPos.y = 380;
 	//float r = ToRadian(rand() % 360);
 	//vec = {cosf(r), sinf(r)};
+	VECTOR2 vec = cursorPos - player.pos;
+	float length = vec2Length(vec);
+	
+	VECTOR2 a[9] = {
+		{0, 0}, {100, 0}, {0, 50}, {-100, 0}, {0, -50},
+		{70, 35},{70, -35},{-70, 35},{-70, -35},
+	};
 
 	for (int i = 0; i < bullet_lay_count; i++)
 	{
-		VECTOR2 vec = cursorPos - player.pos;
+		if (OLDSHOT)
+		{
+
+			VECTOR2 vec = cursorPos - player.pos;
+
+			auto* b = new Bullet();
+			b->pos = player.pos;
+
+			float f = (rand() / (float)RAND_MAX) * 2 - 1;//—”İ’è
+			float k = atan2f(vec.y, vec.x) + f * precision_rad;//ŠgUŠp“xİ’è
+			b->angle = k;
+			b->angle += bullet_lay_gap * i - bullet_lay_gap * (bullet_lay_count - 1) / 2;//’[‚É‚È‚é‚Ù‚ÇÎ‚ß‚É‚È‚éB
+			vec = { cosf(b->angle), sinf(b->angle) };
+			b->velocity = vec2Normalize(vec) * bullet_speed / 60.0f;
+			b->angle += ToRadian(180);
+			b->pos += vec * shot_timer;
+		}
 
 		auto* b = new Bullet();
 		b->pos = player.pos;
-		b->scale = { bullet_scale , bullet_scale };
-		float f = (rand() / (float)RAND_MAX) * 2 - 1;//—”İ’è
-		float k = atan2f(vec.y, vec.x) + f * precision_rad;//ŠgUŠp“xİ’è
-		b->angle = k;
-		b->angle += bullet_lay_gap * i - bullet_lay_gap * (bullet_lay_count - 1) / 2;//’[‚É‚È‚é‚Ù‚ÇÎ‚ß‚É‚È‚éB
-		vec = { cosf(b->angle), sinf(b->angle) };
-		b->velocity = vec2Normalize(vec) * bullet_speed / 60.0f;
-		b->angle += ToRadian(180);
+		b->end_pos = cursorPos + a[i];
+		if (b->end_pos.y < 380)
+		{ b->end_pos.y = 380; }
+		//b->end_pos.x = cursorPos.x;
+		//b->end_pos.y = cursorPos.y + i * 40.0f - 40.0f * (bullet_lay_count - 1) / 2;
+		float length3 = vec2Length(b->end_pos - b->pos);
 
-		b->pos += vec * shot_timer;
+
+		//float f = (rand() / (float)RAND_MAX) * 2 - 1;//—”İ’è
+		//float k = 0;// f* precision_rad;//ŠgUŠp“xİ’è
+		//k += bullet_lay_gap * i - bullet_lay_gap * (bullet_lay_count - 1) / 2;
+		vec = b->end_pos - b->pos;
+		b->angle = atan2f(vec.y, vec.x);
+		b->velocity = vec2Normalize(vec) * bullet_speed / 60.0f * length3 / length;
+		
 		b->spr = sprBullet[0];
 		player_bullets.push_back(b);
 		rapidShoted_bullet_count++;
@@ -164,25 +199,31 @@ void player_shot_bullet()
 	}
 }
 
-void player_update()
+void player_move()
 {
 	VECTOR2 cursorPos = { static_cast<float>(getCursorPosX()), static_cast<float>(getCursorPosY()) };
+	if (cursorPos.y < 380) cursorPos.y = 380;
 	VECTOR2 vec = cursorPos - player.pos;
 	cursor_pos = cursorPos;
 	//player.pos.y += vec.y * 1000.0f / 60.0f;
-	player.pos.y = cursorPos.y;
+	player.pos.y = cursorPos.y - 300;
+	debug::setString("cursor : %f", cursorPos.y);
 	player.pos.x = (SCREEN_H - player.pos.y) * 0.3584f / 0.9336f;
 	player.scale.x = player.scale.y = 1.0f - ((SCREEN_H - player.pos.y) / SCREEN_H) * 0.2f;//‰“‚­‚És‚¯‚Îs‚­‚Ù‚Ç¬‚³‚­‚È‚éB
 
 	player.angle = atan2f(vec.x, -vec.y);
+}
 
+void player_update()
+{
+	player_move();
 	player_shot_bullet();
 	for (auto*& bullet : player_bullets)
 	{
 		//bullet->velocity.y += 1.5f / 60.0f;
 		bullet->pos += bullet->velocity;
 	}
-	delete_outWindow_bullet();
+	delete_bullet();
 	debug::setString("shot_per_second:%f", shot_per_second);
 	debug::setString("bullet_count:%d", player_bullets.size());
 
@@ -227,11 +268,18 @@ void player_render()
 		sprite_render(
 			bullet->spr,
 			bullet->pos.x, bullet->pos.y,
-			bullet->scale.x, bullet->scale.x,
+			1, 1,
 			0, 0,
-			64, 64,
-			32, 32,
+			64, 8,
+			32, 4,
 			bullet->angle
+		);
+		primitive::circle(
+			bullet->end_pos,
+			20,
+			{ 1, 0.3f },
+			0,
+			{ 0, 0, 1, 0.01f }
 		);
 	}
 }

@@ -74,7 +74,7 @@ void EXP_update()
                 EXP[j].pos = { -500, -500 };
                 continue;
             }
-            EXP[j].moveSpeed += 1.5f / 60.0f;
+            EXP[j].moveSpeed += 100.0f / 60.0f;
             EXP[j].pos.x -= EXP[j].moveSpeed;
             if (EXP[j].pos.x < (SCREEN_H - EXP[j].pos.y) * 0.3584f / 0.9336f)
             {
