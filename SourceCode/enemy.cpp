@@ -12,6 +12,7 @@ int enemy_timer;
 int enemy_max;
 int enemy_hp;
 int enemy_boss_timer;
+int damage_timer[ENEMY_NUMBER];
 int enemy_turbo[ENEMY_NUMBER];
 float angle[ENEMY_NUMBER];
 float enemy_speed; 
@@ -86,6 +87,14 @@ void enemy_update()
 				shake(10, 20.0f);
 			}
 			
+			damage_timer[i] = 15;
+			if (damage_timer[i] > 0)
+			{
+				damage_timer[i]--;
+			}
+			
+			
+			
 			enemy_turbo[i]++;
 		}
 		
@@ -99,6 +108,11 @@ void enemy_update()
 			enemy_timer = 0;
 		}
 
+		
+		
+		
+		
+		
 		break;
 	}
 
@@ -180,23 +194,18 @@ void enemy_ability(int i)
 		{
 			for (int j = 0; j < ENEMY_NUMBER; j++)
 			{
-				float enemy_Vec_x[ENEMY_NUMBER];
-				enemy_Vec_x[j] = enemy[j].pos.x - enemy[i].pos.x;
-				
-				float enemy_Vec_y[ENEMY_NUMBER];
-				enemy_Vec_y[j] = enemy[j].pos.y - enemy[i].pos.y;
-				
-				//大きさが負なら正に戻す
-				if (enemy_Vec_x[j] < 0)
-					enemy_Vec_x[j] *= -1;
-				if (enemy_Vec_y[j] < 0)
-					enemy_Vec_y[j] *= -1;
+				if (i == j) continue;
 
-				float enemy_Vec[ENEMY_NUMBER];
-				enemy_Vec[j]= sqrt(enemy_Vec_x[j] * enemy_Vec_x[j] + enemy_Vec_y[j] + enemy_Vec_y[j]);
+				//それぞれのベクトルを計算
+				float enemy_Vec_x = enemy[j].pos.x - enemy[i].pos.x;
+				float enemy_Vec_y = enemy[j].pos.y - enemy[i].pos.y;
+				float enemy_Vec = sqrtf(enemy_Vec_x* enemy_Vec_x+ enemy_Vec_y* enemy_Vec_y);
 
-				if (enemy_Vec[j] < 10)
+				//爆発に範囲
+				if (enemy_Vec < 200.0f) 
+				{
 					enemy[j].hp--;
+				}
 			}
 		}
 	}
@@ -207,10 +216,6 @@ void enemy_ability(int i)
 		enemy[i].pos.x += cosf(base_angle) * enemy_speed * 0.5f;
 		enemy[i].pos.y += sinf(base_angle) * enemy_speed * 0.5f;
 	}
-	
-	
-	
-	
 }
 
 
@@ -239,15 +244,10 @@ void enemy_respawn(int i)
 			enemy[i].type = ENEMY_TYPE_TRICKY;
 
 		else if (enemy_random >= 70 && enemy_random < 85)
-			enemy[i].type == ENEMY_TYPE_EDDY;
+			enemy[i].type = ENEMY_TYPE_EDDY;
 
 		else if (enemy_random >= 85)
 			enemy[i].type = ENEMY_TYPE_BOBM;
-
-		/*if (enemy_random < 50)
-			enemy[i].type = ENEMY_TYPE_NORMAL;
-		else 
-			enemy[i].type = ENEMY_TYPE_BOBM;*/
 	}
 	else
 	{
@@ -256,8 +256,17 @@ void enemy_respawn(int i)
 	}
 	
 //生成場所
-	enemy[i].pos.x = 1920.0f + 50.0f;
-	enemy[i].pos.y = rand() % 648;
+	int enemy_respawn_place = rand() % 2;
+    if (enemy_respawn_place == 0)
+	{
+		enemy[i].pos.x = 1920.0f + 50.0f;
+		enemy[i].pos.y = rand() % 648;
+	}
+	else if (enemy_respawn_place == 1)
+	{
+		enemy[i].pos.x = rand() % 640 + 1280.0f;
+		enemy[i].pos.y = 1080.0f+100.0f;
+	}
 }
 
 
@@ -267,6 +276,14 @@ void enemy_render()
 	{
 		if (enemy[i].hp <= 0) { continue; }
 
+		
+
+		
+
+		
+		
+		
+		
 		if (enemy[i].type == ENEMY_TYPE_BOSS)
 		{
 			sprite_render(
