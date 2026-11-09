@@ -1,6 +1,7 @@
 #include "choice.h"
 #include "level_up.h"
 #include "power_efficacy.h"
+#include "player.h"
 #include <ctime>
 #include <stdlib.h>
 
@@ -19,7 +20,7 @@ void choice_init()
 	choice_state = 0;
 	choice_timer = 0;
 	level_up_count = 0;
-
+	bullet_lay_count = 1;
 	choice_effect_y = 0.0f;
 	choice_effect_alpha = 0.0f;
 
@@ -41,6 +42,34 @@ void choice_init()
 	choiceButton[1].pos = { 950, 500 };
 	choiceButton[2].pos = { 1450, 500 };
 
+}
+
+void choice_update_pause()
+{
+	if (!choice_pause)
+	{
+		if (exp_count >= level_max || TRG(0) & PAD_TRG2)
+		{
+			level_up_count++;
+			for (int i = 1; i <= level_up_count; i++)
+			{
+				for (; T_or_F(level_up_count);)
+				{
+					level_max += 5;
+					exp_count = 0;
+					choice_pause = true;
+					choice_effect_y = static_cast<float>(SCREEN_H);
+					choice_effect_alpha = 0.0f;
+					choice_state = 0;
+					level_up_count--;
+				}
+				if (i == level_up_count)
+				{
+					level_up_count = 0;
+				}
+			}
+		}
+	}
 }
 
 void choice_update()
@@ -114,6 +143,7 @@ void choice_update()
 						choice_effect_alpha = 0.0f;
 						// ‚±‚±‚É‹­‰»‚·‚éŒø‰Ê‚ð‘‚­
 						HP();
+						Bullet_scale();
 						break;
 
 					case 1:
@@ -123,6 +153,7 @@ void choice_update()
 						choice_effect_alpha = 0.0f;
 						// ‚±‚±‚É‹­‰»‚·‚éŒø‰Ê‚ð‘‚­
 						Bullet_speed();
+						Bullet_rad();
 						break;
 
 					case 2:
@@ -131,6 +162,8 @@ void choice_update()
 						choice_effect_y = 0.0f;
 						choice_effect_alpha = 0.0f;
 						// ‚±‚±‚É‹­‰»‚·‚éŒø‰Ê‚ð‘‚­
+						Bullet_quantity();
+						Bullet_diffusion();   
 						break;
 					}
 				}
@@ -143,30 +176,6 @@ void choice_update()
 			}
 		}
 		break;
-	}
-	if (!choice_pause)
-	{
-		if (exp_count >= level_max || TRG(0) & PAD_TRG2)
-		{
-			level_up_count++;
-			for (int i = 1; i <= level_up_count; i++)
-			{
-				for (; T_or_F(level_up_count);)
-				{
-					level_max += 5;
-					exp_count = 0;
-					choice_pause = true;
-					choice_effect_y = static_cast<float>(SCREEN_H);
-					choice_effect_alpha = 0.0f;
-					choice_state = 0;
-					level_up_count--;
-				}
-				if (i == level_up_count)
-				{
-					level_up_count = 0;
-				}
-			}
-		}
 	}
 }
 

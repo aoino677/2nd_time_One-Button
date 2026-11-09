@@ -8,6 +8,7 @@
 #define CURSOL_MAIN_SCALE        (1.0f)       // プレイヤーのスケール
 
 extern OBJ2D cuesor_main;
+extern float cursor_scale;
 
 void cursor_main_init();
 void cursor_main_update();

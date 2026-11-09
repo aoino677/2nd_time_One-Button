@@ -1,6 +1,8 @@
 #include "power_efficacy.h"
 #include "player.h"
 #include "Hp.h"
+#include "Bullet.h"
+#include "cursor_main.h"
 #include <ctime>
 #include <stdlib.h>
 
@@ -19,10 +21,20 @@ void Bullet_speed()
 // ‹…‚Ì”­ËŒÂ”
 void Bullet_quantity()
 {
-
+	bullet_lay_count++;
 }
 // ‹…‚Ì‘å‚«‚³
 void Bullet_scale()
 {
-
+	bullet_scale += 0.01f;
+}
+// ’e‚Ì‘_‚Á‚½•ûŒü‚É”ò‚Ô¸“x
+void Bullet_rad()
+{
+	precision_rad -= ToRadian(0.5f);
+}
+// ’e‚ÌŠÔŠu
+void Bullet_diffusion()
+{
+	bullet_lay_gap += ToRadian(3);
 }

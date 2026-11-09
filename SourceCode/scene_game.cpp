@@ -79,8 +79,8 @@ void game_update()
 		/*fallthrough*/
 	case 2:
 		//////// ’Êí ////////
-		choice_update();
 		pause_update();
+		choice_update_pause();
 		
 		//========================================
 	   // ƒQ[ƒ€’†
@@ -108,6 +108,7 @@ void game_update()
 		if (pause == true || choice_pause == true)
 		{
 			cursor_main_update();
+			choice_update();
 		}
 
 		break;
