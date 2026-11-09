@@ -96,19 +96,24 @@ void cursor_main_update()
                 cursor_main_posY >= top &&
                 cursor_main_posY <= bottom)
             {
-                /*for (; timer >= 0;)
+                while (timer >= 0)
                 {
-                    if (timer == 0)
+                    if (timer == TIMER)
                     {
                         shot_bullet();
+                        timer--;
+                    }
+                    else if (timer == 0)
+                    {
                         timer = TIMER;
                     }
                     else
                     {
                         timer--;
                     }
-                }*/
-                
+                    
+                    break;
+                }
             }
         }
         
