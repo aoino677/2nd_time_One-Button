@@ -7,6 +7,6 @@ struct Bullet
 	VECTOR2 pos;//МїНЁИ Тu
 	VECTOR2 end_pos;
 	VECTOR2 velocity;//СђУx
-	VECTOR2 scale;//СеВЂВ≥
+	VECTOR2 scale = { 1, 1 };//СеВЂВ≥
 	float angle = 0;//КpУx
 };

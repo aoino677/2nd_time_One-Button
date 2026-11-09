@@ -21,6 +21,7 @@ int cast_bullet;			//”­ŽË‚ð‘Ò‹@‚µ‚Ä‚¢‚é’e
 
 int bullet_lay_count = 9;
 float bullet_lay_gap = ToRadian(7);//’e‚ÌŠÔŠu
+float bullet_scale = 1.0f;//’e‚Ì‘å‚«‚³
 
 Sprite* sprPlayer;
 Sprite* sprBullet[1];
@@ -33,11 +34,11 @@ void player_init()
 {
 	sprPlayer = sprite_load(L"Data/Images/player.png");
 	sprBullet[0] = sprite_load(L"Data/Images/bullet.png");
-	
+
 	player.pos = PLAYER_POS;
 	player.texSize = PLAYER_TEX_SIZE;
 	player.pivot = player.texSize / 2;
-
+	bullet_scale = 1.0f;
 	shot_timer = 0;
 	rapidShoted_bullet_count = 0;
 	is_rapid = false;
@@ -53,7 +54,7 @@ void player_deinit()
 		safe_delete(sprBullet[i]);
 	}
 
-	for (auto*& bullet : player_bullets)
+	for (auto* bullet : player_bullets)
 	{
 		delete bullet;
 	}
@@ -62,7 +63,7 @@ void player_deinit()
 
 void delete_bullet()
 {
-	for (auto itr =  player_bullets.begin(); itr != player_bullets.end();)
+	for (auto itr = player_bullets.begin(); itr != player_bullets.end();)
 	{
 		//‰æ–ÊŠO‚Éo‚Ä‚¢‚½‚çB
 		if ((*itr)->pos.x + 32 < 0
@@ -98,7 +99,7 @@ void shot_bullet()
 	//vec = {cosf(r), sinf(r)};
 	VECTOR2 vec = cursorPos - player.pos;
 	float length = vec2Length(vec);
-	
+
 	VECTOR2 a[9] = {
 		{0, 0}, {100, 0}, {0, 50}, {-100, 0}, {0, -50},
 		{70, 35},{70, -35},{-70, 35},{-70, -35},
@@ -113,7 +114,7 @@ void shot_bullet()
 
 			auto* b = new Bullet();
 			b->pos = player.pos;
-
+			b->scale = { bullet_scale , bullet_scale };
 			float f = (rand() / (float)RAND_MAX) * 2 - 1;//—”Ý’è
 			float k = atan2f(vec.y, vec.x) + f * precision_rad;//ŠgŽUŠp“xÝ’è
 			b->angle = k;
@@ -126,9 +127,12 @@ void shot_bullet()
 
 		auto* b = new Bullet();
 		b->pos = player.pos;
+		b->scale = { bullet_scale , bullet_scale };
 		b->end_pos = cursorPos + a[i];
 		if (b->end_pos.y < 380)
-		{ b->end_pos.y = 380; }
+		{
+			b->end_pos.y = 380;
+		}
 		//b->end_pos.x = cursorPos.x;
 		//b->end_pos.y = cursorPos.y + i * 40.0f - 40.0f * (bullet_lay_count - 1) / 2;
 		float length3 = vec2Length(b->end_pos - b->pos);
@@ -140,7 +144,7 @@ void shot_bullet()
 		vec = b->end_pos - b->pos;
 		b->angle = atan2f(vec.y, vec.x);
 		b->velocity = vec2Normalize(vec) * bullet_speed / 60.0f * length3 / length;
-		
+
 		b->spr = sprBullet[0];
 		player_bullets.push_back(b);
 		rapidShoted_bullet_count++;
@@ -268,7 +272,7 @@ void player_render()
 		sprite_render(
 			bullet->spr,
 			bullet->pos.x, bullet->pos.y,
-			1, 1,
+			bullet->scale.x, bullet->scale.y,
 			0, 0,
 			64, 8,
 			32, 4,
