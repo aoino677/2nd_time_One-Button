@@ -12,20 +12,28 @@ int enemy_timer;
 int enemy_max;
 int enemy_hp;
 int enemy_boss_timer;
+int enemy_attack_timer[ENEMY_NUMBER];
 int damage_timer[ENEMY_NUMBER];
 int enemy_turbo[ENEMY_NUMBER];
 float angle[ENEMY_NUMBER];
+float pos[ENEMY_NUMBER];
+float enemy_border[ENEMY_NUMBER];
 float enemy_speed; 
+bool enemy_attack[ENEMY_NUMBER];
 
 //エネミー初期化
 void enemy_init()
 {
+	
 	enemy_state = 0;
 	enemy_timer = 0;
 	enemy_boss_timer = 0;
 	enemy_max = 3;
 	enemy_speed = 3.0f;
 	enemy_hp = 1;
+	pos[ENEMY_NUMBER] = { 0 };
+	
+	
 }
 
 
@@ -66,7 +74,7 @@ void enemy_update()
 		for (int i = 0; i < enemy_max; i++)
 		{
 			//エネミーの動き
-			enemy_ability(i);
+	        enemy_ability(i);
 			
 			
 			//HPが0になった時に別の敵として再出現させる
@@ -79,13 +87,7 @@ void enemy_update()
 			}
 		    
 			
-			if (enemy[i].pos.x < -128)
-			{
-				enemy[i].pos.x = 1920.0f + 50.0f;
-				enemy[i].pos.y = rand() % 756;
-				player_hp--;
-				shake(10, 20.0f);
-			}
+	
 			
 			damage_timer[i] = 15;
 			if (damage_timer[i] > 0)
@@ -100,7 +102,7 @@ void enemy_update()
 		
 		
 		//秒数がたったら強化
-		if (enemy_timer> 6000)
+		if (enemy_timer> 300)
 		{
 			enemy_max++;
 			enemy_hp++;
@@ -108,11 +110,6 @@ void enemy_update()
 			enemy_timer = 0;
 		}
 
-		
-		
-		
-		
-		
 		break;
 	}
 
@@ -122,154 +119,192 @@ void enemy_update()
 }
 
 
-//敵の種類ごとの能力
-void enemy_ability(int i)
-{
-	//中心に向かう基本角度を計算
-	//srand((unsigned int)time(NULL));
-	
-	float base_angle = atan2f(540 - enemy[i].pos.y, -200.0f - enemy[i].pos.x);
-
-	//通常の敵
-	if (enemy[i].type == ENEMY_TYPE_NORMAL)
-	{
-		enemy[i].pos.x += cosf(base_angle) * enemy_speed;
-		enemy[i].pos.y += sinf(base_angle) * enemy_speed;
-	}
-	
-	//速い敵
-	if (enemy[i].type == ENEMY_TYPE_FAST)
-	{
-		enemy[i].pos.x += cosf(base_angle) * enemy_speed * 2;
-		enemy[i].pos.y += sinf(base_angle) * enemy_speed * 2;
-	}
-	
-	//一定の間隔で進む敵
-	else if (enemy[i].type == ENEMY_TYPE_TURBO)
-	{
-		if (enemy_turbo[i] < 15)
-		{
-			enemy[i].pos.x += cosf(base_angle) * enemy_speed * 5;
-			enemy[i].pos.y += sinf(base_angle) * enemy_speed * 5;
-		}
-        else if (enemy_turbo[i] > 100)
-		    enemy_turbo[i] = 0;
-	}
-	
-	//揺れ動く敵
-	else if (enemy[i].type == ENEMY_TYPE_TRICKY)
-	{
-		//トリッキーな敵：うねうね揺れながら進む 
-		enemy[i].move_timer++; 
-
-		//サイン波を使って左右に揺れる幅を計算
-		float wobble = sinf(enemy[i].move_timer * 0.15f) * 20.0f;
-
-		enemy[i].pos.x += cosf(base_angle) * enemy_speed;
-		enemy[i].pos.y += sinf(base_angle) * enemy_speed;
-
-		//進行方向に対して垂直な方向に揺れを足す
-		enemy[i].pos.x += -sinf(base_angle) * wobble;
-		enemy[i].pos.y += cosf(base_angle) * wobble;
-	}
-	
-	//渦巻く敵
-	else if (enemy[i].type == ENEMY_TYPE_EDDY)
-	{
-		enemy[i].pos.x += cosf(base_angle) * enemy_speed;
-		enemy[i].pos.y += sinf(base_angle) * enemy_speed;
-
-		//進行方向に対して垂直な方向に揺れを足す
-		enemy[i].pos.x += -sinf(base_angle) * enemy_speed;
-		enemy[i].pos.y += cosf(base_angle) * enemy_speed;
-	}
-	
-	//ボム敵
-	else if (enemy[i].type == ENEMY_TYPE_BOBM)
-	{
-		enemy[i].pos.x += cosf(base_angle) * enemy_speed;
-		enemy[i].pos.y += sinf(base_angle) * enemy_speed;
-
-		if (enemy[i].hp <= 0)
-		{
-			for (int j = 0; j < ENEMY_NUMBER; j++)
-			{
-				if (i == j) continue;
-
-				//それぞれのベクトルを計算
-				float enemy_Vec_x = enemy[j].pos.x - enemy[i].pos.x;
-				float enemy_Vec_y = enemy[j].pos.y - enemy[i].pos.y;
-				float enemy_Vec = sqrtf(enemy_Vec_x* enemy_Vec_x+ enemy_Vec_y* enemy_Vec_y);
-
-				//爆発に範囲
-				if (enemy_Vec < 200.0f) 
-				{
-					enemy[j].hp--;
-				}
-			}
-		}
-	}
-	
-	//ボス敵
-	else if (enemy[i].type == ENEMY_TYPE_BOSS)
-	{
-		enemy[i].pos.x += cosf(base_angle) * enemy_speed * 0.5f;
-		enemy[i].pos.y += sinf(base_angle) * enemy_speed * 0.5f;
-	}
-}
-
-
 //敵を画面外のランダムな位置に出現させる
 void enemy_respawn(int i)
 {
-	enemy[i].move_timer = 0; //タイマーをリセット
-
-	enemy[i].scale = { 1, 1 };
+	enemy[i].move_timer = 0; //タイマーをリセッ
 
 	//敵の選別
-	if (enemy_boss_timer < 3000)
+	if (enemy_boss_timer < 3200)
 	{
-		enemy[i].hp =enemy_hp;
-		int enemy_random = rand() % 100;
-		
+		int enemy_random = rand() % 20;
+
 		//敵の選別
 		if (enemy_random < 20)
+		{
 			enemy[i].type = ENEMY_TYPE_NORMAL;
+			enemy[i].hp = 3;
+		}
 
 		else if (enemy_random >= 20 && enemy_random < 40)
+		{
 			enemy[i].type = ENEMY_TYPE_FAST;
+			enemy[i].hp = 3;
+		}
 
 		else if (enemy_random >= 40 && enemy_random < 55)
+		{
 			enemy[i].type = ENEMY_TYPE_TURBO;
+			enemy[i].hp = 3;
+		}
 
 		else if (enemy_random >= 55 && enemy_random < 70)
+		{
 			enemy[i].type = ENEMY_TYPE_TRICKY;
-
+			enemy[i].hp = 3;
+		}
 		else if (enemy_random >= 70 && enemy_random < 85)
+		{
 			enemy[i].type = ENEMY_TYPE_EDDY;
-
+			enemy[i].hp = 3;
+		}
 		else if (enemy_random >= 85)
+		{
 			enemy[i].type = ENEMY_TYPE_BOBM;
+			enemy[i].hp = 3;
+		}
 	}
 	else
 	{
-		enemy[i].hp = 10;
 		enemy[i].type = ENEMY_TYPE_BOSS;
-		enemy[i].scale = { 3, 3 };
+		enemy[i].hp = 10;
 	}
+
+	//生成場所
+	if (enemy[i].type == ENEMY_TYPE_BOSS)
+	{
+		enemy[i].pos.x = SCREEN_W + 200.0f;
+		enemy[i].pos.y = SCREEN_H * 0.5f;
+	}
+	else
+	{
+		int enemy_respawn_place = rand() % 2;
+		if (enemy_respawn_place == 0)
+		{
+			enemy[i].pos.x = SCREEN_W + 50.0f;
+			enemy[i].pos.y = rand() % 648;
+		}
+		else if (enemy_respawn_place == 1)
+		{
+			enemy[i].pos.x = rand() % 640 + 1280.0f;
+			enemy[i].pos.y = SCREEN_H + 100.0f;
+		}
+	}
+}
+
+//敵の種類ごとの能力
+void enemy_ability(int i)
+{
+	//それぞれの最大移動値を計算
+	pos[i]= 310 + (SCREEN_H - enemy[i].pos.y) * 0.3584f / 0.9336f;
 	
-//生成場所
-	int enemy_respawn_place = rand() % 2;
-    if (enemy_respawn_place == 0)
+	if (enemy[i].pos.x > pos[i])
 	{
-		enemy[i].pos.x = 1920.0f + 50.0f;
-		enemy[i].pos.y = rand() % 648;
+		//角度を計算
+		float base_angle = atan2f(540 - enemy[i].pos.y, -200.0f - enemy[i].pos.x);
+	
+		//通常の敵
+		if (enemy[i].type == ENEMY_TYPE_NORMAL)
+		{
+			enemy[i].pos.x += cosf(base_angle) * enemy_speed;
+			enemy[i].pos.y += sinf(base_angle) * enemy_speed;
+		}
+
+		//速い敵
+		if (enemy[i].type == ENEMY_TYPE_FAST)
+		{
+			enemy[i].pos.x += cosf(base_angle) * enemy_speed * 2;
+			enemy[i].pos.y += sinf(base_angle) * enemy_speed * 2;
+		}
+
+		//一定の間隔で進む敵
+		else if (enemy[i].type == ENEMY_TYPE_TURBO)
+		{
+			if (enemy_turbo[i] < 15)
+			{
+				enemy[i].pos.x += cosf(base_angle) * enemy_speed * 5;
+				enemy[i].pos.y += sinf(base_angle) * enemy_speed * 5;
+			}
+			else if (enemy_turbo[i] > 100)
+				enemy_turbo[i] = 0;
+		}
+
+		//揺れ動く敵
+		else if (enemy[i].type == ENEMY_TYPE_TRICKY)
+		{
+			//トリッキーな敵：うねうね揺れながら進む 
+			enemy[i].move_timer++;
+
+			//サイン波を使って左右に揺れる幅を計算
+			float wobble = sinf(enemy[i].move_timer * 0.15f) * 20.0f;
+
+			enemy[i].pos.x += cosf(base_angle) * enemy_speed;
+			enemy[i].pos.y += sinf(base_angle) * enemy_speed;
+
+			//進行方向に対して垂直な方向に揺れを足す
+			enemy[i].pos.x += -sinf(base_angle) * wobble;
+			enemy[i].pos.y += cosf(base_angle) * wobble;
+		}
+
+		//渦巻く敵
+		else if (enemy[i].type == ENEMY_TYPE_EDDY)
+		{
+			enemy[i].pos.x += cosf(base_angle) * enemy_speed;
+			enemy[i].pos.y += sinf(base_angle) * enemy_speed;
+
+			//進行方向に対して垂直な方向に揺れを足す
+			enemy[i].pos.x += -sinf(base_angle) * enemy_speed;
+			enemy[i].pos.y += cosf(base_angle) * enemy_speed;
+		}
+
+		//ボム敵
+		else if (enemy[i].type == ENEMY_TYPE_BOBM)
+		{
+			enemy[i].pos.x += cosf(base_angle) * enemy_speed;
+			enemy[i].pos.y += sinf(base_angle) * enemy_speed;
+
+			if (enemy[i].hp <= 0)
+			{
+				for (int j = 0; j < ENEMY_NUMBER; j++)
+				{
+					if (i == j) continue;
+
+					//それぞれのベクトルを計算
+					float enemy_Vec_x = enemy[j].pos.x - enemy[i].pos.x;
+					float enemy_Vec_y = enemy[j].pos.y - enemy[i].pos.y;
+					float enemy_Vec = sqrtf(enemy_Vec_x * enemy_Vec_x + enemy_Vec_y * enemy_Vec_y);
+
+					//爆発に範囲
+					if (enemy_Vec < 100.0f)
+						enemy[j].hp--;
+				}
+			}
+		}
+
+		//ボス敵
+		else if (enemy[i].type == ENEMY_TYPE_BOSS)
+		{
+			enemy[i].pos.x += cosf(base_angle) * enemy_speed * 0.5f;
+			enemy[i].pos.y += sinf(base_angle) * enemy_speed * 0.5f;
+		}
 	}
-	else if (enemy_respawn_place == 1)
-	{
-		enemy[i].pos.x = rand() % 640 + 1280.0f;
-		enemy[i].pos.y = 1080.0f+100.0f;
-	}
+	else
+	{   
+		enemy_attack_timer[i]++;
+		//enemy_border[i] = 260 + (SCREEN_H - enemy[i].pos.y) * 0.3584f / 0.9336f;
+		
+		if (enemy_attack_timer[i] < 15)
+			enemy[i].pos.x -= 3.0f;
+
+		else if(enemy_attack_timer[i] == 15)
+			player_hp--;
+		
+		else if (enemy_attack_timer[i] > 15 && enemy_attack_timer[i] < 45)
+			enemy[i].pos.x += 1.5f;
+
+		else if (enemy_attack_timer[i] > 105)
+			enemy_attack_timer[i] = 0;
+    }
 }
 
 
@@ -279,44 +314,24 @@ void enemy_render()
 	{
 		if (enemy[i].hp <= 0) { continue; }
 
-		
-
-		
-
-		
-		
-		
-		
 		if (enemy[i].type == ENEMY_TYPE_BOSS)
 		{
 			sprite_render(
 				sprEnemy,
 				enemy[i].pos.x, enemy[i].pos.y,
-				enemy[i].scale.x, enemy[i].scale.y,
+				3, 3,
 				0, 0,
 				enemy[i].texSize.x, enemy[i].texSize.y,
 				enemy[i].pivot.x, enemy[i].pivot.y,
 				ToRadian(0),
 				enemy[i].color.x, enemy[i].color.y, enemy[i].color.z, enemy[i].color.w);
 		}
-		else if (enemy[i].type == ENEMY_TYPE_BOBM)
-		{
-		    sprite_render(
-				sprEnemy,
-				enemy[i].pos.x, enemy[i].pos.y,
-				enemy[i].scale.x, enemy[i].scale.y,
-				0, 0,
-				enemy[i].texSize.x, enemy[i].texSize.y,
-				enemy[i].pivot.x, enemy[i].pivot.y,
-				ToRadian(0),
-				enemy[i].color.x, enemy[i].color.y, enemy[i].color.z, 0.8);
-		}
 		else
 		{
 			sprite_render(
 				sprEnemy,
 				enemy[i].pos.x, enemy[i].pos.y,
-				enemy[i].scale.x, enemy[i].scale.y,
+				1, 1,
 				0, 0,
 				enemy[i].texSize.x, enemy[i].texSize.y,
 				enemy[i].pivot.x, enemy[i].pivot.y,
