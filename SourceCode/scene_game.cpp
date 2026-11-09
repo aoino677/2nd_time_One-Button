@@ -133,7 +133,6 @@ void game_render()
 	level_up_render();
 	hp_render();
 	effect_danger_render();
-	font::textOut(2, "GAME", 100, 200, 2, 2);
 	choice_render();
 	time_limit_render();
 	pause_render(); // ‚±‚êˆÈã‰º‚É‘‚©‚È‚¢
