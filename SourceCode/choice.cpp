@@ -13,7 +13,7 @@ Sprite* sprpower_efficacy[EFFICACY_MAX];
 int choice_state = 0;
 int choice_timer = 0;
 int level_up_count = 0;
-int choice_num = 0;
+int choice_num[EFFICACY_MAX];
 
 float choice_effect_y = 0.0f;
 float choice_effect_alpha = 0.0f;
@@ -24,7 +24,7 @@ void choice_init()
 	choice_timer = 0;
 	level_up_count = 0;
 	bullet_lay_count = 1;
-	choice_num = 0;
+	choice_num[EFFICACY_MAX] = {};
 	choice_effect_y = 0.0f;
 	choice_effect_alpha = 0.0f;
 
@@ -151,6 +151,7 @@ void choice_update()
 			float right = choiceButton[i].pos.x + (choiceButton[i].texSize.x - choiceButton[i].pivot.x) * choiceButton[i].scale.x;
 			float top = buttonY - choiceButton[i].pivot.y * choiceButton[i].scale.y;
 			float bottom = buttonY + (choiceButton[i].texSize.y - choiceButton[i].pivot.y) * choiceButton[i].scale.y;
+
 			//----------------------------------
 			// ポーズボタンの判定
 			//----------------------------------
@@ -170,29 +171,28 @@ void choice_update()
 					case 0:
 						choice_pause = false;
 						choice_state = 0;
-						choice_num = 0;
 						choice_effect_y = 0.0f;
 						choice_effect_alpha = 0.0f;
 						// ここに強化する効果を書く
 						switch (rand() % 6)
 						{
 						case 0:
-							HP(choice_num);
+							HP();
 							break;
 						case 1:
-							Bullet_scale(choice_num);
+							Bullet_scale();
 							break;
 						case 2:
-							Bullet_speed(choice_num);
+							Bullet_speed();
 							break;
 						case 3:
-							Bullet_rad(choice_num);
+							Bullet_rad();
 							break;
 						case 4:
-							Bullet_quantity(choice_num);
+							Bullet_quantity();
 							break;
 						case 5:
-							Bullet_diffusion(choice_num);
+							Bullet_diffusion();
 							break;
 						}
 						break;
@@ -200,29 +200,28 @@ void choice_update()
 					case 1:
 						choice_pause = false;
 						choice_state = 0;
-						choice_num = 1;
 						choice_effect_y = 0.0f;
 						choice_effect_alpha = 0.0f;
 						// ここに強化する効果を書く
 						switch (rand() % 6)
 						{
 						case 0:
-							HP(choice_num);
+							HP();
 							break;
 						case 1:
-							Bullet_scale(choice_num);
+							Bullet_scale();
 							break;
 						case 2:
-							Bullet_speed(choice_num);
+							Bullet_speed();
 							break;
 						case 3:
-							Bullet_rad(choice_num);
+							Bullet_rad();
 							break;
 						case 4:
-							Bullet_quantity(choice_num);
+							Bullet_quantity();
 							break;
 						case 5:
-							Bullet_diffusion(choice_num);
+							Bullet_diffusion();
 							break;
 						}
 						break;
@@ -230,29 +229,28 @@ void choice_update()
 					case 2:
 						choice_pause = false;
 						choice_state = 0;
-						choice_num = 2;
 						choice_effect_y = 0.0f;
 						choice_effect_alpha = 0.0f;
 						// ここに強化する効果を書く
 						switch (rand() % 6)
 						{
 						case 0:
-							HP(choice_num);
+							HP();
 							break;
 						case 1:
-							Bullet_scale(choice_num);
+							Bullet_scale();
 							break;
 						case 2:
-							Bullet_speed(choice_num);
+							Bullet_speed();
 							break;
 						case 3:
-							Bullet_rad(choice_num);
+							Bullet_rad();
 							break;
 						case 4:
-							Bullet_quantity(choice_num);
+							Bullet_quantity();
 							break;
 						case 5:
-							Bullet_diffusion(choice_num);
+							Bullet_diffusion();
 							break;
 						}
 						break;
@@ -325,3 +323,29 @@ bool T_or_F(int level_up_count)
 	if (level_up_count == 0) { return false; }
 	else { return true; }
 }
+//
+//void random(int num[])
+//{
+//	srand((unsigned int)time(NULL));
+//
+//	for (int i = 0; i < EFFICACY_MAX; i++)
+//	{
+//		bool check = false;
+//
+//		while (check == false)
+//		{
+//			num[i] = rand() % EFFICACY_MAX + 1;
+//
+//			check = true;
+//
+//			for (int j = 0; j < i; j++)
+//			{
+//				if (num[i] == num[j])
+//				{
+//					check = false;
+//				}
+//			}
+//		}
+//	}
+//
+//}
