@@ -26,7 +26,7 @@ int endScene = SCENE_RESULT;
 int APIENTRY wWinMain(HINSTANCE, HINSTANCE, LPWSTR, int)// 使用しない変数は記述しない
 {
 	// ゲームライブラリの初期設定
-	GameLib::init(L"ゲームプログラミングⅠ", (int)SCREEN_W, (int)SCREEN_H, FALSE);
+	GameLib::init(L"ゲームプログラミングⅠ", (int)SCREEN_W, (int)SCREEN_H, TRUE);
 
 	// TODO_08_1 コメントアウトをする
 	/*game_init();*/

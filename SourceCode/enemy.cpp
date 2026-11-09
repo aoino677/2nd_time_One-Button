@@ -126,7 +126,7 @@ void enemy_update()
 void enemy_ability(int i)
 {
 	//中心に向かう基本角度を計算
-	srand((unsigned int)time(NULL));
+	//srand((unsigned int)time(NULL));
 	
 	float base_angle = atan2f(540 - enemy[i].pos.y, -200.0f - enemy[i].pos.x);
 
@@ -224,6 +224,8 @@ void enemy_respawn(int i)
 {
 	enemy[i].move_timer = 0; //タイマーをリセット
 
+	enemy[i].scale = { 1, 1 };
+
 	//敵の選別
 	if (enemy_boss_timer < 3000)
 	{
@@ -253,6 +255,7 @@ void enemy_respawn(int i)
 	{
 		enemy[i].hp = 10;
 		enemy[i].type = ENEMY_TYPE_BOSS;
+		enemy[i].scale = { 3, 3 };
 	}
 	
 //生成場所
@@ -289,7 +292,7 @@ void enemy_render()
 			sprite_render(
 				sprEnemy,
 				enemy[i].pos.x, enemy[i].pos.y,
-				3, 3,
+				enemy[i].scale.x, enemy[i].scale.y,
 				0, 0,
 				enemy[i].texSize.x, enemy[i].texSize.y,
 				enemy[i].pivot.x, enemy[i].pivot.y,

@@ -21,7 +21,7 @@
 #include "effect_danger.h"
 #include "choice.h"
 #include "Time_limit.h"
-#include "power_up.h"
+#include "power_efficacy.h"
 
 
 //------< ’è” >----------------------------------------------------------------
@@ -55,7 +55,6 @@ void game_init()
 	effect_danger_init();
 	choice_init();
 	time_limit_init();
-	//power_up_init();
 }
 
 //--------------------------------------
@@ -80,9 +79,8 @@ void game_update()
 		/*fallthrough*/
 	case 2:
 		//////// ’Êí ////////
-		choice_update();
 		pause_update();
-		//power_up_update();
+		choice_update_pause();
 		
 		//========================================
 	   // ƒQ[ƒ€’†
@@ -110,6 +108,7 @@ void game_update()
 		if (pause == true || choice_pause == true)
 		{
 			cursor_main_update();
+			choice_update();
 		}
 
 		break;
@@ -130,6 +129,7 @@ void game_render()
 	background_render();
 	enemy_render();
 	EXP_render();
+	player_render();
 	level_up_render();
 	hp_render();
 	effect_danger_render();
@@ -137,9 +137,7 @@ void game_render()
 	choice_render();
 	time_limit_render();
 	pause_render(); // ‚±‚êˆÈã‰º‚É‘‚©‚È‚¢
-	player_render();
 	cursor_main_render();
-	//power_up_render();
 }
 
 //--------------------------------------
@@ -154,5 +152,4 @@ void game_deinit()
 	background_deinit();
 	cursor_main_deinit();
 	choice_deinit();
-	//power_up_deinit();
 }
