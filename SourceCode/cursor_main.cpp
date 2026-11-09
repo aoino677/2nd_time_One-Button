@@ -1,6 +1,7 @@
 #include "all.h"
 #include "obj2d.h"
 #include "cursor_main.h"
+#include "enemy.h"
 #include "player.h"
 
 //==================================================
@@ -18,6 +19,8 @@ int cursor_main_timer = 0;
 float cursor_main_posX = 0.0f;
 float cursor_main_posY = 0.0f;
 
+int timer = 0;
+
 //==================================================
 // 初期化
 //==================================================
@@ -30,6 +33,8 @@ void cursor_main_init()
 
     cursor_main_posX = 0.0f;
     cursor_main_posY = 0.0f;
+
+    timer = TIMER;
 
     cursor_main = {};
 }
@@ -78,6 +83,35 @@ void cursor_main_update()
         // マウスの位置を取得
         cursor_main_posX = (float)getCursorPosX();
         cursor_main_posY = (float)getCursorPosY();
+
+        for (int i = 0; i < ENEMY_NUMBER; i++)
+        {
+            float left   = enemy[i].pos.x - enemy[i].pivot.x * ENEMY_SCALE;
+            float right = enemy[i].pos.x + (enemy[i].texSize.x - enemy[i].pivot.x) * ENEMY_SCALE;
+            float top   = enemy[i].pos.y - enemy[i].pivot.y * ENEMY_SCALE;
+            float bottom = enemy[i].pos.y + (enemy[i].texSize.y - enemy[i].pivot.y) * ENEMY_SCALE;
+
+            if (cursor_main_posX >= left &&
+                cursor_main_posX <= right &&
+                cursor_main_posY >= top &&
+                cursor_main_posY <= bottom)
+            {
+                /*for (; timer >= 0;)
+                {
+                    if (timer == 0)
+                    {
+                        shot_bullet();
+                        timer = TIMER;
+                    }
+                    else
+                    {
+                        timer--;
+                    }
+                }*/
+                
+            }
+        }
+        
 
         // 取得した位置に画像を配置
         cursor_main.pos = {

@@ -7,6 +7,8 @@
 #define CURSOL_MAIN_PIVOT_Y      (34.0f)   // プレイヤーの縦方向の下端
 #define CURSOL_MAIN_SCALE        (1.0f)       // プレイヤーのスケール
 
+#define TIMER (60)
+
 extern OBJ2D cuesor_main;
 extern float cursor_scale;
 

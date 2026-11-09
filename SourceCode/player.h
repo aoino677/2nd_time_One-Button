@@ -27,4 +27,6 @@ void player_render();
 void set_canRapidShot(bool);
 void set_shotPerSecond(float);
 
+extern void shot_bullet();
+
 #define RAPID_COOLDOWN (0.2f)
