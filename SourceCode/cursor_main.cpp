@@ -18,10 +18,6 @@ int cursor_main_timer = 0;
 float cursor_main_posX = 0.0f;
 float cursor_main_posY = 0.0f;
 
-// ÉJÅ[É\ÉãÇÃëÂÇ´Ç≥
-float cursor_scale = 1.0f;
-
-
 //==================================================
 // èâä˙âª
 //==================================================
@@ -36,8 +32,6 @@ void cursor_main_init()
     cursor_main_posY = 0.0f;
 
     cursor_main = {};
-
-    cursor_scale = 1.0f;
 }
 
 
@@ -70,7 +64,7 @@ void cursor_main_update()
     case 1:
         cursor_main = {};
         cursor_main.pos     = { 0.0f, 0.0f };
-        cursor_main.scale   = { cursor_scale,cursor_scale };
+        cursor_main.scale   = { CURSOL_MAIN_SCALE,CURSOL_MAIN_SCALE };
         cursor_main.texPos = {0.0f,0.0f};
         cursor_main.texSize = {CURSOL_MAIN_TEX_W,CURSOL_MAIN_TEX_H};
         cursor_main.pivot   = {CURSOL_MAIN_PIVOT_X,CURSOL_MAIN_PIVOT_Y};

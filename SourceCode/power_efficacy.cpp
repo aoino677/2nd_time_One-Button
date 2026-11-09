@@ -38,8 +38,3 @@ void Bullet_diffusion()
 {
 	bullet_lay_gap += ToRadian(3);
 }
-// カーソルの大きさ変更
-void Cursor_scale()
-{
-	cursor_scale += 0.1f;
-}
