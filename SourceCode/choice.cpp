@@ -163,6 +163,7 @@ void choice_update()
 						choice_effect_alpha = 0.0f;
 						// ‚±‚±‚É‹­‰»‚·‚éŒø‰Ê‚ğ‘‚­
 						Bullet_quantity();
+						Bullet_diffusion();
 						break;
 					}
 				}
