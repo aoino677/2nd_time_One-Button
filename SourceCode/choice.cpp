@@ -7,10 +7,13 @@
 
 OBJ2D choiceButton[CHOICE_MAX];
 Sprite* sprchoicebar;
+OBJ2D power_efficacy[EFFICACY_MAX]; // 効能の個数
+Sprite* sprpower_efficacy[EFFICACY_MAX];
 
 int choice_state = 0;
 int choice_timer = 0;
 int level_up_count = 0;
+int choice_num = 0;
 
 float choice_effect_y = 0.0f;
 float choice_effect_alpha = 0.0f;
@@ -21,11 +24,25 @@ void choice_init()
 	choice_timer = 0;
 	level_up_count = 0;
 	bullet_lay_count = 1;
+	choice_num = 0;
 	choice_effect_y = 0.0f;
 	choice_effect_alpha = 0.0f;
 
 	// choiceButtonの読み込み
 	sprchoicebar = sprite_load(L"./Data/Images/choicebar.png");
+	// 文の読み込み
+	sprpower_efficacy[0] = sprite_load(L"./Data/images/HP_efficacy.png");
+	sprpower_efficacy[1] = sprite_load(L"./Data/images/Bullet_speed_efficacy.png");
+	sprpower_efficacy[2] = sprite_load(L"./Data/images/Bullet_quantity_efficacy.png");
+	sprpower_efficacy[3] = sprite_load(L"./Data/images/Bullet_diffusion_efficacy.png");
+	sprpower_efficacy[4] = sprite_load(L"./Data/images/Bullet_scale_efficacy.png");
+	sprpower_efficacy[5] = sprite_load(L"./Data/images/Bullet_rad_efficacy.png");
+	//sprpower_efficacy[6] = sprite_load(L"./Data/images/Bullet_rad_efficacy.png");
+	//sprpower_efficacy[7] = sprite_load(L"./Data/images/Bullet_rad_efficacy.png");
+	//sprpower_efficacy[8] = sprite_load(L"./Data/images/Bullet_rad_efficacy.png");
+	//sprpower_efficacy[9] = sprite_load(L"./Data/images/Bullet_rad_efficacy.png");
+	//sprpower_efficacy[10] = sprite_load(L"./Data/images/Bullet_rad_efficacy.png");
+	//sprpower_efficacy[11] = sprite_load(L"./Data/images/Bullet_rad_efficacy.png");
 
 	// パラメーターの設定
 	for (int i = 0; i < CHOICE_MAX; i++)
@@ -37,11 +54,25 @@ void choice_init()
 		choiceButton[i].pivot = { static_cast<float>(CHOICE_PIVOT_X)  ,static_cast<float>(CHOICE_PIVOT_Y) };
 		choiceButton[i].color = { 1, 1, 1, 1 };
 	}
-
+	for (int i = 0; i < EFFICACY_MAX; i++)
+	{
+		power_efficacy[i] = {};
+		power_efficacy[i].scale = { POWER_EFFICACY_SCALE ,POWER_EFFICACY_SCALE };
+		power_efficacy[i].texSize = { POWER_EFFICACY_TEX_W , POWER_EFFICACY_TEX_H };
+		power_efficacy[i].pivot = { POWER_EFFICACY_PIVOT_X , POWER_EFFICACY_PIVOT_Y };
+		power_efficacy[i].color = { 1, 1, 1, 1 };
+	}
+	
 	choiceButton[0].pos = { 450, 500 };
 	choiceButton[1].pos = { 950, 500 };
 	choiceButton[2].pos = { 1450, 500 };
 
+	for (int i = 0; i < EFFICACY_MAX; i++)
+	{
+		power_efficacy[i].pos = choiceButton[0].pos;
+		power_efficacy[i].pos = choiceButton[1].pos;
+		power_efficacy[i].pos = choiceButton[2].pos;
+	}
 }
 
 void choice_update_pause()
@@ -133,37 +164,97 @@ void choice_update()
 
 				if (TRG(0) & PAD_START)
 				{
-					//srand((unsigned int)time(NULL));
+					srand((unsigned int)time(NULL));
 					switch (i)
 					{
 					case 0:
 						choice_pause = false;
 						choice_state = 0;
+						choice_num = 0;
 						choice_effect_y = 0.0f;
 						choice_effect_alpha = 0.0f;
 						// ここに強化する効果を書く
-						HP();
-						Bullet_scale();
+						switch (rand() % 6)
+						{
+						case 0:
+							HP(choice_num);
+							break;
+						case 1:
+							Bullet_scale(choice_num);
+							break;
+						case 2:
+							Bullet_speed(choice_num);
+							break;
+						case 3:
+							Bullet_rad(choice_num);
+							break;
+						case 4:
+							Bullet_quantity(choice_num);
+							break;
+						case 5:
+							Bullet_diffusion(choice_num);
+							break;
+						}
 						break;
 
 					case 1:
 						choice_pause = false;
 						choice_state = 0;
+						choice_num = 1;
 						choice_effect_y = 0.0f;
 						choice_effect_alpha = 0.0f;
 						// ここに強化する効果を書く
-						Bullet_speed();
-						Bullet_rad();
+						switch (rand() % 6)
+						{
+						case 0:
+							HP(choice_num);
+							break;
+						case 1:
+							Bullet_scale(choice_num);
+							break;
+						case 2:
+							Bullet_speed(choice_num);
+							break;
+						case 3:
+							Bullet_rad(choice_num);
+							break;
+						case 4:
+							Bullet_quantity(choice_num);
+							break;
+						case 5:
+							Bullet_diffusion(choice_num);
+							break;
+						}
 						break;
 
 					case 2:
 						choice_pause = false;
 						choice_state = 0;
+						choice_num = 2;
 						choice_effect_y = 0.0f;
 						choice_effect_alpha = 0.0f;
 						// ここに強化する効果を書く
-						Bullet_quantity();
-						Bullet_diffusion();   
+						switch (rand() % 6)
+						{
+						case 0:
+							HP(choice_num);
+							break;
+						case 1:
+							Bullet_scale(choice_num);
+							break;
+						case 2:
+							Bullet_speed(choice_num);
+							break;
+						case 3:
+							Bullet_rad(choice_num);
+							break;
+						case 4:
+							Bullet_quantity(choice_num);
+							break;
+						case 5:
+							Bullet_diffusion(choice_num);
+							break;
+						}
 						break;
 					}
 				}
@@ -183,7 +274,7 @@ void choice_render()
 {
 	if (choice_pause == true)
 	{
-		//----------------------------------
+	//----------------------------------
    // 暗い背景
    //----------------------------------
 		primitive::rect(
@@ -204,6 +295,19 @@ void choice_render()
 				0, 0,
 				choiceButton[i].texSize.x, choiceButton[i].texSize.y,
 				choiceButton[i].pivot.x, choiceButton[i].pivot.y,
+				ToRadian(0),
+				1, 1, 1, 1
+			);
+		}
+		for (int i = 0; i < EFFICACY_MAX; i++)
+		{
+			sprite_render(
+				sprpower_efficacy[i],
+				power_efficacy[i].pos.x, power_efficacy[i].pos.y,
+				power_efficacy[i].scale.x, power_efficacy[i].scale.y,
+				0, 0,
+				power_efficacy[i].texSize.x, power_efficacy[i].texSize.y,
+				power_efficacy[i].pivot.x, power_efficacy[i].pivot.y,
 				ToRadian(0),
 				1, 1, 1, 1
 			);
