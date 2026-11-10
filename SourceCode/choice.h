@@ -16,5 +16,15 @@ void choice_render();
 void choice_deinit();
 bool T_or_F(int level_up_count);
 
+enum
+{
+	HP_UP,
+	BULLET_SCALE_UP,
+	BULLET_SPEED_UP,
+	BULLET_RAD_DOWN,
+	BULLET_QUANTITY_UP,
+	BULLET_DEIFFUSION_UP,
+	LOSER
+};
 
 

@@ -176,17 +176,17 @@ void choice_update()
 						// Ç±Ç±Ç…ã≠âªÇ∑ÇÈå¯â ÇèëÇ≠
 						switch (random)
 						{
-						case 0:
+						case HP_UP:
 							HP();						break;
-						case 1:
+						case BULLET_SCALE_UP:
 							Bullet_scale();			break;
-						case 2:
+						case BULLET_SPEED_UP:
 							Bullet_speed();			break;
-						case 3:
+						case BULLET_RAD_DOWN:
 							Bullet_rad();				break;
-						case 4:
+						case BULLET_QUANTITY_UP:
 							Bullet_quantity();		break;
-						case 5:
+						case BULLET_DEIFFUSION_UP:
 							Bullet_diffusion();		break;
 						}
 						break;
@@ -199,17 +199,17 @@ void choice_update()
 						// Ç±Ç±Ç…ã≠âªÇ∑ÇÈå¯â ÇèëÇ≠
 						switch (random)
 						{
-						case 0:
+						case HP_UP:
 							HP();						break;
-						case 1:
+						case BULLET_SCALE_UP:
 							Bullet_scale();			break;
-						case 2:
+						case BULLET_SPEED_UP:
 							Bullet_speed();			break;
-						case 3:
+						case BULLET_RAD_DOWN:
 							Bullet_rad();				break;
-						case 4:
+						case BULLET_QUANTITY_UP:
 							Bullet_quantity();		break;
-						case 5:
+						case BULLET_DEIFFUSION_UP:
 							Bullet_diffusion();		break;
 						}
 						break;
@@ -222,17 +222,17 @@ void choice_update()
 						// Ç±Ç±Ç…ã≠âªÇ∑ÇÈå¯â ÇèëÇ≠
 						switch (random)
 						{
-						case 0:
+						case HP_UP:
 							HP();						break;
-						case 1:
+						case BULLET_SCALE_UP:
 							Bullet_scale();			break;
-						case 2:
+						case BULLET_SPEED_UP:
 							Bullet_speed();			break;
-						case 3:
+						case BULLET_RAD_DOWN:
 							Bullet_rad();				break;
-						case 4:
+						case BULLET_QUANTITY_UP:
 							Bullet_quantity();		break;
-						case 5:
+						case BULLET_DEIFFUSION_UP:
 							Bullet_diffusion();		break;
 						}
 						break;
