@@ -7,7 +7,7 @@
 #include "Collision2D.h"
 
 float bullet_speed = BULLET_SPEED;//”­Ë‚·‚é’e‚Ì1•b“–‚½‚è‚Ì‘¬“x
-float shot_per_second = 20.0f; //‚P•bŠÔ‚É”­Ë‚·‚é’e‚Ì”
+float shot_per_second = 20.0f; //‚P•bŠÔ‚É”­Ë‚·‚é’e‚Ì”	
 float rapid_coolDown = RAPID_COOLDOWN; //˜AËŠJnŠÔ
 float precision_rad = ToRadian(5); //‘_‚Á‚½•ûŒü‚É”ò‚Ô¸“x
 
