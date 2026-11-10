@@ -24,5 +24,7 @@ void enemy_update();
 void enemy_render();
 void enemy_ability(int i);
 void enemy_respawn(int i);
+void enemy_attack(int i);
+
 extern OBJ2D enemy[ENEMY_NUMBER];
 extern int enemy_max;

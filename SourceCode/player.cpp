@@ -74,12 +74,8 @@ void delete_bullet()
 			delete* itr;
 			itr = player_bullets.erase(itr);
 		}
-		else if ((*itr)->pos.y > (*itr)->end_pos.y)
+		else if ((*itr)->pos.x > (*itr)->end_pos.x)
 		{
-			//for (int e = 0; e < ENEMY_NUMBER; e++)
-			//{
-			//	AttackCollision::enemy_vs_bullet(enemy[e], **itr);
-			//}
 			delete* itr;
 			itr = player_bullets.erase(itr);
 		}
@@ -109,7 +105,6 @@ void shot_bullet()
 	{
 		if (OLDSHOT)
 		{
-
 			VECTOR2 vec = cursorPos - player.pos;
 
 			auto* b = new Bullet();
@@ -153,6 +148,31 @@ void shot_bullet()
 
 void player_shot_bullet()
 {
+	VECTOR2 cursorPos = { static_cast<float>(getCursorPosX()), static_cast<float>(getCursorPosY()) };
+	if (cursorPos.y < 380) cursorPos.y = 380;
+	bool isShot = false;
+	VECTOR2 shotPos;
+	for (int i = 0; i < ENEMY_NUMBER; i++)
+	{
+		VECTOR2 k = enemy[i].pos - enemy[i].pivot;
+		VECTOR2 lu, rd;
+		lu.x = k.x * enemy[i].scale.x;
+		lu.y = k.y * enemy[i].scale.y;
+		rd.x = k.x + enemy[i].texSize.x * enemy[i].scale.x;
+		rd.y = k.y + enemy[i].texSize.y * enemy[i].scale.y;
+		if (Collision2D::circle_vs_rect(cursorPos, 20, lu, rd))
+		{
+			isShot = true;
+			shotPos = enemy[i].pos;
+		}
+	}
+	
+	if (isShot)
+	{
+		shot_bullet();
+	}
+	return;
+
 	if (TRG(0) & PAD_START)
 	{
 		if (shot_timer > 1 / shot_per_second)
@@ -210,7 +230,8 @@ void player_move()
 	VECTOR2 vec = cursorPos - player.pos;
 	cursor_pos = cursorPos;
 	//player.pos.y += vec.y * 1000.0f / 60.0f;
-	player.pos.y = cursorPos.y - 300;
+	float targetY = cursorPos.y - 300;
+	player.pos.y += (targetY - player.pos.y) * 0.9f / 60.0f;
 	debug::setString("cursor : %f", cursorPos.y);
 	player.pos.x = (SCREEN_H - player.pos.y) * 0.3584f / 0.9336f;
 	player.scale.x = player.scale.y = 1.0f - ((SCREEN_H - player.pos.y) / SCREEN_H) * 0.2f;//âìÇ≠Ç…çsÇØÇŒçsÇ≠ÇŸÇ«è¨Ç≥Ç≠Ç»ÇÈÅB
