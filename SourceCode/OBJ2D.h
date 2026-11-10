@@ -8,7 +8,7 @@ struct OBJ2D
     VECTOR2 texPos{};               // 画像位置
     VECTOR2 texSize{};              // 画像サイズ
     VECTOR2 pivot{};                // 基準点
-    float angle;                    // 角度(ラジアン角)
+    float angle = 0;                    // 角度(ラジアン角)
     VECTOR4 color{ 1,1,1,1 };      // 色（白）
 
     VECTOR2 preserve{ 0.0f, 0.0f }; // 場所を保持する
@@ -18,10 +18,10 @@ struct OBJ2D
     float firingSpeed = 0;                // 球の連射速度
     int hp = 0;                       // 体力
     int attack = 0;                 // 攻撃力
-    int type;
-    int move_timer;
+    int type = 0;
+    int move_timer = 0;
 
     float timer = 0;                    // タイマー
 
-    float r;
+    float r = 0;
 };

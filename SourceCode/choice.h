@@ -1,6 +1,7 @@
 #pragma once
 #include "all.h"
 
+#define LEVEL_COUNT_INCREAS (5) // 経験値のマックスを？？？増やす
 #define CHOICE_MAX           (3)
 #define CHOICE_SCALE         (1.0f)
 #define CHOICE_TEX_W        (384.0f)
