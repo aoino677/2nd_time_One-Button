@@ -85,7 +85,7 @@ void delete_bullet()
 		}
 	}
 }
-bool OLDSHOT = false;
+//#define OLD_SHOT
 
 void shot_bullet()
 {
@@ -103,7 +103,7 @@ void shot_bullet()
 
 	for (int i = 0; i < bullet_lay_count; i++)
 	{
-		if (OLDSHOT)
+#ifdef OLDSHOT
 		{
 			VECTOR2 vec = cursorPos - player.pos;
 
@@ -119,7 +119,7 @@ void shot_bullet()
 			b->angle += ToRadian(180);
 			b->pos += vec * shot_timer;
 		}
-
+#else
 		auto* b = new Bullet();
 		b->pos = player.pos;
 		b->scale = { bullet_scale , bullet_scale };
@@ -143,35 +143,47 @@ void shot_bullet()
 		b->spr = sprBullet[0];
 		player_bullets.push_back(b);
 		rapidShoted_bullet_count++;
+#endif
 	}
 }
+//#define SHOT_AIM_TARGET
+#define SHOT_AIM_AND_CLICK_TARGET
 
 void player_shot_bullet()
 {
+#ifdef SHOT_AIM_TARGET
 	VECTOR2 cursorPos = { static_cast<float>(getCursorPosX()), static_cast<float>(getCursorPosY()) };
 	if (cursorPos.y < 380) cursorPos.y = 380;
 	bool isShot = false;
 	VECTOR2 shotPos;
-	for (int i = 0; i < ENEMY_NUMBER; i++)
+
+	if (shot_timer > 1 / shot_per_second)
 	{
-		VECTOR2 k = enemy[i].pos - enemy[i].pivot;
-		VECTOR2 lu, rd;
-		lu.x = k.x * enemy[i].scale.x;
-		lu.y = k.y * enemy[i].scale.y;
-		rd.x = k.x + enemy[i].texSize.x * enemy[i].scale.x;
-		rd.y = k.y + enemy[i].texSize.y * enemy[i].scale.y;
-		if (Collision2D::circle_vs_rect(cursorPos, 20, lu, rd))
+		for (int i = 0; i < ENEMY_NUMBER; i++)
 		{
-			isShot = true;
-			shotPos = enemy[i].pos;
+			if (enemy[i].hp <= 0) continue;
+			VECTOR2 k = enemy[i].pos - enemy[i].pivot;
+			VECTOR2 lu, rd;
+			lu.x = k.x * enemy[i].scale.x;
+			lu.y = k.y * enemy[i].scale.y;
+			rd.x = k.x + enemy[i].texSize.x * enemy[i].scale.x;
+			rd.y = k.y + enemy[i].texSize.y * enemy[i].scale.y;
+			if (Collision2D::circle_vs_rect(cursorPos, 20, lu, rd))
+			{
+				isShot = true;
+				shotPos = enemy[i].pos;
+			}
+		}
+
+		if (isShot)
+		{
+			shot_bullet();
+			shot_timer = 0;
 		}
 	}
-	
-	if (isShot)
-	{
-		shot_bullet();
-	}
-	return;
+	shot_timer += 1 / 60.0f;
+
+#elif defined(SHOT_AIM_AND_CLICK_TARGET)
 
 	if (TRG(0) & PAD_START)
 	{
@@ -221,6 +233,8 @@ void player_shot_bullet()
 		rapidShoted_bullet_count = 0;
 		is_rapid = false;
 	}
+#endif // SHOT_AIM_TARGET
+
 }
 
 void player_move()
@@ -236,7 +250,7 @@ void player_move()
 	player.pos.x = (SCREEN_H - player.pos.y) * 0.3584f / 0.9336f;
 	player.scale.x = player.scale.y = 1.0f - ((SCREEN_H - player.pos.y) / SCREEN_H) * 0.2f;//‰“‚­‚És‚¯‚Îs‚­‚Ù‚Ç¬‚³‚­‚È‚éB
 
-	player.angle = atan2f(vec.x, -vec.y);
+	//player.angle = atan2f(vec.x, -vec.y);
 }
 
 void player_update()
