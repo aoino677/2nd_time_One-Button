@@ -1,6 +1,7 @@
 #pragma once
 #include "all.h"
 
+#define LEVEL_COUNT_INCREAS (5) // 経験値のマックスを？？？増やす
 #define CHOICE_MAX           (3)
 #define CHOICE_SCALE         (1.0f)
 #define CHOICE_TEX_W        (384.0f)
@@ -15,5 +16,15 @@ void choice_render();
 void choice_deinit();
 bool T_or_F(int level_up_count);
 
+enum
+{
+	HP_UP,
+	BULLET_SCALE_UP,
+	BULLET_SPEED_UP,
+	BULLET_RAD_DOWN,
+	BULLET_QUANTITY_UP,
+	BULLET_DEIFFUSION_UP,
+	LOSER
+};
 
 

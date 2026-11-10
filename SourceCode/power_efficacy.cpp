@@ -16,7 +16,7 @@ void HP()
 // 球の発射スピード
 void Bullet_speed()
 {
-	bullet_speed += rand() % 50 + BULLET_SPEED;
+	bullet_speed += rand() % 50 + BULLET_SPEED_INCREASED;
 }
 // 球の発射個数
 void Bullet_quantity()

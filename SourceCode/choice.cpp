@@ -13,8 +13,7 @@ Sprite* sprpower_efficacy[EFFICACY_MAX];
 int choice_state = 0;
 int choice_timer = 0;
 int level_up_count = 0;
-int choice_num[EFFICACY_MAX];
-
+int random;
 float choice_effect_y = 0.0f;
 float choice_effect_alpha = 0.0f;
 
@@ -24,7 +23,6 @@ void choice_init()
 	choice_timer = 0;
 	level_up_count = 0;
 	bullet_lay_count = 1;
-	choice_num[EFFICACY_MAX] = {};
 	choice_effect_y = 0.0f;
 	choice_effect_alpha = 0.0f;
 
@@ -86,13 +84,15 @@ void choice_update_pause()
 			{
 				for (; T_or_F(level_up_count);)
 				{
-					level_max += 5;
+					level_max += LEVEL_COUNT_INCREAS;
 					exp_count = 0;
 					choice_pause = true;
 					choice_effect_y = static_cast<float>(SCREEN_H);
 					choice_effect_alpha = 0.0f;
 					choice_state = 0;
 					level_up_count--;
+
+					random = rand() % EFFICACY_MAX; // ÉâÉìÉ_ÉÄÇ…Ç∑ÇÈ
 				}
 				if (i == level_up_count)
 				{
@@ -174,26 +174,20 @@ void choice_update()
 						choice_effect_y = 0.0f;
 						choice_effect_alpha = 0.0f;
 						// Ç±Ç±Ç…ã≠âªÇ∑ÇÈå¯â ÇèëÇ≠
-						switch (rand() % 6)
+						switch (random)
 						{
-						case 0:
-							HP();
-							break;
-						case 1:
-							Bullet_scale();
-							break;
-						case 2:
-							Bullet_speed();
-							break;
-						case 3:
-							Bullet_rad();
-							break;
-						case 4:
-							Bullet_quantity();
-							break;
-						case 5:
-							Bullet_diffusion();
-							break;
+						case HP_UP:
+							HP();						break;
+						case BULLET_SCALE_UP:
+							Bullet_scale();			break;
+						case BULLET_SPEED_UP:
+							Bullet_speed();			break;
+						case BULLET_RAD_DOWN:
+							Bullet_rad();				break;
+						case BULLET_QUANTITY_UP:
+							Bullet_quantity();		break;
+						case BULLET_DEIFFUSION_UP:
+							Bullet_diffusion();		break;
 						}
 						break;
 
@@ -203,26 +197,20 @@ void choice_update()
 						choice_effect_y = 0.0f;
 						choice_effect_alpha = 0.0f;
 						// Ç±Ç±Ç…ã≠âªÇ∑ÇÈå¯â ÇèëÇ≠
-						switch (rand() % 6)
+						switch (random)
 						{
-						case 0:
-							HP();
-							break;
-						case 1:
-							Bullet_scale();
-							break;
-						case 2:
-							Bullet_speed();
-							break;
-						case 3:
-							Bullet_rad();
-							break;
-						case 4:
-							Bullet_quantity();
-							break;
-						case 5:
-							Bullet_diffusion();
-							break;
+						case HP_UP:
+							HP();						break;
+						case BULLET_SCALE_UP:
+							Bullet_scale();			break;
+						case BULLET_SPEED_UP:
+							Bullet_speed();			break;
+						case BULLET_RAD_DOWN:
+							Bullet_rad();				break;
+						case BULLET_QUANTITY_UP:
+							Bullet_quantity();		break;
+						case BULLET_DEIFFUSION_UP:
+							Bullet_diffusion();		break;
 						}
 						break;
 
@@ -232,26 +220,20 @@ void choice_update()
 						choice_effect_y = 0.0f;
 						choice_effect_alpha = 0.0f;
 						// Ç±Ç±Ç…ã≠âªÇ∑ÇÈå¯â ÇèëÇ≠
-						switch (rand() % 6)
+						switch (random)
 						{
-						case 0:
-							HP();
-							break;
-						case 1:
-							Bullet_scale();
-							break;
-						case 2:
-							Bullet_speed();
-							break;
-						case 3:
-							Bullet_rad();
-							break;
-						case 4:
-							Bullet_quantity();
-							break;
-						case 5:
-							Bullet_diffusion();
-							break;
+						case HP_UP:
+							HP();						break;
+						case BULLET_SCALE_UP:
+							Bullet_scale();			break;
+						case BULLET_SPEED_UP:
+							Bullet_speed();			break;
+						case BULLET_RAD_DOWN:
+							Bullet_rad();				break;
+						case BULLET_QUANTITY_UP:
+							Bullet_quantity();		break;
+						case BULLET_DEIFFUSION_UP:
+							Bullet_diffusion();		break;
 						}
 						break;
 					}
@@ -301,7 +283,7 @@ void choice_render()
 		{
 			sprite_render(
 				sprpower_efficacy[i],
-				power_efficacy[i].pos.x, power_efficacy[i].pos.y,
+				power_efficacy[i].pos.x, power_efficacy[i].pos.y  + choice_effect_y,
 				power_efficacy[i].scale.x, power_efficacy[i].scale.y,
 				0, 0,
 				power_efficacy[i].texSize.x, power_efficacy[i].texSize.y,
