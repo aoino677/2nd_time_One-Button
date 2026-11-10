@@ -30,3 +30,4 @@ void set_shotPerSecond(float);
 extern void shot_bullet();
 
 #define RAPID_COOLDOWN (0.2f)
+#define BULLET_SPEED (2000.0f)
