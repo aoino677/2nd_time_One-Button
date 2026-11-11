@@ -92,13 +92,13 @@ void game_update()
 		{
 			time_limit_update();
 			player_update();
+			item_update();
 			EXP_update();
 			enemy_update();
 			level_update();
 			shake_update();
 			effect_danger_update();
 			cursor_main_update();
-			item_update();
 		}
 		if (TRG(0) & PAD_TRG1)
 		{

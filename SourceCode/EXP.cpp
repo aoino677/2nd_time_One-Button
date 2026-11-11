@@ -57,7 +57,6 @@ void EXP_update()
                         EXP[exp_index].pos = enemy[enemy_index].pos;
                         EXP[exp_index].color.w = 1.0f;
                         EXP[exp_index].moveSpeed = 0;
-                        EXP[exp_index].r = 0;
                         break;
                     }
                 }

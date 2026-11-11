@@ -93,9 +93,7 @@ void choice_update_pause()
 					choice_state = 0;
 					level_up_count--;
 
-					random[0] = rand() % EFFICACY_MAX; // ランダムにする
-					random[1] = rand() % EFFICACY_MAX; // ランダムにする
-					random[2] = rand() % EFFICACY_MAX; // ランダムにする
+					randoms();
 				}
 				if (i == level_up_count)
 				{
@@ -150,79 +148,79 @@ void choice_update()
 		{
 		case HP_UP: // プレイヤーのHPが上がる
 			power_efficacy[0].pos = { 450,500 };
-			power_efficacy[0].color.w = 1; if (HP_UP){ power_efficacy[!0].color.w = 0; }break;
+			power_efficacy[0].color.w = 1; power_efficacy[!0].color.w = 0; break;
 
 		case BULLET_SCALE_UP: // 球の大きさ
 			power_efficacy[1].pos = { 450,500 };
-			power_efficacy[1].color.w = 1; if (BULLET_SCALE_UP) { power_efficacy[!1].color.w = 0; }break;
+			power_efficacy[1].color.w = 1; power_efficacy[!1].color.w = 0; break;
 
 		case BULLET_SPEED_UP: // 球の発射スピード
 			power_efficacy[2].pos = { 450,500 };		
-			power_efficacy[2].color.w = 1; if (BULLET_SPEED_UP) { power_efficacy[!2].color.w = 0; }break;
+			power_efficacy[2].color.w = 1; power_efficacy[!2].color.w = 0; break;
 
 		case BULLET_RAD_DOWN: // 弾の狙った方向に飛ぶ精度
 			power_efficacy[3].pos = { 450,500 };		
-			power_efficacy[3].color.w = 1; if (BULLET_RAD_DOWN) { power_efficacy[!3].color.w = 0; }break;
+			power_efficacy[3].color.w = 1; power_efficacy[!3].color.w = 0; break;
 
 		case BULLET_QUANTITY_UP: // 球の発射個数
 			power_efficacy[4].pos = { 450,500 };		
-			power_efficacy[4].color.w = 1; if (BULLET_QUANTITY_UP) { power_efficacy[!4].color.w = 0; }break;
+			power_efficacy[4].color.w = 1; power_efficacy[!4].color.w = 0; break;
 
 		case BULLET_DEIFFUSION_UP: // 弾の間隔
 			power_efficacy[5].pos = { 450,500 };		
-			power_efficacy[5].color.w = 1; if (BULLET_DEIFFUSION_UP) { power_efficacy[!5].color.w = 0; }break;
+			power_efficacy[5].color.w = 1; power_efficacy[!5].color.w = 0; break;
 		}
 		switch (random[1])
 		{
 		case HP_UP: // プレイヤーのHPが上がる
 			power_efficacy[0].pos = { 950,500 };
-			power_efficacy[0].color.w = 1; if (HP_UP) { power_efficacy[!0].color.w = 0; }break;
+			power_efficacy[0].color.w = 1; power_efficacy[!0].color.w = 0; break;
 
 		case BULLET_SCALE_UP: // 球の大きさ
 			power_efficacy[1].pos = { 950,500 };
-			power_efficacy[1].color.w = 1; if (BULLET_SCALE_UP) { power_efficacy[!1].color.w = 0; }break;
+			power_efficacy[1].color.w = 1; power_efficacy[!1].color.w = 0; break;
 
 		case BULLET_SPEED_UP: // 球の発射スピード
 			power_efficacy[2].pos = { 950,500 };
-			power_efficacy[2].color.w = 1; if (BULLET_SPEED_UP) { power_efficacy[!2].color.w = 0; }break;
+			power_efficacy[2].color.w = 1; power_efficacy[!2].color.w = 0; break;
 
 		case BULLET_RAD_DOWN: // 弾の狙った方向に飛ぶ精度
 			power_efficacy[3].pos = { 950,500 };
-			power_efficacy[3].color.w = 1; if (BULLET_RAD_DOWN) { power_efficacy[!3].color.w = 0; }break;
+			power_efficacy[3].color.w = 1; power_efficacy[!3].color.w = 0; break;
 
 		case BULLET_QUANTITY_UP: // 球の発射個数
 			power_efficacy[4].pos = { 950,500 };
-			power_efficacy[4].color.w = 1; if (BULLET_QUANTITY_UP) { power_efficacy[!4].color.w = 0; }break;
+			power_efficacy[4].color.w = 1; power_efficacy[!4].color.w = 0; break;
 
 		case BULLET_DEIFFUSION_UP: // 弾の間隔
 			power_efficacy[5].pos = { 950,500 };
-			power_efficacy[5].color.w = 1; if (BULLET_DEIFFUSION_UP) { power_efficacy[!5].color.w = 0; }break;
+			power_efficacy[5].color.w = 1; power_efficacy[!5].color.w = 0; break;
 		}
 		switch (random[2])
 		{
 		case HP_UP: // プレイヤーのHPが上がる
 			power_efficacy[0].pos = { 1450,500 };
-			power_efficacy[0].color.w = 1; if (HP_UP) { power_efficacy[!0].color.w = 0; }break;
+			power_efficacy[0].color.w = 1; power_efficacy[!0].color.w = 0; break;
 
 		case BULLET_SCALE_UP: // 球の大きさ
 			power_efficacy[1].pos = { 1450,500 };
-			power_efficacy[1].color.w = 1; if (BULLET_SCALE_UP) { power_efficacy[!1].color.w = 0; }break;
+			power_efficacy[1].color.w = 1; power_efficacy[!1].color.w = 0; break;
 
 		case BULLET_SPEED_UP: // 球の発射スピード
 			power_efficacy[2].pos = { 1450,500 };
-			power_efficacy[2].color.w = 1; if (BULLET_SPEED_UP) { power_efficacy[!2].color.w = 0; }break;
+			power_efficacy[2].color.w = 1; power_efficacy[!2].color.w = 0; break;
 
 		case BULLET_RAD_DOWN: // 弾の狙った方向に飛ぶ精度
 			power_efficacy[3].pos = { 1450,500 };
-			power_efficacy[3].color.w = 1; if (BULLET_RAD_DOWN) { power_efficacy[!3].color.w = 0; }break;
+			power_efficacy[3].color.w = 1; power_efficacy[!3].color.w = 0; break;
 
 		case BULLET_QUANTITY_UP: // 球の発射個数
 			power_efficacy[4].pos = { 1450,500 };
-			power_efficacy[4].color.w = 1; if (BULLET_QUANTITY_UP) { power_efficacy[!4].color.w = 0; }break;
+			power_efficacy[4].color.w = 1; power_efficacy[!4].color.w = 0; break;
 
-		case BULLET_DEIFFUSION_UP: // 弾の間隔
+		case BULLET_DEIFFUSION_UP: // 弾の間隔	
 			power_efficacy[5].pos = { 1450,500 };
-			power_efficacy[5].color.w = 1; if (BULLET_DEIFFUSION_UP) { power_efficacy[!5].color.w = 0; }break;
+			power_efficacy[5].color.w = 1; power_efficacy[!5].color.w = 0; break;
 		}
 		for (int i = 0; i < CHOICE_MAX; i++)
 		{
@@ -387,3 +385,31 @@ bool T_or_F(int level_up_count)
 	else { return true; }
 }
 
+void randoms()
+{
+	random[0] = rand() % EFFICACY_MAX;
+	random[1] = rand() % EFFICACY_MAX;
+	random[2] = rand() % EFFICACY_MAX;
+
+	// かぶっていたら再抽選
+	while (10000)
+	{
+		// [0]や[1]や[2]と一緒なら再抽選
+		if (random[0] == random[1])
+		{
+			random[0] = rand() % EFFICACY_MAX;
+		}
+		if (random[0] == random[2])
+		{
+			random[0] = rand() % EFFICACY_MAX;
+		}
+		if (random[1] == random[2])
+		{
+			random[1] = rand() % EFFICACY_MAX;
+		}
+		if (random[0] != random[1] || random[0] != random[2] || random[1] != random[2])
+		{
+			break;
+		}
+	}
+}
