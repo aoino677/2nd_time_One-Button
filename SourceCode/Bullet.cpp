@@ -19,7 +19,7 @@ void Bullet_Y1::attack(OBJ2D& enemy)
 
 void Bullet_INGOT::update()
 {
-	velocity.y += 3.0f / system::FRAME_RATE;
+	velocity += accel_velocity;
 	pos += velocity;
 }
 

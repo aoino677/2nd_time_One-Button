@@ -102,6 +102,7 @@ void shot_bullet()
 		auto* b = new Bullet_Y1();
 		b->texSize = { 64, 64 };
 		b->pos = player.pos;
+		b->pos.x += player.texSize.x - player.pivot.x;
 		b->scale = { bullet_scale , bullet_scale };
 		b->end_pos = cursorPos + a[i];
 		if (b->end_pos.y < 380)
@@ -371,6 +372,7 @@ void bullet_update()
 		b_ingot->spr = sprBullet[2];
 		b_ingot->texSize = { 64, 64 };
 		b_ingot->attack_damage = 18;
+		b_ingot->accel_velocity.y = 3 / system::FRAME_RATE;
 		player_bullets.push_back(b_ingot);
 	}
 	shot_timer += 1 / system::FRAME_RATE;

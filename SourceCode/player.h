@@ -32,4 +32,4 @@ void bullet_update();
 extern void shot_bullet();
 
 #define RAPID_COOLDOWN (0.2f)
-#define BULLET_SPEED (2000.0f)
+#define BULLET_SPEED (4000.0f)
