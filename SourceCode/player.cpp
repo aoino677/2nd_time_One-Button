@@ -21,10 +21,11 @@ int cast_bullet;			//”­ŽË‚ð‘Ò‹@‚µ‚Ä‚¢‚é’e
 
 int bullet_lay_count = 9;
 float bullet_lay_gap = ToRadian(7);//’e‚ÌŠÔŠu
-float bullet_scale = 1.0f;//’e‚Ì‘å‚«‚³
+#define BULLET_SCALE (0.5f)
+float bullet_scale = BULLET_SCALE;//’e‚Ì‘å‚«‚³
 
 Sprite* sprPlayer;
-Sprite* sprBullet[2];
+Sprite* sprBullet[3];
 OBJ2D player;
 std::vector<Bullet*> player_bullets;
 
@@ -35,11 +36,11 @@ void player_init()
 	sprPlayer = sprite_load(L"Data/Images/player.png");
 	sprBullet[0] = sprite_load(L"Data/Images/bullet.png");
 	sprBullet[1] = sprite_load(L"Data/Images/1yen.png");
+	sprBullet[2] = sprite_load(L"Data/Images/500yen.png");
 
 	player.pos = PLAYER_POS;
 	player.texSize = PLAYER_TEX_SIZE;
 	player.pivot = player.texSize / 2;
-	bullet_scale = 1.0f;
 	shot_timer = 0;
 	rapidShoted_bullet_count = 0;
 	is_rapid = false;
@@ -98,7 +99,8 @@ void shot_bullet()
 			b->pos += vec * shot_timer;
 		}
 #elif defined(NEW_SHOT)
-		auto* b = new Bullet();
+		auto* b = new Bullet_Y1();
+		b->texSize = { 64, 64 };
 		b->pos = player.pos;
 		b->scale = { bullet_scale , bullet_scale };
 		b->end_pos = cursorPos + a[i];
@@ -110,7 +112,6 @@ void shot_bullet()
 		//b->end_pos.y = cursorPos.y + i * 40.0f - 40.0f * (bullet_lay_count - 1) / 2;
 		float length3 = vec2Length(b->end_pos - b->pos);
 
-
 		//float f = (rand() / (float)RAND_MAX) * 2 - 1;//—”Ý’è
 		//float k = 0;// f* precision_rad;//ŠgŽUŠp“xÝ’è
 		//k += bullet_lay_gap * i - bullet_lay_gap * (bullet_lay_count - 1) / 2;
@@ -118,7 +119,7 @@ void shot_bullet()
 		b->angle = atan2f(vec.y, vec.x);
 		b->velocity = vec2Normalize(vec) * bullet_speed / system::FRAME_RATE * length3 / length;
 
-		b->spr = sprBullet[0];
+		b->spr = sprBullet[1];
 		player_bullets.push_back(b);
 		rapidShoted_bullet_count++;
 #endif
@@ -337,17 +338,14 @@ void bullet_attack()
 	{
 		for (int e = 0; e < ENEMY_NUMBER; e++)
 		{
-			if (bullet->end_pos.y - bullet->pos.y < enemy[e].texSize.y * enemy[e].scale.y * 0.5f)
-			{//AttackCollision::enemy_vs_bullet(enemy[e][e], *bullet);
-
+			{
 				VECTOR2 enemy_begin = enemy[e].pos - VECTOR2{ enemy[e].scale.x * enemy[e].pivot.x, enemy[e].scale.y * enemy[e].pivot.y };//enemy[e]‚Ì¶ã
 				VECTOR2 enemy_size = { enemy[e].scale.x * enemy[e].texSize.x, enemy[e].scale.y * enemy[e].texSize.y };
 				VECTOR2 bullet_center = bullet->pos;
-				float bullet_radius = 32;
+				float bullet_radius = bullet->texSize.x * bullet->scale.x;
 				if (Collision2D::circle_vs_rect(bullet_center, bullet_radius, enemy_begin, enemy_size) && enemy[e].hp > 0)
 				{
-					enemy[e].hp -= bullet->attack_damage;
-					bullet->pos = { -500, -500 };//‰æ–ÊŠO‚É
+					bullet->attack(enemy[e]);
 				}
 			}
 		}
@@ -358,7 +356,7 @@ void bullet_move()
 {
 	for (auto* bullet : player_bullets)
 	{
-		bullet->pos += bullet->velocity;
+		bullet->update();
 	}
 }
 
@@ -367,13 +365,13 @@ void bullet_update()
 	if (shot_timer > 3)
 	{
 		shot_timer = 0;
-		auto* y1 = new Bullet_Y1();
-		y1->pos = player.pos;
-		y1->end_pos = { SCREEN_W, SCREEN_H };
-		y1->velocity.x = 1;
-		y1->spr = sprBullet[1];
-		y1->texSize = { 64, 64 };
-		player_bullets.push_back(y1);
+		auto* b_ingot = new Bullet_INGOT();
+		b_ingot->pos = { static_cast<float>(getCursorPosX()),0 };
+		b_ingot->end_pos = { SCREEN_W, SCREEN_H };
+		b_ingot->spr = sprBullet[2];
+		b_ingot->texSize = { 64, 64 };
+		b_ingot->attack_damage = 18;
+		player_bullets.push_back(b_ingot);
 	}
 	shot_timer += 1 / system::FRAME_RATE;
 	bullet_move();
