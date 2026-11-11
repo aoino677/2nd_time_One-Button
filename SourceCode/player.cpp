@@ -113,9 +113,10 @@ void shot_bullet()
 		//b->end_pos.y = cursorPos.y + i * 40.0f - 40.0f * (bullet_lay_count - 1) / 2;
 		float length3 = vec2Length(b->end_pos - b->pos);
 
-		//float f = (rand() / (float)RAND_MAX) * 2 - 1;//óêêîê›íË
-		//float k = 0;// f* precision_rad;//ägéUäpìxê›íË
-		//k += bullet_lay_gap * i - bullet_lay_gap * (bullet_lay_count - 1) / 2;
+		//float f = (rand() / static_cast<float>(RAND_MAX)) * 2 - 1;//óêêîê›íË
+		//float k = f * precision_rad;//ägéUäpìxê›íË
+		//b->end_pos = player.pos;
+		//b->end_pos += { cosf(k) * length3, sinf(k) * length3 };
 		vec = b->end_pos - b->pos;
 		b->angle = atan2f(vec.y, vec.x);
 		b->velocity = vec2Normalize(vec) * bullet_speed / system::FRAME_RATE * length3 / length;
@@ -224,7 +225,7 @@ void player_move()
 	VECTOR2 vec = cursorPos - player.pos;
 	cursor_pos = cursorPos;
 	//player.pos.y += vec.y * 1000.0f / system::FRAME_RATE;
-	float targetY = cursorPos.y - 300;
+	float targetY = cursorPos.y; //- 300;
 	player.pos.y += (targetY - player.pos.y) * 0.9f / system::FRAME_RATE;
 	debug::setString("cursor : %f", cursorPos.y);
 	player.pos.x = (SCREEN_H - player.pos.y) * 0.3584f / 0.9336f;
