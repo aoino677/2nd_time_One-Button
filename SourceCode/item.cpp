@@ -1,30 +1,35 @@
 #include "item.h"
 #include "enemy.h"
 #include "player.h"
-#include "Collision2D.h"
 #include <vector>
+#include "Collision2D.h"
+#include <ctime>
+#include <stdlib.h>
 
 OBJ2D item[ITEM_MAX];
-Sprite* spritem[ITEM_MAX];
+Sprite* spritem1;
 
 int item_state = 0;
+int random;
 int item_couner;
 
 void item_init()
 {
 	item_state = 0;
 	item_couner = 0;
+	random = 0;
 }
 
 void item_update()
 {
+	srand((unsigned int)time(NULL));
 	switch (item_state)
 	{
 	case 0:
 		// ‰æ‘œ’Ç‰Á
-		spritem[0] = sprite_load(L"./Data/Images/itemBlue.png");
-		spritem[1] = sprite_load(L"./Data/Images/itemGreen.png");
-		spritem[2] = sprite_load(L"./Data/Images/itemRed.png");
+		spritem1 = sprite_load(L"./Data/Images/itemBlue.png");
+		/*spritem = sprite_load(L"./Data/Images/itemGreen.png");
+		spritem = sprite_load(L"./Data/Images/itemRed.png");*/
 
 		item_state++;
 		break;
@@ -47,15 +52,17 @@ void item_update()
 			// “G‚ÌF‚ª‚Oi“G‚ª€‚ñ‚¾‚çj‚É‚È‚Á‚½‚çitem‚ª—‚¿‚é
 			if (enemy[enemy_index].hp == 0)
 			{
-				for (int item_index = 0; item_index < ITEM_MAX; item_index++)
+				if (random == rand() % ITEM_RANDOM)
 				{
-					if (item[item_index].color.w != 1.0f)
+					for (int item_index = 0; item_index < ITEM_MAX; item_index++)
 					{
-						item[item_index].pos = enemy[enemy_index].pos;
-						item[item_index].color.w = 1.0f;
-						item[item_index].moveSpeed = 0;
-						item[item_index].r = 0;
-						break;
+						if (item[item_index].color.w != 1.0f)
+						{
+							item[item_index].pos = enemy[enemy_index].pos;
+							item[item_index].color.w = 1.0f;
+							item[item_index].moveSpeed = 0;
+							break;
+						}
 					}
 				}
 			}
@@ -96,7 +103,7 @@ void item_render()
 	for (int i = 0; i < ITEM_MAX; i++)
 	{
 		sprite_render(
-			spritem[i],
+			spritem1,
 			item[i].pos.x, item[i].pos.y,
 			item[i].scale.x, item[i].scale.y,
 			0, 0,
@@ -110,8 +117,5 @@ void item_render()
 
 void item_deinit()
 {
-	for (int i = 0; i < ITEM_MAX; i++)
-	{
-		safe_delete(spritem[i]);
-	}
+	safe_delete(spritem1);
 }
