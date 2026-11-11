@@ -373,13 +373,13 @@ void enemy_render()
 			if (enemy_hp_rate[i] > 1.0f) enemy_hp_rate[i] = 1.0f;
 			enemy_hp_bar_max[i] = 200.0f * enemy_hp_rate[i];
 
-			// ダメージ量（背景赤）
+			// ダメージ量
 			primitive::rect(enemy[i].pos.x - 220, enemy[i].pos.y - 400,
 				200, 20,
 				0, 0, 0,
 				1, 0, 0);
 
-			// 残りHP（緑）
+			// 残りHP
 			primitive::rect(
 				enemy[i].pos.x - 220, enemy[i].pos.y - 400,
 				enemy_hp_bar_max[i], 20,
@@ -404,7 +404,7 @@ void enemy_render()
 			if (enemy_hp_rate[i] > 1.0f) enemy_hp_rate[i] = 1.0f;
 			enemy_hp_bar_max[i] = 80.0f * enemy_hp_rate[i];
 
-			// ダメージ量（背景赤）
+			// ダメージ量
 			primitive::rect(enemy[i].pos.x - 40, enemy[i].pos.y - 60,
 				80, 10,
 				0, 0, 0,
