@@ -256,13 +256,8 @@ void player_move()
 void player_update()
 {
 	player_move();
-	player_shot_bullet();
-	for (auto*& bullet : player_bullets)
-	{
-		//bullet->velocity.y += 1.5f / 60.0f;
-		bullet->pos += bullet->velocity;
-	}
-	delete_bullet();
+	//player_shot_bullet();
+	bullet_update();
 	debug::setString("shot_per_second:%f", shot_per_second);
 	debug::setString("bullet_count:%d", player_bullets.size());
 
@@ -271,20 +266,20 @@ void player_update()
 		can_rapid_shot = true;
 	}
 
-	int enemy_count = 0;
-	for (int e = 0; e < ENEMY_NUMBER; e++)
-	{
-		AttackCollision::player_vs_enemy(player, enemy[e]);
-		for (auto*& bullet : player_bullets)
-		{
-			AttackCollision::enemy_vs_bullet(enemy[e], *bullet);
-		}
-		if (enemy[e].scale.x > 0.0001f)
-		{
-			enemy_count++;
-		}
-	}
-	debug::setString("enemies : %d", enemy_count);
+	//int enemy_count = 0;
+	//for (int e = 0; e < ENEMY_NUMBER; e++)
+	//{
+	//	AttackCollision::player_vs_enemy(player, enemy[e]);
+	//	for (auto*& bullet : player_bullets)
+	//	{
+	//		AttackCollision::enemy_vs_bullet(enemy[e], *bullet);
+	//	}
+	//	if (enemy[e].scale.x > 0.0001f)
+	//	{
+	//		enemy_count++;
+	//	}
+	//}
+	//debug::setString("enemies : %d", enemy_count);
 
 }
 
@@ -331,4 +326,20 @@ void set_canRapidShot(bool b)
 void set_shotPerSecond(float value)
 {
 	shot_per_second = value;
+}
+
+void bullet_update()
+{
+	for (auto* bullet : player_bullets)
+	{
+		bullet->pos += bullet->velocity;
+
+		for (int e = 0; e < ENEMY_NUMBER; e++)
+		{
+			if (bullet->end_pos.y - bullet->pos.y < enemy[e].texSize.y * enemy->scale.y * 0.5f)
+			AttackCollision::enemy_vs_bullet(enemy[e], *bullet);
+		}
+	}
+	delete_bullet();
+
 }
