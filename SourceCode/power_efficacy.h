@@ -2,7 +2,7 @@
 #include "all.h"
 
 #define HP_MAX (3)
-#define BULLET_SPEED (200)
+#define BULLET_SPEED_INCREASED (200.0f)
 #define EFFICACY_MAX (6)
 
 // ‰æ‘œ
