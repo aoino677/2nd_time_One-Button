@@ -3,6 +3,7 @@
 #include "Hp.h"
 #include "Bullet.h"
 #include "cursor_main.h"
+#include "item.h"
 #include <ctime>
 #include <stdlib.h>
 
@@ -26,17 +27,17 @@ void Bullet_quantity()
 // 球の大きさ
 void Bullet_scale()
 {
-	bullet_scale += 0.01f;
+	bullet_scale += BULLET_SCALE_INCREASED;
 }
 // 弾の狙った方向に飛ぶ精度
 void Bullet_rad()
 {
 	precision_rad -= ToRadian(0.5f);
 }
-// 弾の間隔
-void Bullet_diffusion()
+// アイテムが落ちやすくなる
+void Bullet_Lucky()
 {
-	bullet_lay_gap += ToRadian(3);
+	lucky -= ITEM_LUCKY_UP;
 }
 
 // はずれ

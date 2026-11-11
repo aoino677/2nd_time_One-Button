@@ -1,9 +1,12 @@
 #pragma once
 #include "all.h"
 
-#define HP_MAX (3)
-#define BULLET_SPEED_INCREASED (200.0f)
-#define EFFICACY_MAX (6)
+#define HP_MAX (3)										// 増やすHP量
+#define BULLET_SPEED_INCREASED (200.0f)		// 増やすスピード量
+#define BULLET_SCALE_INCREASED (0.01f)			// 増やす大きさの量
+#define ITEM_LUCKY_UP                    (1)				//	確率を上げる
+#define EFFICACY_MAX (6)								// エフェクトの個数
+
 
 // 画像
 #define POWER_EFFICACY_SCALE     (1.0f)
@@ -17,7 +20,7 @@ extern OBJ2D power_efficacy[EFFICACY_MAX];
 extern void HP();
 extern void Bullet_speed();
 extern void Bullet_quantity();
-extern void Bullet_diffusion();
+extern void Bullet_Lucky();
 extern void Bullet_scale();
 extern void Bullet_rad();
 

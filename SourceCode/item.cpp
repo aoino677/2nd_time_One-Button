@@ -11,6 +11,7 @@ Sprite* spritem1;
 
 int item_state = 0;
 int random;
+int lucky;
 int item_couner;
 
 void item_init()
@@ -18,6 +19,7 @@ void item_init()
 	item_state = 0;
 	item_couner = 0;
 	random = 0;
+	lucky = ITEM_RANDOM;
 }
 
 void item_update()
@@ -52,7 +54,7 @@ void item_update()
 			// “G‚ÌF‚ª‚Oi“G‚ª€‚ñ‚¾‚çj‚É‚È‚Á‚½‚çitem‚ª—‚¿‚é
 			if (enemy[enemy_index].hp == 0)
 			{
-				if (random == rand() % ITEM_RANDOM)
+				if (random == rand() % lucky)
 				{
 					for (int item_index = 0; item_index < ITEM_MAX; item_index++)
 					{
