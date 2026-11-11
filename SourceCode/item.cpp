@@ -33,10 +33,11 @@ void item_update()
 		for (int i = 0; i < ITEM_MAX; i++)
 		{
 			item[i] = {};
+			item[i].pos = { enemy[i].pos.x, enemy[i].pos.y };
 			item[i].scale		= { ITEM_SCALE,       ITEM_SCALE };
 			item[i].texSize	= { ITEM_TEXSIZE_X , ITEM_TEXSIZE_Y };
 			item[i].pivot		= { ITEM_PIVOT_X ,   ITEM_PIVOT_Y };
-			item[i].color		= { 1, 1, 1, 1 };
+			item[i].color		= { 1, 1, 1, 0 };
 		}
 		item_state++;
 		break;
@@ -46,14 +47,14 @@ void item_update()
 			// “G‚ÌF‚ª‚Oi“G‚ªŽ€‚ñ‚¾‚çj‚É‚È‚Á‚½‚çitem‚ª—Ž‚¿‚é
 			if (enemy[enemy_index].hp == 0)
 			{
-				for (int exp_index = 0; exp_index < ITEM_MAX; exp_index++)
+				for (int item_index = 0; item_index < ITEM_MAX; item_index++)
 				{
-					if (item[exp_index].color.w != 1.0f)
+					if (item[item_index].color.w != 1.0f)
 					{
-						item[exp_index].pos = enemy[enemy_index].pos;
-						item[exp_index].color.w = 1.0f;
-						item[exp_index].moveSpeed = 0;
-						item[exp_index].r = 0;
+						item[item_index].pos = enemy[enemy_index].pos;
+						item[item_index].color.w = 1.0f;
+						item[item_index].moveSpeed = 0;
+						item[item_index].r = 0;
 						break;
 					}
 				}
@@ -102,7 +103,7 @@ void item_render()
 			item[i].texSize.x, item[i].texSize.y,
 			item[i].pivot.x, item[i].pivot.y,
 			ToRadian(0),
-			1, 1, 1, 1
+			1, 1, 1, item[i].color.w
 		);
 	}
 }
