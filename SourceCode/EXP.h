@@ -1,4 +1,5 @@
 #pragma once
+#include "all.h"
 
 #define EXP_COUNT      (256)      // EXP‚ÌŒÂ”
 
@@ -13,9 +14,6 @@ void EXP_init();
 void EXP_update();
 void EXP_render();
 void EXP_deinit();
-
-// EXP‚ªƒvƒŒƒCƒ„[‚É‹ß‚Ã‚­
-bool move_block_player(OBJ2D* EXP, OBJ2D* Player, float speed);
 
 // externéŒ¾
 extern Sprite* sprEXP;

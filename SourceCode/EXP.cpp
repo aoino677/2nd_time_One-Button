@@ -1,4 +1,3 @@
-#include "all.h"
 #include "EXP.h"
 #include "enemy.h"
 #include "player.h"
