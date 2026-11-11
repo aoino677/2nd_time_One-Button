@@ -24,7 +24,7 @@ float bullet_lay_gap = ToRadian(7);//弾の間隔
 float bullet_scale = 1.0f;//弾の大きさ
 
 Sprite* sprPlayer;
-Sprite* sprBullet[1];
+Sprite* sprBullet[2];
 OBJ2D player;
 std::vector<Bullet*> player_bullets;
 
@@ -34,6 +34,7 @@ void player_init()
 {
 	sprPlayer = sprite_load(L"Data/Images/player.png");
 	sprBullet[0] = sprite_load(L"Data/Images/bullet.png");
+	sprBullet[1] = sprite_load(L"Data/Images/1yen.png");
 
 	player.pos = PLAYER_POS;
 	player.texSize = PLAYER_TEX_SIZE;
@@ -49,7 +50,7 @@ void player_init()
 void player_deinit()
 {
 	safe_delete(sprPlayer);
-	for (int i = 0; i < 1; i++)
+	for (int i = 0; i < 2; i++)
 	{
 		safe_delete(sprBullet[i]);
 	}
@@ -61,31 +62,8 @@ void player_deinit()
 	player_bullets.clear();
 }
 
-void delete_bullet()
-{
-	for (auto itr = player_bullets.begin(); itr != player_bullets.end();)
-	{
-		//画面外に出ていたら。
-		if ((*itr)->pos.x + 32 < 0
-			|| (*itr)->pos.x - 32 > SCREEN_W
-			|| (*itr)->pos.y + 32 < 0
-			|| (*itr)->pos.y - 32 > SCREEN_H)
-		{
-			delete* itr;
-			itr = player_bullets.erase(itr);
-		}
-		else if ((*itr)->pos.x > (*itr)->end_pos.x)
-		{
-			delete* itr;
-			itr = player_bullets.erase(itr);
-		}
-		else
-		{
-			itr++;
-		}
-	}
-}
 //#define OLD_SHOT
+#define NEW_SHOT
 
 void shot_bullet()
 {
@@ -115,11 +93,11 @@ void shot_bullet()
 			b->angle = k;
 			b->angle += bullet_lay_gap * i - bullet_lay_gap * (bullet_lay_count - 1) / 2;//端になるほど斜めになる。
 			vec = { cosf(b->angle), sinf(b->angle) };
-			b->velocity = vec2Normalize(vec) * bullet_speed / 60.0f;
+			b->velocity = vec2Normalize(vec) * bullet_speed / system::FRAME_RATE;
 			b->angle += ToRadian(180);
 			b->pos += vec * shot_timer;
 		}
-#else
+#elif defined(NEW_SHOT)
 		auto* b = new Bullet();
 		b->pos = player.pos;
 		b->scale = { bullet_scale , bullet_scale };
@@ -138,7 +116,7 @@ void shot_bullet()
 		//k += bullet_lay_gap * i - bullet_lay_gap * (bullet_lay_count - 1) / 2;
 		vec = b->end_pos - b->pos;
 		b->angle = atan2f(vec.y, vec.x);
-		b->velocity = vec2Normalize(vec) * bullet_speed / 60.0f * length3 / length;
+		b->velocity = vec2Normalize(vec) * bullet_speed / system::FRAME_RATE * length3 / length;
 
 		b->spr = sprBullet[0];
 		player_bullets.push_back(b);
@@ -147,7 +125,7 @@ void shot_bullet()
 	}
 }
 //#define SHOT_AIM_TARGET
-#define SHOT_AIM_AND_CLICK_TARGET
+//#define SHOT_AIM_AND_CLICK_TARGET
 
 void player_shot_bullet()
 {
@@ -181,7 +159,7 @@ void player_shot_bullet()
 			shot_timer = 0;
 		}
 	}
-	shot_timer += 1 / 60.0f;
+	shot_timer += 1 / system::FRAME_RATE;
 
 #elif defined(SHOT_AIM_AND_CLICK_TARGET)
 
@@ -225,8 +203,8 @@ void player_shot_bullet()
 		}
 	}
 
-	shot_timer += 1 / 60.0f;
-	rapid_timer += 1 / 60.0f;
+	shot_timer += 1 / system::FRAME_RATE;
+	rapid_timer += 1 / system::FRAME_RATE;
 
 	if (TRG_RELEASE(0) & PAD_START)
 	{
@@ -243,9 +221,9 @@ void player_move()
 	if (cursorPos.y < 380) cursorPos.y = 380;
 	VECTOR2 vec = cursorPos - player.pos;
 	cursor_pos = cursorPos;
-	//player.pos.y += vec.y * 1000.0f / 60.0f;
+	//player.pos.y += vec.y * 1000.0f / system::FRAME_RATE;
 	float targetY = cursorPos.y - 300;
-	player.pos.y += (targetY - player.pos.y) * 0.9f / 60.0f;
+	player.pos.y += (targetY - player.pos.y) * 0.9f / system::FRAME_RATE;
 	debug::setString("cursor : %f", cursorPos.y);
 	player.pos.x = (SCREEN_H - player.pos.y) * 0.3584f / 0.9336f;
 	player.scale.x = player.scale.y = 1.0f - ((SCREEN_H - player.pos.y) / SCREEN_H) * 0.2f;//遠くに行けば行くほど小さくなる。
@@ -304,7 +282,7 @@ void player_render()
 			bullet->pos.x, bullet->pos.y,
 			bullet->scale.x, bullet->scale.y,
 			0, 0,
-			64, 8,
+			bullet->texSize.x, bullet->texSize.y,
 			32, 4,
 			bullet->angle
 		);
@@ -328,18 +306,79 @@ void set_shotPerSecond(float value)
 	shot_per_second = value;
 }
 
-void bullet_update()
+void delete_bullet()
+{
+	for (auto itr = player_bullets.begin(); itr != player_bullets.end();)
+	{
+		//画面外に出ていたら。
+		if ((*itr)->pos.x + 32 < 0
+			|| (*itr)->pos.x - 32 > SCREEN_W
+			|| (*itr)->pos.y + 32 < 0
+			|| (*itr)->pos.y - 32 > SCREEN_H)
+		{
+			delete* itr;
+			itr = player_bullets.erase(itr);
+		}
+		else if ((*itr)->pos.x > (*itr)->end_pos.x)
+		{
+			delete* itr;
+			itr = player_bullets.erase(itr);
+		}
+		else
+		{
+			itr++;
+		}
+	}
+}
+
+void bullet_attack()
+{
+	for (auto* bullet : player_bullets)
+	{
+		for (int e = 0; e < ENEMY_NUMBER; e++)
+		{
+			if (bullet->end_pos.y - bullet->pos.y < enemy[e].texSize.y * enemy[e].scale.y * 0.5f)
+			{//AttackCollision::enemy_vs_bullet(enemy[e][e], *bullet);
+
+				VECTOR2 enemy_begin = enemy[e].pos - VECTOR2{ enemy[e].scale.x * enemy[e].pivot.x, enemy[e].scale.y * enemy[e].pivot.y };//enemy[e]の左上
+				VECTOR2 enemy_size = { enemy[e].scale.x * enemy[e].texSize.x, enemy[e].scale.y * enemy[e].texSize.y };
+				VECTOR2 bullet_center = bullet->pos;
+				float bullet_radius = 32;
+				if (Collision2D::circle_vs_rect(bullet_center, bullet_radius, enemy_begin, enemy_size) && enemy[e].hp > 0)
+				{
+					enemy[e].hp -= bullet->attack_damage;
+					bullet->pos = { -500, -500 };//画面外に
+				}
+			}
+		}
+	}
+}
+
+void bullet_move()
 {
 	for (auto* bullet : player_bullets)
 	{
 		bullet->pos += bullet->velocity;
-
-		for (int e = 0; e < ENEMY_NUMBER; e++)
-		{
-			if (bullet->end_pos.y - bullet->pos.y < enemy[e].texSize.y * enemy->scale.y * 0.5f)
-			AttackCollision::enemy_vs_bullet(enemy[e], *bullet);
-		}
 	}
-	delete_bullet();
+}
 
+void bullet_update()
+{
+	if (shot_timer > 3)
+	{
+		shot_timer = 0;
+		auto* y1 = new Bullet_Y1();
+		y1->pos = player.pos;
+		y1->end_pos = { SCREEN_W, SCREEN_H };
+		y1->velocity.x = 1;
+		y1->spr = sprBullet[1];
+		y1->texSize = { 64, 64 };
+		player_bullets.push_back(y1);
+	}
+	shot_timer += 1 / system::FRAME_RATE;
+	bullet_move();
+
+	bullet_attack();
+
+	delete_bullet();
 }
