@@ -22,9 +22,13 @@ void enemy_init();
 void enemy_deinit();
 void enemy_update();
 void enemy_render();
-void enemy_ability(int i);
+void enemy_move(int i);
 void enemy_respawn(int i);
-void enemy_attack(int i);
+void enemy_attack_action(int i);
+void enemy_powerup();
+
+void CRAYON(int i,int attack,float speed);
+void BOBM(int i, int hp, int attack, float speed);
 
 extern OBJ2D enemy[ENEMY_NUMBER];
 extern int enemy_max;
