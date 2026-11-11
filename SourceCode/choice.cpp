@@ -34,8 +34,8 @@ void choice_init()
 	sprpower_efficacy[2] = sprite_load(L"./Data/images/Bullet_speed_efficacy.png");
 	sprpower_efficacy[3] = sprite_load(L"./Data/images/Bullet_rad_efficacy.png");
 	sprpower_efficacy[4] = sprite_load(L"./Data/images/Bullet_quantity_efficacy.png");
-	sprpower_efficacy[5] = sprite_load(L"./Data/images/Bullet_diffusion_efficacy.png");
-	//sprpower_efficacy[6] = sprite_load(L"./Data/images/Bullet_rad_efficacy.png");
+	sprpower_efficacy[5] = sprite_load(L"./Data/images/Item_Lucky_efficacy.png");
+	sprpower_efficacy[6] = sprite_load(L"./Data/images/Bullet_interval_efficacy.png");
 	//sprpower_efficacy[7] = sprite_load(L"./Data/images/Bullet_rad_efficacy.png");
 	//sprpower_efficacy[8] = sprite_load(L"./Data/images/Bullet_rad_efficacy.png");
 	//sprpower_efficacy[9] = sprite_load(L"./Data/images/Bullet_rad_efficacy.png");
@@ -169,6 +169,10 @@ void choice_update()
 		case ITEM_LUCKY: // アイテムが落ちやすくなる
 			power_efficacy[5].pos = { 450,500 };		
 			power_efficacy[5].color.w = 1; power_efficacy[!5].color.w = 0; break;
+
+		case BULLET_INTERVAL: // 撃つ間隔が速くなる
+			power_efficacy[6].pos = { 450,500 };
+			power_efficacy[6].color.w = 1; power_efficacy[!6].color.w = 0; break;
 		}
 		switch (random[1])
 		{
@@ -195,6 +199,10 @@ void choice_update()
 		case ITEM_LUCKY: // アイテムが落ちやすくなる
 			power_efficacy[5].pos = { 950,500 };
 			power_efficacy[5].color.w = 1; power_efficacy[!5].color.w = 0; break;
+		
+		case BULLET_INTERVAL: // 撃つ間隔が速くなる
+			power_efficacy[6].pos = { 950,500 };
+			power_efficacy[6].color.w = 1; power_efficacy[!6].color.w = 0; break;
 		}
 		switch (random[2])
 		{
@@ -221,6 +229,10 @@ void choice_update()
 		case ITEM_LUCKY: // アイテムが落ちやすくなる
 			power_efficacy[5].pos = { 1450,500 };
 			power_efficacy[5].color.w = 1; power_efficacy[!5].color.w = 0; break;
+		
+		case BULLET_INTERVAL: // 撃つ間隔が速くなる
+			power_efficacy[6].pos = { 1450,500 };
+			power_efficacy[6].color.w = 1; power_efficacy[!6].color.w = 0; break;
 		}
 		for (int i = 0; i < CHOICE_MAX; i++)
 		{
@@ -266,7 +278,9 @@ void choice_update()
 						case BULLET_QUANTITY_UP:
 							Bullet_quantity();		break;
 						case ITEM_LUCKY:
-							Bullet_Lucky();		break;
+							Bullet_Lucky();			break;
+						case BULLET_INTERVAL:
+							Bullet_Interval();		break;
 						}
 						break;
 
@@ -289,7 +303,9 @@ void choice_update()
 						case BULLET_QUANTITY_UP:
 							Bullet_quantity();		break;
 						case ITEM_LUCKY:
-							Bullet_Lucky();		break;
+							Bullet_Lucky();			break;
+						case BULLET_INTERVAL:
+							Bullet_Interval();		break;
 						}
 						break;
 
@@ -312,7 +328,9 @@ void choice_update()
 						case BULLET_QUANTITY_UP:
 							Bullet_quantity();		break;
 						case ITEM_LUCKY:
-							Bullet_Lucky();		break;
+							Bullet_Lucky();			break;
+						case BULLET_INTERVAL:
+							Bullet_Interval();		break;
 						}
 						break;
 					}

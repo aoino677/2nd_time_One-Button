@@ -39,6 +39,11 @@ void Bullet_Lucky()
 {
 	lucky -= ITEM_LUCKY_UP;
 }
+// ’e‚ÌŒ‚‚ÂŠÔŠu‚ª’Z‚­‚È‚é
+void Bullet_Interval()
+{
+	timer_down -= BULLET_INTERVAL_UP;
+}
 
 // ‚Í‚¸‚ê
 void loser()
