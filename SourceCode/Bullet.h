@@ -1,8 +1,11 @@
 #pragma once
 #include "../GameLib/game_lib.h"
+#include <vector>
+#include "OBJ2D.h"
 
 struct Bullet
 {
+	virtual ~Bullet() = default;
 	GameLib::Sprite* spr;
 	VECTOR2 pos;//åªç›à íu
 	VECTOR2 end_pos;
@@ -13,10 +16,23 @@ struct Bullet
 
 	float attack_damage = 10;
 
- 	virtual void render();
+ 	virtual void update() = 0;
+ 	virtual void attack(OBJ2D&) = 0;
 };
 
 struct Bullet_Y1 : Bullet
 {
-	void render() override;
+	~Bullet_Y1()override = default;
+	void update() override;
+	void attack(OBJ2D&) override;
+};
+
+struct Bullet_INGOT : Bullet
+{
+	~Bullet_INGOT()override = default;
+	void update() override;
+	void attack(OBJ2D&) override;
+
+private:
+	std::vector<OBJ2D*> attacked_enemies;
 };
