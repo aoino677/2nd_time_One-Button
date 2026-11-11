@@ -126,7 +126,7 @@ void enemy_respawn(int i)
 		{
 			enemy[i].type = ENEMY_TYPE_NORMAL;
 			enemy_max_hp[i] = 20;
-			enemy[i].hp = 2;
+			enemy[i].hp = 20;
 			enemy[i].pivot = { 20,40 };
 		}
 
