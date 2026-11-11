@@ -22,6 +22,7 @@
 #include "choice.h"
 #include "Time_limit.h"
 #include "power_efficacy.h"
+#include "item.h"
 
 
 //------< ’è” >----------------------------------------------------------------
@@ -55,6 +56,7 @@ void game_init()
 	effect_danger_init();
 	choice_init();
 	time_limit_init();
+	item_init();
 }
 
 //--------------------------------------
@@ -90,6 +92,7 @@ void game_update()
 		{
 			time_limit_update();
 			player_update();
+			item_update();
 			EXP_update();
 			enemy_update();
 			level_update();
@@ -129,6 +132,7 @@ void game_render()
 	background_render();
 	enemy_render();
 	EXP_render();
+	item_render();
 	player_render();
 	level_up_render();
 	hp_render();
@@ -151,4 +155,5 @@ void game_deinit()
 	background_deinit();
 	cursor_main_deinit();
 	choice_deinit();
+	item_deinit();
 }

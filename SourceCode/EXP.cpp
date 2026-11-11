@@ -1,4 +1,3 @@
-#include "all.h"
 #include "EXP.h"
 #include "enemy.h"
 #include "player.h"
@@ -17,6 +16,7 @@ void EXP_init()
 {
 	EXP_timer = 0;
 	EXP_state = 0;
+    exp_count = 0;
 }
 
 void EXP_update()
@@ -41,9 +41,6 @@ void EXP_update()
             EXP[i].texSize = { EXP_TEX_W    , EXP_TEX_H };
             EXP[i].pivot = { EXP_PIVOT_X , EXP_PIVOT_Y };
             EXP[i].color = { 1, 1, 1, 0};
-
-            EXP[i].timer = 0;                // ŒoŒ±’l‚ª—Ž‚¿‚Ä“®‚­‚Ü‚Å‚ÌŽžŠÔ
-            EXP[i].moveSpeed = 0.0f;     // —Ž‚¿‚½XP‚Ì‹zŽû‚³‚ê‚é‘¬“x
         }
 		EXP_state++;
 		break;
@@ -60,7 +57,6 @@ void EXP_update()
                         EXP[exp_index].pos = enemy[enemy_index].pos;
                         EXP[exp_index].color.w = 1.0f;
                         EXP[exp_index].moveSpeed = 0;
-                        EXP[exp_index].r = 0;
                         break;
                     }
                 }
@@ -93,11 +89,8 @@ void EXP_update()
                 }
             }
         }
-
-		//EXP_state++;
 		break;
 	}
-
 }
 
 void EXP_render()

@@ -18,7 +18,7 @@ int cursor_main_timer = 0;
 // マウス位置
 float cursor_main_posX = 0.0f;
 float cursor_main_posY = 0.0f;
-
+int timer_down;
 int timer = 0;
 
 //==================================================
@@ -34,7 +34,8 @@ void cursor_main_init()
     cursor_main_posX = 0.0f;
     cursor_main_posY = 0.0f;
 
-    timer = TIMER;
+    timer_down = TIMER;
+    timer = timer_down;
 
     cursor_main = {};
 }
@@ -98,14 +99,14 @@ void cursor_main_update()
             {
                 while (timer >= 0)
                 {
-                    if (timer == TIMER)
+                    if (timer == timer_down)
                     {
                         shot_bullet();
                         timer--;
                     }
                     else if (timer == 0)
                     {
-                        timer = TIMER;
+                        timer = timer_down;
                     }
                     else
                     {

@@ -157,6 +157,7 @@ attrib +h SourceCode\gp1.log
     <ClCompile Include="GameLib\wnd_proc.cpp" />
     <ClCompile Include="SourceCode\AttackCollision.cpp" />
     <ClCompile Include="SourceCode\Background.cpp" />
+    <ClCompile Include="SourceCode\Bullet.cpp" />
     <ClCompile Include="SourceCode\choice.cpp" />
     <ClCompile Include="SourceCode\Collision2D.cpp" />
     <ClCompile Include="SourceCode\cursor_main.cpp" />

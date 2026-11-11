@@ -3,6 +3,7 @@
 #include "Hp.h"
 #include "Bullet.h"
 #include "cursor_main.h"
+#include "item.h"
 #include <ctime>
 #include <stdlib.h>
 
@@ -26,17 +27,22 @@ void Bullet_quantity()
 // ‹…‚Ì‘å‚«‚³
 void Bullet_scale()
 {
-	bullet_scale += 0.01f;
+	bullet_scale += BULLET_SCALE_INCREASED;
 }
 // ’e‚Ì‘_‚Á‚½•ûŒü‚É”ò‚Ô¸“x
 void Bullet_rad()
 {
 	precision_rad -= ToRadian(0.5f);
 }
-// ’e‚ÌŠÔŠu
-void Bullet_diffusion()
+// ƒAƒCƒeƒ€‚ª—‚¿‚â‚·‚­‚È‚é
+void Bullet_Lucky()
 {
-	bullet_lay_gap += ToRadian(3);
+	lucky -= ITEM_LUCKY_UP;
+}
+// ’e‚ÌŒ‚‚ÂŠÔŠu‚ª’Z‚­‚È‚é
+void Bullet_Interval()
+{
+	timer_down -= BULLET_INTERVAL_UP;
 }
 
 // ‚Í‚¸‚ê

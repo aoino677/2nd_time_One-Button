@@ -1,7 +1,9 @@
 #pragma once
 #include "all.h"
 
-#define ITEM_MAX (3)
+#define ITEM_MAX (50)
+#define ITEM_RANDOM (10) // アイテムの確率
+
 #define ITEM_SCALE       (1.0f)
 #define ITEM_TEXSIZE_X (40.0f)
 #define ITEM_TEXSIZE_Y (40.0f)
@@ -12,3 +14,5 @@ void item_init();
 void item_update();
 void item_render();
 void item_deinit();
+
+extern int lucky;

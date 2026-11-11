@@ -6,7 +6,7 @@ bool TorF;
 void level_up_init()
 {
 	exp_count = 0;
-	level_max = 10;
+	level_max = LEVEL_START;
 }
 void level_up_render()
 {
