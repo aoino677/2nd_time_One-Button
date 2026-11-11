@@ -2,15 +2,25 @@
 #include "all.h"
 
 // --- 敵の種類を定義 ---
-#define ENEMY_TYPE_NORMAL 0  //通常の敵
-#define ENEMY_TYPE_FAST   1  //速い敵
-#define ENEMY_TYPE_TURBO  2  //一定の間隔で進む敵
-#define ENEMY_TYPE_TRICKY 3  //トリッキーな敵
-#define ENEMY_TYPE_EDDY   4  //渦巻く敵
-#define ENEMY_TYPE_BOBM   5  //ボム敵
-#define ENEMY_TYPE_BOSS   6  //ボス敵
+#define ENEMY_TYPE_CRAYON    0  //クレヨン
+#define ENEMY_TYPE_BOLL      1  //ボール
+#define ENEMY_TYPE_BALLOON   2  //風船
+#define ENEMY_TYPE_PENCIL    3  //ロケット鉛筆
+#define ENEMY_TYPE_BOBM      5  //ボム
 
-#define ENEMY_NUMBER  (50)
+#define BOSS_TYPE_CRAYON     6
+#define BOSS_TYPE_MINICAR    7
+#define BOSS_TYPE_DOLL       8
+#define BOSS_TYPE_ROBOT      9
+#define BOSS_TYPE_HORSE      10
+#define BOSS_TYPE_PENCIL     11
+#define BOSS_TYPE_EXCAVATOR  11
+
+
+#define ENEMY             0
+#define BOSS              1
+
+#define ENEMY_NUMBER    (50)
 
 #define ENEMY_SCALE     (1)
 #define ENEMY_TEX_W     (128)
@@ -24,11 +34,11 @@ void enemy_update();
 void enemy_render();
 void enemy_move(int i);
 void enemy_respawn(int i);
+void enemy_boss_respawn(int i);
 void enemy_attack_action(int i);
 void enemy_powerup();
+void enemy_setting(int i, int hp, int attack, float speed);
 
-void CRAYON(int i,int attack,float speed);
-void BOBM(int i, int hp, int attack, float speed);
 
 extern OBJ2D enemy[ENEMY_NUMBER];
 extern int enemy_max;
