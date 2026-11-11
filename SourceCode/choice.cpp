@@ -13,7 +13,7 @@ Sprite* sprpower_efficacy[EFFICACY_MAX];
 int choice_state = 0;
 int choice_timer = 0;
 int level_up_count = 0;
-int random;
+int random[3];
 float choice_effect_y = 0.0f;
 float choice_effect_alpha = 0.0f;
 
@@ -30,11 +30,11 @@ void choice_init()
 	sprchoicebar = sprite_load(L"./Data/Images/choicebar.png");
 	// 文の読み込み
 	sprpower_efficacy[0] = sprite_load(L"./Data/images/HP_efficacy.png");
-	sprpower_efficacy[1] = sprite_load(L"./Data/images/Bullet_speed_efficacy.png");
-	sprpower_efficacy[2] = sprite_load(L"./Data/images/Bullet_quantity_efficacy.png");
-	sprpower_efficacy[3] = sprite_load(L"./Data/images/Bullet_diffusion_efficacy.png");
-	sprpower_efficacy[4] = sprite_load(L"./Data/images/Bullet_scale_efficacy.png");
-	sprpower_efficacy[5] = sprite_load(L"./Data/images/Bullet_rad_efficacy.png");
+	sprpower_efficacy[1] = sprite_load(L"./Data/images/Bullet_scale_efficacy.png");
+	sprpower_efficacy[2] = sprite_load(L"./Data/images/Bullet_speed_efficacy.png");
+	sprpower_efficacy[3] = sprite_load(L"./Data/images/Bullet_rad_efficacy.png");
+	sprpower_efficacy[4] = sprite_load(L"./Data/images/Bullet_quantity_efficacy.png");
+	sprpower_efficacy[5] = sprite_load(L"./Data/images/Bullet_diffusion_efficacy.png");
 	//sprpower_efficacy[6] = sprite_load(L"./Data/images/Bullet_rad_efficacy.png");
 	//sprpower_efficacy[7] = sprite_load(L"./Data/images/Bullet_rad_efficacy.png");
 	//sprpower_efficacy[8] = sprite_load(L"./Data/images/Bullet_rad_efficacy.png");
@@ -58,7 +58,7 @@ void choice_init()
 		power_efficacy[i].scale = { POWER_EFFICACY_SCALE ,POWER_EFFICACY_SCALE };
 		power_efficacy[i].texSize = { POWER_EFFICACY_TEX_W , POWER_EFFICACY_TEX_H };
 		power_efficacy[i].pivot = { POWER_EFFICACY_PIVOT_X , POWER_EFFICACY_PIVOT_Y };
-		power_efficacy[i].color = { 1, 1, 1, 1 };
+		power_efficacy[i].color = { 1, 1, 1, 0 };
 	}
 	
 	choiceButton[0].pos = { 450, 500 };
@@ -84,6 +84,7 @@ void choice_update_pause()
 			{
 				for (; T_or_F(level_up_count);)
 				{
+					srand((unsigned int)time(NULL));
 					level_max += LEVEL_COUNT_INCREAS;
 					exp_count = 0;
 					choice_pause = true;
@@ -92,7 +93,9 @@ void choice_update_pause()
 					choice_state = 0;
 					level_up_count--;
 
-					random = rand() % EFFICACY_MAX; // ランダムにする
+					random[0] = rand() % EFFICACY_MAX; // ランダムにする
+					random[1] = rand() % EFFICACY_MAX; // ランダムにする
+					random[2] = rand() % EFFICACY_MAX; // ランダムにする
 				}
 				if (i == level_up_count)
 				{
@@ -140,7 +143,87 @@ void choice_update()
 			choice_state++;
 		}
 		break;
+
 	case 2:
+		// ランダムで画像を表示
+		switch (random[0])
+		{
+		case HP_UP: // プレイヤーのHPが上がる
+			power_efficacy[0].pos = { 450,500 };
+			power_efficacy[0].color.w = 1; if (HP_UP){ power_efficacy[!0].color.w = 0; }break;
+
+		case BULLET_SCALE_UP: // 球の大きさ
+			power_efficacy[1].pos = { 450,500 };
+			power_efficacy[1].color.w = 1; if (BULLET_SCALE_UP) { power_efficacy[!1].color.w = 0; }break;
+
+		case BULLET_SPEED_UP: // 球の発射スピード
+			power_efficacy[2].pos = { 450,500 };		
+			power_efficacy[2].color.w = 1; if (BULLET_SPEED_UP) { power_efficacy[!2].color.w = 0; }break;
+
+		case BULLET_RAD_DOWN: // 弾の狙った方向に飛ぶ精度
+			power_efficacy[3].pos = { 450,500 };		
+			power_efficacy[3].color.w = 1; if (BULLET_RAD_DOWN) { power_efficacy[!3].color.w = 0; }break;
+
+		case BULLET_QUANTITY_UP: // 球の発射個数
+			power_efficacy[4].pos = { 450,500 };		
+			power_efficacy[4].color.w = 1; if (BULLET_QUANTITY_UP) { power_efficacy[!4].color.w = 0; }break;
+
+		case BULLET_DEIFFUSION_UP: // 弾の間隔
+			power_efficacy[5].pos = { 450,500 };		
+			power_efficacy[5].color.w = 1; if (BULLET_DEIFFUSION_UP) { power_efficacy[!5].color.w = 0; }break;
+		}
+		switch (random[1])
+		{
+		case HP_UP: // プレイヤーのHPが上がる
+			power_efficacy[0].pos = { 950,500 };
+			power_efficacy[0].color.w = 1; if (HP_UP) { power_efficacy[!0].color.w = 0; }break;
+
+		case BULLET_SCALE_UP: // 球の大きさ
+			power_efficacy[1].pos = { 950,500 };
+			power_efficacy[1].color.w = 1; if (BULLET_SCALE_UP) { power_efficacy[!1].color.w = 0; }break;
+
+		case BULLET_SPEED_UP: // 球の発射スピード
+			power_efficacy[2].pos = { 950,500 };
+			power_efficacy[2].color.w = 1; if (BULLET_SPEED_UP) { power_efficacy[!2].color.w = 0; }break;
+
+		case BULLET_RAD_DOWN: // 弾の狙った方向に飛ぶ精度
+			power_efficacy[3].pos = { 950,500 };
+			power_efficacy[3].color.w = 1; if (BULLET_RAD_DOWN) { power_efficacy[!3].color.w = 0; }break;
+
+		case BULLET_QUANTITY_UP: // 球の発射個数
+			power_efficacy[4].pos = { 950,500 };
+			power_efficacy[4].color.w = 1; if (BULLET_QUANTITY_UP) { power_efficacy[!4].color.w = 0; }break;
+
+		case BULLET_DEIFFUSION_UP: // 弾の間隔
+			power_efficacy[5].pos = { 950,500 };
+			power_efficacy[5].color.w = 1; if (BULLET_DEIFFUSION_UP) { power_efficacy[!5].color.w = 0; }break;
+		}
+		switch (random[2])
+		{
+		case HP_UP: // プレイヤーのHPが上がる
+			power_efficacy[0].pos = { 1450,500 };
+			power_efficacy[0].color.w = 1; if (HP_UP) { power_efficacy[!0].color.w = 0; }break;
+
+		case BULLET_SCALE_UP: // 球の大きさ
+			power_efficacy[1].pos = { 1450,500 };
+			power_efficacy[1].color.w = 1; if (BULLET_SCALE_UP) { power_efficacy[!1].color.w = 0; }break;
+
+		case BULLET_SPEED_UP: // 球の発射スピード
+			power_efficacy[2].pos = { 1450,500 };
+			power_efficacy[2].color.w = 1; if (BULLET_SPEED_UP) { power_efficacy[!2].color.w = 0; }break;
+
+		case BULLET_RAD_DOWN: // 弾の狙った方向に飛ぶ精度
+			power_efficacy[3].pos = { 1450,500 };
+			power_efficacy[3].color.w = 1; if (BULLET_RAD_DOWN) { power_efficacy[!3].color.w = 0; }break;
+
+		case BULLET_QUANTITY_UP: // 球の発射個数
+			power_efficacy[4].pos = { 1450,500 };
+			power_efficacy[4].color.w = 1; if (BULLET_QUANTITY_UP) { power_efficacy[!4].color.w = 0; }break;
+
+		case BULLET_DEIFFUSION_UP: // 弾の間隔
+			power_efficacy[5].pos = { 1450,500 };
+			power_efficacy[5].color.w = 1; if (BULLET_DEIFFUSION_UP) { power_efficacy[!5].color.w = 0; }break;
+		}
 		for (int i = 0; i < CHOICE_MAX; i++)
 		{
 			float mouseX = static_cast<float>(getCursorPosX());
@@ -151,7 +234,7 @@ void choice_update()
 			float right = choiceButton[i].pos.x + (choiceButton[i].texSize.x - choiceButton[i].pivot.x) * choiceButton[i].scale.x;
 			float top = buttonY - choiceButton[i].pivot.y * choiceButton[i].scale.y;
 			float bottom = buttonY + (choiceButton[i].texSize.y - choiceButton[i].pivot.y) * choiceButton[i].scale.y;
-
+			
 			//----------------------------------
 			// ポーズボタンの判定
 			//----------------------------------
@@ -162,10 +245,8 @@ void choice_update()
 			{
 				choiceButton[i].scale.x = CHOICE_SCALE + 0.1f;
 				choiceButton[i].scale.y = CHOICE_SCALE + 0.1f;
-
 				if (TRG(0) & PAD_START)
 				{
-					srand((unsigned int)time(NULL));
 					switch (i)
 					{
 					case 0:
@@ -174,7 +255,7 @@ void choice_update()
 						choice_effect_y = 0.0f;
 						choice_effect_alpha = 0.0f;
 						// ここに強化する効果を書く
-						switch (random)
+						switch (random[0])
 						{
 						case HP_UP:
 							HP();						break;
@@ -197,7 +278,7 @@ void choice_update()
 						choice_effect_y = 0.0f;
 						choice_effect_alpha = 0.0f;
 						// ここに強化する効果を書く
-						switch (random)
+						switch (random[1])
 						{
 						case HP_UP:
 							HP();						break;
@@ -220,7 +301,7 @@ void choice_update()
 						choice_effect_y = 0.0f;
 						choice_effect_alpha = 0.0f;
 						// ここに強化する効果を書く
-						switch (random)
+						switch (random[2])
 						{
 						case HP_UP:
 							HP();						break;
@@ -289,7 +370,7 @@ void choice_render()
 				power_efficacy[i].texSize.x, power_efficacy[i].texSize.y,
 				power_efficacy[i].pivot.x, power_efficacy[i].pivot.y,
 				ToRadian(0),
-				1, 1, 1, 1
+				1, 1, 1, power_efficacy[i].color.w
 			);
 		}
 	}
@@ -305,29 +386,4 @@ bool T_or_F(int level_up_count)
 	if (level_up_count == 0) { return false; }
 	else { return true; }
 }
-//
-//void random(int num[])
-//{
-//	srand((unsigned int)time(NULL));
-//
-//	for (int i = 0; i < EFFICACY_MAX; i++)
-//	{
-//		bool check = false;
-//
-//		while (check == false)
-//		{
-//			num[i] = rand() % EFFICACY_MAX + 1;
-//
-//			check = true;
-//
-//			for (int j = 0; j < i; j++)
-//			{
-//				if (num[i] == num[j])
-//				{
-//					check = false;
-//				}
-//			}
-//		}
-//	}
-//
-//}
+
