@@ -15,5 +15,4 @@ void item_update();
 void item_render();
 void item_deinit();
 
-extern OBJ2D item[ITEM_MAX];
-extern Sprite* spritem1;
+extern int lucky;

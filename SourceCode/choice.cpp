@@ -166,7 +166,7 @@ void choice_update()
 			power_efficacy[4].pos = { 450,500 };		
 			power_efficacy[4].color.w = 1; power_efficacy[!4].color.w = 0; break;
 
-		case BULLET_DEIFFUSION_UP: // ’e‚ÌŠÔŠu
+		case ITEM_LUCKY: // ƒAƒCƒeƒ€‚ª—Ž‚¿‚â‚·‚­‚È‚é
 			power_efficacy[5].pos = { 450,500 };		
 			power_efficacy[5].color.w = 1; power_efficacy[!5].color.w = 0; break;
 		}
@@ -192,7 +192,7 @@ void choice_update()
 			power_efficacy[4].pos = { 950,500 };
 			power_efficacy[4].color.w = 1; power_efficacy[!4].color.w = 0; break;
 
-		case BULLET_DEIFFUSION_UP: // ’e‚ÌŠÔŠu
+		case ITEM_LUCKY: // ƒAƒCƒeƒ€‚ª—Ž‚¿‚â‚·‚­‚È‚é
 			power_efficacy[5].pos = { 950,500 };
 			power_efficacy[5].color.w = 1; power_efficacy[!5].color.w = 0; break;
 		}
@@ -218,7 +218,7 @@ void choice_update()
 			power_efficacy[4].pos = { 1450,500 };
 			power_efficacy[4].color.w = 1; power_efficacy[!4].color.w = 0; break;
 
-		case BULLET_DEIFFUSION_UP: // ’e‚ÌŠÔŠu	
+		case ITEM_LUCKY: // ƒAƒCƒeƒ€‚ª—Ž‚¿‚â‚·‚­‚È‚é
 			power_efficacy[5].pos = { 1450,500 };
 			power_efficacy[5].color.w = 1; power_efficacy[!5].color.w = 0; break;
 		}
@@ -265,8 +265,8 @@ void choice_update()
 							Bullet_rad();				break;
 						case BULLET_QUANTITY_UP:
 							Bullet_quantity();		break;
-						case BULLET_DEIFFUSION_UP:
-							Bullet_diffusion();		break;
+						case ITEM_LUCKY:
+							Bullet_Lucky();		break;
 						}
 						break;
 
@@ -288,8 +288,8 @@ void choice_update()
 							Bullet_rad();				break;
 						case BULLET_QUANTITY_UP:
 							Bullet_quantity();		break;
-						case BULLET_DEIFFUSION_UP:
-							Bullet_diffusion();		break;
+						case ITEM_LUCKY:
+							Bullet_Lucky();		break;
 						}
 						break;
 
@@ -311,8 +311,8 @@ void choice_update()
 							Bullet_rad();				break;
 						case BULLET_QUANTITY_UP:
 							Bullet_quantity();		break;
-						case BULLET_DEIFFUSION_UP:
-							Bullet_diffusion();		break;
+						case ITEM_LUCKY:
+							Bullet_Lucky();		break;
 						}
 						break;
 					}
