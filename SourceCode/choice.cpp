@@ -60,7 +60,7 @@ void choice_init()
 		power_efficacy[i].scale = { POWER_EFFICACY_SCALE ,POWER_EFFICACY_SCALE };
 		power_efficacy[i].texSize = { POWER_EFFICACY_TEX_W , POWER_EFFICACY_TEX_H };
 		power_efficacy[i].pivot = { POWER_EFFICACY_PIVOT_X , POWER_EFFICACY_PIVOT_Y };
-		power_efficacy[i].color = { 1, 1, 1, 0 };
+		power_efficacy[i].color = { 1, 1, 1, 1.0f };
 	}
 	for (int i = 0; i < EFFICACY_MAX; i++)
 	{
@@ -281,21 +281,29 @@ void choice_update()
 						switch (random[0])
 						{
 						case HP_UP:
-							HP();						break;
+							HP();						
+							power_efficacy[i].color.w = 0 ;break;
 						case BULLET_SCALE_UP:
-							Bullet_scale();			break;
+							Bullet_scale();			
+							power_efficacy[i].color.w = 0; break;
 						case BULLET_SPEED_UP:
-							Bullet_speed();			break;
+							Bullet_speed();			
+							power_efficacy[i].color.w = 0; break;
 						case BULLET_RAD_DOWN:
-							Bullet_rad();				break;
+							Bullet_rad();				
+							power_efficacy[i].color.w = 0; break;
 						case BULLET_QUANTITY_UP:
-							Bullet_quantity();		break;
+							Bullet_quantity();		
+							power_efficacy[i].color.w = 0; break;
 						case ITEM_LUCKY:
-							Bullet_Lucky();			break;
+							Bullet_Lucky();			
+							power_efficacy[i].color.w = 0; break;
 						case BULLET_INTERVAL:
-							Bullet_Interval();		break;
+							Bullet_Interval();		
+							power_efficacy[i].color.w = 0; break;
 						case BULLET_DAMAGE:
-							Bullet_Damage();		break;
+							Bullet_Damage();		
+							power_efficacy[i].color.w = 0; break;
 						}
 						break;
 
@@ -308,21 +316,29 @@ void choice_update()
 						switch (random[1])
 						{
 						case HP_UP:
-							HP();						break;
+							HP();
+							power_efficacy[i].color.w = 0; break;
 						case BULLET_SCALE_UP:
-							Bullet_scale();			break;
+							Bullet_scale();
+							power_efficacy[i].color.w = 0; break;
 						case BULLET_SPEED_UP:
-							Bullet_speed();			break;
+							Bullet_speed();
+							power_efficacy[i].color.w = 0; break;
 						case BULLET_RAD_DOWN:
-							Bullet_rad();				break;
+							Bullet_rad();
+							power_efficacy[i].color.w = 0; break;
 						case BULLET_QUANTITY_UP:
-							Bullet_quantity();		break;
+							Bullet_quantity();
+							power_efficacy[i].color.w = 0; break;
 						case ITEM_LUCKY:
-							Bullet_Lucky();			break;
+							Bullet_Lucky();
+							power_efficacy[i].color.w = 0; break;
 						case BULLET_INTERVAL:
-							Bullet_Interval();		break;
+							Bullet_Interval();
+							power_efficacy[i].color.w = 0; break;
 						case BULLET_DAMAGE:
-							Bullet_Damage();		break;
+							Bullet_Damage();
+							power_efficacy[i].color.w = 0; break;
 						}
 						break;
 
@@ -335,21 +351,29 @@ void choice_update()
 						switch (random[2])
 						{
 						case HP_UP:
-							HP();						break;
+							HP();
+							power_efficacy[i].color.w = 0; break;
 						case BULLET_SCALE_UP:
-							Bullet_scale();			break;
+							Bullet_scale();
+							power_efficacy[i].color.w = 0; break;
 						case BULLET_SPEED_UP:
-							Bullet_speed();			break;
+							Bullet_speed();
+							power_efficacy[i].color.w = 0; break;
 						case BULLET_RAD_DOWN:
-							Bullet_rad();				break;
+							Bullet_rad();
+							power_efficacy[i].color.w = 0; break;
 						case BULLET_QUANTITY_UP:
-							Bullet_quantity();		break;
+							Bullet_quantity();
+							power_efficacy[i].color.w = 0; break;
 						case ITEM_LUCKY:
-							Bullet_Lucky();			break;
+							Bullet_Lucky();
+							power_efficacy[i].color.w = 0; break;
 						case BULLET_INTERVAL:
-							Bullet_Interval();		break;
+							Bullet_Interval();
+							power_efficacy[i].color.w = 0; break;
 						case BULLET_DAMAGE:
-							Bullet_Damage();		break;
+							Bullet_Damage();
+							power_efficacy[i].color.w = 0; break;
 						}
 						break;
 					}
