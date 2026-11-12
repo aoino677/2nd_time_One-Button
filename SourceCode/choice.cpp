@@ -46,11 +46,13 @@ void choice_init()
 	for (int i = 0; i < CHOICE_MAX; i++)
 	{
 		choiceButton[i] = {};
-		//choiceButton[i].pos = { 0, 0 };
+		choiceButton[0].pos = { 450.0f, 500.0f };
+		choiceButton[1].pos = { 950.0f, 500.0f };
+		choiceButton[2].pos = { 1450.0f, 500.0f };
 		choiceButton[i].scale = { static_cast<float>(CHOICE_SCALE)    , static_cast<float>(CHOICE_SCALE) };
 		choiceButton[i].texSize = { static_cast<float>(CHOICE_TEX_W)    , static_cast<float>(CHOICE_TEX_H) };
 		choiceButton[i].pivot = { static_cast<float>(CHOICE_PIVOT_X)  ,static_cast<float>(CHOICE_PIVOT_Y) };
-		choiceButton[i].color = { 1, 1, 1, 1 };
+		choiceButton[i].color = { 1.0f, 1.0f, 1.0f, 1.0f };
 	}
 	for (int i = 0; i < EFFICACY_MAX; i++)
 	{
@@ -60,11 +62,6 @@ void choice_init()
 		power_efficacy[i].pivot = { POWER_EFFICACY_PIVOT_X , POWER_EFFICACY_PIVOT_Y };
 		power_efficacy[i].color = { 1, 1, 1, 0 };
 	}
-	
-	choiceButton[0].pos = { 450, 500 };
-	choiceButton[1].pos = { 950, 500 };
-	choiceButton[2].pos = { 1450, 500 };
-
 	for (int i = 0; i < EFFICACY_MAX; i++)
 	{
 		power_efficacy[i].pos = choiceButton[0].pos;
@@ -90,6 +87,7 @@ void choice_update_pause()
 					choice_pause = true;
 					choice_effect_y = static_cast<float>(SCREEN_H);
 					choice_effect_alpha = 0.0f;
+					choice_timer = 0;
 					choice_state = 0;
 					level_up_count--;
 
@@ -114,10 +112,13 @@ void choice_update()
 		//----------------------------------
 		choice_effect_y = static_cast<float>(SCREEN_H);
 		choice_effect_alpha = 0.0f;
+		choice_timer = 0;
 
 		choice_state++;
 		break;
 	case 1:
+		choice_timer++;
+
 		// îwåiÇèôÅXÇ…à√Ç≠Ç∑ÇÈ
 		choice_effect_alpha += 0.04f;
 
@@ -353,12 +354,11 @@ void choice_update()
 						break;
 					}
 				}
-				else
-				{
-					choiceButton[i].scale.x = CHOICE_SCALE;
-					choiceButton[i].scale.y = CHOICE_SCALE;
-				}
-				return;
+			}
+			else
+			{
+				choiceButton[i].scale.x = CHOICE_SCALE;
+				choiceButton[i].scale.y = CHOICE_SCALE;
 			}
 		}
 		break;

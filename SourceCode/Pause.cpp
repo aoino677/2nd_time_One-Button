@@ -1,5 +1,3 @@
-#include "all.h"
-#include "scene_game.h"
 #include "pause.h"
 
 int pause_state = 0;
@@ -177,7 +175,6 @@ void pause_update()
         {
             pause_state++;
         }
-
         break;
 
         //----------------------------------
