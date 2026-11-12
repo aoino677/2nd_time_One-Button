@@ -41,7 +41,7 @@ void resulet_update()
 	{
 	case 0:
 		//////// ‰Šúİ’è ////////
-		sprresulet = sprite_load(L"Data/images/BackGround_resulet/ping");
+		//sprresulet = sprite_load(L"Data/images/BackGround_resulet/ping");
 
 		resulet_state++;
 		/*fallthrough*/
@@ -78,8 +78,9 @@ void resulet_update()
 //--------------------------------------
 void resulet_render()
 {
-	
+	GameLib::clear(1.0f, 0.2f, 0.2f);
 
+	font::textOut(1, "PRESS SPACE KEY", 640, 300);
 }
 
 //--------------------------------------
