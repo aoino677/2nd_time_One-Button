@@ -119,7 +119,9 @@ void enemy_update()
 			// HPが0になった時に別の敵として再出現させる
 			if (enemy[i].hp <= 0)
 			{
-				if (enemy_boss_timer < 600)
+				enemy_respawn(i);
+				
+				/*if (enemy_boss_timer < 600)
 				{
 					enemy_respawn(i);
 				}
@@ -127,7 +129,8 @@ void enemy_update()
 				{
 					enemy_boss_respawn(i);
 					enemy_boss_timer = 0;
-				}
+					boss_state++;
+				}*/
 			}
 		}
 
@@ -144,29 +147,26 @@ void enemy_update()
 //敵を画面外のランダムな位置に出現させる
 
 void enemy_respawn(int i)
-
 {
-
-	enemy[i].move_timer = 0; //タイマーをリセッ
-
 	enemy_type_render[i] = ENEMY;
 
     //敵の選別
 	int enemy_random = rand() % 100;
     
-	//敵の選別(敵の種類・最大HP・HP・中心点)
+	//敵の選別(敵の種類・HP・攻撃力・スピード)
     if (enemy_random < 20)
     {
-		enemy[i].type = ENEMY_TYPE_BALLOON;
+		enemy[i].type = ENEMY_TYPE_CRAYON;
 		enemy_setting(i, 3, 1, 3);
-        enemy[i].pivot = { 20,40 };
+		enemy[i].scale = { 1,1 };
+		enemy[i].pivot = { 20,40 };
 	}
     else if (enemy_random >= 20 && enemy_random < 40)
-
-	{
+    {
 		enemy[i].type = ENEMY_TYPE_BOLL;
 		enemy_sprite = sprCrayon;
 		enemy_setting(i, 3, 1, 3);
+		enemy[i].scale = { 1,1 };
 		enemy[i].pivot = { 20,40 };
 	}
 	else if (enemy_random >= 40 && enemy_random < 60)
@@ -174,6 +174,7 @@ void enemy_respawn(int i)
 		enemy[i].type = ENEMY_TYPE_BALLOON;
 		enemy_sprite = sprCrayon;
 		enemy_setting(i, 3, 1, 3);
+		enemy[i].scale = { 1,1 };
 		enemy[i].pivot = { 20,40 };
 	}
 	else if (enemy_random >= 60 && enemy_random < 80)
@@ -181,13 +182,15 @@ void enemy_respawn(int i)
 		enemy[i].type = ENEMY_TYPE_PENCIL;
 		enemy_sprite = sprCrayon;
 		enemy_setting(i, 3, 1, 3);
-        enemy[i].pivot = { 20,40 };
+		enemy[i].scale = { 1,1 };
+		enemy[i].pivot = { 20,40 };
 	}
     else if (enemy_random >= 80)
 	{
 		enemy[i].type = ENEMY_TYPE_BOBM;
 		enemy_sprite = sprCrayon;
 		enemy_setting(i, 3, 1, 3);
+		enemy[i].scale = { 1,1 };
 		enemy[i].pivot = { 20,40 };
 	}
 	
@@ -211,36 +214,60 @@ void enemy_respawn(int i)
 }
 
 
-// ボス生成
+//ボス生成
 void enemy_boss_respawn(int i)
 {
 	enemy_type_render[i] = BOSS;
 
-	// ボスタイプの定義配列
-	const int boss_types[] = {
-		BOSS_TYPE_CRAYON,
-		BOSS_TYPE_MINICAR,
-		BOSS_TYPE_DOLL,
-		BOSS_TYPE_ROBOT,
-		BOSS_TYPE_HORSE,
-		BOSS_TYPE_PENCIL,
-		BOSS_TYPE_EXCAVATOR
-	};
-	const int max_boss_types = 7;
+	switch (boss_state)
+	{
+	case 0://ボスクレヨン
+		enemy[i].type = BOSS_TYPE_CRAYON;
+		enemy_setting(i, 40, 3, 4);
+		enemy[i].scale = { 3,3 };
+		enemy[i].pivot = { 60,120 };
 
-	// 現在のボス状態に基づいて設定
-	enemy[i].type = boss_types[boss_state];
-	enemy_setting(i, 50, 5, 5);
-	enemy[i].pivot = { 60, 120 };
+	case 1://ミニカー
+		enemy[i].type = BOSS_TYPE_MINICAR;
+		enemy_setting(i, 40, 3, 10);
+		enemy[i].scale = { 3,3 };
+		enemy[i].pivot = { 60,120 };
 
-	enemy[i].scale = { 3.0f, 3.0f };
-	
-	// 状態をインクリメントし、上限に達したらループさせる
-	boss_state = (boss_state + 1) % max_boss_types;
+	case 2://ぬいぐるみ
+		enemy[i].type = BOSS_TYPE_DOLL;
+		enemy_setting(i, 40, 3, 4);
+		enemy[i].scale = { 3,3 };
+		enemy[i].pivot = { 60,120 };
+
+	case 3://ロボット
+		enemy[i].type = BOSS_TYPE_ROBOT;
+		enemy_setting(i, 40, 3, 4);
+		enemy[i].scale = { 3,3 };
+		enemy[i].pivot = { 60,120 };
+
+	case 4://木馬
+		enemy[i].type = BOSS_TYPE_HORSE;
+		enemy_setting(i, 40, 3, 4);
+		enemy[i].pivot = { 60,120 };
+
+	case 5://ロケット鉛筆
+		enemy[i].type = BOSS_TYPE_PENCIL;
+		enemy_setting(i, 40, 3, 4);
+		enemy[i].scale = { 3,3 };
+		enemy[i].pivot = { 60,120 };
+
+	case 6://ショベルカー
+		enemy[i].type = BOSS_TYPE_EXCAVATOR;
+		enemy_setting(i, 40, 3, 4);
+		enemy[i].scale = { 3,3 };
+		enemy[i].pivot = { 60,120 };
+	}
+
 
 	enemy[i].pos.x = SCREEN_W + 200.0f;
-	enemy[i].pos.y = SCREEN_H * 0.5f;
+	enemy[i].pos.y = SCREEN_H * 0.9f;
 }
+
 
 // 敵の移動と種類ごとの能力
 void enemy_move(int i)
@@ -283,7 +310,7 @@ void enemy_move(int i)
 
 		if (enemy[i].hp <= 0)
 		{
-			for (int j = 0; j < ENEMY_NUMBER; j++)
+			for (int j = 0; j < enemy_max; j++)
 			{
 				if (i == j) continue;
 
@@ -314,7 +341,7 @@ void enemy_setting(int i,int hp,int attack,float speed)
 
 
 
-// 攻撃判定
+//攻撃判定
 void enemy_attack_action(int i)
 {
 	enemy_attack_timer[i]++;
@@ -425,4 +452,5 @@ void enemy_render()
 	}
 
 	debug::setString("enemy_boss_timer:%d", enemy_boss_timer);
+	debug::setString("boss_state:%d", boss_state);
 }
