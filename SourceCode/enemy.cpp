@@ -6,11 +6,11 @@
 #include <cstdlib>
 
 Sprite* enemy_sprite[ENEMY_NUMBER];
-Sprite* sprCrayon;
-Sprite* sprBall;
-Sprite* sprBalloon;
-Sprite* sprPencil;
-Sprite* sprBobm;
+Sprite* sprCrayon;                     //クレヨン画像
+Sprite* sprBall;                       //ボール画像
+Sprite* sprBalloon;                    //風船画像
+Sprite* sprPencil;                     //ロケット鉛筆画像
+Sprite* sprBobm;                       //爆弾画像
 Sprite* sprEnemy_hp;
 OBJ2D enemy[ENEMY_NUMBER];
 
@@ -21,28 +21,27 @@ int boss_state;
 // タイマー類
 int enemy_timer;
 int enemy_boss_timer;
-int enemy_turbo_timer[ENEMY_NUMBER];
 int enemy_attack_timer[ENEMY_NUMBER];
 int enemy_anim_timer[ENEMY_NUMBER];
 int enemy_jump_timer[ENEMY_NUMBER];
 
 // 強化類
-float enemy_hp_up = 0.0f;       // HP増加量
-float enemy_speed_up = 0.0f;    // スピード増加量
-float enemy_attack_up = 0.0f;   // 攻撃増加量
+float enemy_hp_up = 0.0f;             //HP増加量
+float enemy_speed_up = 0.0f;          //スピード増加量
+float enemy_attack_up = 0.0f;         //攻撃増加量
 
 // HPゲージ類
-int enemy_max_hp[ENEMY_NUMBER];       // HP最大量
-float enemy_hp_bar_max[ENEMY_NUMBER]; // 最大HPゲージ
-float enemy_hp_rate[ENEMY_NUMBER];    // HP割合
+int enemy_max_hp[ENEMY_NUMBER];       //HP最大量
+float enemy_hp_bar_max[ENEMY_NUMBER]; //最大HPゲージ
+float enemy_hp_rate[ENEMY_NUMBER];    //HP割合
 
 // エネミー情報
-int enemy_max;                      // 最大リスポーン数
+int enemy_max;                        //最大リスポーン数
 int enemy_type_render[ENEMY_NUMBER];
 int enemy_anim[ENEMY_NUMBER];
-float angle[ENEMY_NUMBER];          // 角度
-float enemy_border[ENEMY_NUMBER];   // 最大移動値
-float enemy_speed[ENEMY_NUMBER];    // スピード
+float angle[ENEMY_NUMBER];            //角度
+float enemy_border[ENEMY_NUMBER];     //最大移動値
+float enemy_speed[ENEMY_NUMBER];      //スピード
 float enemy_target_y[ENEMY_NUMBER];
 
 // エネミー初期化
@@ -66,13 +65,17 @@ void enemy_init()
 		
 		enemy_border[i] = 0.0f;
 		enemy_attack_timer[i] = 0;
-		enemy_turbo_timer[i] = 0;
 	}
 }
 
 void enemy_deinit()
 {
 	safe_delete(sprCrayon);
+	safe_delete(sprBall);
+	safe_delete(sprBalloon);
+	safe_delete(sprPencil);
+	safe_delete(sprBobm);
+	safe_delete(sprBall);
 	safe_delete(sprEnemy_hp);
 }
 
@@ -136,9 +139,10 @@ void enemy_update()
 		}
 
 		enemy_timer++;
+		
+		//ボスタイマー
 		enemy_boss_timer++;
 		
-
 		//時間経過による敵の強化
 		enemy_powerup();
 
@@ -153,7 +157,7 @@ void enemy_respawn(int i)
 	enemy_type_render[i] = ENEMY;
 
     //敵の選別
-	int enemy_random = rand() % 20;
+	int enemy_random = rand() % 100;
     
 	//敵の選別(敵の種類・HP・攻撃力・スピード)
     if (enemy_random < 20)
@@ -278,26 +282,29 @@ void enemy_boss_respawn(int i)
 void enemy_move(int i)
 {
 	// それぞれの最大移動値を計算
-	enemy_border[i] = 280 + (SCREEN_H - enemy[i].pos.y) * 0.3584f / 0.9336f;
+	enemy_border[i] = 270 + (SCREEN_H - enemy[i].pos.y) * 0.3584f / 0.9336f;
 
 	// 通常の敵 / クレヨン
 	if (enemy[i].type == ENEMY_TYPE_CRAYON)
 	{
-		enemy[i].pos.x -=enemy[i].moveSpeed;
-		/*if (enemy_anim_timer[i] == enemy_anim[i])
+		enemy[i].pos.x -= enemy[i].moveSpeed;
+		if (enemy_anim_timer[i] == enemy_anim[i])
 		{
-			enemy_anim_timer[i] = 0;
-			while (enemy_jump_timer[i]<30)
+			while (60)
 			{
 				enemy_jump_timer[i]++;
-				if (enemy_jump_timer[i] < 20)
-					enemy[i].pos.y += 0.2;
-				else
-					enemy[i].pos.y += 0.2;
+				if (enemy_jump_timer[i] < 30)
+					enemy[i].pos.y -= 0.5;
+				else if (enemy_jump_timer[i] >= 30)
+					enemy[i].pos.y += 0.5;
 			}
-			enemy_jump_timer[i] = 0;
-		}*/
+
+
+		}
+		enemy_anim_timer[i] = 0;
+		enemy_jump_timer[i] = 0;
 	}
+
 	// 速い敵
 	else if (enemy[i].type == ENEMY_TYPE_BOLL)
 	{
@@ -470,4 +477,5 @@ void enemy_render()
 	debug::setString("enemy_boss_timer:%d", enemy_boss_timer);
 	debug::setString("boss_state:%d", boss_state);
 	debug::setString("enemy_anim_timer[0]:%d", enemy_anim_timer[0]);
+	debug::setString("enemy_jump_timer[0]:%d", enemy_jump_timer[0]);
 }

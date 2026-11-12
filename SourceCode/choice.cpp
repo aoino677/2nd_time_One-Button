@@ -437,6 +437,10 @@ void choice_render()
 void choice_deinit()
 {
 	safe_delete(sprchoicebar);
+	for (int i = 0; i < EFFICACY_MAX; i++)
+	{
+		safe_delete(sprpower_efficacy[i]);
+	}
 }
 
 bool T_or_F(int level_up_count)
