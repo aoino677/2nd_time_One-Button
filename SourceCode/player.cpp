@@ -66,8 +66,8 @@ void player_deinit()
 	player_bullets.clear();
 }
 
-//#define OLD_SHOT
-#define NEW_SHOT
+#define OLD_SHOT
+//#define NEW_SHOT
 
 void shot_bullet()
 {
@@ -85,11 +85,11 @@ void shot_bullet()
 
 	for (int i = 0; i < bullet_lay_count; i++)
 	{
-#ifdef OLDSHOT
+#ifdef OLD_SHOT
 		{
-			VECTOR2 vec = cursorPos - player.pos;
-
-			auto* b = new Bullet();
+			auto* b = new Bullet_Y1();
+			b->spr = sprBullet[1];
+			b->texSize = { 64, 64 };
 			b->pos = player.pos;
 			b->scale = { bullet_scale , bullet_scale };
 			float f = (rand() / (float)RAND_MAX) * 2 - 1;//—”Ý’è
@@ -99,7 +99,10 @@ void shot_bullet()
 			vec = { cosf(b->angle), sinf(b->angle) };
 			b->velocity = vec2Normalize(vec) * bullet_speed / system::FRAME_RATE;
 			b->angle += ToRadian(180);
-			b->pos += vec * shot_timer;
+			b->end_pos = { (float)SCREEN_W, (float)SCREEN_H };
+			b->attack_damage = Y1_damage;
+			//b->pos += vec * shot_timer;
+			player_bullets.push_back(b);
 		}
 #elif defined(NEW_SHOT)
 		auto* b = new Bullet_Y1();
@@ -168,6 +171,11 @@ void player_shot_bullet()
 	}
 	shot_timer += 1 / system::FRAME_RATE;
 
+	if (TRG(0) & PAD_UP)
+	{
+		can_rapid_shot = true;
+	}
+
 #elif defined(SHOT_AIM_AND_CLICK_TARGET)
 
 	if (TRG(0) & PAD_START)
@@ -218,6 +226,11 @@ void player_shot_bullet()
 		rapidShoted_bullet_count = 0;
 		is_rapid = false;
 	}
+	
+	if (TRG(0) & PAD_UP)
+	{
+		can_rapid_shot = true;
+	}
 #endif // SHOT_AIM_TARGET
 
 }
@@ -246,10 +259,7 @@ void player_update()
 	debug::setString("shot_per_second:%f", shot_per_second);
 	debug::setString("bullet_count:%d", player_bullets.size());
 
-	if (TRG(0) & PAD_UP)
-	{
-		can_rapid_shot = true;
-	}
+	
 
 	//int enemy_count = 0;
 	//for (int e = 0; e < ENEMY_NUMBER; e++)
@@ -290,7 +300,7 @@ void player_render()
 			bullet->scale.x, bullet->scale.y,
 			0, 0,
 			bullet->texSize.x, bullet->texSize.y,
-			32, 4,
+			bullet->texSize.x * 0.5f, bullet->texSize.y * 0.5f,
 			bullet->angle
 		);
 		primitive::circle(
@@ -326,11 +336,11 @@ void delete_bullet()
 			delete* itr;
 			itr = player_bullets.erase(itr);
 		}
-		else if ((*itr)->pos.x > (*itr)->end_pos.x)
-		{
-			delete* itr;
-			itr = player_bullets.erase(itr);
-		}
+		//else if ((*itr)->pos.x > (*itr)->end_pos.x)
+		//{
+		//	delete* itr;
+		//	itr = player_bullets.erase(itr);
+		//}
 		else
 		{
 			itr++;
@@ -348,7 +358,7 @@ void bullet_attack()
 				VECTOR2 enemy_begin = enemy[e].pos - VECTOR2{ enemy[e].scale.x * enemy[e].pivot.x, enemy[e].scale.y * enemy[e].pivot.y };//enemy[e]‚Ì¶ã
 				VECTOR2 enemy_size = { enemy[e].scale.x * enemy[e].texSize.x, enemy[e].scale.y * enemy[e].texSize.y };
 				VECTOR2 bullet_center = bullet->pos;
-				float bullet_radius = bullet->texSize.x * bullet->scale.x;
+				float bullet_radius = bullet->texSize.x * bullet->scale.x * 0.5f;
 				if (Collision2D::circle_vs_rect(bullet_center, bullet_radius, enemy_begin, enemy_size) && enemy[e].hp > 0)
 				{
 					bullet->attack(enemy[e]);

@@ -10,7 +10,7 @@ void Bullet_Y1::update()
 
 void Bullet_Y1::attack(OBJ2D& enemy)
 {
-	if (end_pos.y - pos.y < enemy.texSize.y * enemy.scale.y * 0.5f)
+	//if (end_pos.y - pos.y < enemy.texSize.y * enemy.scale.y * 0.5f)
 	{
 		enemy.hp -= attack_damage;
 		pos = { -500, -500 };//‰æ–ÊŠO‚É
