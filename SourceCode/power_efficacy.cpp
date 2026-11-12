@@ -44,6 +44,11 @@ void Bullet_Interval()
 {
 	timer_down -= BULLET_INTERVAL_UP;
 }
+// ƒvƒŒƒCƒ„[‚ÌUŒ‚—Í‚ğ‘‚â‚·
+void Bullet_Damage()
+{
+	Y1_damage += BULLET_DAMAGE_UP;
+}
 
 // ‚Í‚¸‚ê
 void loser()

@@ -7,7 +7,7 @@
 #include <stdlib.h>
 
 OBJ2D item[ITEM_MAX];
-Sprite* spritem1;
+Sprite* spritem[ITEM_MAX];
 
 int item_state = 0;
 int random;
@@ -29,9 +29,9 @@ void item_update()
 	{
 	case 0:
 		// ‰æ‘œ’Ç‰Á
-		spritem1 = sprite_load(L"./Data/Images/itemBlue.png");
-		/*spritem = sprite_load(L"./Data/Images/itemGreen.png");
-		spritem = sprite_load(L"./Data/Images/itemRed.png");*/
+		spritem[0] = sprite_load(L"./Data/Images/itemBlue.png");
+		spritem[1] = sprite_load(L"./Data/Images/itemGreen.png");
+		spritem[2] = sprite_load(L"./Data/Images/itemRed.png");
 
 		item_state++;
 		break;
@@ -91,6 +91,10 @@ void item_update()
 				VECTOR2 playerLength = { player.texSize.x * player.scale.x, player.texSize.y * player.scale.y };
 				if (Collision2D::rect_vs_rect({ posX, posY }, { LengthX, LengthY }, playerLeftUp, playerLength))
 				{
+					/*if (spritem[0])
+					{
+						bullet_ingot_counter++;
+					}*/
 					item_couner++;
 					item[j].color.w = 0;
 				}
@@ -105,7 +109,7 @@ void item_render()
 	for (int i = 0; i < ITEM_MAX; i++)
 	{
 		sprite_render(
-			spritem1,
+			spritem[i],
 			item[i].pos.x, item[i].pos.y,
 			item[i].scale.x, item[i].scale.y,
 			0, 0,
@@ -119,5 +123,9 @@ void item_render()
 
 void item_deinit()
 {
-	safe_delete(spritem1);
+	for (int i = 0; i < ITEM_MAX; i++)
+	{
+		safe_delete(spritem[i]);
+	}
+	
 }
