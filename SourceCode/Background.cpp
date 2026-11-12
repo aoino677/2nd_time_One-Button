@@ -26,6 +26,12 @@ void background_render()
 
 	sprite_render(
 		sprEXP_Background,
-		0 + shakeX, 0 + shakeY
+		0 + shakeX, 0 + shakeY,
+		1,1,
+		0,0,
+		1920,1080,
+		0,0,
+		0,
+		1,0,0
 	);
 }
