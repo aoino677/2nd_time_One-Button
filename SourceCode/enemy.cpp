@@ -60,6 +60,10 @@ void enemy_init()
 
 	for (int i = 0; i < ENEMY_NUMBER; i++)
 	{
+		enemy[i].hp = 0;
+		enemy[i].attack = 0;
+		enemy[i].moveSpeed = 0;
+		
 		enemy_border[i] = 0.0f;
 		enemy_attack_timer[i] = 0;
 		enemy_turbo_timer[i] = 0;
