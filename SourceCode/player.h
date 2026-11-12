@@ -35,7 +35,7 @@ extern void shot_bullet();
 #define BULLET_SPEED (4000.0f)
 
 //‚P‰~
-#define Y1_DAMAGE (4)
+#define Y1_DAMAGE (8)
 
 //‰„‚×–_
 #define INGOT_DAMAGE (18)
