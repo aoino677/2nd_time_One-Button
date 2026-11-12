@@ -25,6 +25,7 @@ extern OBJ2D pauseIcon;
 extern Sprite* sprPauseButton[3];
 extern Sprite* sprPauseIcon;
 
+
 void pause_init();
 void pause_deinit();
 void pause_update();

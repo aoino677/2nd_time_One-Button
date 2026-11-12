@@ -13,6 +13,7 @@ extern int bullet_lay_count;
 extern float bullet_lay_gap;
 extern float bullet_scale;
 extern float precision_rad;
+extern float Y1_damage;
 
 //const VECTOR2 PLAYER_POS = { SCREEN_W * 0.5f, SCREEN_H * 0.5f };
 //const VECTOR2 PLAYER_POS = { SCREEN_W * 0.5f, SCREEN_H - 100 };
@@ -35,7 +36,7 @@ extern void shot_bullet();
 #define BULLET_SPEED (4000.0f)
 
 //‚P‰~
-#define Y1_DAMAGE (4)
+#define Y1_DAMAGE (8)
 
 //‰„‚×–_
 #define INGOT_DAMAGE (18)

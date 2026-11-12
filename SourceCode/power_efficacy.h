@@ -6,7 +6,9 @@
 #define BULLET_SCALE_INCREASED (0.01f)			// 増やす大きさの量
 #define ITEM_LUCKY_UP               (1)				//	アイテムを落とす確率を上げる
 #define BULLET_INTERVAL_UP        (1)				// 撃つ間隔が速くなる
-#define EFFICACY_MAX (7)								// エフェクトの個数
+#define BULLET_DAMAGE_UP         (1)				// バレットのダメージが増える
+
+#define EFFICACY_MAX (8)								// エフェクトの個数
 
 
 // 画像
@@ -25,6 +27,7 @@ extern void Bullet_Lucky();
 extern void Bullet_scale();
 extern void Bullet_rad();
 extern void Bullet_Interval();
+extern void Bullet_Damage();
 
 extern void loser();
 

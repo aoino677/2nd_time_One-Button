@@ -72,7 +72,7 @@ void player_deinit()
 void shot_bullet()
 {
 	VECTOR2 cursorPos = { static_cast<float>(getCursorPosX()), static_cast<float>(getCursorPosY()) };
-	if (cursorPos.y < 380) cursorPos.y = 380;
+	//if (cursorPos.y < 380) cursorPos.y = 380;
 	//float r = ToRadian(rand() % 360);
 	//vec = {cosf(r), sinf(r)};
 	VECTOR2 vec = cursorPos - player.pos;
@@ -109,10 +109,10 @@ void shot_bullet()
 		b->pos.x += player.texSize.x - player.pivot.x;
 		b->scale = { bullet_scale , bullet_scale };
 		b->end_pos = cursorPos + a[i];
-		if (b->end_pos.y < 380)
-		{
-			b->end_pos.y = 380;
-		}
+		//if (b->end_pos.y < 380)
+		//{
+		//	b->end_pos.y = 380;
+		//}
 		//b->end_pos.x = cursorPos.x;
 		//b->end_pos.y = cursorPos.y + i * 40.0f - 40.0f * (bullet_lay_count - 1) / 2;
 		float length3 = vec2Length(b->end_pos - b->pos);
@@ -225,7 +225,7 @@ void player_shot_bullet()
 void player_move()
 {
 	VECTOR2 cursorPos = { static_cast<float>(getCursorPosX()), static_cast<float>(getCursorPosY()) };
-	if (cursorPos.y < 380) cursorPos.y = 380;
+	//if (cursorPos.y < 380) cursorPos.y = 380;
 	VECTOR2 vec = cursorPos - player.pos;
 	cursor_pos = cursorPos;
 	//player.pos.y += vec.y * 1000.0f / system::FRAME_RATE;
