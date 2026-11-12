@@ -33,3 +33,9 @@ extern void shot_bullet();
 
 #define RAPID_COOLDOWN (0.2f)
 #define BULLET_SPEED (4000.0f)
+
+//‚P‰~
+#define Y1_DAMAGE (4)
+
+//‰„‚×–_
+#define INGOT_DAMAGE (18)

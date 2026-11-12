@@ -24,8 +24,8 @@ float bullet_lay_gap = ToRadian(7);//’e‚ÌŠÔŠu
 #define BULLET_SCALE (0.5f)
 float bullet_scale = BULLET_SCALE;//’e‚Ì‘å‚«‚³
 
-float Y1_damage = 10;
-float ingot_damage = 18;
+float Y1_damage = Y1_DAMAGE;
+float ingot_damage = INGOT_DAMAGE;
 
 Sprite* sprPlayer;
 Sprite* sprBullet[3];
