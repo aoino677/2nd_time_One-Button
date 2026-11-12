@@ -52,7 +52,7 @@ void item_update()
 		for (int enemy_index = 0; enemy_index < enemy_max; enemy_index++)
 		{
 			// “G‚ÌF‚ª‚Oi“G‚ªŽ€‚ñ‚¾‚çj‚É‚È‚Á‚½‚çitem‚ª—Ž‚¿‚é
-			if (enemy[enemy_index].hp == 0)
+			if (enemy[enemy_index].hp <= 0)
 			{
 				if (random == rand() % lucky)
 				{
