@@ -40,7 +40,7 @@ void player_init()
 {
 	sprPlayer = sprite_load(L"Data/Images/player.png");
 	sprBullet[0] = sprite_load(L"Data/Images/bullet.png");
-	sprBullet[1] = sprite_load(L"Data/Images/1yen.png");
+	sprBullet[1] = sprite_load(L"Data/Images/bullet.png");
 	sprBullet[2] = sprite_load(L"Data/Images/500yen.png");
 
 	player.pos = PLAYER_POS;
@@ -56,7 +56,7 @@ void player_init()
 void player_deinit()
 {
 	safe_delete(sprPlayer);
-	for (int i = 0; i < 2; i++)
+	for (int i = 0; i < 3; i++)
 	{
 		safe_delete(sprBullet[i]);
 	}
@@ -91,7 +91,7 @@ void shot_bullet()
 		{
 			auto* b = new Bullet_Y1();
 			b->spr = sprBullet[1];
-			b->texSize = { 64, 64 };
+			b->texSize = { 64, 8 };
 			b->pos = player.pos;
 			b->scale = { bullet_scale , bullet_scale };
 			float f = (rand() / (float)RAND_MAX) * 2 - 1;//óêêîê›íË
