@@ -24,6 +24,9 @@ float bullet_lay_gap = ToRadian(7);//’e‚ÌŠÔŠu
 #define BULLET_SCALE (0.5f)
 float bullet_scale = BULLET_SCALE;//’e‚Ì‘å‚«‚³
 
+float Y1_damage = 10;
+float ingot_damage = 18;
+
 Sprite* sprPlayer;
 Sprite* sprBullet[3];
 OBJ2D player;
@@ -101,6 +104,7 @@ void shot_bullet()
 #elif defined(NEW_SHOT)
 		auto* b = new Bullet_Y1();
 		b->texSize = { 64, 64 };
+		b->attack_damage = Y1_damage;
 		b->pos = player.pos;
 		b->pos.x += player.texSize.x - player.pivot.x;
 		b->scale = { bullet_scale , bullet_scale };
@@ -372,7 +376,7 @@ void bullet_update()
 		b_ingot->end_pos = { SCREEN_W, SCREEN_H };
 		b_ingot->spr = sprBullet[2];
 		b_ingot->texSize = { 64, 64 };
-		b_ingot->attack_damage = 18;
+		b_ingot->attack_damage = ingot_damage;
 		b_ingot->accel_velocity.y = 3 / system::FRAME_RATE;
 		player_bullets.push_back(b_ingot);
 	}
