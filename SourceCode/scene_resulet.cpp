@@ -15,8 +15,13 @@
 //------< 変数 >----------------------------------------------------------------
 int resulet_state = 0;     // 状態
 int resulet_timer = 0;     // タイマー
+// 背景
+OBJ2D resulet;
+Sprite* sprresulet;
 
-
+// ボタン
+OBJ2D resulet_button[2];
+Sprite* sprresulet_button[2];
 
 //--------------------------------------
 //  初期設定
@@ -36,12 +41,18 @@ void resulet_update()
 	{
 	case 0:
 		//////// 初期設定 ////////
+		sprresulet = sprite_load(L"Data/images/BackGround_resulet/ping");
 
 		resulet_state++;
 		/*fallthrough*/
 	case 1:
 		//////// パラメータの設定 ////////
-
+		sprresulet = {};
+		resulet.pos = { 0, 0 };
+		resulet.scale = { 0, 0 };
+		resulet.texSize = { 1920, 1080 };
+		resulet.pivot = { 960, 540 };
+		resulet.color = { 1, 1, 1, 1 };
 		// ブレンドモードの設定
 		GameLib::setBlendMode(Blender::BS_ALPHA);
 
@@ -67,11 +78,7 @@ void resulet_update()
 //--------------------------------------
 void resulet_render()
 {
-	// 画面をクリアする
-	GameLib::clear(0.0f, 1.0f, 0.0f);
-
-
-	font::textOut(1, "PRESS BackSpace KEY", 0, 0, 1, 1);
+	
 
 }
 
