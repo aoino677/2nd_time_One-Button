@@ -13,6 +13,7 @@ extern int bullet_lay_count;
 extern float bullet_lay_gap;
 extern float bullet_scale;
 extern float precision_rad;
+
 extern float Y1_damage;
 //extern int bullet_ingot_counter;
 
@@ -26,14 +27,16 @@ void player_deinit();
 void player_update();
 void player_render();
 
-void set_canRapidShot(bool);
+//void set_canRapidShot(bool);
 void set_shotPerSecond(float);
 
 void bullet_update();
 
 extern void shot_bullet();
 
-#define RAPID_COOLDOWN (0.2f)
+const float PLAYER_EASING = 0.99f;
+
+//#define RAPID_COOLDOWN (0.2f)
 #define BULLET_SPEED (4000.0f)
 
 //‚P‰~

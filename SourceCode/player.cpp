@@ -8,16 +8,18 @@
 
 float bullet_speed = BULLET_SPEED;//発射する弾の1秒当たりの速度
 float shot_per_second = 20.0f; //１秒間に発射する弾の数	
-float rapid_coolDown = RAPID_COOLDOWN; //連射開始時間
+//float rapid_coolDown = RAPID_COOLDOWN; //連射開始時間
 float precision_rad = ToRadian(5); //狙った方向に飛ぶ精度
 
-float shot_timer;			//弾発射の待機時間
-float rapid_timer;			//完了したら連射に移行する
-bool is_rapid;				//連射中か
+float Y1_shot_timer = 0;
 
-bool can_rapid_shot;		//連射可能か
-int rapidShoted_bullet_count;//連射した弾数
-int cast_bullet;			//発射を待機している弾
+//float shot_timer;			//弾発射の待機時間
+//float rapid_timer;			//完了したら連射に移行する
+//bool is_rapid;				//連射中か
+
+//bool can_rapid_shot;		//連射可能か
+//int rapidShoted_bullet_count;//連射した弾数
+//int cast_bullet;			//発射を待機している弾
 
 int bullet_lay_count = 9;
 float bullet_lay_gap = ToRadian(7);//弾の間隔
@@ -44,11 +46,11 @@ void player_init()
 	player.pos = PLAYER_POS;
 	player.texSize = PLAYER_TEX_SIZE;
 	player.pivot = player.texSize / 2;
-	shot_timer = 0;
-	rapidShoted_bullet_count = 0;
-	is_rapid = false;
-
-	can_rapid_shot = false;
+	//shot_timer = 0;
+	//rapidShoted_bullet_count = 0;
+	//is_rapid = false;
+	//
+	//can_rapid_shot = false;
 }
 
 void player_deinit()
@@ -226,7 +228,7 @@ void player_shot_bullet()
 		rapidShoted_bullet_count = 0;
 		is_rapid = false;
 	}
-	
+
 	if (TRG(0) & PAD_UP)
 	{
 		can_rapid_shot = true;
@@ -243,7 +245,7 @@ void player_move()
 	cursor_pos = cursorPos;
 	//player.pos.y += vec.y * 1000.0f / system::FRAME_RATE;
 	float targetY = cursorPos.y; //- 300;
-	player.pos.y += (targetY - player.pos.y) * 0.9f / system::FRAME_RATE;
+	player.pos.y += (targetY - player.pos.y) * PLAYER_EASING / system::FRAME_RATE;
 	debug::setString("cursor : %f", cursorPos.y);
 	player.pos.x = (SCREEN_H - player.pos.y) * 0.3584f / 0.9336f;
 	player.scale.x = player.scale.y = 1.0f - ((SCREEN_H - player.pos.y) / SCREEN_H) * 0.2f;//遠くに行けば行くほど小さくなる。
@@ -259,7 +261,7 @@ void player_update()
 	debug::setString("shot_per_second:%f", shot_per_second);
 	debug::setString("bullet_count:%d", player_bullets.size());
 
-	
+
 
 	//int enemy_count = 0;
 	//for (int e = 0; e < ENEMY_NUMBER; e++)
@@ -313,10 +315,10 @@ void player_render()
 	}
 }
 
-void set_canRapidShot(bool b)
-{
-	can_rapid_shot = b;
-}
+//void set_canRapidShot(bool b)
+//{
+//	//can_rapid_shot = b;
+//}
 
 void set_shotPerSecond(float value)
 {
@@ -352,19 +354,7 @@ void bullet_attack()
 {
 	for (auto* bullet : player_bullets)
 	{
-		for (int e = 0; e < ENEMY_NUMBER; e++)
-		{
-			{
-				VECTOR2 enemy_begin = enemy[e].pos - VECTOR2{ enemy[e].scale.x * enemy[e].pivot.x, enemy[e].scale.y * enemy[e].pivot.y };//enemy[e]の左上
-				VECTOR2 enemy_size = { enemy[e].scale.x * enemy[e].texSize.x, enemy[e].scale.y * enemy[e].texSize.y };
-				VECTOR2 bullet_center = bullet->pos;
-				float bullet_radius = bullet->texSize.x * bullet->scale.x * 0.5f;
-				if (Collision2D::circle_vs_rect(bullet_center, bullet_radius, enemy_begin, enemy_size) && enemy[e].hp > 0)
-				{
-					bullet->attack(enemy[e]);
-				}
-			}
-		}
+		bullet->attack(enemy);
 	}
 }
 
@@ -378,9 +368,9 @@ void bullet_move()
 
 void bullet_update()
 {
-	if (shot_timer > 3)
+	if (Y1_shot_timer > 3)
 	{
-		shot_timer = 0;
+		Y1_shot_timer = 0;
 		auto* b_ingot = new Bullet_INGOT();
 		b_ingot->pos = { static_cast<float>(getCursorPosX()),0 };
 		b_ingot->end_pos = { SCREEN_W, SCREEN_H };
@@ -390,7 +380,7 @@ void bullet_update()
 		b_ingot->accel_velocity.y = 3 / system::FRAME_RATE;
 		player_bullets.push_back(b_ingot);
 	}
-	shot_timer += 1 / system::FRAME_RATE;
+	Y1_shot_timer += 1 / system::FRAME_RATE;
 	bullet_move();
 
 	bullet_attack();

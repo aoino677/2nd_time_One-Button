@@ -19,21 +19,21 @@ struct Bullet
 	VECTOR2 accel_velocity;//‰Á‘¬“x
 
  	virtual void update() = 0;
- 	virtual void attack(OBJ2D&) = 0;
+ 	virtual void attack(OBJ2D[]) = 0;
 };
 
 struct Bullet_Y1 : Bullet
 {
 	~Bullet_Y1()override = default;
 	void update() override;
-	void attack(OBJ2D&) override;
+	void attack(OBJ2D[]) override;
 };
 
 struct Bullet_INGOT : Bullet
 {
 	~Bullet_INGOT()override = default;
 	void update() override;
-	void attack(OBJ2D&) override;
+	void attack(OBJ2D[]) override;
 
 private:
 	std::vector<OBJ2D*> attacked_enemies;
