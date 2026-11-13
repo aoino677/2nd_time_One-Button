@@ -8,6 +8,10 @@
 
 //------< ƒCƒ“ƒNƒ‹[ƒh >---------------------------------------------------------
 #include "all.h"
+#include<ctime>
+#include<stdlib.h>
+
+
 
 //------< namespace >-----------------------------------------------------------
 using namespace GameLib;
@@ -28,8 +32,8 @@ int APIENTRY wWinMain(HINSTANCE, HINSTANCE, LPWSTR, int)// g—p‚µ‚È‚¢•Ï”‚Í‹Lq‚
 	// ƒQ[ƒ€ƒ‰ƒCƒuƒ‰ƒŠ‚Ì‰Šúİ’è
 	GameLib::init(L"ƒQ[ƒ€ƒvƒƒOƒ‰ƒ~ƒ“ƒO‡T", (int)SCREEN_W, (int)SCREEN_H, TRUE);
 
-	// TODO_08_1 ƒRƒƒ“ƒgƒAƒEƒg‚ğ‚·‚é
-	/*game_init();*/
+	//—”‰Šú‰»
+	srand((unsigned int)time(NULL));
 
 	while (GameLib::gameLoop())
 	{

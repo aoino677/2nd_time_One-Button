@@ -8,9 +8,9 @@
 Sprite* enemy_sprite[ENEMY_NUMBER];
 Sprite* sprCrayon;                     //クレヨン画像
 Sprite* sprBall;                       //ボール画像
-Sprite* sprBalloon;                    //風船画像
-Sprite* sprPencil;                     //ロケット鉛筆画像
-Sprite* sprBobm;                       //爆弾画像
+//Sprite* sprBalloon;                    //風船画像
+//Sprite* sprPencil;                     //ロケット鉛筆画像
+//Sprite* sprBobm;                       //爆弾画像
 Sprite* sprEnemy_hp;
 OBJ2D enemy[ENEMY_NUMBER];
 
@@ -19,11 +19,11 @@ int enemy_state;
 int boss_state;
 
 // タイマー類
-int enemy_timer;
-int enemy_boss_timer;
-int enemy_attack_timer[ENEMY_NUMBER];
-int enemy_anim_timer[ENEMY_NUMBER];
-int enemy_jump_timer[ENEMY_NUMBER];
+int enemy_powerup_timer;               //強化タイマー
+int enemy_boss_timer;                  //ボスタイマー
+int enemy_attack_timer[ENEMY_NUMBER];  //攻撃タイマー
+int enemy_anim_timer[ENEMY_NUMBER];    //アニメーションタイマー
+int enemy_jump_timer[ENEMY_NUMBER];    //ジャンプタイマー
 
 // 強化類
 float enemy_hp_up = 0.0f;             //HP増加量
@@ -37,21 +37,25 @@ float enemy_hp_rate[ENEMY_NUMBER];    //HP割合
 
 // エネミー情報
 int enemy_max;                        //最大リスポーン数
-int enemy_type_render[ENEMY_NUMBER];
+int respawn_counter;
+int enemy_type_render[ENEMY_NUMBER];  //敵タイプ描画
 int enemy_anim[ENEMY_NUMBER];
 float angle[ENEMY_NUMBER];            //角度
 float enemy_border[ENEMY_NUMBER];     //最大移動値
 float enemy_speed[ENEMY_NUMBER];      //スピード
 float enemy_target_y[ENEMY_NUMBER];
 
+int crayon = 0;
+
+
 // エネミー初期化
 void enemy_init()
 {
 	enemy_state = 0;
 	boss_state = 0;
-	enemy_timer = 0;
+	enemy_powerup_timer = 0;
 	enemy_boss_timer = 0;
-	enemy_max = 4;
+	enemy_max = 10;
 
 	enemy_hp_up = 0.0f;
 	enemy_speed_up = 0.0f;
@@ -72,10 +76,9 @@ void enemy_deinit()
 {
 	safe_delete(sprCrayon);
 	safe_delete(sprBall);
-	safe_delete(sprBalloon);
-	safe_delete(sprPencil);
-	safe_delete(sprBobm);
-	safe_delete(sprBall);
+	//safe_delete(sprBalloon);
+	//safe_delete(sprPencil);
+	//safe_delete(sprBobm);
 	safe_delete(sprEnemy_hp);
 }
 
@@ -90,7 +93,7 @@ void enemy_update()
 		/*sprBalloon = sprite_load(L"Data/Images/crayon.png");
 		sprPencil= sprite_load(L"Data/Images/crayon.png");
 		sprBobm = sprite_load(L"Data/Images/crayon.png");*/
-		sprEnemy_hp = sprite_load(L"Data/Images/enenmy_hp.png");
+		sprEnemy_hp = sprite_load(L"Data/Images/enemy_hp.png");
 
 		enemy_state++;
 		break;
@@ -104,13 +107,15 @@ void enemy_update()
 			enemy[i].color = { 1, 1, 1, 1 };
 
 			// 初期位置にランダムにスポーン
-			enemy_respawn(i);
+			//enemy_respawn(i);
+			enemy_ability(i);
 		}
 
 		enemy_state++;
 		break;
 
 	case 2:
+		
 		for (int i = 0; i < enemy_max; i++)
 		{
 			// エネミーの動き
@@ -122,9 +127,10 @@ void enemy_update()
 			// HPが0になった時に別の敵として再出現させる
 			if (enemy[i].hp <= 0)
 			{
-				enemy_respawn(i);
-				
-				/*if (enemy_boss_timer < 600)
+				enemy_ability(i);
+			
+			
+				/*if (enemy_boss_timer < 200)
 				{
 					enemy_respawn(i);
 				}
@@ -138,7 +144,7 @@ void enemy_update()
 			enemy_anim_timer[i]++;
 		}
 
-		enemy_timer++;
+		enemy_powerup_timer++;
 		
 		//ボスタイマー
 		enemy_boss_timer++;
@@ -150,57 +156,56 @@ void enemy_update()
 	}
 }
 
-//敵を画面外のランダムな位置に出現させる
 
-void enemy_respawn(int i)
+
+
+//敵を画面外のランダムな位置に出現させる
+void enemy_ability(int i)
 {
 	enemy_type_render[i] = ENEMY;
 
     //敵の選別
-	int enemy_random = rand() % 100;
+	int enemy_random = rand() % 20;
     
 	//敵の選別(敵の種類・HP・攻撃力・スピード)
     if (enemy_random < 20)
     {
 		enemy[i].type = ENEMY_TYPE_CRAYON;
 		enemy_sprite[i] = sprCrayon;
-		enemy_setting(i, 3, 1, 1);
-		//enemy_anim[i] = rand() % 120 + 600;
-		enemy_anim[i] = 120;
+		enemy_setting(i, 3, 1, 1, 20, 40);
+		enemy_anim[i] = rand() % 300 ;
 		enemy[i].scale = { 1,1 };
-		enemy[i].pivot = { 20,40 };
+
+		//enemy_respawn();
 	}
     else if (enemy_random >= 20 && enemy_random < 40)
     {
 		enemy[i].type = ENEMY_TYPE_BOLL;
 		enemy_sprite[i] = sprBall;
-		enemy_setting(i, 3, 1, 3);
+		enemy_setting(i, 3, 1, 3,20,40);
 		enemy[i].scale = { 1,1 };
-		enemy[i].pivot = { 20,40 };
 	}
 	else if (enemy_random >= 40 && enemy_random < 60)
 	{
 		enemy[i].type = ENEMY_TYPE_BALLOON;
 		enemy_sprite[i] = sprCrayon;
-		enemy_setting(i, 3, 1, 1);
+		enemy_setting(i, 3, 1, 1,20,40);
 		enemy[i].scale = { 1,1 };
-		enemy[i].pivot = { 20,40 };
 	}
 	else if (enemy_random >= 60 && enemy_random < 80)
 	{
 		enemy[i].type = ENEMY_TYPE_PENCIL;
 		enemy_sprite[i] = sprCrayon;
-		enemy_setting(i, 3, 1, 1);
+		enemy_setting(i, 3, 1, 1,20,40);
 		enemy[i].scale = { 1,1 };
-		enemy[i].pivot = { 20,40 };
 	}
     else if (enemy_random >= 80)
 	{
 		enemy[i].type = ENEMY_TYPE_BOBM;
 		enemy_sprite[i] = sprCrayon;
-		enemy_setting(i, 3, 1, 1);
+		enemy_setting(i, 3, 1, 1, 20, 40);
 		enemy[i].scale = { 1,1 };
-		enemy[i].pivot = { 20,40 };
+		
 	}
 	
 	//生成場所
@@ -224,7 +229,7 @@ void enemy_respawn(int i)
 
 
 //ボス生成
-void enemy_boss_respawn(int i)
+/*void enemy_boss_respawn(int i)
 {
 	enemy_type_render[i] = BOSS;
 
@@ -235,47 +240,55 @@ void enemy_boss_respawn(int i)
 		enemy_setting(i, 40, 3, 4);
 		enemy[i].scale = { 3,3 };
 		enemy[i].pivot = { 60,120 };
+		boss_state++;
+		break;
 
 	case 1://ミニカー
-		enemy[i].type = BOSS_TYPE_MINICAR;
+		enemy[i].type = BOSS_TYPE_CRAYON;
 		enemy_setting(i, 40, 3, 10);
 		enemy[i].scale = { 3,3 };
 		enemy[i].pivot = { 60,120 };
+		break;
 
 	case 2://ぬいぐるみ
 		enemy[i].type = BOSS_TYPE_DOLL;
 		enemy_setting(i, 40, 3, 4);
 		enemy[i].scale = { 3,3 };
 		enemy[i].pivot = { 60,120 };
+		break;
 
 	case 3://ロボット
 		enemy[i].type = BOSS_TYPE_ROBOT;
 		enemy_setting(i, 40, 3, 4);
 		enemy[i].scale = { 3,3 };
 		enemy[i].pivot = { 60,120 };
+		break;
 
 	case 4://木馬
 		enemy[i].type = BOSS_TYPE_HORSE;
 		enemy_setting(i, 40, 3, 4);
 		enemy[i].pivot = { 60,120 };
+		break;
 
 	case 5://ロケット鉛筆
 		enemy[i].type = BOSS_TYPE_PENCIL;
 		enemy_setting(i, 40, 3, 4);
 		enemy[i].scale = { 3,3 };
 		enemy[i].pivot = { 60,120 };
+		break;
 
 	case 6://ショベルカー
 		enemy[i].type = BOSS_TYPE_EXCAVATOR;
 		enemy_setting(i, 40, 3, 4);
 		enemy[i].scale = { 3,3 };
 		enemy[i].pivot = { 60,120 };
+		break;
 	}
 
 
 	enemy[i].pos.x = SCREEN_W + 200.0f;
 	enemy[i].pos.y = SCREEN_H * 0.9f;
-}
+}*/
 
 
 // 敵の移動と種類ごとの能力
@@ -288,24 +301,29 @@ void enemy_move(int i)
 	if (enemy[i].type == ENEMY_TYPE_CRAYON)
 	{
 		enemy[i].pos.x -= enemy[i].moveSpeed;
-		if (enemy_anim_timer[i] == enemy_anim[i])
+
+		if (enemy_anim_timer[i] >= enemy_anim[i])
 		{
-			while (60)
+			enemy_jump_timer[i]++;
+			float jumpspeed = 2;
+			
+			if (enemy_jump_timer[i] < 15)
 			{
-				enemy_jump_timer[i]++;
-				if (enemy_jump_timer[i] < 30)
-					enemy[i].pos.y -= 0.5;
-				else if (enemy_jump_timer[i] >= 30)
-					enemy[i].pos.y += 0.5;
+				enemy[i].pos.y -= jumpspeed;
 			}
-
-
+			else if (enemy_jump_timer[i] < 30)
+			{
+				enemy[i].pos.y += jumpspeed;
+			}
+			else
+			{
+				// ジャンプ終了、タイマーをリセット
+				enemy_anim_timer[i] = 0;
+				enemy_jump_timer[i] = 0;
+			}
 		}
-		enemy_anim_timer[i] = 0;
-		enemy_jump_timer[i] = 0;
 	}
-
-	// 速い敵
+	//ボール
 	else if (enemy[i].type == ENEMY_TYPE_BOLL)
 	{
 		enemy[i].pos.x -= enemy[i].moveSpeed;
@@ -315,7 +333,7 @@ void enemy_move(int i)
 	{
 		if (enemy[i].pos.y < enemy_target_y[i])
 		{
-			enemy[i].pos.y += enemy[i].moveSpeed;
+			enemy[i].pos.y += enemy[i].moveSpeed * 2;
 		}
 		else
 		{
@@ -354,13 +372,14 @@ void enemy_move(int i)
 	}
 }
 
-//敵の設定(番号・HP・攻撃力・スピード)
-void enemy_setting(int i,int hp,int attack,float speed)
+//敵の設定(番号・HP・攻撃力・スピード・中心点)
+void enemy_setting(int i,int hp,int attack,float speed,float x,float y)
 {
 	enemy_max_hp[i] = hp + enemy_hp_up;
 	enemy[i].hp = enemy_max_hp[i];
 	enemy[i].attack = attack + enemy_attack_up;
 	enemy[i].moveSpeed = speed + enemy_speed_up;
+	enemy[i].pivot = { x,y };
 }
 
 
@@ -386,7 +405,7 @@ void enemy_attack_action(int i)
 //時間ごとに強化
 void enemy_powerup()
 {
-	if (enemy_timer > 1200)
+	if (enemy_powerup_timer > 1200)
 	{
 		if (enemy_max + 3 <= ENEMY_NUMBER)
 		    enemy_max += 3;
@@ -395,9 +414,10 @@ void enemy_powerup()
 		
 		enemy_hp_up += 10.0f;
 		enemy_speed_up += 0.5f;
-		enemy_timer = 0;
+		enemy_powerup_timer = 0;
 	}
 }
+
 
 void enemy_render()
 {
@@ -478,4 +498,5 @@ void enemy_render()
 	debug::setString("boss_state:%d", boss_state);
 	debug::setString("enemy_anim_timer[0]:%d", enemy_anim_timer[0]);
 	debug::setString("enemy_jump_timer[0]:%d", enemy_jump_timer[0]);
+	debug::setString("enemy_max:%d", enemy_max);
 }
