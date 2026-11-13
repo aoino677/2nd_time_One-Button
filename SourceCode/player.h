@@ -15,6 +15,17 @@ extern float bullet_scale;
 extern float precision_rad;
 
 extern float Y1_damage;
+
+struct Bullet_Y1_AfterImage
+{
+	Bullet_Y1_AfterImage(const VECTOR2&, const float, const int);
+	VECTOR2 pos;
+	float angle = 0;
+	int color_index;
+	float timer = 0;
+};
+
+void set_vector_Bullet_Y1_AfterImage(Bullet_Y1_AfterImage* image);
 //extern int bullet_ingot_counter;
 
 //const VECTOR2 PLAYER_POS = { SCREEN_W * 0.5f, SCREEN_H * 0.5f };
