@@ -132,8 +132,8 @@ void game_render()
 	background_render();
 	enemy_render();
 	EXP_render();
-	item_render();
 	player_render();
+	item_render();
 	level_up_render();
 	hp_render();
 	effect_danger_render();

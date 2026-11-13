@@ -3,8 +3,7 @@
 #include "player.h"
 #include <vector>
 #include "Collision2D.h"
-#include <ctime>
-#include <stdlib.h>
+#include "EXP.h"
 
 OBJ2D item[ITEM_MAX];
 Sprite* spritem[ITEM_MAX];
@@ -14,12 +13,25 @@ int random;
 int lucky;
 int item_couner;
 
+float posX;
+float posY;
+float LengthX;
+float LengthY;
+VECTOR2 playerLeftUp;
+VECTOR2 playerLength;
+float color_w = 0;
+
 void item_init()
 {
 	item_state = 0;
 	item_couner = 0;
 	random = 0;
 	lucky = ITEM_RANDOM;
+
+	posX = 0;
+	posY = 0;
+	LengthX = 0;
+	LengthY = 0;
 }
 
 void item_update()
@@ -82,12 +94,13 @@ void item_update()
 			{
 				item[j].pos.x = (SCREEN_H - item[j].pos.y) * 0.3584f / 0.9336f;
 				VECTOR2 cursorPos = { static_cast<float>(getCursorPosX()), static_cast<float>(getCursorPosY()) };
-				float posX = item[j].pos.x - item[j].pivot.x * item[j].scale.x;
-				float posY = item[j].pos.y - item[j].pivot.y * item[j].scale.y;
-				float LengthX = item[j].texSize.x * item[j].scale.x;
-				float LengthY = item[j].texSize.y * item[j].scale.y;
-				VECTOR2 playerLeftUp = player.pos - VECTOR2{ player.pivot.x * player.scale.x, player.pivot.y * player.scale.y };
-				VECTOR2 playerLength = { player.texSize.x * player.scale.x, player.texSize.y * player.scale.y };
+				posX = item[j].pos.x - (item[j].pivot.x * item[j].scale.x) * acquisition_range;
+				posY = item[j].pos.y - (item[j].pivot.y * item[j].scale.y) * acquisition_range;
+				LengthX = (item[j].texSize.x * item[j].scale.x) * acquisition_range;
+				LengthY = (item[j].texSize.y * item[j].scale.y) * acquisition_range;
+				playerLeftUp = player.pos - VECTOR2{ player.pivot.x * player.scale.x, player.pivot.y * player.scale.y };
+				playerLength = { player.texSize.x * player.scale.x, player.texSize.y * player.scale.y };
+				color_w = 0.3f; // “–‚½‚è”»’è‚Ì“§–¾“x
 				if (Collision2D::rect_vs_rect({ posX, posY }, { LengthX, LengthY }, playerLeftUp, playerLength))
 				{
 					/*if (spritem[0])
@@ -96,6 +109,7 @@ void item_update()
 					}*/
 					item_couner++;
 					item[j].color.w = 0;
+					color_w = 0.0f;
 				}
 			}
 		}
@@ -118,6 +132,23 @@ void item_render()
 			1, 1, 1, item[i].color.w
 		);
 	}
+	primitive::rect(
+		posX, posY,
+		LengthX, LengthY,
+		0.0f, 0.0f,
+		0.0f,
+		0.0f, 0.0f, 1.0f, color_w,
+		false
+	);
+
+	primitive::rect(
+		playerLeftUp.x, playerLeftUp.y,
+		playerLength.x, playerLength.y,
+		0.0f, 0.0f,
+		0.0f,
+		0.0f, 1.0f, 0.0f, color_w,
+		false
+	);
 }
 
 void item_deinit()

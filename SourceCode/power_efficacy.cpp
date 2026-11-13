@@ -53,6 +53,11 @@ void Lost_Item_Acquisition_Range()
 {
 	acquisition_range += LOST_ITEM_ACQUISITION_RANGE_UP;
 }
+// HPÇÃç≈ëÂó Çè„Ç∞ÇÈ
+void HP_Max()
+{
+
+}
 
 // ÇÕÇ∏ÇÍ
 void loser()

@@ -1,4 +1,5 @@
 #include "EXP.h"
+#include "item.h"
 #include "enemy.h"
 #include "player.h"
 #include <vector>
@@ -8,11 +9,20 @@
 int EXP_timer = 0;
 int EXP_state = 0;
 int exp_count;
-int acquisition_range;
+float acquisition_range;
 
 Sprite* sprEXP;
 OBJ2D EXP[EXP_COUNT];
 //std::vector<OBJ2D> EXP;
+
+float posX_EXP;
+float posY_EXP;
+float LengthX_EXP;
+float LengthY_EXP;
+VECTOR2 playerLeftUp_EXP;
+VECTOR2 playerLength_EXP;
+float color_w_EXP = 0;
+
 
 void EXP_init()
 {
@@ -78,17 +88,19 @@ void EXP_update()
             if (EXP[j].pos.x < (SCREEN_H - EXP[j].pos.y) * 0.3584f / 0.9336f)
             {
                 EXP[j].pos.x = (SCREEN_H - EXP[j].pos.y) * 0.3584f / 0.9336f;
+                color_w_EXP = 0.5f; // “–‚½‚è”»’è‚Ì“§–¾“x
                 VECTOR2 cursorPos = { static_cast<float>(getCursorPosX()), static_cast<float>(getCursorPosY()) };
-                float posX = EXP[j].pos.x - (EXP[j].pivot.x * EXP[j].scale.x) * acquisition_range;
-                float posY = EXP[j].pos.y - (EXP[j].pivot.y * EXP[j].scale.y) * acquisition_range;
-                float LengthX = (EXP[j].texSize.x * EXP[j].scale.x) * acquisition_range;
-                float LengthY = (EXP[j].texSize.y * EXP[j].scale.y) * acquisition_range;
-                VECTOR2 playerLeftUp = player.pos - VECTOR2{ player.pivot.x * player.scale.x, player.pivot.y * player.scale.y };
-                VECTOR2 playerLength = { player.texSize.x * player.scale.x, player.texSize.y * player.scale.y };
-                if (Collision2D::rect_vs_rect({posX, posY}, {LengthX, LengthY}, playerLeftUp, playerLength))
+                posX_EXP = EXP[j].pos.x - (EXP[j].pivot.x * EXP[j].scale.x) * acquisition_range;
+                posY_EXP = EXP[j].pos.y - (EXP[j].pivot.y * EXP[j].scale.y) * acquisition_range;
+                LengthX_EXP = (EXP[j].texSize.x * EXP[j].scale.x) * acquisition_range;
+                LengthY_EXP = (EXP[j].texSize.y * EXP[j].scale.y) * acquisition_range;
+                playerLeftUp_EXP = player.pos - VECTOR2{ player.pivot.x * player.scale.x, player.pivot.y * player.scale.y };
+                playerLength_EXP = { player.texSize.x * player.scale.x, player.texSize.y * player.scale.y };
+                if (Collision2D::rect_vs_rect({posX_EXP, posY_EXP }, {LengthX_EXP, LengthY_EXP }, playerLeftUp_EXP, playerLength_EXP))
                 {
                     exp_count++;
                     EXP[j].color.w = 0;
+                    color_w_EXP = 0.0f;
                 }
             }
         }
@@ -111,6 +123,24 @@ void EXP_render()
             1, 1, 1, EXP[i].color.w
         );
     }
+
+    primitive::rect(
+        posX_EXP, posY_EXP,
+        LengthX_EXP, LengthY_EXP,
+        0.0f, 0.0f,
+        0.0f,
+        1.0f, 0.0f, 0.0f, color_w_EXP,
+        false
+    );
+
+    primitive::rect(
+        playerLeftUp_EXP.x, playerLeftUp_EXP.y,
+        playerLength_EXP.x, playerLength_EXP.y,
+        0.0f, 0.0f,
+        0.0f,
+        0.0f, 1.0f, 0.0f, color_w_EXP,
+        false
+    );
 }
 
 void EXP_deinit()

@@ -37,7 +37,7 @@ void choice_init()
 	sprpower_efficacy[5] = sprite_load(L"./Data/images/Item_Lucky_efficacy.png");
 	sprpower_efficacy[6] = sprite_load(L"./Data/images/Bullet_interval_efficacy.png");
 	sprpower_efficacy[7] = sprite_load(L"./Data/images/Bullet_Damage_efficacy.png");
-	//sprpower_efficacy[8] = sprite_load(L"./Data/images/Bullet_rad_efficacy.png");
+	sprpower_efficacy[8] = sprite_load(L"./Data/images/Acquisition_Range_efficacy.png");
 	//sprpower_efficacy[9] = sprite_load(L"./Data/images/Bullet_rad_efficacy.png");
 	//sprpower_efficacy[10] = sprite_load(L"./Data/images/Bullet_rad_efficacy.png");
 	//sprpower_efficacy[11] = sprite_load(L"./Data/images/Bullet_rad_efficacy.png");
@@ -177,6 +177,10 @@ void choice_update()
 		case BULLET_DAMAGE: // 弾のダメージが上がる
 			power_efficacy[7].pos = { 450,500 };
 			power_efficacy[7].color.w = 1;break;
+
+		case LOST_ITEM_ACQUISITION_RANGE: // 落とし物の取得範囲を広げる
+			power_efficacy[8].pos = { 450,500 };
+			power_efficacy[8].color.w = 1;break;
 		}
 		switch (random[1])
 		{
@@ -211,6 +215,10 @@ void choice_update()
 		case BULLET_DAMAGE: // 弾のダメージが上がる
 			power_efficacy[7].pos = { 950,500 };
 			power_efficacy[7].color.w = 1;break;
+
+		case LOST_ITEM_ACQUISITION_RANGE: // 落とし物の取得範囲を広げる
+			power_efficacy[8].pos = { 950,500 };
+			power_efficacy[8].color.w = 1; break;
 		}
 		switch (random[2])
 		{
@@ -245,6 +253,10 @@ void choice_update()
 		case BULLET_DAMAGE: // 弾のダメージが上がる
 			power_efficacy[7].pos = { 1450,500 };
 			power_efficacy[7].color.w = 1;break;
+
+		case LOST_ITEM_ACQUISITION_RANGE: // 落とし物の取得範囲を広げる
+			power_efficacy[8].pos = { 1450,500 };
+			power_efficacy[8].color.w = 1; break;
 		}
 		for (int i = 0; i < CHOICE_MAX; i++)
 		{
@@ -303,6 +315,9 @@ void choice_update()
 						case BULLET_DAMAGE:
 							Bullet_Damage();		
 							power_efficacy[i].color.w = 0; break;
+						case LOST_ITEM_ACQUISITION_RANGE:
+							Lost_Item_Acquisition_Range();
+							power_efficacy[i].color.w = 0; break;
 						}
 						break;
 
@@ -338,6 +353,9 @@ void choice_update()
 						case BULLET_DAMAGE:
 							Bullet_Damage();
 							power_efficacy[i].color.w = 0; break;
+						case LOST_ITEM_ACQUISITION_RANGE:
+							Lost_Item_Acquisition_Range();
+							power_efficacy[i].color.w = 0; break;
 						}
 						break;
 
@@ -372,6 +390,9 @@ void choice_update()
 							power_efficacy[i].color.w = 0; break;
 						case BULLET_DAMAGE:
 							Bullet_Damage();
+							power_efficacy[i].color.w = 0; break;
+						case LOST_ITEM_ACQUISITION_RANGE:
+							Lost_Item_Acquisition_Range();
 							power_efficacy[i].color.w = 0; break;
 						}
 						break;

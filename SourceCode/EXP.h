@@ -18,4 +18,4 @@ void EXP_deinit();
 // externéŒ¾
 extern Sprite* sprEXP;
 extern OBJ2D EXP[EXP_COUNT];
-extern int acquisition_range;
+extern float acquisition_range;
