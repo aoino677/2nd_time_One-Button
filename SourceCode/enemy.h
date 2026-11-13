@@ -20,7 +20,7 @@
 #define ENEMY             0
 #define BOSS              1
 
-#define ENEMY_NUMBER    (50)
+#define ENEMY_NUMBER    (100)
 
 #define ENEMY_SCALE     (1)
 #define ENEMY_TEX_W     (128)
@@ -33,12 +33,14 @@ void enemy_deinit();
 void enemy_update();
 void enemy_render();
 void enemy_move(int i);
-void enemy_respawn(int i);
+void enemy_ability(int i);
 void enemy_boss_respawn(int i);
 void enemy_attack_action(int i);
 void enemy_powerup();
-void enemy_setting(int i, int hp, int attack, float speed);
+void enemy_setting(int i, int hp, int attack, float speed,float x,float y);
 
+
+void enemy_respawn(int j);
 
 extern OBJ2D enemy[ENEMY_NUMBER];
 extern int enemy_max;
