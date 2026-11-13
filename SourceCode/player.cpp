@@ -7,7 +7,7 @@
 #include "Collision2D.h"
 #include <random>
 
-#define IMAGE_COLOR_COUNT 4
+#define IMAGE_COLOR_COUNT 5
 
 float bullet_speed = BULLET_SPEED;//î≠éÀÇ∑ÇÈíeÇÃ1ïbìñÇΩÇËÇÃë¨ìx
 float shot_per_second = 20.0f; //ÇPïbä‘Ç…î≠éÀÇ∑ÇÈíeÇÃêî	
@@ -39,10 +39,11 @@ std::vector<Bullet*> player_bullets;
 
 static const std::pair<VECTOR3, VECTOR3> afterimagecolors[IMAGE_COLOR_COUNT]
 {
-	{{1.0f, 0.5f, 0.75f},{0.2f, 0, 1}} ,
-	{{1.0f, 0.75f, 0.0f},{1.0f, 0.1f, 0.0f}} ,
-	{{0.2f, 0.8f, 0.0f},{1.0f, 1.0f, 1.0f}} ,
-	{{0.2f, 0.7f, 1.0f},{1.0f, 0.9f, 0.75f}} ,
+	{{1.0f, 0.5f, 0.75f},{0.2f, 0, 1}} ,		// Pink to Blue
+	{{1.0f, 0.75f, 0.0f},{1.0f, 0.1f, 0.0f}} ,	// Yellow to Red
+	{{0.2f, 0.8f, 0.0f},{1.0f, 1.0f, 1.0f}} ,	// Green to White
+	{{0.2f, 0.7f, 1.0f},{1.0f, 0.9f, 0.75f}} ,	// Blue to Cream Yellow
+	{{0.8f, 0.8f, 0.8f},{0.7f, 0.5f, 1.0f}} ,	// Gray to Purple
 };
 
 #define Y1_AFTERIMAGE_ALIVETIME (0.5f)
@@ -317,7 +318,9 @@ void player_update()
 	debug::setString("bullet_lay_count:%d", bullet_lay_count);
 	debug::setString("bullet_lay_gap:%f", ToDegree(bullet_lay_gap));
 	debug::setString("bullet_precision:%f", ToDegree(precision_rad));
+	debug::setString("");
 	debug::setString("bullet_count:%d", player_bullets.size());
+	debug::setString("after_images:%d", y1_after_images.size());
 	debug::setString("--------------------------------------");
 #endif // DEBUG
 
