@@ -3,10 +3,12 @@
 #include "player.h"
 #include <vector>
 #include "Collision2D.h"
+#include "power_efficacy.h"
 
 int EXP_timer = 0;
 int EXP_state = 0;
 int exp_count;
+int acquisition_range;
 
 Sprite* sprEXP;
 OBJ2D EXP[EXP_COUNT];
@@ -17,6 +19,7 @@ void EXP_init()
 	EXP_timer = 0;
 	EXP_state = 0;
     exp_count = 0;
+    acquisition_range = 1.0f;
 }
 
 void EXP_update()
@@ -76,10 +79,10 @@ void EXP_update()
             {
                 EXP[j].pos.x = (SCREEN_H - EXP[j].pos.y) * 0.3584f / 0.9336f;
                 VECTOR2 cursorPos = { static_cast<float>(getCursorPosX()), static_cast<float>(getCursorPosY()) };
-                float posX = EXP[j].pos.x - EXP[j].pivot.x * EXP[j].scale.x;
-                float posY = EXP[j].pos.y - EXP[j].pivot.y * EXP[j].scale.y;
-                float LengthX = EXP[j].texSize.x * EXP[j].scale.x;
-                float LengthY = EXP[j].texSize.y * EXP[j].scale.y;
+                float posX = EXP[j].pos.x - (EXP[j].pivot.x * EXP[j].scale.x) * acquisition_range;
+                float posY = EXP[j].pos.y - (EXP[j].pivot.y * EXP[j].scale.y) * acquisition_range;
+                float LengthX = (EXP[j].texSize.x * EXP[j].scale.x) * acquisition_range;
+                float LengthY = (EXP[j].texSize.y * EXP[j].scale.y) * acquisition_range;
                 VECTOR2 playerLeftUp = player.pos - VECTOR2{ player.pivot.x * player.scale.x, player.pivot.y * player.scale.y };
                 VECTOR2 playerLength = { player.texSize.x * player.scale.x, player.texSize.y * player.scale.y };
                 if (Collision2D::rect_vs_rect({posX, posY}, {LengthX, LengthY}, playerLeftUp, playerLength))
