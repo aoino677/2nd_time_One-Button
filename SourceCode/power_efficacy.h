@@ -1,14 +1,15 @@
 #pragma once
 #include "all.h"
 
-#define HP_MAX (3)										// 増やすHP量
-#define BULLET_SPEED_INCREASED (200.0f)		// 増やすスピード量
-#define BULLET_SCALE_INCREASED (0.01f)			// 増やす大きさの量
-#define ITEM_LUCKY_UP               (1)				//	アイテムを落とす確率を上げる
-#define BULLET_INTERVAL_UP        (1)				// 撃つ間隔が速くなる
-#define BULLET_DAMAGE_UP         (1)				// バレットのダメージが増える
+#define HP_MAX (3)											// 増やすHP量
+#define BULLET_SPEED_INCREASED (200.0f)			// 増やすスピード量
+#define BULLET_SCALE_INCREASED (0.01f)				// 増やす大きさの量
+#define ITEM_LUCKY_UP               (1)					//	アイテムを落とす確率を上げる
+#define BULLET_INTERVAL_UP        (1)					// 撃つ間隔が速くなる
+#define BULLET_DAMAGE_UP         (1)					// バレットのダメージが増える
+#define LOST_ITEM_ACQUISITION_RANGE_UP (0.2f)	// 落とした物の取得範囲を広げる
 
-#define EFFICACY_MAX (8)								// エフェクトの個数
+#define EFFICACY_MAX (9)								// エフェクトの個数
 
 
 // 画像
@@ -28,6 +29,7 @@ extern void Bullet_scale();
 extern void Bullet_rad();
 extern void Bullet_Interval();
 extern void Bullet_Damage();
+extern void Lost_Item_Acquisition_Range();
 
 extern void loser();
 

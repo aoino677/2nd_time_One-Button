@@ -4,14 +4,13 @@
 #include "Bullet.h"
 #include "cursor_main.h"
 #include "item.h"
+#include "EXP.h"
 #include <ctime>
 #include <stdlib.h>
 
 // プレイヤーのHPが上がる
 void HP()
 {
-	srand((unsigned int)time(NULL));
-
 	player_hp += rand() % HP_MAX + 1;
 }
 // 球の発射スピード
@@ -48,6 +47,11 @@ void Bullet_Interval()
 void Bullet_Damage()
 {
 	Y1_damage += BULLET_DAMAGE_UP;
+}
+// 落とし物の取得範囲を広げる
+void Lost_Item_Acquisition_Range()
+{
+	acquisition_range += LOST_ITEM_ACQUISITION_RANGE_UP;
 }
 
 // はずれ

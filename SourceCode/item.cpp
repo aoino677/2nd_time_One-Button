@@ -24,7 +24,6 @@ void item_init()
 
 void item_update()
 {
-	srand((unsigned int)time(NULL));
 	switch (item_state)
 	{
 	case 0:

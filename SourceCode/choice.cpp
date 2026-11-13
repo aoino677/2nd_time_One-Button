@@ -81,7 +81,6 @@ void choice_update_pause()
 			{
 				for (; T_or_F(level_up_count);)
 				{
-					srand((unsigned int)time(NULL));
 					level_max += LEVEL_COUNT_INCREAS;
 					exp_count = 0;
 					choice_pause = true;
