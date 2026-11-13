@@ -171,6 +171,20 @@ void shot_bullet()
 #endif
 	}
 }
+
+void shot_bullet_Ingot()
+{
+	auto* b_ingot = new Bullet_INGOT();
+	b_ingot->pos = { static_cast<float>(getCursorPosX()),0 };
+	b_ingot->end_pos = { SCREEN_W, SCREEN_H };
+	b_ingot->spr = sprBullet[2];
+	b_ingot->texSize = { 64, 64 };
+	b_ingot->attack_damage = ingot_damage;
+	//TODO:Œã‚ÅÁ‚·‚©‚à
+	b_ingot->attack_damage *= Y1_damage / Y1_DAMAGE;
+	b_ingot->accel_velocity.y = 3 / system::FRAME_RATE;
+	player_bullets.push_back(b_ingot);
+}
 //#define SHOT_AIM_TARGET
 //#define SHOT_AIM_AND_CLICK_TARGET
 
@@ -451,21 +465,6 @@ void bullet_move()
 
 void bullet_update()
 {
-	if (Y1_shot_timer > 3)
-	{
-		Y1_shot_timer = 0;
-		auto* b_ingot = new Bullet_INGOT();
-		b_ingot->pos = { static_cast<float>(getCursorPosX()),0 };
-		b_ingot->end_pos = { SCREEN_W, SCREEN_H };
-		b_ingot->spr = sprBullet[2];
-		b_ingot->texSize = { 64, 64 };
-		b_ingot->attack_damage = ingot_damage;
-		//TODO:Œã‚ÅÁ‚·‚©‚à
-		b_ingot->attack_damage *= Y1_damage / Y1_DAMAGE;
-		b_ingot->accel_velocity.y = 3 / system::FRAME_RATE;
-		player_bullets.push_back(b_ingot);
-	}
-	Y1_shot_timer += 1 / system::FRAME_RATE;
 	bullet_move();
 
 	bullet_attack();

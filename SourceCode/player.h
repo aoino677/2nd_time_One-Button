@@ -43,7 +43,8 @@ void set_shotPerSecond(float);
 
 void bullet_update();
 
-extern void shot_bullet();
+void shot_bullet();
+void shot_bullet_Ingot();
 
 const float PLAYER_EASING = 0.99f;
 
