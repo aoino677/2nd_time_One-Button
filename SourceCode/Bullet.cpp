@@ -1,12 +1,17 @@
 #include "Bullet.h"
 #include "enemy.h"
 #include "Collision2D.h"
+#include "player.h"
 using namespace GameLib;
 
 
 void Bullet_Y1::update()
 {
 	pos += velocity;
+
+	auto* image = new Bullet_Y1_AfterImage{ pos, angle, color_index };
+
+	set_vector_Bullet_Y1_AfterImage(image);
 }
 
 void Bullet_Y1::attack(OBJ2D enemy[])

@@ -24,6 +24,7 @@ struct Bullet
 
 struct Bullet_Y1 : Bullet
 {
+	int color_index;
 	~Bullet_Y1()override = default;
 	void update() override;
 	void attack(OBJ2D[]) override;

@@ -97,7 +97,7 @@ void cursor_main_update()
                 cursor_main_posY >= top &&
                 cursor_main_posY <= bottom)
             {
-                while (timer >= 0)
+                //while (timer >= 0)
                 {
                     if (timer == timer_down)
                     {

@@ -5,6 +5,9 @@
 #include "shake.h"
 #include <vector>
 #include "Collision2D.h"
+#include <random>
+
+#define IMAGE_COLOR_COUNT 4
 
 float bullet_speed = BULLET_SPEED;//î≠éÀÇ∑ÇÈíeÇÃ1ïbìñÇΩÇËÇÃë¨ìx
 float shot_per_second = 20.0f; //ÇPïbä‘Ç…î≠éÀÇ∑ÇÈíeÇÃêî	
@@ -21,7 +24,7 @@ float Y1_shot_timer = 0;
 //int rapidShoted_bullet_count;//òAéÀÇµÇΩíeêî
 //int cast_bullet;			//î≠éÀÇë“ã@ÇµÇƒÇ¢ÇÈíe
 
-int bullet_lay_count = 9;
+int bullet_lay_count = 1;
 float bullet_lay_gap = ToRadian(7);//íeÇÃä‘äu
 #define BULLET_SCALE (1.0f)
 float bullet_scale = BULLET_SCALE;//íeÇÃëÂÇ´Ç≥
@@ -34,7 +37,24 @@ Sprite* sprBullet[3];
 OBJ2D player;
 std::vector<Bullet*> player_bullets;
 
+static const std::pair<VECTOR3, VECTOR3> afterimagecolors[IMAGE_COLOR_COUNT]
+{
+	{{1.0f, 0.5f, 0.75f},{0.2f, 0, 1}} ,
+	{{1.0f, 0.75f, 0.0f},{1.0f, 0.1f, 0.0f}} ,
+	{{0.2f, 0.8f, 0.0f},{1.0f, 1.0f, 1.0f}} ,
+	{{0.2f, 0.7f, 1.0f},{1.0f, 0.9f, 0.75f}} ,
+};
+
+#define Y1_AFTERIMAGE_ALIVETIME (0.5f)
+
+std::vector<Bullet_Y1_AfterImage*> y1_after_images;
+
 VECTOR2 cursor_pos{};
+
+void set_vector_Bullet_Y1_AfterImage(Bullet_Y1_AfterImage* image)
+{
+	y1_after_images.push_back(image);
+}
 
 void player_init()
 {
@@ -65,6 +85,11 @@ void player_deinit()
 	{
 		delete bullet;
 	}
+
+	for (auto* image : y1_after_images)
+	{
+		delete image;
+	}
 	player_bullets.clear();
 }
 
@@ -87,6 +112,9 @@ void shot_bullet()
 		{0, 0}, {100, 0}, {0, 50}, {-100, 0}, {0, -50},
 		{70, 35},{70, -35},{-70, 35},{-70, -35},
 	};
+	std::random_device rd;
+	std::mt19937 mt(rd());
+	std::uniform_real_distribution<float> distribution(-precision_rad, precision_rad);
 
 	for (int i = 0; i < bullet_lay_count; i++)
 	{
@@ -98,15 +126,18 @@ void shot_bullet()
 			b->texSize = { 64, 8 };
 			b->pos = player.pos;
 			b->scale = { bullet_scale , bullet_scale };
-			float f = (rand() / (float)RAND_MAX) * 2 - 1;//óêêîê›íË
-			float k = atan2f(vec.y, vec.x) + f * precision_rad;//ägéUäpìxê›íË
-			b->angle = k;
+			//float f = (rand() / (float)RAND_MAX) * 2 - 1;//óêêîê›íË
+			//float k = atan2f(vec.y, vec.x) +f * precision_rad;//ägéUäpìxê›íË
+			//b->angle = k;
+			b->angle = distribution(mt);
+			b->angle += atan2f(vec.y, vec.x);
 			b->angle += bullet_lay_gap * i - bullet_lay_gap * (bullet_lay_count - 1) / 2.0f;//í[Ç…Ç»ÇÈÇŸÇ«éŒÇﬂÇ…Ç»ÇÈÅB
 			vec = { cosf(b->angle), sinf(b->angle) };
 			b->velocity = vec2Normalize(vec) * bullet_speed / system::FRAME_RATE;
 			b->angle += ToRadian(180);
 			b->end_pos = { (float)SCREEN_W, (float)SCREEN_H };
 			b->attack_damage = Y1_damage;
+			b->color_index = rand() % IMAGE_COLOR_COUNT;
 			//b->pos += vec * shot_timer;
 			player_bullets.push_back(b);
 		}
@@ -314,7 +345,25 @@ void player_render()
 		player.angle
 	);
 
-	for (auto*& bullet : player_bullets)
+	for (auto* image : y1_after_images)
+	{
+		float t = (Y1_AFTERIMAGE_ALIVETIME - image->timer) / Y1_AFTERIMAGE_ALIVETIME;// îÕàÕÅFÇOÅ`ÇP ÇPÇ»ÇÁï\é¶Ç≥ÇÍÇÈÅB
+		float k = t * 2; if (k > 1) { k = 1; }//ï‚ê≥
+		VECTOR3 color = afterimagecolors[image->color_index].first * k + afterimagecolors[image->color_index].second * (1 - k);
+
+		sprite_render(
+			sprBullet[0],
+			image->pos.x, image->pos.y,
+			1, 1,
+			0, 0,
+			64, 8,
+			64 * 0.5f, 8 * 0.5f,
+			image->angle,
+			color.x, color.y, color.z, t
+		);
+	}
+
+	for (auto* bullet : player_bullets)
 	{
 		sprite_render(
 			bullet->spr,
@@ -384,6 +433,20 @@ void bullet_move()
 	{
 		bullet->update();
 	}
+
+	for (auto itr = y1_after_images.begin(); itr != y1_after_images.end();)
+	{
+		(*itr)->timer += 1 / system::FRAME_RATE;
+		if ((*itr)->timer > Y1_AFTERIMAGE_ALIVETIME)
+		{
+			delete *itr;
+			itr = y1_after_images.erase(itr);
+		}
+		else
+		{
+			itr++;
+		}
+	}
 }
 
 void bullet_update()
@@ -397,6 +460,8 @@ void bullet_update()
 		b_ingot->spr = sprBullet[2];
 		b_ingot->texSize = { 64, 64 };
 		b_ingot->attack_damage = ingot_damage;
+		//TODO:å„Ç≈è¡Ç∑Ç©Ç‡
+		b_ingot->attack_damage *= Y1_damage / Y1_DAMAGE;
 		b_ingot->accel_velocity.y = 3 / system::FRAME_RATE;
 		player_bullets.push_back(b_ingot);
 	}
@@ -406,4 +471,8 @@ void bullet_update()
 	bullet_attack();
 
 	delete_bullet();
+}
+
+Bullet_Y1_AfterImage::Bullet_Y1_AfterImage(const VECTOR2& pos, const float angle, const int c) : pos(pos), angle(angle), color_index(c)
+{
 }
