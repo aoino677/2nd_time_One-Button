@@ -12,6 +12,7 @@ int item_state = 0;
 int random;
 int lucky;
 int item_couner;
+int Blue_counter;
 
 float posX;
 float posY;
@@ -25,6 +26,7 @@ void item_init()
 {
 	item_state = 0;
 	item_couner = 0;
+	Blue_counter = 0;
 	random = 0;
 	lucky = ITEM_RANDOM;
 
@@ -103,14 +105,22 @@ void item_update()
 				color_w = 0.3f; // “–‚½‚è”»’è‚Ì“§–¾“x
 				if (Collision2D::rect_vs_rect({ posX, posY }, { LengthX, LengthY }, playerLeftUp, playerLength))
 				{
-					/*if (spritem[0])
-					{
-						bullet_ingot_counter++;
-					}*/
 					item_couner++;
 					item[j].color.w = 0;
+					if (item[0].color.w == 0)
+					{
+						Blue_counter++;
+					}
 					color_w = 0.0f;
 				}
+			}
+		}
+
+		if (TRG(0) & PAD_START)
+		{
+			if (Blue_counter > 0)
+			{
+				shot_bullet_Ingot();
 			}
 		}
 		break;
@@ -149,6 +159,8 @@ void item_render()
 		0.0f, 1.0f, 0.0f, color_w,
 		false
 	);
+
+	debug::setString("Blue_counter:%d", Blue_counter);
 }
 
 void item_deinit()
