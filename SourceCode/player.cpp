@@ -5,6 +5,7 @@
 #include "shake.h"
 #include <vector>
 #include "Collision2D.h"
+#include <random>
 
 float bullet_speed = BULLET_SPEED;//”­Ë‚·‚é’e‚Ì1•b“–‚½‚è‚Ì‘¬“x
 float shot_per_second = 20.0f; //‚P•bŠÔ‚É”­Ë‚·‚é’e‚Ì”	
@@ -21,7 +22,7 @@ float Y1_shot_timer = 0;
 //int rapidShoted_bullet_count;//˜AË‚µ‚½’e”
 //int cast_bullet;			//”­Ë‚ğ‘Ò‹@‚µ‚Ä‚¢‚é’e
 
-int bullet_lay_count = 9;
+int bullet_lay_count = 1;
 float bullet_lay_gap = ToRadian(7);//’e‚ÌŠÔŠu
 #define BULLET_SCALE (1.0f)
 float bullet_scale = BULLET_SCALE;//’e‚Ì‘å‚«‚³
@@ -87,6 +88,9 @@ void shot_bullet()
 		{0, 0}, {100, 0}, {0, 50}, {-100, 0}, {0, -50},
 		{70, 35},{70, -35},{-70, 35},{-70, -35},
 	};
+	std::random_device rd;
+	std::mt19937 mt(rd());
+	std::uniform_real_distribution<float> distribution(-precision_rad, precision_rad);
 
 	for (int i = 0; i < bullet_lay_count; i++)
 	{
@@ -98,9 +102,11 @@ void shot_bullet()
 			b->texSize = { 64, 8 };
 			b->pos = player.pos;
 			b->scale = { bullet_scale , bullet_scale };
-			float f = (rand() / (float)RAND_MAX) * 2 - 1;//—”İ’è
-			float k = atan2f(vec.y, vec.x) + f * precision_rad;//ŠgUŠp“xİ’è
-			b->angle = k;
+			//float f = (rand() / (float)RAND_MAX) * 2 - 1;//—”İ’è
+			//float k = atan2f(vec.y, vec.x) +f * precision_rad;//ŠgUŠp“xİ’è
+			//b->angle = k;
+			b->angle = distribution(mt);
+			b->angle += atan2f(vec.y, vec.x);
 			b->angle += bullet_lay_gap * i - bullet_lay_gap * (bullet_lay_count - 1) / 2.0f;//’[‚É‚È‚é‚Ù‚ÇÎ‚ß‚É‚È‚éB
 			vec = { cosf(b->angle), sinf(b->angle) };
 			b->velocity = vec2Normalize(vec) * bullet_speed / system::FRAME_RATE;

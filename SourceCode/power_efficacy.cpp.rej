@@ -1,0 +1,10 @@
+diff a/SourceCode/power_efficacy.cpp b/SourceCode/power_efficacy.cpp	(rejected hunks)
+@@ -10,7 +10,7 @@
+ // �v���C���[��HP���オ��
+ void HP()
+ {
+-	srand((unsigned int)time(NULL));
++	//srand((unsigned int)time(NULL));
+ 
+ 	player_hp += rand() % HP_MAX + 1;
+ }
