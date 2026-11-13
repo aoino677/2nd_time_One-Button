@@ -23,7 +23,7 @@ float Y1_shot_timer = 0;
 
 int bullet_lay_count = 9;
 float bullet_lay_gap = ToRadian(7);//’e‚ÌŠÔŠu
-#define BULLET_SCALE (0.5f)
+#define BULLET_SCALE (1.0f)
 float bullet_scale = BULLET_SCALE;//’e‚Ì‘å‚«‚³
 
 float Y1_damage = Y1_DAMAGE;
@@ -95,7 +95,7 @@ void shot_bullet()
 			b->pos = player.pos;
 			b->scale = { bullet_scale , bullet_scale };
 			float f = (rand() / (float)RAND_MAX) * 2 - 1;//—”Ý’è
-			float k = atan2f(vec.y, vec.x) + f * precision_rad;//ŠgŽUŠp“xÝ’è
+			float k = atan2f(vec.y, vec.x) +f * precision_rad;//ŠgŽUŠp“xÝ’è
 			b->angle = k;
 			b->angle += bullet_lay_gap * i - bullet_lay_gap * (bullet_lay_count - 1) / 2;//’[‚É‚È‚é‚Ù‚ÇŽÎ‚ß‚É‚È‚éB
 			vec = { cosf(b->angle), sinf(b->angle) };
@@ -305,13 +305,13 @@ void player_render()
 			bullet->texSize.x * 0.5f, bullet->texSize.y * 0.5f,
 			bullet->angle
 		);
-		primitive::circle(
-			bullet->end_pos,
-			20,
-			{ 1, 0.3f },
-			0,
-			{ 0, 0, 1, 0.01f }
-		);
+		//primitive::circle(
+		//	bullet->end_pos,
+		//	20,
+		//	{ 1, 0.3f },
+		//	0,
+		//	{ 0, 0, 1, 0.01f }
+		//);
 	}
 }
 
