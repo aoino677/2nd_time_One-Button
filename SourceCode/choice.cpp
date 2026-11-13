@@ -60,7 +60,7 @@ void choice_init()
 		power_efficacy[i].scale = { POWER_EFFICACY_SCALE ,POWER_EFFICACY_SCALE };
 		power_efficacy[i].texSize = { POWER_EFFICACY_TEX_W , POWER_EFFICACY_TEX_H };
 		power_efficacy[i].pivot = { POWER_EFFICACY_PIVOT_X , POWER_EFFICACY_PIVOT_Y };
-		power_efficacy[i].color = { 1, 1, 1, 1.0f };
+		power_efficacy[i].color = { 1, 1, 1, 0.0f };
 	}
 	for (int i = 0; i < EFFICACY_MAX; i++)
 	{
@@ -149,103 +149,103 @@ void choice_update()
 		{
 		case HP_UP: // プレイヤーのHPが上がる
 			power_efficacy[0].pos = { 450,500 };
-			power_efficacy[0].color.w = 1; power_efficacy[!0].color.w = 0; break;
+			power_efficacy[0].color.w = 1;break;
 
 		case BULLET_SCALE_UP: // 球の大きさ
 			power_efficacy[1].pos = { 450,500 };
-			power_efficacy[1].color.w = 1; power_efficacy[!1].color.w = 0; break;
+			power_efficacy[1].color.w = 1;break;
 
 		case BULLET_SPEED_UP: // 球の発射スピード
 			power_efficacy[2].pos = { 450,500 };		
-			power_efficacy[2].color.w = 1; power_efficacy[!2].color.w = 0; break;
+			power_efficacy[2].color.w = 1;break;
 
 		case BULLET_RAD_DOWN: // 弾の狙った方向に飛ぶ精度
 			power_efficacy[3].pos = { 450,500 };		
-			power_efficacy[3].color.w = 1; power_efficacy[!3].color.w = 0; break;
+			power_efficacy[3].color.w = 1;break;
 
 		case BULLET_QUANTITY_UP: // 球の発射個数
 			power_efficacy[4].pos = { 450,500 };		
-			power_efficacy[4].color.w = 1; power_efficacy[!4].color.w = 0; break;
+			power_efficacy[4].color.w = 1;break;
 
 		case ITEM_LUCKY: // アイテムが落ちやすくなる
 			power_efficacy[5].pos = { 450,500 };		
-			power_efficacy[5].color.w = 1; power_efficacy[!5].color.w = 0; break;
+			power_efficacy[5].color.w = 1;break;
 
 		case BULLET_INTERVAL: // 撃つ間隔が速くなる
 			power_efficacy[6].pos = { 450,500 };
-			power_efficacy[6].color.w = 1; power_efficacy[!6].color.w = 0; break;
+			power_efficacy[6].color.w = 1;break;
 
 		case BULLET_DAMAGE: // 弾のダメージが上がる
 			power_efficacy[7].pos = { 450,500 };
-			power_efficacy[7].color.w = 1; power_efficacy[!7].color.w = 0; break;
+			power_efficacy[7].color.w = 1;break;
 		}
 		switch (random[1])
 		{
 		case HP_UP: // プレイヤーのHPが上がる
 			power_efficacy[0].pos = { 950,500 };
-			power_efficacy[0].color.w = 1; power_efficacy[!0].color.w = 0; break;
+			power_efficacy[0].color.w = 1;break;
 
 		case BULLET_SCALE_UP: // 球の大きさ
 			power_efficacy[1].pos = { 950,500 };
-			power_efficacy[1].color.w = 1; power_efficacy[!1].color.w = 0; break;
+			power_efficacy[1].color.w = 1;break;
 
 		case BULLET_SPEED_UP: // 球の発射スピード
 			power_efficacy[2].pos = { 950,500 };
-			power_efficacy[2].color.w = 1; power_efficacy[!2].color.w = 0; break;
+			power_efficacy[2].color.w = 1;break;
 
 		case BULLET_RAD_DOWN: // 弾の狙った方向に飛ぶ精度
 			power_efficacy[3].pos = { 950,500 };
-			power_efficacy[3].color.w = 1; power_efficacy[!3].color.w = 0; break;
+			power_efficacy[3].color.w = 1;break;
 
 		case BULLET_QUANTITY_UP: // 球の発射個数
 			power_efficacy[4].pos = { 950,500 };
-			power_efficacy[4].color.w = 1; power_efficacy[!4].color.w = 0; break;
+			power_efficacy[4].color.w = 1;break;
 
 		case ITEM_LUCKY: // アイテムが落ちやすくなる
 			power_efficacy[5].pos = { 950,500 };
-			power_efficacy[5].color.w = 1; power_efficacy[!5].color.w = 0; break;
+			power_efficacy[5].color.w = 1;break;
 		
 		case BULLET_INTERVAL: // 撃つ間隔が速くなる
 			power_efficacy[6].pos = { 950,500 };
-			power_efficacy[6].color.w = 1; power_efficacy[!6].color.w = 0; break;
+			power_efficacy[6].color.w = 1;break;
 
 		case BULLET_DAMAGE: // 弾のダメージが上がる
 			power_efficacy[7].pos = { 950,500 };
-			power_efficacy[7].color.w = 1; power_efficacy[!7].color.w = 0; break;
+			power_efficacy[7].color.w = 1;break;
 		}
 		switch (random[2])
 		{
 		case HP_UP: // プレイヤーのHPが上がる
 			power_efficacy[0].pos = { 1450,500 };
-			power_efficacy[0].color.w = 1; power_efficacy[!0].color.w = 0; break;
+			power_efficacy[0].color.w = 1;break;
 
 		case BULLET_SCALE_UP: // 球の大きさ
 			power_efficacy[1].pos = { 1450,500 };
-			power_efficacy[1].color.w = 1; power_efficacy[!1].color.w = 0; break;
+			power_efficacy[1].color.w = 1;break;
 
 		case BULLET_SPEED_UP: // 球の発射スピード
 			power_efficacy[2].pos = { 1450,500 };
-			power_efficacy[2].color.w = 1; power_efficacy[!2].color.w = 0; break;
+			power_efficacy[2].color.w = 1;break;
 
 		case BULLET_RAD_DOWN: // 弾の狙った方向に飛ぶ精度
 			power_efficacy[3].pos = { 1450,500 };
-			power_efficacy[3].color.w = 1; power_efficacy[!3].color.w = 0; break;
+			power_efficacy[3].color.w = 1;break;
 
 		case BULLET_QUANTITY_UP: // 球の発射個数
 			power_efficacy[4].pos = { 1450,500 };
-			power_efficacy[4].color.w = 1; power_efficacy[!4].color.w = 0; break;
+			power_efficacy[4].color.w = 1;break;
 
 		case ITEM_LUCKY: // アイテムが落ちやすくなる
 			power_efficacy[5].pos = { 1450,500 };
-			power_efficacy[5].color.w = 1; power_efficacy[!5].color.w = 0; break;
+			power_efficacy[5].color.w = 1;break;
 		
 		case BULLET_INTERVAL: // 撃つ間隔が速くなる
 			power_efficacy[6].pos = { 1450,500 };
-			power_efficacy[6].color.w = 1; power_efficacy[!6].color.w = 0; break;
+			power_efficacy[6].color.w = 1;break;
 
 		case BULLET_DAMAGE: // 弾のダメージが上がる
 			power_efficacy[7].pos = { 1450,500 };
-			power_efficacy[7].color.w = 1; power_efficacy[!7].color.w = 0; break;
+			power_efficacy[7].color.w = 1;break;
 		}
 		for (int i = 0; i < CHOICE_MAX; i++)
 		{
@@ -455,6 +455,11 @@ void randoms()
 	random[1] = rand() % EFFICACY_MAX;
 	random[2] = rand() % EFFICACY_MAX;
 
+	for (int i = 0; i < EFFICACY_MAX; i++)
+	{
+		power_efficacy[i].color.w = 0.0f;
+	}
+
 	// かぶっていたら再抽選
 	while (10000)
 	{
@@ -471,9 +476,10 @@ void randoms()
 		{
 			random[1] = rand() % EFFICACY_MAX;
 		}
-		if (random[0] != random[1] || random[0] != random[2] || random[1] != random[2])
+		if (random[0] != random[1] && random[0] != random[2] && random[1] != random[2])
 		{
 			break;
 		}
+		continue;
 	}
 }
