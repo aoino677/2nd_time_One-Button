@@ -35,6 +35,17 @@ Sprite* sprBullet[3];
 OBJ2D player;
 std::vector<Bullet*> player_bullets;
 
+struct Bullet_Y1_AfterImage
+{
+	VECTOR2 pos;
+	float angle = 0;
+	float timer = 0;
+};
+
+#define Y1_AFTERIMAGE_ALIVETIME (0.5f)
+
+std::vector<Bullet_Y1_AfterImage> y1_after_images;
+
 VECTOR2 cursor_pos{};
 
 void player_init()
@@ -320,7 +331,7 @@ void player_render()
 		player.angle
 	);
 
-	for (auto*& bullet : player_bullets)
+	for (auto* bullet : player_bullets)
 	{
 		sprite_render(
 			bullet->spr,
@@ -338,6 +349,20 @@ void player_render()
 		//	0,
 		//	{ 0, 0, 1, 0.01f }
 		//);
+	}
+
+	for (auto& image : y1_after_images)
+	{
+		sprite_render(
+			sprBullet[0],
+			image.pos.x, image.pos.y,
+			1, 1,
+			0, 0,
+			64, 8,
+			64 * 0.5f, 8 * 0.5f,
+			image.angle,
+			1, 0, 0, (Y1_AFTERIMAGE_ALIVETIME - image.timer) / Y1_AFTERIMAGE_ALIVETIME
+		);
 	}
 }
 
@@ -389,6 +414,21 @@ void bullet_move()
 	for (auto* bullet : player_bullets)
 	{
 		bullet->update();
+		y1_after_images.push_back({ bullet->pos, bullet->angle });
+	}
+
+	//ˆê’U‚¨‚¢‚Ä‚é‚¯‚ÇAIngot‘¤‚É‚à‰e‹¿‚ª‚©‚©‚Á‚Ä‚éB
+	for (auto itr = y1_after_images.begin(); itr != y1_after_images.end();)
+	{
+		itr->timer += 1 / system::FRAME_RATE;
+		if (itr->timer > Y1_AFTERIMAGE_ALIVETIME)
+		{
+			itr = y1_after_images.erase(itr);
+		}
+		else
+		{
+			itr++;
+		}
 	}
 }
 
@@ -403,6 +443,8 @@ void bullet_update()
 		b_ingot->spr = sprBullet[2];
 		b_ingot->texSize = { 64, 64 };
 		b_ingot->attack_damage = ingot_damage;
+		//TODO:Œã‚ÅÁ‚·‚©‚à
+		b_ingot->attack_damage *= Y1_damage / Y1_DAMAGE;
 		b_ingot->accel_velocity.y = 3 / system::FRAME_RATE;
 		player_bullets.push_back(b_ingot);
 	}

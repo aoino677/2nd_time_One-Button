@@ -43,4 +43,4 @@ const float PLAYER_EASING = 0.99f;
 #define Y1_DAMAGE (8)
 
 //‰„‚×–_
-#define INGOT_DAMAGE (18)
+#define INGOT_DAMAGE (18)//Y1_damage‚Ì”{—¦‚àæ‚Á‚Ä‚¢‚Ü‚·B
