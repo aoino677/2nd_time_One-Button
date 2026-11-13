@@ -22,6 +22,7 @@ void Bullet_Y1::attack(OBJ2D enemy[])
 			{
 				enemy[i].hp -= attack_damage;
 				pos = { -500, -500 };//‰æ–ÊŠO‚É
+				break;
 			}
 		}
 	}
