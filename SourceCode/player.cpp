@@ -75,10 +75,13 @@ void shot_bullet()
 {
 	VECTOR2 cursorPos = { static_cast<float>(getCursorPosX()), static_cast<float>(getCursorPosY()) };
 	//if (cursorPos.y < 380) cursorPos.y = 380;
+#ifdef NEW_SHOT
 	//float r = ToRadian(rand() % 360);
 	//vec = {cosf(r), sinf(r)};
-	VECTOR2 vec = cursorPos - player.pos;
-	float length = vec2Length(vec);
+
+	//VECTOR2 vec = cursorPos - player.pos;
+	//float length = vec2Length(vec);
+#endif
 
 	VECTOR2 a[9] = {
 		{0, 0}, {100, 0}, {0, 50}, {-100, 0}, {0, -50},
@@ -89,15 +92,16 @@ void shot_bullet()
 	{
 #ifdef OLD_SHOT
 		{
+			VECTOR2 vec = cursorPos - player.pos;
 			auto* b = new Bullet_Y1();
 			b->spr = sprBullet[1];
 			b->texSize = { 64, 8 };
 			b->pos = player.pos;
 			b->scale = { bullet_scale , bullet_scale };
 			float f = (rand() / (float)RAND_MAX) * 2 - 1;//—”Ý’è
-			float k = atan2f(vec.y, vec.x) +f * precision_rad;//ŠgŽUŠp“xÝ’è
+			float k = atan2f(vec.y, vec.x) + f * precision_rad;//ŠgŽUŠp“xÝ’è
 			b->angle = k;
-			b->angle += bullet_lay_gap * i - bullet_lay_gap * (bullet_lay_count - 1) / 2;//’[‚É‚È‚é‚Ù‚ÇŽÎ‚ß‚É‚È‚éB
+			b->angle += bullet_lay_gap * i - bullet_lay_gap * (bullet_lay_count - 1) / 2.0f;//’[‚É‚È‚é‚Ù‚ÇŽÎ‚ß‚É‚È‚éB
 			vec = { cosf(b->angle), sinf(b->angle) };
 			b->velocity = vec2Normalize(vec) * bullet_speed / system::FRAME_RATE;
 			b->angle += ToRadian(180);
@@ -258,8 +262,24 @@ void player_update()
 	player_move();
 	//player_shot_bullet();
 	bullet_update();
+
+#ifdef _DEBUG
+	debug::setString("[player debug]------------------------");
 	debug::setString("shot_per_second:%f", shot_per_second);
+	debug::setString("bullet_speed:%f", bullet_speed);
+	debug::setString("bullet_attack:%f", Y1_damage);
+	debug::setString("bullet_scale:%f", bullet_scale);
+	debug::setString("bullet_lay_count:%d", bullet_lay_count);
+	debug::setString("bullet_lay_gap:%f", ToDegree(bullet_lay_gap));
+	debug::setString("bullet_precision:%f", ToDegree(precision_rad));
 	debug::setString("bullet_count:%d", player_bullets.size());
+	debug::setString("--------------------------------------");
+#endif // DEBUG
+
+	if (TRG(0) & PAD_LEFT)
+	{
+		bullet_lay_count++;
+	}
 
 
 
