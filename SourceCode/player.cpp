@@ -30,10 +30,14 @@ float bullet_lay_gap = ToRadian(7);//’e‚ÌŠÔŠu
 float bullet_scale = BULLET_SCALE;//’e‚Ì‘å‚«‚³
 
 float Y1_damage = Y1_DAMAGE;
+
 float ingot_damage = INGOT_DAMAGE;
 
+float shell_damage = SHELL_DAMAGE;
+float shell_speed = 400.0f;
+
 Sprite* sprPlayer;
-Sprite* sprBullet[3];
+Sprite* sprBullet[4];
 OBJ2D player;
 std::vector<Bullet*> player_bullets;
 
@@ -62,7 +66,8 @@ void player_init()
 	sprPlayer = sprite_load(L"Data/Images/player.png");
 	sprBullet[0] = sprite_load(L"Data/Images/bullet.png");
 	sprBullet[1] = sprite_load(L"Data/Images/bullet.png");
-	sprBullet[2] = sprite_load(L"Data/Images/500yen.png");
+	sprBullet[2] = sprite_load(L"Data/Images/10yen.png");
+	sprBullet[3] = sprite_load(L"Data/Images/500yen.png");
 
 	player.pos = PLAYER_POS;
 	player.texSize = PLAYER_TEX_SIZE;
@@ -77,7 +82,7 @@ void player_init()
 void player_deinit()
 {
 	safe_delete(sprPlayer);
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < 4; i++)
 	{
 		safe_delete(sprBullet[i]);
 	}
@@ -177,14 +182,26 @@ void shot_bullet_Ingot()
 {
 	auto* b_ingot = new Bullet_INGOT();
 	b_ingot->pos = { static_cast<float>(getCursorPosX()),0 };
-	b_ingot->end_pos = { SCREEN_W, SCREEN_H };
 	b_ingot->spr = sprBullet[2];
 	b_ingot->texSize = { 64, 64 };
 	b_ingot->attack_damage = ingot_damage;
-	//TODO:Œã‚ÅÁ‚·‚©‚à
 	b_ingot->attack_damage *= Y1_damage / Y1_DAMAGE;
 	b_ingot->accel_velocity.y = 3 / system::FRAME_RATE;
 	player_bullets.push_back(b_ingot);
+}
+void shot_bullet_Shell()
+{
+	auto* b_shell = new Bullet_SHELL();
+	VECTOR2 cursorPos ={ static_cast<float>(getCursorPosX()),static_cast<float>(getCursorPosY()) };
+	b_shell->pos = player.pos;
+	auto vec = cursorPos - player.pos;
+	b_shell->velocity = vec2Normalize(vec) * shell_speed / system::FRAME_RATE;
+	b_shell->spr = sprBullet[3];
+	b_shell->texSize = { 64, 64 };
+	b_shell->scale = { 2, 2 };
+	b_shell->attack_damage = shell_damage;
+	b_shell->attack_damage *= Y1_damage / Y1_DAMAGE;
+	player_bullets.push_back(b_shell);
 }
 //#define SHOT_AIM_TARGET
 //#define SHOT_AIM_AND_CLICK_TARGET
@@ -324,13 +341,6 @@ void player_update()
 	debug::setString("--------------------------------------");
 #endif // DEBUG
 
-	if (TRG(0) & PAD_LEFT)
-	{
-		bullet_lay_count++;
-	}
-
-
-
 	//int enemy_count = 0;
 	//for (int e = 0; e < ENEMY_NUMBER; e++)
 	//{
@@ -457,6 +467,10 @@ void bullet_update()
 	if (TRG(0) & PAD_LEFT)
 	{
 		shot_bullet_Ingot();
+	}
+	if (TRG(0) & PAD_RIGHT)
+	{
+		shot_bullet_Shell();
 	}
 #endif
 	bullet_move();

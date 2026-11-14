@@ -45,6 +45,7 @@ void bullet_update();
 
 void shot_bullet();
 void shot_bullet_Ingot();
+void shot_bullet_Shell();
 
 const float PLAYER_EASING = 0.99f;
 
@@ -53,6 +54,9 @@ const float PLAYER_EASING = 0.99f;
 
 //‚P‰~
 #define Y1_DAMAGE (8)
+
+//ŠLŠk
+#define SHELL_DAMAGE (30)//Y1_damage‚Ì”{—¦‚àæ‚Á‚Ä‚¢‚Ü‚·B
 
 //‰„‚×–_
 #define INGOT_DAMAGE (18)//Y1_damage‚Ì”{—¦‚àæ‚Á‚Ä‚¢‚Ü‚·B
