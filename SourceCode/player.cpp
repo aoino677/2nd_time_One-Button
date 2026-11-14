@@ -382,22 +382,7 @@ void player_render()
 
 	for (auto* bullet : player_bullets)
 	{
-		sprite_render(
-			bullet->spr,
-			bullet->pos.x, bullet->pos.y,
-			bullet->scale.x, bullet->scale.y,
-			0, 0,
-			bullet->texSize.x, bullet->texSize.y,
-			bullet->texSize.x * 0.5f, bullet->texSize.y * 0.5f,
-			bullet->angle
-		);
-		//primitive::circle(
-		//	bullet->end_pos,
-		//	20,
-		//	{ 1, 0.3f },
-		//	0,
-		//	{ 0, 0, 1, 0.01f }
-		//);
+		bullet->render();
 	}
 }
 
@@ -468,6 +453,12 @@ void bullet_move()
 
 void bullet_update()
 {
+#ifdef _DEBUG
+	if (TRG(0) & PAD_LEFT)
+	{
+		shot_bullet_Ingot();
+	}
+#endif
 	bullet_move();
 
 	bullet_attack();
@@ -475,6 +466,4 @@ void bullet_update()
 	delete_bullet();
 }
 
-Bullet_Y1_AfterImage::Bullet_Y1_AfterImage(const VECTOR2& pos, const float angle, const int c) : pos(pos), angle(angle), color_index(c)
-{
-}
+Bullet_Y1_AfterImage::Bullet_Y1_AfterImage(const VECTOR2& pos, const float angle, const int c) : pos(pos), angle(angle), color_index(c) {}

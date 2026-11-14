@@ -20,6 +20,7 @@ struct Bullet
 
  	virtual void update() = 0;
  	virtual void attack(OBJ2D[]) = 0;
+	virtual void render();
 };
 
 struct Bullet_Y1 : Bullet
@@ -32,10 +33,20 @@ struct Bullet_Y1 : Bullet
 
 struct Bullet_INGOT : Bullet
 {
-	~Bullet_INGOT()override = default;
+	~Bullet_INGOT()override;
 	void update() override;
 	void attack(OBJ2D[]) override;
+	void render() override;
+
+	struct Ingot
+	{
+		VECTOR2 pos;
+		VECTOR2 velocity;
+	};
+
+	float timer;
 
 private:
 	std::vector<OBJ2D*> attacked_enemies;
+	std::vector<Ingot*> ingots;
 };
