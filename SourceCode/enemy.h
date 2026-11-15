@@ -2,7 +2,8 @@
 #include "all.h"
 
 // --- 敵の種類を定義 ---
-#define ENEMY_TYPE_CRAYON    0  //クレヨン
+#define ENEMY_TYPE_NONE      -1  //ボール
+#define ENEMY_TYPE_CRAYON_SQUAD    0  //クレヨン
 #define ENEMY_TYPE_BOLL      1  //ボール
 #define ENEMY_TYPE_BALLOON   2  //風船
 #define ENEMY_TYPE_PENCIL    3  //ロケット鉛筆
@@ -32,15 +33,21 @@ void enemy_init();
 void enemy_deinit();
 void enemy_update();
 void enemy_render();
-void enemy_move(int i);
+void enemy_setting(int i, int hp, int attack, float speed, float x, float y, float a, float b);
 void enemy_ability(int i);
+void spawn_crayon_formation();
 void enemy_boss_respawn(int i);
+void enemy_move(int i);
 void enemy_attack_action(int i);
 void enemy_powerup();
-void enemy_setting(int i, int hp, int attack, float speed,float x,float y);
+void enemy_damage_flash(int i);
+void enemy_knockback_check(int i);
+void enemy_bomb_explosion(int i);
+void spawn_enemy_particles(float x, float y, float r, float g, float b);
+void particle_update_and_render();
 
 
-void enemy_respawn(int j);
+
 
 extern OBJ2D enemy[ENEMY_NUMBER];
 extern int enemy_max;
