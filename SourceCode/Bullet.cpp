@@ -48,6 +48,14 @@ void Bullet::render()
 	);
 }
 
+bool Bullet::is_dead()
+{
+	return pos.x + texSize.x < 0
+		|| pos.x - texSize.x > SCREEN_W
+		|| pos.y + texSize.y < 0
+		|| pos.y - texSize.y > SCREEN_H;
+}
+
 Bullet_INGOT::~Bullet_INGOT()
 {
 #ifdef CAN_RAPIDSHOT_BULLET_INGOT
@@ -61,9 +69,29 @@ Bullet_INGOT::~Bullet_INGOT()
 
 void Bullet_INGOT::update()
 {
-
 	velocity += accel_velocity;
 	pos += velocity;
+
+	for (auto& image : after_images)
+	{
+		image.color.w -= 0.1f;
+	}
+
+	for (auto itr = after_images.begin(); itr != after_images.end();)
+	{
+		if (itr->color.w < 0)
+		{
+			itr = after_images.erase(itr);
+		}
+		else
+		{
+			itr++;
+		}
+	}
+
+	after_images.push_back(after_image());
+	after_images.back().pos = pos;
+	after_images.back().color = { 0, 1, 0, 1 };
 
 #ifdef CAN_RAPIDSHOT_BULLET_INGOT
 	for (auto* ingot : ingots)
@@ -136,6 +164,21 @@ void Bullet_INGOT::attack(OBJ2D enemy[])
 
 void Bullet_INGOT::render()
 {
+	for (auto image : after_images)
+	{
+		sprite_render(
+			spr,
+			image.pos.x, image.pos.y,
+			// ingot->pos.x, ingot->pos.y,
+			scale.x, scale.y,
+			0, 0,
+			texSize.x, texSize.y,
+			texSize.x * 0.5f, texSize.y * 0.5f,
+			angle,
+			image.color.x, image.color.y, image.color.z, image.color.w
+		);
+	}
+
 	//for (auto* ingot : ingots)
 	{
 		sprite_render(
@@ -149,6 +192,14 @@ void Bullet_INGOT::render()
 			angle
 		);
 	}
+}
+
+bool Bullet_INGOT::is_dead()
+{
+	return pos.x + texSize.x < 0
+		|| pos.x - texSize.x > SCREEN_W
+		|| pos.y + texSize.y < 0
+		|| pos.y - texSize.y > SCREEN_H;
 }
 
 void Bullet_SHELL::update()

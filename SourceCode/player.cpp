@@ -90,13 +90,16 @@ void player_deinit()
 	for (auto* bullet : player_bullets)
 	{
 		delete bullet;
+		bullet = nullptr;
 	}
+	player_bullets.clear();
 
 	for (auto* image : y1_after_images)
 	{
 		delete image;
+		image = nullptr;
 	}
-	player_bullets.clear();
+	y1_after_images.clear();
 }
 
 #define OLD_SHOT
@@ -410,20 +413,11 @@ void delete_bullet()
 {
 	for (auto itr = player_bullets.begin(); itr != player_bullets.end();)
 	{
-		//‰æ–ÊŠO‚Éo‚Ä‚¢‚½‚çB
-		if ((*itr)->pos.x + 32 < 0
-			|| (*itr)->pos.x - 32 > SCREEN_W
-			|| (*itr)->pos.y + 32 < 0
-			|| (*itr)->pos.y - 32 > SCREEN_H)
+		if ((*itr)->is_dead())
 		{
 			delete* itr;
 			itr = player_bullets.erase(itr);
 		}
-		//else if ((*itr)->pos.x > (*itr)->end_pos.x)
-		//{
-		//	delete* itr;
-		//	itr = player_bullets.erase(itr);
-		//}
 		else
 		{
 			itr++;

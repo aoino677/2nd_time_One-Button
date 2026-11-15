@@ -21,6 +21,7 @@ struct Bullet
  	virtual void update() = 0;
  	virtual void attack(OBJ2D[]) = 0;
 	virtual void render();
+	virtual bool is_dead();
 };
 
 struct Bullet_Y1 : Bullet
@@ -39,10 +40,19 @@ struct Bullet_SHELL : Bullet
 
 struct Bullet_INGOT : Bullet
 {
+	struct after_image
+	{
+		VECTOR2 pos;
+		VECTOR4 color;
+	};
 	~Bullet_INGOT()override;
 	void update() override;
 	void attack(OBJ2D[]) override;
 	void render() override;
+
+	bool is_dead() override;
+
+	std::vector< after_image> after_images;
 
 #ifdef CAN_RAPIDSHOT_BULLET_INGOT
 	struct Ingot
