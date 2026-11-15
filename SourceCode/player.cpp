@@ -1,11 +1,13 @@
 #include "player.h"
-#include "Bullet.h"
 #include "enemy.h"
 #include "AttackCollision.h"
 #include "shake.h"
 #include <vector>
 #include "Collision2D.h"
 #include <random>
+
+#include "Bullet.h"
+#include "Bullet_Ingot.h"
 
 #define IMAGE_COLOR_COUNT 5
 
@@ -37,7 +39,7 @@ float shell_damage = SHELL_DAMAGE;
 float shell_speed = 400.0f;
 
 Sprite* sprPlayer;
-Sprite* sprBullet[4];
+Sprite* sprBullet[5];
 OBJ2D player;
 std::vector<Bullet*> player_bullets;
 
@@ -68,6 +70,7 @@ void player_init()
 	sprBullet[1] = sprite_load(L"Data/Images/bullet.png");
 	sprBullet[2] = sprite_load(L"Data/Images/10yen.png");
 	sprBullet[3] = sprite_load(L"Data/Images/500yen.png");
+	sprBullet[4] = sprite_load(L"Data/Images/issen.png");
 
 	player.pos = PLAYER_POS;
 	player.texSize = PLAYER_TEX_SIZE;
@@ -82,7 +85,7 @@ void player_init()
 void player_deinit()
 {
 	safe_delete(sprPlayer);
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < 5; i++)
 	{
 		safe_delete(sprBullet[i]);
 	}
@@ -90,13 +93,16 @@ void player_deinit()
 	for (auto* bullet : player_bullets)
 	{
 		delete bullet;
+		bullet = nullptr;
 	}
+	player_bullets.clear();
 
 	for (auto* image : y1_after_images)
 	{
 		delete image;
+		image = nullptr;
 	}
-	player_bullets.clear();
+	y1_after_images.clear();
 }
 
 #define OLD_SHOT
@@ -180,18 +186,19 @@ void shot_bullet()
 
 void shot_bullet_Ingot()
 {
-	auto* b_ingot = new Bullet_INGOT();
+	auto* b_ingot = new Bullet_Ingot();
 	b_ingot->pos = { static_cast<float>(getCursorPosX()),0 };
 	b_ingot->spr = sprBullet[2];
 	b_ingot->texSize = { 64, 64 };
 	b_ingot->attack_damage = ingot_damage;
 	b_ingot->attack_damage *= Y1_damage / Y1_DAMAGE;
-	b_ingot->accel_velocity.y = 3 / system::FRAME_RATE;
+	b_ingot->accel_velocity.y = 4 / system::FRAME_RATE;
+	b_ingot->velocity.y = 6 / system::FRAME_RATE;
 	player_bullets.push_back(b_ingot);
 }
 void shot_bullet_Shell()
 {
-	auto* b_shell = new Bullet_SHELL();
+	auto* b_shell = new Bullet_Shell();
 	VECTOR2 cursorPos ={ static_cast<float>(getCursorPosX()),static_cast<float>(getCursorPosY()) };
 	b_shell->pos = player.pos;
 	auto vec = cursorPos - player.pos;
@@ -202,6 +209,18 @@ void shot_bullet_Shell()
 	b_shell->attack_damage = shell_damage;
 	b_shell->attack_damage *= Y1_damage / Y1_DAMAGE;
 	player_bullets.push_back(b_shell);
+}
+void shot_bullet_Beam()
+{
+	auto* b_ingot = new Bullet_Ingot();
+	b_ingot->pos = { 0, static_cast<float>(getCursorPosY()) };
+	b_ingot->spr = sprBullet[4];
+	b_ingot->texSize = { 64, 64 };
+	b_ingot->attack_damage = ingot_damage;
+	b_ingot->attack_damage *= Y1_damage / Y1_DAMAGE;
+	b_ingot->accel_velocity.x = 10 / system::FRAME_RATE;
+	b_ingot->velocity.x = 10 / system::FRAME_RATE;
+	player_bullets.push_back(b_ingot);
 }
 //#define SHOT_AIM_TARGET
 //#define SHOT_AIM_AND_CLICK_TARGET
@@ -410,20 +429,11 @@ void delete_bullet()
 {
 	for (auto itr = player_bullets.begin(); itr != player_bullets.end();)
 	{
-		//‰æ–ÊŠO‚Éo‚Ä‚¢‚½‚çB
-		if ((*itr)->pos.x + 32 < 0
-			|| (*itr)->pos.x - 32 > SCREEN_W
-			|| (*itr)->pos.y + 32 < 0
-			|| (*itr)->pos.y - 32 > SCREEN_H)
+		if ((*itr)->is_dead())
 		{
 			delete* itr;
 			itr = player_bullets.erase(itr);
 		}
-		//else if ((*itr)->pos.x > (*itr)->end_pos.x)
-		//{
-		//	delete* itr;
-		//	itr = player_bullets.erase(itr);
-		//}
 		else
 		{
 			itr++;
@@ -464,13 +474,17 @@ void bullet_move()
 void bullet_update()
 {
 #ifdef _DEBUG
-	if (TRG(0) & PAD_LEFT)
+	if (TRG(0) & PAD_UP)
 	{
 		shot_bullet_Ingot();
 	}
-	if (TRG(0) & PAD_RIGHT)
+	if (TRG(0) & PAD_DOWN)
 	{
 		shot_bullet_Shell();
+	}
+	if (TRG(0) & PAD_RIGHT)
+	{
+		shot_bullet_Beam();
 	}
 #endif
 	bullet_move();

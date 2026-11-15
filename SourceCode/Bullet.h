@@ -21,6 +21,7 @@ struct Bullet
  	virtual void update() = 0;
  	virtual void attack(OBJ2D[]) = 0;
 	virtual void render();
+	virtual bool is_dead();
 };
 
 struct Bullet_Y1 : Bullet
@@ -31,32 +32,8 @@ struct Bullet_Y1 : Bullet
 	void attack(OBJ2D[]) override;
 };
 
-struct Bullet_SHELL : Bullet
+struct Bullet_Shell : Bullet
 {
 	void update() override;
 	void attack(OBJ2D[]) override;
-};
-
-struct Bullet_INGOT : Bullet
-{
-	~Bullet_INGOT()override;
-	void update() override;
-	void attack(OBJ2D[]) override;
-	void render() override;
-
-#ifdef CAN_RAPIDSHOT_BULLET_INGOT
-	struct Ingot
-	{
-		VECTOR2 pos;
-		VECTOR2 velocity;
-	};
-
-	float timer;
-
-private:
-	std::vector<Ingot*> ingots;
-
-#endif
-private:
-	std::vector<OBJ2D*> attacked_enemies;
 };
