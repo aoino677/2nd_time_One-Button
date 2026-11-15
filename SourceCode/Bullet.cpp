@@ -50,21 +50,27 @@ void Bullet::render()
 
 Bullet_INGOT::~Bullet_INGOT()
 {
+#ifdef CAN_RAPIDSHOT_BULLET_INGOT
 	for (auto* ingot : ingots)
 	{
 		delete ingot;
 	}
 	ingots.clear();
+#endif
 }
 
 void Bullet_INGOT::update()
 {
+
+	velocity += accel_velocity;
+	pos += velocity;
+
+#ifdef CAN_RAPIDSHOT_BULLET_INGOT
 	for (auto* ingot : ingots)
 	{
 		ingot->velocity += accel_velocity;
 		ingot->pos += ingot->velocity;
 	}
-
 	for (auto itr = ingots.begin(); itr != ingots.end();)
 	{
 		if ((*itr)->pos.y - texSize.y > SCREEN_H)
@@ -90,17 +96,19 @@ void Bullet_INGOT::update()
 	}
 
 	timer += 1 / system::FRAME_RATE;
+#endif
 }
 
 void Bullet_INGOT::attack(OBJ2D enemy[])
 {
 	for (int i = 0; i < ENEMY_NUMBER; i++)
 	{
-		for (auto* ingot : ingots)
+		//for (auto* ingot : ingots)
 		{
 			VECTOR2 enemy_begin = enemy[i].pos - VECTOR2{ enemy[i].scale.x * enemy[i].pivot.x, enemy[i].scale.y * enemy[i].pivot.y };//enemy[e]‚Ì¶ã
 			VECTOR2 enemy_size = { enemy[i].scale.x * enemy[i].texSize.x, enemy[i].scale.y * enemy[i].texSize.y };
-			VECTOR2 bullet_center = ingot->pos;
+			//VECTOR2 bullet_center = ingot->pos;
+			VECTOR2 bullet_center = pos;
 			float bullet_radius = texSize.x * scale.x * 0.5f;
 			if (Collision2D::circle_vs_rect(bullet_center, bullet_radius, enemy_begin, enemy_size) && enemy[i].hp > 0)
 			{
@@ -128,11 +136,12 @@ void Bullet_INGOT::attack(OBJ2D enemy[])
 
 void Bullet_INGOT::render()
 {
-	for (auto* ingot : ingots)
+	//for (auto* ingot : ingots)
 	{
 		sprite_render(
 			spr,
-			ingot->pos.x, ingot->pos.y,
+			pos.x, pos.y,
+			// ingot->pos.x, ingot->pos.y,
 			scale.x, scale.y,
 			0, 0,
 			texSize.x, texSize.y,

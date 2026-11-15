@@ -44,6 +44,7 @@ struct Bullet_INGOT : Bullet
 	void attack(OBJ2D[]) override;
 	void render() override;
 
+#ifdef CAN_RAPIDSHOT_BULLET_INGOT
 	struct Ingot
 	{
 		VECTOR2 pos;
@@ -53,6 +54,9 @@ struct Bullet_INGOT : Bullet
 	float timer;
 
 private:
-	std::vector<OBJ2D*> attacked_enemies;
 	std::vector<Ingot*> ingots;
+
+#endif
+private:
+	std::vector<OBJ2D*> attacked_enemies;
 };

@@ -110,7 +110,7 @@ void game_update()
 	 //========================================
 		if (pause == true || choice_pause == true)
 		{
-			cursor_main_update();
+			//cursor_main_update();
 			choice_update();
 		}
 
