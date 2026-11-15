@@ -43,9 +43,12 @@ void set_shotPerSecond(float);
 
 void bullet_update();
 
+//íeÇë≈Ç¬ä÷êî===========================================
 void shot_bullet();
 void shot_bullet_Ingot();
 void shot_bullet_Shell();
+void shot_bullet_Beam();
+//=======================================================
 
 const float PLAYER_EASING = 0.99f;
 
