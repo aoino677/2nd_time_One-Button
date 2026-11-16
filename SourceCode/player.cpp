@@ -36,13 +36,13 @@ float Y1_damage = Y1_DAMAGE;
 
 float ingot_damage = INGOT_DAMAGE;
 float ingot_speed = 100.0f;
-float ingot_scale = 2.0f;
+float ingot_scale = 1.5f;
 
 float shell_damage = SHELL_DAMAGE;
 float shell_speed = 400.0f;
 
 float beem_speed = 4000;
-float beem_scale = 2.0f;
+float beem_scale = 1.5f;
 
 float bankrool_damage = 0;
 
@@ -241,15 +241,14 @@ void shot_bullet_Bankroll()
 {
 	auto* b_roll = new Bullet_Bankroll();
 	b_roll->spr = sprBullet[5];
-	b_roll->texSize = { 64, 64 };
+	b_roll->texSize = { 320, 160 };
 	b_roll->pos = player.pos;
-	b_roll->pivot = player.pos;
-	b_roll->scale = { beem_scale, beem_scale };
+	b_roll->pivot.x = -b_roll->texSize.x * 0.5f;
+	b_roll->pivot.y = b_roll->texSize.y * 0.5f;
+	b_roll->scale = { 1, 1 };
 	float damage = bankrool_damage;
 	damage *= Y1_damage / Y1_DAMAGE;
 	b_roll->attack_damage = static_cast<int>(damage);
-	b_roll->accel_velocity.x = 10 / system::FRAME_RATE;
-	b_roll->velocity.x = beem_speed / system::FRAME_RATE;
 	player_bullets.push_back(b_roll);
 }
 //#define SHOT_AIM_TARGET
