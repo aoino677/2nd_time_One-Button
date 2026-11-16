@@ -35,9 +35,18 @@ void Bullet_Ingot::update()
 		}
 	}
 
-	after_images.push_back(after_image());
-	after_images.back().pos = pos;
-	after_images.back().color = { 0, 1, 0, 1 };
+	debug::setString("%d", after_images.size());
+
+	if (pos.x + texSize.x > 0
+	 && pos.x - texSize.x < SCREEN_W
+	 && pos.y + texSize.y > 0
+	 && pos.y - texSize.y < SCREEN_H)
+	{
+		after_images.push_back(after_image());
+		after_images.back().pos = pos;
+		after_images.back().color = { 0, 1, 0, 1 };
+	}
+
 
 #ifdef CAN_RAPIDSHOT_BULLET_INGOT
 	for (auto* ingot : ingots)
@@ -142,8 +151,9 @@ void Bullet_Ingot::render()
 
 bool Bullet_Ingot::is_dead()
 {
-	return pos.x + texSize.x < 0
-		|| pos.x - texSize.x > SCREEN_W
-		|| pos.y + texSize.y < 0
-		|| pos.y - texSize.y > SCREEN_H;
+	return after_images.size() <= 0;
+	//return pos.x + texSize.x < 0
+	//	|| pos.x - texSize.x > SCREEN_W
+	//	|| pos.y + texSize.y < 0
+	//	|| pos.y - texSize.y > SCREEN_H;
 }

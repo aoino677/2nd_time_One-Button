@@ -34,30 +34,92 @@ void EXP_init()
 
 void EXP_update()
 {
-	switch (EXP_state)
-	{
-	case 0:
-		//////// 初期設定 ////////
+    switch (EXP_state)
+    {
+    case 0:
+        //////// 初期設定 ////////
 
-		// EXPの読み込み
-		sprEXP = sprite_load(L"./Data/Images/1yen.png");
+        // EXPの読み込み
+        sprEXP = sprite_load(L"./Data/Images/1yen.png");
 
-		EXP_state++;
-		break;
-	case 1:
+        EXP_state++;
+        break;
+    case 1:
         // パラメーターの設定
         for (int i = 0; i < EXP_COUNT; i++)
         {
             EXP[i] = {};
-            EXP[i].pos = { enemy[i].pos.x, enemy[i].pos.y};
+            EXP[i].pos = { enemy[i].pos.x, enemy[i].pos.y };
             EXP[i].scale = { EXP_SCALE    , EXP_SCALE };
             EXP[i].texSize = { EXP_TEX_W    , EXP_TEX_H };
             EXP[i].pivot = { EXP_PIVOT_X , EXP_PIVOT_Y };
-            EXP[i].color = { 1, 1, 1, 0};
+            EXP[i].color = { 1, 1, 1, 0 };
         }
-		EXP_state++;
-		break;
-	case 2:
+        EXP_state++;
+        break;
+    case 2:
+
+        // 1. 全ての敵（0 ? ENEMY_NUMBER）の前回HPを記憶する配列
+        static int prev_enemy_hp[ENEMY_NUMBER] = { 0 };
+
+        // 2. すべての敵のインデックスを走査
+        for (int i = 0; i < ENEMY_NUMBER; i++)
+        {
+            // 「前回のフレームではHPが1以上だった」のに、
+            // 「今回のフレームでHPが0以下になった」瞬間を検知する
+            if (prev_enemy_hp[i] > 0 && enemy[i].hp <= 0)
+            {
+                // 空いているEXPを探してドロップさせる
+                for (int exp_index = 0; exp_index < EXP_COUNT; exp_index++)
+                {
+                    if (EXP[exp_index].color.w != 1.0f)
+                    {
+                        EXP[exp_index].pos = enemy[i].pos;
+                        EXP[exp_index].color.w = 1.0f;
+                        EXP[exp_index].moveSpeed = 0;
+                        break;
+                    }
+                }
+            }
+
+            // 次のフレームの比較用に、現在のHPを保存しておく
+            prev_enemy_hp[i] = enemy[i].hp;
+        }
+
+        // 3. 既存のEXPの移動・プレイヤーとの当たり判定処理
+        for (int j = 0; j < EXP_COUNT; j++)
+        {
+            if (EXP[j].color.w != 1.0f)
+            {
+                EXP[j].pos = { -500, -500 };
+                continue;
+            }
+            EXP[j].moveSpeed += 100.0f / 60.0f;
+            EXP[j].pos.x -= EXP[j].moveSpeed;
+            if (EXP[j].pos.x < (SCREEN_H - EXP[j].pos.y) * 0.3584f / 0.9336f)
+            {
+                EXP[j].pos.x = (SCREEN_H - EXP[j].pos.y) * 0.3584f / 0.9336f;
+                color_w_EXP = 0.5f; // 当たり判定の透明度
+                VECTOR2 cursorPos = { static_cast<float>(getCursorPosX()), static_cast<float>(getCursorPosY()) };
+                posX_EXP = EXP[j].pos.x - (EXP[j].pivot.x * EXP[j].scale.x) * acquisition_range;
+                posY_EXP = EXP[j].pos.y - (EXP[j].pivot.y * EXP[j].scale.y) * acquisition_range;
+                LengthX_EXP = (EXP[j].texSize.x * EXP[j].scale.x) * acquisition_range;
+                LengthY_EXP = (EXP[j].texSize.y * EXP[j].scale.y) * acquisition_range;
+                playerLeftUp_EXP = player.pos - VECTOR2{ player.pivot.x * player.scale.x, player.pivot.y * player.scale.y };
+                playerLength_EXP = { player.texSize.x * player.scale.x, player.texSize.y * player.scale.y };
+                if (Collision2D::rect_vs_rect({ posX_EXP, posY_EXP }, { LengthX_EXP, LengthY_EXP }, playerLeftUp_EXP, playerLength_EXP))
+                {
+                    exp_count++;
+                    EXP[j].color.w = 0;
+                    color_w_EXP = 0.0f;
+                }
+            }
+        }
+        break;
+    }
+}
+        
+        /*case 2:
         for (int enemy_index = 0; enemy_index < enemy_max; enemy_index++)
         {
             // 敵の色が０（敵が死んだら）になったらEXPが落ちる
@@ -106,7 +168,7 @@ void EXP_update()
         }
 		break;
 	}
-}
+}*/
 
 void EXP_render()
 {

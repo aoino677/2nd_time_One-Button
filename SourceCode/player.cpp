@@ -34,9 +34,15 @@ float bullet_scale = BULLET_SCALE;//’e‚Ì‘å‚«‚³
 float Y1_damage = Y1_DAMAGE;
 
 float ingot_damage = INGOT_DAMAGE;
+float ingot_speed = 100.0f;
+float ingot_scale = 2.0f;
 
 float shell_damage = SHELL_DAMAGE;
 float shell_speed = 400.0f;
+
+float beem_speed = 4000;
+float beem_damage = 25;
+float beem_scale = 2.0f;
 
 Sprite* sprPlayer;
 Sprite* sprBullet[5];
@@ -68,7 +74,7 @@ void player_init()
 	sprPlayer = sprite_load(L"Data/Images/player.png");
 	sprBullet[0] = sprite_load(L"Data/Images/bullet.png");
 	sprBullet[1] = sprite_load(L"Data/Images/bullet.png");
-	sprBullet[2] = sprite_load(L"Data/Images/10yen.png");
+	sprBullet[2] = sprite_load(L"Data/Images/100yen.png");
 	sprBullet[3] = sprite_load(L"Data/Images/500yen.png");
 	sprBullet[4] = sprite_load(L"Data/Images/issen.png");
 
@@ -187,13 +193,14 @@ void shot_bullet()
 void shot_bullet_Ingot()
 {
 	auto* b_ingot = new Bullet_Ingot();
-	b_ingot->pos = { static_cast<float>(getCursorPosX()),0 };
 	b_ingot->spr = sprBullet[2];
+	b_ingot->scale = { ingot_scale, ingot_scale };
 	b_ingot->texSize = { 64, 64 };
+	b_ingot->pos = { static_cast<float>(getCursorPosX()), -b_ingot->texSize.y };
 	b_ingot->attack_damage = ingot_damage;
 	b_ingot->attack_damage *= Y1_damage / Y1_DAMAGE;
-	b_ingot->accel_velocity.y = 4 / system::FRAME_RATE;
-	b_ingot->velocity.y = 6 / system::FRAME_RATE;
+	b_ingot->accel_velocity.y = 100/ system::FRAME_RATE;
+	b_ingot->velocity.y = ingot_speed / system::FRAME_RATE;
 	player_bullets.push_back(b_ingot);
 }
 void shot_bullet_Shell()
@@ -210,17 +217,19 @@ void shot_bullet_Shell()
 	b_shell->attack_damage *= Y1_damage / Y1_DAMAGE;
 	player_bullets.push_back(b_shell);
 }
+
 void shot_bullet_Beam()
 {
-	auto* b_ingot = new Bullet_Ingot();
-	b_ingot->pos = { 0, static_cast<float>(getCursorPosY()) };
-	b_ingot->spr = sprBullet[4];
-	b_ingot->texSize = { 64, 64 };
-	b_ingot->attack_damage = ingot_damage;
-	b_ingot->attack_damage *= Y1_damage / Y1_DAMAGE;
-	b_ingot->accel_velocity.x = 10 / system::FRAME_RATE;
-	b_ingot->velocity.x = 10 / system::FRAME_RATE;
-	player_bullets.push_back(b_ingot);
+	auto* b_beem = new Bullet_Ingot();
+	b_beem->spr = sprBullet[4];
+	b_beem->texSize = { 64, 64 };
+	b_beem->pos = { -b_beem->texSize.x, static_cast<float>(getCursorPosY()) };
+	b_beem->scale = { beem_scale, beem_scale };
+	b_beem->attack_damage = beem_damage;
+	b_beem->attack_damage *= Y1_damage / Y1_DAMAGE;
+	b_beem->accel_velocity.x = 10 / system::FRAME_RATE;
+	b_beem->velocity.x = beem_speed / system::FRAME_RATE;
+	player_bullets.push_back(b_beem);
 }
 //#define SHOT_AIM_TARGET
 //#define SHOT_AIM_AND_CLICK_TARGET
@@ -474,11 +483,11 @@ void bullet_move()
 void bullet_update()
 {
 #ifdef _DEBUG
-	if (TRG(0) & PAD_UP)
+	if (TRG(0) & PAD_DOWN)
 	{
 		shot_bullet_Ingot();
 	}
-	if (TRG(0) & PAD_DOWN)
+	if (TRG(0) & PAD_UP)
 	{
 		shot_bullet_Shell();
 	}
