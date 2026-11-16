@@ -23,6 +23,9 @@ VECTOR2 playerLeftUp_EXP;
 VECTOR2 playerLength_EXP;
 float color_w_EXP = 0;
 
+//前回HPを記憶する配列
+static int prev_enemy_hp[ENEMY_NUMBER] = { 0 };
+
 
 void EXP_init()
 {
@@ -58,18 +61,13 @@ void EXP_update()
         EXP_state++;
         break;
     case 2:
-
-        // 1. 全ての敵（0 ? ENEMY_NUMBER）の前回HPを記憶する配列
-        static int prev_enemy_hp[ENEMY_NUMBER] = { 0 };
-
-        // 2. すべての敵のインデックスを走査
         for (int i = 0; i < ENEMY_NUMBER; i++)
         {
-            // 「前回のフレームではHPが1以上だった」のに、
-            // 「今回のフレームでHPが0以下になった」瞬間を検知する
+            
+            //HPが0以下になった瞬間を検知する
             if (prev_enemy_hp[i] > 0 && enemy[i].hp <= 0)
             {
-                // 空いているEXPを探してドロップさせる
+                //空いているEXPを探してドロップさせる
                 for (int exp_index = 0; exp_index < EXP_COUNT; exp_index++)
                 {
                     if (EXP[exp_index].color.w != 1.0f)
@@ -82,11 +80,11 @@ void EXP_update()
                 }
             }
 
-            // 次のフレームの比較用に、現在のHPを保存しておく
+            //次のフレームの比較用に、現在のHPを保存しておく
             prev_enemy_hp[i] = enemy[i].hp;
         }
 
-        // 3. 既存のEXPの移動・プレイヤーとの当たり判定処理
+        //既存のEXPの移動・プレイヤーとの当たり判定
         for (int j = 0; j < EXP_COUNT; j++)
         {
             if (EXP[j].color.w != 1.0f)
