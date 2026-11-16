@@ -15,6 +15,8 @@ int item_couner;
 int Blue_counter;
 int Green_counter;
 int Red_counter;
+int item_timer;
+int item_timer_rimit;
 
 float posX;
 float posY;
@@ -31,6 +33,10 @@ void item_init()
 	Blue_counter = 0;
 	Green_counter = 0;
 	Red_counter = 0;
+	item_timer = 1;
+	item_timer_rimit = 0;
+	
+
 	random = 0;
 	lucky = ITEM_RANDOM;
 
@@ -114,20 +120,77 @@ void item_update()
 					{}
 					else if (spritem[j] == spritem[0])
 					{
-						Blue_counter++;
-						item[j].color.w = 0.0f;
+						if (item_timer <= ITEM_TIMER)
+						{
+							if (item_timer == ITEM_TIMER)
+							{
+								Blue_counter++;
+								item[j].color.w = 0.0f;
+								item_timer = 1;
+								break;
+							}
+							item_timer++;
+						}
 					}
 					else if (spritem[j] == spritem[1])
 					{
-						Green_counter++;
-						item[j].color.w = 0.0f;
+						if (item_timer <= ITEM_TIMER)
+						{
+							if (item_timer == ITEM_TIMER)
+							{
+								Green_counter++;
+								item[j].color.w = 0.0f;
+								item_timer = 1;
+								break;
+							}
+							item_timer++;
+						}
 					}
 					else if (spritem[j] == spritem[2])
 					{
-						Red_counter++;
-						item[j].color.w = 0.0f;
+						if (item_timer <= ITEM_TIMER)
+						{
+							if (item_timer == ITEM_TIMER)
+							{
+								Red_counter++;
+								item[j].color.w = 0.0f;
+								item_timer = 1;
+								break;
+							}
+							item_timer++;
+						}
 					}
 					color_w = 0.0f;
+				}
+				else
+				{
+					if (spritem[j] == 0)
+					{
+					}
+					else if (spritem[j] == spritem[0])
+					{
+						item_timer--;
+						if (item_timer < 1)
+						{
+							item_timer = 1;
+						}
+					}
+					else if (spritem[j] == spritem[1])
+					{
+						item_timer--;
+						if (item_timer < 1)
+						{
+							item_timer = 1;
+						}
+					}
+					else if (spritem[j] == spritem[2])
+					{
+						item_timer--;
+						if (item_timer < 1)
+						{
+							item_timer = 1;
+						}
+					}
 				}
 			}
 		}
@@ -139,11 +202,11 @@ void item_update()
 				shot_bullet_Ingot();
 				Blue_counter--;
 			}
-			if (Green_counter > 0 && Blue_counter == 0)
+			else if(Green_counter > 0 && Blue_counter == 0)
 			{
 				shot_bullet_Shell();
 				Green_counter--;
-			}
+			}else 
 			if (Red_counter > 0 && Blue_counter == 0 && Green_counter == 0)
 			{
 				shot_bullet_Beam();
@@ -168,6 +231,12 @@ void item_render()
 			ToRadian(0),
 			1, 1, 1, item[i].color.w
 		);
+
+		float render_y = item[i].pos.y;
+		float bar_pos_y = render_y - 60.0f;
+
+		primitive::rect(item[i].pos.x - 60, bar_pos_y, ITEM_TIMER, 10, 0, 0, 0, 1, 1, 1, 0.5f);
+		primitive::rect(item[i].pos.x - 60, bar_pos_y, item_timer, 10, 0, 0, 0, 0, 0, 1, 0.5f);
 	}
 	primitive::rect(
 		posX, posY,
