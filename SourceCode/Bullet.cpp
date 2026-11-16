@@ -18,6 +18,8 @@ void Bullet_Y1::update()
 
 void Bullet_Y1::attack(OBJ2D enemy[])
 {
+	float posX = FLT_MAX;
+	OBJ2D* nearst_enemy = nullptr;
 	for (int i = 0; i < ENEMY_NUMBER; i++)
 	{
 		VECTOR2 enemy_begin = enemy[i].pos - VECTOR2{ enemy[i].scale.x * enemy[i].pivot.x, enemy[i].scale.y * enemy[i].pivot.y };//enemy[e]‚Ì¶ã
@@ -26,12 +28,19 @@ void Bullet_Y1::attack(OBJ2D enemy[])
 		float bullet_radius = texSize.x * scale.x * 0.5f;
 		if (Collision2D::circle_vs_rect(bullet_center, bullet_radius, enemy_begin, enemy_size) && enemy[i].hp > 0)
 		{
+			if(enemy[i].pos.x < posX)
 			{
-				enemy[i].hp -= attack_damage;
-				pos = { -500, -500 };//‰æ–ÊŠO‚É
-				break;
+				posX = enemy[i].pos.x;
+				nearst_enemy = &enemy[i];
+				
 			}
 		}
+	}
+
+	if (posX != FLT_MAX)
+	{
+		nearst_enemy->hp -= attack_damage;
+		pos = { -500, -500 };//‰æ–ÊŠO‚É
 	}
 }
 
