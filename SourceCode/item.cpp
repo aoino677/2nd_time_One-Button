@@ -127,9 +127,6 @@ void item_update()
 						Red_counter++;
 						item[j].color.w = 0.0f;
 					}
-
-
-
 					color_w = 0.0f;
 				}
 			}
@@ -142,12 +139,12 @@ void item_update()
 				shot_bullet_Ingot();
 				Blue_counter--;
 			}
-			if (Green_counter > 0)
+			if (Green_counter > 0 && Blue_counter == 0)
 			{
 				shot_bullet_Shell();
 				Green_counter--;
 			}
-			if (Red_counter > 0)
+			if (Red_counter > 0 && Blue_counter == 0 && Green_counter == 0)
 			{
 				shot_bullet_Beam();
 				Red_counter--;
