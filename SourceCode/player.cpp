@@ -8,6 +8,7 @@
 
 #include "Bullet.h"
 #include "Bullet_Ingot.h"
+#include "Bullet_Bankroll.h"
 
 #define IMAGE_COLOR_COUNT 5
 
@@ -41,11 +42,12 @@ float shell_damage = SHELL_DAMAGE;
 float shell_speed = 400.0f;
 
 float beem_speed = 4000;
-float beem_damage = 25;
 float beem_scale = 2.0f;
 
+float bankrool_damage = 0;
+
 Sprite* sprPlayer;
-Sprite* sprBullet[5];
+Sprite* sprBullet[6];
 OBJ2D player;
 std::vector<Bullet*> player_bullets;
 
@@ -77,6 +79,7 @@ void player_init()
 	sprBullet[2] = sprite_load(L"Data/Images/100yen.png");
 	sprBullet[3] = sprite_load(L"Data/Images/500yen.png");
 	sprBullet[4] = sprite_load(L"Data/Images/issen.png");
+	sprBullet[5] = sprite_load(L"Data/Images/bankroll.png");
 
 	player.pos = PLAYER_POS;
 	player.texSize = PLAYER_TEX_SIZE;
@@ -91,7 +94,7 @@ void player_init()
 void player_deinit()
 {
 	safe_delete(sprPlayer);
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < 6; i++)
 	{
 		safe_delete(sprBullet[i]);
 	}
@@ -154,7 +157,7 @@ void shot_bullet()
 			b->velocity = vec2Normalize(vec) * bullet_speed / system::FRAME_RATE;
 			b->angle += ToRadian(180);
 			b->end_pos = { (float)SCREEN_W, (float)SCREEN_H };
-			b->attack_damage = Y1_damage;
+			b->attack_damage = static_cast<int>(Y1_damage);
 			b->color_index = rand() % IMAGE_COLOR_COUNT;
 			//b->pos += vec * shot_timer;
 			player_bullets.push_back(b);
@@ -197,8 +200,9 @@ void shot_bullet_Ingot()
 	b_ingot->scale = { ingot_scale, ingot_scale };
 	b_ingot->texSize = { 64, 64 };
 	b_ingot->pos = { static_cast<float>(getCursorPosX()), -b_ingot->texSize.y };
-	b_ingot->attack_damage = ingot_damage;
-	b_ingot->attack_damage *= Y1_damage / Y1_DAMAGE;
+	float damage = ingot_damage;
+		  damage *= Y1_damage / Y1_DAMAGE;
+	b_ingot->attack_damage = static_cast<int>(damage);
 	b_ingot->accel_velocity.y = 100/ system::FRAME_RATE;
 	b_ingot->velocity.y = ingot_speed / system::FRAME_RATE;
 	player_bullets.push_back(b_ingot);
@@ -213,8 +217,9 @@ void shot_bullet_Shell()
 	b_shell->spr = sprBullet[3];
 	b_shell->texSize = { 64, 64 };
 	b_shell->scale = { 2, 2 };
-	b_shell->attack_damage = shell_damage;
-	b_shell->attack_damage *= Y1_damage / Y1_DAMAGE;
+	float damage = shell_damage;
+	   	  damage *= Y1_damage / Y1_DAMAGE;
+	b_shell->attack_damage = static_cast<int>(damage);
 	player_bullets.push_back(b_shell);
 }
 
@@ -225,11 +230,27 @@ void shot_bullet_Beam()
 	b_beem->texSize = { 64, 64 };
 	b_beem->pos = { -b_beem->texSize.x, static_cast<float>(getCursorPosY()) };
 	b_beem->scale = { beem_scale, beem_scale };
-	b_beem->attack_damage = beem_damage;
-	b_beem->attack_damage *= Y1_damage / Y1_DAMAGE;
+	float damage = BEEM_DAMAGE;
+	damage *= Y1_damage / Y1_DAMAGE;
+	b_beem->attack_damage = static_cast<int>(damage);
 	b_beem->accel_velocity.x = 10 / system::FRAME_RATE;
 	b_beem->velocity.x = beem_speed / system::FRAME_RATE;
 	player_bullets.push_back(b_beem);
+}
+void shot_bullet_Bankroll()
+{
+	auto* b_roll = new Bullet_Bankroll();
+	b_roll->spr = sprBullet[5];
+	b_roll->texSize = { 64, 64 };
+	b_roll->pos = player.pos;
+	b_roll->pivot = player.pos;
+	b_roll->scale = { beem_scale, beem_scale };
+	float damage = bankrool_damage;
+	damage *= Y1_damage / Y1_DAMAGE;
+	b_roll->attack_damage = static_cast<int>(damage);
+	b_roll->accel_velocity.x = 10 / system::FRAME_RATE;
+	b_roll->velocity.x = beem_speed / system::FRAME_RATE;
+	player_bullets.push_back(b_roll);
 }
 //#define SHOT_AIM_TARGET
 //#define SHOT_AIM_AND_CLICK_TARGET
@@ -366,17 +387,6 @@ void player_update()
 	debug::setString("");
 	debug::setString("bullet_count:%d", player_bullets.size());
 	debug::setString("after_images:%d", y1_after_images.size());
-	int k = 0;
-	for (int i = 0; i < ENEMY_NUMBER; i++)
-	{
-		if (enemy[i].pos.x > 0
-		 && enemy[i].pos.x < SCREEN_W
-		 && enemy[i].pos.y > 0
-		 && enemy[i].pos.y < SCREEN_H)
-		{
-			debug::setString("enemy %d : {pos : {x:%f, y:%f}}, {hp : %d}", i, enemy[i].pos.x, enemy[i].pos.y, enemy[i].hp);
-		}
-	}
 	debug::setString("--------------------------------------");
 #endif // DEBUG
 
@@ -505,6 +515,10 @@ void bullet_update()
 	if (TRG(0) & PAD_RIGHT)
 	{
 		shot_bullet_Beam();
+	}
+	if (TRG(0) & PAD_LEFT)
+	{
+		shot_bullet_Bankroll();
 	}
 #endif
 	bullet_move();

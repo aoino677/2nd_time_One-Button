@@ -116,6 +116,7 @@ attrib +h SourceCode\gp1.log
     <ClInclude Include="SourceCode\AttackCollision.h" />
     <ClInclude Include="SourceCode\Background.h" />
     <ClInclude Include="SourceCode\Bullet.h" />
+    <ClInclude Include="SourceCode\Bullet_Bankroll.h" />
     <ClInclude Include="SourceCode\Bullet_Ingot.h" />
     <ClInclude Include="SourceCode\choice.h" />
     <ClInclude Include="SourceCode\Collision2D.h" />
@@ -159,6 +160,7 @@ attrib +h SourceCode\gp1.log
     <ClCompile Include="SourceCode\AttackCollision.cpp" />
     <ClCompile Include="SourceCode\Background.cpp" />
     <ClCompile Include="SourceCode\Bullet.cpp" />
+    <ClCompile Include="SourceCode\Bullet_Bankroll.cpp" />
     <ClCompile Include="SourceCode\Bullet_Ingot.cpp" />
     <ClCompile Include="SourceCode\choice.cpp" />
     <ClCompile Include="SourceCode\Collision2D.cpp" />
