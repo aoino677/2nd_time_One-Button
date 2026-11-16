@@ -366,6 +366,17 @@ void player_update()
 	debug::setString("");
 	debug::setString("bullet_count:%d", player_bullets.size());
 	debug::setString("after_images:%d", y1_after_images.size());
+	int k = 0;
+	for (int i = 0; i < ENEMY_NUMBER; i++)
+	{
+		if (enemy[i].pos.x > 0
+		 && enemy[i].pos.x < SCREEN_W
+		 && enemy[i].pos.y > 0
+		 && enemy[i].pos.y < SCREEN_H)
+		{
+			debug::setString("enemy %d : {pos : {x:%f, y:%f}}, {hp : %d}", i, enemy[i].pos.x, enemy[i].pos.y, enemy[i].hp);
+		}
+	}
 	debug::setString("--------------------------------------");
 #endif // DEBUG
 

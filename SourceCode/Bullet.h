@@ -13,7 +13,7 @@ struct Bullet
 	VECTOR2 texSize = { 64, 8 };//‘å‚«‚³
 	float angle = 0;//Šp“x
 
-	float attack_damage = 10;
+	int attack_damage = 10;
 
 	VECTOR2 end_pos;
 	VECTOR2 accel_velocity;//‰Á‘¬“x
@@ -26,6 +26,7 @@ struct Bullet
 
 struct Bullet_Y1 : Bullet
 {
+	VECTOR2 old_pos;
 	int color_index;
 	~Bullet_Y1()override = default;
 	void update() override;
