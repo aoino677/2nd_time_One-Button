@@ -13,6 +13,8 @@ int random;
 int lucky;
 int item_couner;
 int Blue_counter;
+int Green_counter;
+int Red_counter;
 
 float posX;
 float posY;
@@ -27,6 +29,8 @@ void item_init()
 	item_state = 0;
 	item_couner = 0;
 	Blue_counter = 0;
+	Green_counter = 0;
+	Red_counter = 0;
 	random = 0;
 	lucky = ITEM_RANDOM;
 
@@ -50,7 +54,7 @@ void item_update()
 		break;
 	case 1:
 		// パラメーターの設定
-		for (int i = 0; i < ITEM_MAX; i++)
+		for (int i = 0; i < 3; i++)
 		{
 			item[i] = {};
 			item[i].pos = { enemy[i].pos.x, enemy[i].pos.y };
@@ -106,11 +110,26 @@ void item_update()
 				if (Collision2D::rect_vs_rect({ posX, posY }, { LengthX, LengthY }, playerLeftUp, playerLength))
 				{
 					item_couner++;
-					item[j].color.w = 0;
-					if (item[0].color.w == 0)
+					if (spritem[j] == 0)
+					{}
+					else if (spritem[j] == spritem[0])
 					{
 						Blue_counter++;
+						item[j].color.w = 0.0f;
 					}
+					else if (spritem[j] == spritem[1])
+					{
+						Green_counter++;
+						item[j].color.w = 0.0f;
+					}
+					else if (spritem[j] == spritem[2])
+					{
+						Red_counter++;
+						item[j].color.w = 0.0f;
+					}
+
+
+
 					color_w = 0.0f;
 				}
 			}
@@ -121,6 +140,17 @@ void item_update()
 			if (Blue_counter > 0)
 			{
 				shot_bullet_Ingot();
+				Blue_counter--;
+			}
+			if (Green_counter > 0)
+			{
+				shot_bullet_Shell();
+				Green_counter--;
+			}
+			if (Red_counter > 0)
+			{
+				shot_bullet_Beam();
+				Red_counter--;
 			}
 		}
 		break;
@@ -161,6 +191,8 @@ void item_render()
 	);
 
 	debug::setString("Blue_counter:%d", Blue_counter);
+	debug::setString("Green_counter:%d", Green_counter);
+	debug::setString("Red_counter:%d", Red_counter);
 }
 
 void item_deinit()

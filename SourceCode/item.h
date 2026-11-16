@@ -2,7 +2,7 @@
 #include "all.h"
 
 #define ITEM_MAX (50)
-#define ITEM_RANDOM (10) // アイテムの確率
+#define ITEM_RANDOM (5) // アイテムの確率
 
 #define ITEM_SCALE       (1.0f)
 #define ITEM_TEXSIZE_X (40.0f)
