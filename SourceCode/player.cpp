@@ -44,7 +44,7 @@ float shell_speed = 400.0f;
 float beem_speed = 4000;
 float beem_scale = 1.5f;
 
-float bankrool_damage = 0;
+float bankrool_damage = 20;
 
 Sprite* sprPlayer;
 Sprite* sprBullet[6];
@@ -246,6 +246,7 @@ void shot_bullet_Bankroll()
 	b_roll->pivot.x = -b_roll->texSize.x * 0.5f;
 	b_roll->pivot.y = b_roll->texSize.y * 0.5f;
 	b_roll->scale = { 1, 1 };
+	b_roll->angle = -ToRadian(90);
 	float damage = bankrool_damage;
 	damage *= Y1_damage / Y1_DAMAGE;
 	b_roll->attack_damage = static_cast<int>(damage);
