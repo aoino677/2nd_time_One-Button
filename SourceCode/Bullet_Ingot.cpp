@@ -82,24 +82,24 @@ void Bullet_Ingot::update()
 #endif
 }
 
-void Bullet_Ingot::attack(OBJ2D enemy[])
+void Bullet_Ingot::attack(OBJ2D eneies[])
 {
 	for (int i = 0; i < ENEMY_NUMBER; i++)
 	{
 		//for (auto* ingot : ingots)
 		{
-			VECTOR2 enemy_begin = enemy[i].pos - VECTOR2{ enemy[i].scale.x * enemy[i].pivot.x, enemy[i].scale.y * enemy[i].pivot.y };//enemy[e]‚Ì¶ã
-			VECTOR2 enemy_size = { enemy[i].scale.x * enemy[i].texSize.x, enemy[i].scale.y * enemy[i].texSize.y };
+			VECTOR2 enemy_begin = eneies[i].pos - VECTOR2{ eneies[i].scale.x * eneies[i].pivot.x, eneies[i].scale.y * eneies[i].pivot.y };//eneies[e]‚Ì¶ã
+			VECTOR2 enemy_size = { eneies[i].scale.x * eneies[i].texSize.x, eneies[i].scale.y * eneies[i].texSize.y };
 			//VECTOR2 bullet_center = ingot->pos;
 			VECTOR2 bullet_center = pos;
 			float bullet_radius = texSize.x * scale.x * 0.5f;
-			if (Collision2D::circle_vs_rect(bullet_center, bullet_radius, enemy_begin, enemy_size) && enemy[i].hp > 0)
+			if (Collision2D::circle_vs_rect(bullet_center, bullet_radius, enemy_begin, enemy_size) && eneies[i].hp > 0)
 			{
 				{
 					bool check = false;
 					for (auto* e : attacked_enemies)
 					{
-						if (e == &enemy[i])
+						if (e == &eneies[i])
 						{
 							check = true;
 							break;
@@ -108,8 +108,8 @@ void Bullet_Ingot::attack(OBJ2D enemy[])
 
 					if (!check)
 					{
-						enemy[i].hp -= attack_damage;
-						attacked_enemies.push_back(&enemy[i]);
+						eneies[i].hp -= attack_damage;
+						attacked_enemies.push_back(&eneies[i]);
 					}
 				}
 			}
