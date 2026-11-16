@@ -48,6 +48,7 @@ void shot_bullet();
 void shot_bullet_Ingot();
 void shot_bullet_Shell();
 void shot_bullet_Beam();
+void shot_bullet_Bankroll();
 //=======================================================
 
 const float PLAYER_EASING = 0.99f;
@@ -63,3 +64,6 @@ const float PLAYER_EASING = 0.99f;
 
 //âÑÇ◊ñ_
 #define INGOT_DAMAGE (18)//Y1_damageÇÃî{ó¶Ç‡èÊÇ¡ÇƒÇ¢Ç‹Ç∑ÅB
+
+//àÍëM
+const float BEEM_DAMAGE = 25;

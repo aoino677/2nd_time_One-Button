@@ -6,7 +6,7 @@
 struct Bullet
 {
 	virtual ~Bullet() = default;
-	GameLib::Sprite* spr;
+	GameLib::Sprite* spr = nullptr;
 	VECTOR2 pos;//åªç›à íu
 	VECTOR2 velocity;//ë¨ìx
 	VECTOR2 scale = { 1, 1 };//ëÂÇ´Ç≥
@@ -27,7 +27,7 @@ struct Bullet
 struct Bullet_Y1 : Bullet
 {
 	VECTOR2 old_pos;
-	int color_index;
+	int color_index = 0;
 	~Bullet_Y1()override = default;
 	void update() override;
 	void attack(OBJ2D[]) override;
