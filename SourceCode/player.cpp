@@ -9,6 +9,7 @@
 #include "Bullet.h"
 #include "Bullet_Ingot.h"
 #include "Bullet_Bankroll.h"
+#include "power_efficacy.h"
 
 #define IMAGE_COLOR_COUNT 5
 
@@ -157,7 +158,7 @@ void shot_bullet()
 			b->velocity = vec2Normalize(vec) * bullet_speed / system::FRAME_RATE;
 			b->angle += ToRadian(180);
 			b->end_pos = { (float)SCREEN_W, (float)SCREEN_H };
-			b->attack_damage = static_cast<int>(Y1_damage);
+			b->attack_damage = static_cast<int>(Y1_damage + damage_up);
 			b->color_index = rand() % IMAGE_COLOR_COUNT;
 			//b->pos += vec * shot_timer;
 			player_bullets.push_back(b);
@@ -200,7 +201,7 @@ void shot_bullet_Ingot()
 	b_ingot->scale = { ingot_scale, ingot_scale };
 	b_ingot->texSize = { 64, 64 };
 	b_ingot->pos = { static_cast<float>(getCursorPosX()), -b_ingot->texSize.y };
-	float damage = ingot_damage;
+	float damage = ingot_damage + damage_up;
 		  damage *= Y1_damage / Y1_DAMAGE;
 	b_ingot->attack_damage = static_cast<int>(damage);
 	b_ingot->accel_velocity.y = 100/ system::FRAME_RATE;
@@ -217,7 +218,7 @@ void shot_bullet_Shell()
 	b_shell->spr = sprBullet[3];
 	b_shell->texSize = { 64, 64 };
 	b_shell->scale = { 2, 2 };
-	float damage = shell_damage;
+	float damage = shell_damage + damage_up;
 	   	  damage *= Y1_damage / Y1_DAMAGE;
 	b_shell->attack_damage = static_cast<int>(damage);
 	player_bullets.push_back(b_shell);
@@ -230,7 +231,7 @@ void shot_bullet_Beam()
 	b_beem->texSize = { 64, 64 };
 	b_beem->pos = { -b_beem->texSize.x, static_cast<float>(getCursorPosY()) };
 	b_beem->scale = { beem_scale, beem_scale };
-	float damage = BEEM_DAMAGE;
+	float damage = BEEM_DAMAGE + damage_up;
 	damage *= Y1_damage / Y1_DAMAGE;
 	b_beem->attack_damage = static_cast<int>(damage);
 	b_beem->accel_velocity.x = 10 / system::FRAME_RATE;

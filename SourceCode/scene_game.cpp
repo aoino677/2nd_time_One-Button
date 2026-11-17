@@ -57,6 +57,7 @@ void game_init()
 	choice_init();
 	time_limit_init();
 	item_init();
+	efficacy_init();
 }
 
 //--------------------------------------
@@ -137,10 +138,10 @@ void game_render()
 	level_up_render();
 	hp_render();
 	effect_danger_render();
-	choice_render();
 	time_limit_render();
-	pause_render(); // ‚±‚êˆÈã‰º‚É‘‚©‚È‚¢
 	cursor_main_render();
+	choice_render();
+	pause_render(); // ‚±‚êˆÈã‰º‚É‘‚©‚È‚¢
 }
 
 //--------------------------------------
