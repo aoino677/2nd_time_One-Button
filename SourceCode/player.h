@@ -66,4 +66,4 @@ const float PLAYER_EASING = 0.99f;
 #define INGOT_DAMAGE (18)//Y1_damage‚Ì”{—¦‚àæ‚Á‚Ä‚¢‚Ü‚·B
 
 //ˆê‘M
-const float BEEM_DAMAGE = 25;
+const float BEEM_DAMAGE = 15;

@@ -32,9 +32,3 @@ struct Bullet_Y1 : Bullet
 	void update() override;
 	void attack(OBJ2D[]) override;
 };
-
-struct Bullet_Shell : Bullet
-{
-	void update() override;
-	void attack(OBJ2D[]) override;
-};

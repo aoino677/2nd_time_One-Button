@@ -8,6 +8,7 @@
 
 #include "Bullet.h"
 #include "Bullet_Ingot.h"
+#include "Bullet_Shell.h"
 #include "Bullet_Bankroll.h"
 #include "power_efficacy.h"
 
@@ -54,11 +55,16 @@ std::vector<Bullet*> player_bullets;
 
 static const std::pair<VECTOR3, VECTOR3> afterimagecolors[IMAGE_COLOR_COUNT]
 {
-	{{1.0f, 0.5f, 0.75f},{0.2f, 0, 1}} ,		// Pink to Blue
-	{{1.0f, 0.75f, 0.0f},{1.0f, 0.1f, 0.0f}} ,	// Yellow to Red
-	{{0.2f, 0.8f, 0.0f},{1.0f, 1.0f, 1.0f}} ,	// Green to White
-	{{0.2f, 0.7f, 1.0f},{1.0f, 0.9f, 0.75f}} ,	// Blue to Cream Yellow
-	{{0.8f, 0.8f, 0.8f},{0.7f, 0.5f, 1.0f}} ,	// Gray to Purple
+	//{{1.0f, 0.5f, 0.75f},{0.2f, 0, 1}} ,		// Pink to Blue
+	//{{1.0f, 0.75f, 0.0f},{1.0f, 0.1f, 0.0f}} ,	// Yellow to Red
+	//{{0.2f, 0.8f, 0.0f},{1.0f, 1.0f, 1.0f}} ,	// Green to White
+	//{{0.2f, 0.7f, 1.0f},{1.0f, 0.9f, 0.75f}} ,	// Blue to Cream Yellow
+	//{{0.8f, 0.8f, 0.8f},{0.7f, 0.5f, 1.0f}} ,	// Gray to Purple
+	{{1, 1, 1},{1.0f, 0.5f, 0.75f}} ,		// Pink to Blue
+	{{1, 1, 1},{1.0f, 0.75f, 0.0f}} ,	// Yellow to Red
+	{{1, 1, 1},{0.2f, 0.8f, 0.0f}} ,	// Green to White
+	{{1, 1, 1},{0.2f, 0.7f, 1.0f}} ,	// Blue to Cream Yellow
+	{{1, 1, 1},{0.8f, 0.8f, 0.8f}} ,	// Gray to Purple
 };
 
 #define Y1_AFTERIMAGE_ALIVETIME (0.5f)
@@ -217,7 +223,7 @@ void shot_bullet_Shell()
 	b_shell->angle = atan2f(vec.y, vec.x);
 	b_shell->velocity = vec2Normalize(vec) * shell_speed / system::FRAME_RATE;
 	b_shell->spr = sprBullet[3];
-	b_shell->texSize = { 64, 64 };
+	b_shell->texSize = { 64, 16 };
 	b_shell->scale = { 2, 2 };
 	float damage = shell_damage + damage_up;
 	   	  damage *= Y1_damage / Y1_DAMAGE;
@@ -252,6 +258,8 @@ void shot_bullet_Bankroll()
 	float damage = bankrool_damage;
 	damage *= Y1_damage / Y1_DAMAGE;
 	b_roll->attack_damage = static_cast<int>(damage);
+	b_roll->roll_speed = ToRadian(720);
+	b_roll->roll_max = ToRadian(100);
 	player_bullets.push_back(b_roll);
 }
 //#define SHOT_AIM_TARGET
@@ -426,7 +434,8 @@ void player_render()
 	for (auto* image : y1_after_images)
 	{
 		float t = (Y1_AFTERIMAGE_ALIVETIME - image->timer) / Y1_AFTERIMAGE_ALIVETIME;// ”ÍˆÍF‚O`‚P ‚P‚È‚ç•\Ž¦‚³‚ê‚éB
-		float k = t * 2; if (k > 1) { k = 1; }//•â³
+		//float k = t * 2; if (k > 1) { k = 1; }//•â³
+		float k = t;
 		VECTOR3 color = afterimagecolors[image->color_index].first * k + afterimagecolors[image->color_index].second * (1 - k);
 
 		sprite_render(

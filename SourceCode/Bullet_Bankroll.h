@@ -7,9 +7,11 @@ struct Bullet_Bankroll : Bullet
 	struct after_image
 	{
 		VECTOR2 pos;
+		VECTOR2 pivot;
+		float angle;
 		VECTOR4 color;
-
 	};
+	Bullet_Bankroll();
 	~Bullet_Bankroll()override;
 	void update() override;
 	void attack(OBJ2D[]) override;
@@ -18,6 +20,9 @@ struct Bullet_Bankroll : Bullet
 	bool is_dead() override;
 
 	std::vector<after_image> after_images;
+
+	float roll_speed;
+	float roll_max;
 
 private:
 	std::vector<OBJ2D*> attacked_enemies;
