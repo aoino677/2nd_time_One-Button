@@ -48,6 +48,9 @@ void enemy_bomb_explosion(int i);
 void spawn_enemy_particles(float x, float y, float r, float g, float b);
 void particle_update_and_render();
 
+void enemy_car_action(int i);
+void effect_boss_respawn();
+
 
 struct PARTICLE {
 	bool active;      // Žg—p’†‚©‚Ç‚¤‚©
