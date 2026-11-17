@@ -174,6 +174,9 @@
     <ClInclude Include="SourceCode\Bullet_Bankroll.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\Bullet_Shell.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameLib\debug.cpp">
@@ -297,6 +300,9 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\Bullet_Bankroll.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Bullet_Shell.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
