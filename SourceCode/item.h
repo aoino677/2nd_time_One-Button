@@ -1,8 +1,8 @@
 #pragma once
 #include "all.h"
 
-#define ITEM_MAX (50)
-#define ITEM_RANDOM (5) // アイテムの確率
+#define ITEM_MAX (10)
+#define ITEM_RANDOM (50) // 50回に1回
 #define ITEM_TIMER (120) // アイテム取得までの時間
 
 #define ITEM_SCALE       (1.0f)
@@ -15,5 +15,8 @@ void item_init();
 void item_update();
 void item_render();
 void item_deinit();
+
+// 敵が死亡したときに呼び出す
+void item_drop(int enemy_index);
 
 extern int lucky;

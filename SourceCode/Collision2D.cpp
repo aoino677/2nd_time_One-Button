@@ -91,3 +91,100 @@ bool Collision2D::point_in_triangle(const VECTOR2& point_pos, const VECTOR2 vert
 {
 	return point_in_triangle(point_pos, vertex_pos[0], vertex_pos[1], vertex_pos[2]);
 }
+
+
+float Collision2D::crossZ(VECTOR2 a, VECTOR2 b)
+{
+	return a.y * b.x - a.x * b.y;
+}
+
+bool Collision2D::segment_ve_segment(const VECTOR2& a, const VECTOR2& b, const VECTOR2& c, const VECTOR2& d, VECTOR2& hit_pos, float& t)
+{
+	VECTOR2 AB = b - a;
+	VECTOR2 CA = a - c;
+	VECTOR2 CD = d - c;
+	t = crossZ(-CD, CA) / crossZ(CD, AB);
+	float u = crossZ(-AB, -CA) / crossZ(AB, CD);
+	if (t >= 0 && t <= 1 && u >= 0 && u <= 1)
+	{
+		hit_pos = a + AB * t;
+		return true;
+	}
+	return false;
+}
+
+bool Collision2D::segment_vs_rect(const VECTOR2& a, const VECTOR2& b, const VECTOR2& pos, const VECTOR2& length)
+{
+	VECTOR2 hit;
+	float t{ 0.0f };
+	return segment_vs_rect(a, b, pos, length, hit, t);
+}
+
+bool Collision2D::segment_vs_rect(const VECTOR2& a, const VECTOR2& b, const VECTOR2& pos, const VECTOR2& length, VECTOR2& hit_pos, float& min_t)
+{
+	VECTOR2 LU{ pos };
+	VECTOR2 RU{ pos.x + length.x, pos.y };
+	VECTOR2 LD{ pos.x , pos.y + length.y };
+	VECTOR2 RD{ pos + length };
+
+	if (a.x > pos.x && a.x < pos.x + length.x
+		&& a.y > pos.y && a.y < pos.y + length.y)
+	{
+		hit_pos = a;
+		return true;
+	}
+
+	VECTOR2 hit;
+	float t = 0;
+	min_t = FLT_MAX;
+	bool check = false;
+
+	if (segment_ve_segment(a, b, LU, RU, hit, t))
+	{
+		if (min_t > t)
+		{
+			min_t = t;
+			hit_pos = hit;
+		}
+		check = true;
+	}
+	if (segment_ve_segment(a, b, RD, RU, hit, t))
+	{
+		if (min_t > t)
+		{
+			min_t = t;
+			hit_pos = hit;
+		}
+		check = true;
+	}
+	if (segment_ve_segment(a, b, RD, LD, hit, t))
+	{
+		if (min_t > t)
+		{
+			min_t = t;
+			hit_pos = hit;
+		}
+		check = true;
+	}
+	if (segment_ve_segment(a, b, LU, LD, hit, t))
+	{
+		if (min_t > t)
+		{
+			min_t = t;
+			hit_pos = hit;
+		}
+		check = true;
+	}
+	return check;
+}
+
+
+bool Collision2D::triangle_vs_rect(const VECTOR2& A, const VECTOR2& B, const VECTOR2& C, const VECTOR2& pos, const VECTOR2& size)
+{
+	return point_in_rect(A, pos, size)
+		|| point_in_rect(B, pos, size)
+		|| point_in_rect(C, pos, size)
+		|| segment_vs_rect(A, B, pos, size)
+		|| segment_vs_rect(B, C, pos, size)
+		|| segment_vs_rect(C, A, pos, size);
+}
