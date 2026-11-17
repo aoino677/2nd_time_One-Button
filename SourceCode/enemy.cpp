@@ -4,6 +4,7 @@
 #include "Hp.h"
 #include "bullet.h"
 #include "AttackCollision.h"
+#include "item.h"
 #include <vector>
 #include <cstdlib>
 #include <cmath>
@@ -175,6 +176,7 @@ void enemy_update()
 			//HPが0以下になった瞬間(死亡＆パーティクル発生)
 			if (enemy[i].hp <= 0 && enemy_prev_hp[i] > 0)
 			{
+				item_drop(i);
 				if (enemy_type_render[i] == BOSS)
 				{
 					spawn_enemy_particles(enemy[i].pos.x, enemy[i].pos.y, 1.0f, 0.6f, 0.1f);

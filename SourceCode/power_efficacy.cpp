@@ -8,6 +8,13 @@
 #include <ctime>
 #include <stdlib.h>
 
+int damage_up = 0;
+
+void efficacy_init()
+{
+	damage_up = 0;
+}
+
 // プレイヤーのHPが上がる
 void HP()
 {
@@ -29,10 +36,11 @@ void Bullet_scale()
 	bullet_scale += BULLET_SCALE_INCREASED;
 }
 // 弾の狙った方向に飛ぶ精度
-void Bullet_rad()
+void Bullet_rad(float rad)
 {
-	precision_rad -= ToRadian(0.5f);
+	precision_rad -= ToRadian(rad);
 }
+
 // アイテムが落ちやすくなる
 void Bullet_Lucky()
 {
@@ -46,7 +54,7 @@ void Bullet_Interval()
 // プレイヤーの攻撃力を増やす
 void Bullet_Damage()
 {
-	Y1_damage += BULLET_DAMAGE_UP;
+	damage_up += BULLET_DAMAGE_UP;
 }
 // 落とし物の取得範囲を広げる
 void Lost_Item_Acquisition_Range()

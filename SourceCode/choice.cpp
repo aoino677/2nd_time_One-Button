@@ -2,6 +2,7 @@
 #include "level_up.h"
 #include "power_efficacy.h"
 #include "player.h"
+#include "cursor_main.h"
 #include <ctime>
 #include <stdlib.h>
 
@@ -27,16 +28,16 @@ void choice_init()
 	choice_effect_alpha = 0.0f;
 
 	// choiceButtonの読み込み
-	sprchoicebar = sprite_load(L"./Data/Images/choicebar.png");
+	sprchoicebar = sprite_load(L"./Data/Images/card_frame.png");
 	// 文の読み込み
 	sprpower_efficacy[0] = sprite_load(L"./Data/images/HP_efficacy.png");
-	sprpower_efficacy[1] = sprite_load(L"./Data/images/Bullet_scale_efficacy.png");
-	sprpower_efficacy[2] = sprite_load(L"./Data/images/Bullet_speed_efficacy.png");
-	sprpower_efficacy[3] = sprite_load(L"./Data/images/Bullet_rad_efficacy.png");
+	sprpower_efficacy[1] = sprite_load(L"./Data/images/card_shell.png");
+	sprpower_efficacy[2] = sprite_load(L"./Data/images/card_issen.png");
+	sprpower_efficacy[3] = sprite_load(L"./Data/images/card_fall.png");
 	sprpower_efficacy[4] = sprite_load(L"./Data/images/Bullet_quantity_efficacy.png");
 	sprpower_efficacy[5] = sprite_load(L"./Data/images/Item_Lucky_efficacy.png");
-	sprpower_efficacy[6] = sprite_load(L"./Data/images/Bullet_interval_efficacy.png");
-	sprpower_efficacy[7] = sprite_load(L"./Data/images/Bullet_Damage_efficacy.png");
+	sprpower_efficacy[6] = sprite_load(L"./Data/images/card_rifle.png");
+	sprpower_efficacy[7] = sprite_load(L"./Data/images/card_attack.png");
 	sprpower_efficacy[8] = sprite_load(L"./Data/images/Acquisition_Range_efficacy.png");
 	//sprpower_efficacy[9] = sprite_load(L"./Data/images/Bullet_rad_efficacy.png");
 	//sprpower_efficacy[10] = sprite_load(L"./Data/images/Bullet_rad_efficacy.png");
@@ -46,21 +47,21 @@ void choice_init()
 	for (int i = 0; i < CHOICE_MAX; i++)
 	{
 		choiceButton[i] = {};
-		choiceButton[0].pos = { 450.0f, 500.0f };
-		choiceButton[1].pos = { 950.0f, 500.0f };
-		choiceButton[2].pos = { 1450.0f, 500.0f };
-		choiceButton[i].scale = { static_cast<float>(CHOICE_SCALE)    , static_cast<float>(CHOICE_SCALE) };
-		choiceButton[i].texSize = { static_cast<float>(CHOICE_TEX_W)    , static_cast<float>(CHOICE_TEX_H) };
-		choiceButton[i].pivot = { static_cast<float>(CHOICE_PIVOT_X)  ,static_cast<float>(CHOICE_PIVOT_Y) };
-		choiceButton[i].color = { 1.0f, 1.0f, 1.0f, 1.0f };
+		choiceButton[0].pos		= { 450.0f, BUTTON_Y };
+		choiceButton[1].pos		= { 950.0f, BUTTON_Y };
+		choiceButton[2].pos		= { 1450.0f, BUTTON_Y };
+		choiceButton[i].scale		= { static_cast<float>(CHOICE_SCALE)    , static_cast<float>(CHOICE_SCALE) };
+		choiceButton[i].texSize	= { static_cast<float>(CHOICE_TEX_W)    , static_cast<float>(CHOICE_TEX_H) };
+		choiceButton[i].pivot		= { static_cast<float>(CHOICE_PIVOT_X)  ,static_cast<float>(CHOICE_PIVOT_Y) };
+		choiceButton[i].color		= { 1.0f, 1.0f, 1.0f, 1.0f };
 	}
 	for (int i = 0; i < EFFICACY_MAX; i++)
 	{
 		power_efficacy[i] = {};
-		power_efficacy[i].scale = { POWER_EFFICACY_SCALE ,POWER_EFFICACY_SCALE };
-		power_efficacy[i].texSize = { POWER_EFFICACY_TEX_W , POWER_EFFICACY_TEX_H };
-		power_efficacy[i].pivot = { POWER_EFFICACY_PIVOT_X , POWER_EFFICACY_PIVOT_Y };
-		power_efficacy[i].color = { 1, 1, 1, 0.0f };
+		power_efficacy[i].scale		= { static_cast<float>(POWER_EFFICACY_SCALE) ,static_cast<float>(POWER_EFFICACY_SCALE) };
+		power_efficacy[i].texSize		= { static_cast<float>(POWER_EFFICACY_TEX_W) , static_cast<float>(POWER_EFFICACY_TEX_H) };
+		power_efficacy[i].pivot		= { static_cast<float>(POWER_EFFICACY_PIVOT_X)  ,static_cast<float>(POWER_EFFICACY_PIVOT_Y) };
+		power_efficacy[i].color		= { 1, 1, 1, 0.0f };
 	}
 	for (int i = 0; i < EFFICACY_MAX; i++)
 	{
@@ -147,115 +148,115 @@ void choice_update()
 		switch (random[0])
 		{
 		case HP_UP: // プレイヤーのHPが上がる
-			power_efficacy[0].pos = { 450,500 };
+			power_efficacy[0].pos = { 450,BUTTON_Y };
 			power_efficacy[0].color.w = 1;break;
 
-		case BULLET_SCALE_UP: // 球の大きさ
-			power_efficacy[1].pos = { 450,500 };
+		case WEAPON_SHELL: // ミサイルを飛ばす
+			power_efficacy[1].pos = { 450,BUTTON_Y };
 			power_efficacy[1].color.w = 1;break;
 
-		case BULLET_SPEED_UP: // 球の発射スピード
-			power_efficacy[2].pos = { 450,500 };		
+		case WEAPON_BEAM: // ビームを飛ばす
+			power_efficacy[2].pos = { 450,BUTTON_Y };
 			power_efficacy[2].color.w = 1;break;
 
-		case BULLET_RAD_DOWN: // 弾の狙った方向に飛ぶ精度
-			power_efficacy[3].pos = { 450,500 };		
+		case WEAPON_INGOT: // インゴットを飛ばす
+			power_efficacy[3].pos = { 450,BUTTON_Y };
 			power_efficacy[3].color.w = 1;break;
 
-		case BULLET_QUANTITY_UP: // 球の発射個数
-			power_efficacy[4].pos = { 450,500 };		
+		case WEAPON_BANKROLL: // お札でたたく
+			power_efficacy[4].pos = { 450,BUTTON_Y };
 			power_efficacy[4].color.w = 1;break;
 
 		case ITEM_LUCKY: // アイテムが落ちやすくなる
-			power_efficacy[5].pos = { 450,500 };		
+			power_efficacy[5].pos = { 450,BUTTON_Y };
 			power_efficacy[5].color.w = 1;break;
 
-		case BULLET_INTERVAL: // 撃つ間隔が速くなる
-			power_efficacy[6].pos = { 450,500 };
+		case WEAPON_BULLET: // 一円玉を発射する
+			power_efficacy[6].pos = { 450,BUTTON_Y };
 			power_efficacy[6].color.w = 1;break;
 
 		case BULLET_DAMAGE: // 弾のダメージが上がる
-			power_efficacy[7].pos = { 450,500 };
+			power_efficacy[7].pos = { 450,BUTTON_Y };
 			power_efficacy[7].color.w = 1;break;
 
 		case LOST_ITEM_ACQUISITION_RANGE: // 落とし物の取得範囲を広げる
-			power_efficacy[8].pos = { 450,500 };
+			power_efficacy[8].pos = { 450,BUTTON_Y };
 			power_efficacy[8].color.w = 1;break;
 		}
 		switch (random[1])
 		{
 		case HP_UP: // プレイヤーのHPが上がる
-			power_efficacy[0].pos = { 950,500 };
+			power_efficacy[0].pos = { 950,BUTTON_Y };
 			power_efficacy[0].color.w = 1;break;
 
-		case BULLET_SCALE_UP: // 球の大きさ
-			power_efficacy[1].pos = { 950,500 };
+		case WEAPON_SHELL: // ミサイルを飛ばす
+			power_efficacy[1].pos = { 950,BUTTON_Y };
 			power_efficacy[1].color.w = 1;break;
 
-		case BULLET_SPEED_UP: // 球の発射スピード
-			power_efficacy[2].pos = { 950,500 };
+		case WEAPON_BEAM: // ビームを飛ばす
+			power_efficacy[2].pos = { 950,BUTTON_Y };
 			power_efficacy[2].color.w = 1;break;
 
-		case BULLET_RAD_DOWN: // 弾の狙った方向に飛ぶ精度
-			power_efficacy[3].pos = { 950,500 };
+		case WEAPON_INGOT: // インゴットを飛ばす
+			power_efficacy[3].pos = { 950,BUTTON_Y };
 			power_efficacy[3].color.w = 1;break;
 
-		case BULLET_QUANTITY_UP: // 球の発射個数
-			power_efficacy[4].pos = { 950,500 };
+		case WEAPON_BANKROLL: // お札でたたく
+			power_efficacy[4].pos = { 950,BUTTON_Y };
 			power_efficacy[4].color.w = 1;break;
 
 		case ITEM_LUCKY: // アイテムが落ちやすくなる
-			power_efficacy[5].pos = { 950,500 };
+			power_efficacy[5].pos = { 950,BUTTON_Y };
 			power_efficacy[5].color.w = 1;break;
 		
-		case BULLET_INTERVAL: // 撃つ間隔が速くなる
-			power_efficacy[6].pos = { 950,500 };
+		case WEAPON_BULLET: // 一円玉を発射する
+			power_efficacy[6].pos = { 950,BUTTON_Y };
 			power_efficacy[6].color.w = 1;break;
 
 		case BULLET_DAMAGE: // 弾のダメージが上がる
-			power_efficacy[7].pos = { 950,500 };
+			power_efficacy[7].pos = { 950,BUTTON_Y };
 			power_efficacy[7].color.w = 1;break;
 
 		case LOST_ITEM_ACQUISITION_RANGE: // 落とし物の取得範囲を広げる
-			power_efficacy[8].pos = { 950,500 };
+			power_efficacy[8].pos = { 950,BUTTON_Y };
 			power_efficacy[8].color.w = 1; break;
 		}
 		switch (random[2])
 		{
 		case HP_UP: // プレイヤーのHPが上がる
-			power_efficacy[0].pos = { 1450,500 };
+			power_efficacy[0].pos = { 1450,BUTTON_Y };
 			power_efficacy[0].color.w = 1;break;
 
-		case BULLET_SCALE_UP: // 球の大きさ
-			power_efficacy[1].pos = { 1450,500 };
+		case WEAPON_SHELL: // ミサイルを飛ばす
+			power_efficacy[1].pos = { 1450,BUTTON_Y };
 			power_efficacy[1].color.w = 1;break;
 
-		case BULLET_SPEED_UP: // 球の発射スピード
-			power_efficacy[2].pos = { 1450,500 };
+		case WEAPON_BEAM: // ビームを飛ばす
+			power_efficacy[2].pos = { 1450,BUTTON_Y };
 			power_efficacy[2].color.w = 1;break;
 
-		case BULLET_RAD_DOWN: // 弾の狙った方向に飛ぶ精度
-			power_efficacy[3].pos = { 1450,500 };
+		case WEAPON_INGOT: // インゴットを飛ばす
+			power_efficacy[3].pos = { 1450,BUTTON_Y };
 			power_efficacy[3].color.w = 1;break;
 
-		case BULLET_QUANTITY_UP: // 球の発射個数
-			power_efficacy[4].pos = { 1450,500 };
+		case WEAPON_BANKROLL: // お札でたたく
+			power_efficacy[4].pos = { 1450,BUTTON_Y };
 			power_efficacy[4].color.w = 1;break;
 
 		case ITEM_LUCKY: // アイテムが落ちやすくなる
-			power_efficacy[5].pos = { 1450,500 };
+			power_efficacy[5].pos = { 1450,BUTTON_Y };
 			power_efficacy[5].color.w = 1;break;
 		
-		case BULLET_INTERVAL: // 撃つ間隔が速くなる
-			power_efficacy[6].pos = { 1450,500 };
+		case WEAPON_BULLET: // 一円玉を発射する
+			power_efficacy[6].pos = { 1450,BUTTON_Y };
 			power_efficacy[6].color.w = 1;break;
 
 		case BULLET_DAMAGE: // 弾のダメージが上がる
-			power_efficacy[7].pos = { 1450,500 };
+			power_efficacy[7].pos = { 1450,BUTTON_Y };
 			power_efficacy[7].color.w = 1;break;
 
 		case LOST_ITEM_ACQUISITION_RANGE: // 落とし物の取得範囲を広げる
-			power_efficacy[8].pos = { 1450,500 };
+			power_efficacy[8].pos = { 1450,BUTTON_Y };
 			power_efficacy[8].color.w = 1; break;
 		}
 		for (int i = 0; i < CHOICE_MAX; i++)
@@ -268,17 +269,23 @@ void choice_update()
 			float right = choiceButton[i].pos.x + (choiceButton[i].texSize.x - choiceButton[i].pivot.x) * choiceButton[i].scale.x;
 			float top = buttonY - choiceButton[i].pivot.y * choiceButton[i].scale.y;
 			float bottom = buttonY + (choiceButton[i].texSize.y - choiceButton[i].pivot.y) * choiceButton[i].scale.y;
+
+		/*	float buttonY1 = power_efficacy[i].pos.y + choice_effect_y;
+			float left1 = power_efficacy[i].pos.x - power_efficacy[i].pivot.x * power_efficacy[i].scale.x;
+			float right1 = power_efficacy[i].pos.x + (power_efficacy[i].texSize.x - power_efficacy[i].pivot.x) * power_efficacy[i].scale.x;
+			float top1 = buttonY1 - power_efficacy[i].pivot.y * power_efficacy[i].scale.y;
+			float bottom1 = buttonY1 + (power_efficacy[i].texSize.y - power_efficacy[i].pivot.y) * power_efficacy[i].scale.y;*/
 			
 			//----------------------------------
 			// ポーズボタンの判定
 			//----------------------------------
-			if (mouseX >= left &&
-				mouseX <= right &&
-				mouseY >= top &&
-				mouseY <= bottom)
+			if (mouseX >= left &&mouseX <= right &&mouseY >= top &&mouseY <= bottom /*|| 
+				mouseX >= left1 && mouseX <= right1 && mouseY >= top1 && mouseY <= bottom1*/)
 			{
 				choiceButton[i].scale.x = CHOICE_SCALE + 0.1f;
 				choiceButton[i].scale.y = CHOICE_SCALE + 0.1f;
+				/*power_efficacy[i].scale.x = POWER_EFFICACY_SCALE + 0.1f;
+				power_efficacy[i].scale.y = POWER_EFFICACY_SCALE + 0.1f;*/
 				if (TRG(0) & PAD_START)
 				{
 					switch (i)
@@ -294,23 +301,23 @@ void choice_update()
 						case HP_UP:
 							HP();						
 							power_efficacy[i].color.w = 0 ;break;
-						case BULLET_SCALE_UP:
-							Bullet_scale();			
+						case WEAPON_SHELL:
+							serect_weapon = 2;
 							power_efficacy[i].color.w = 0; break;
-						case BULLET_SPEED_UP:
-							Bullet_speed();			
+						case WEAPON_BEAM:
+							serect_weapon = 3;
 							power_efficacy[i].color.w = 0; break;
-						case BULLET_RAD_DOWN:
-							Bullet_rad();				
+						case WEAPON_INGOT:
+							serect_weapon = 1;
 							power_efficacy[i].color.w = 0; break;
-						case BULLET_QUANTITY_UP:
-							Bullet_quantity();		
-							power_efficacy[i].color.w = 0; break;
+						case WEAPON_BANKROLL:
+							serect_weapon = 4;	
+							power_efficacy[i].color.w = 0; break; power_efficacy[i].color.w = 0; break;
 						case ITEM_LUCKY:
 							Bullet_Lucky();			
 							power_efficacy[i].color.w = 0; break;
-						case BULLET_INTERVAL:
-							Bullet_Interval();		
+						case WEAPON_BULLET:
+							serect_weapon = 0;
 							power_efficacy[i].color.w = 0; break;
 						case BULLET_DAMAGE:
 							Bullet_Damage();		
@@ -332,23 +339,23 @@ void choice_update()
 						case HP_UP:
 							HP();
 							power_efficacy[i].color.w = 0; break;
-						case BULLET_SCALE_UP:
-							Bullet_scale();
+						case WEAPON_SHELL:
+							serect_weapon = 2;
 							power_efficacy[i].color.w = 0; break;
-						case BULLET_SPEED_UP:
-							Bullet_speed();
+						case WEAPON_BEAM:
+							serect_weapon = 3;
 							power_efficacy[i].color.w = 0; break;
-						case BULLET_RAD_DOWN:
-							Bullet_rad();
+						case WEAPON_INGOT:
+							serect_weapon = 1;
 							power_efficacy[i].color.w = 0; break;
-						case BULLET_QUANTITY_UP:
-							Bullet_quantity();
+						case WEAPON_BANKROLL:
+							serect_weapon = 4;
 							power_efficacy[i].color.w = 0; break;
 						case ITEM_LUCKY:
 							Bullet_Lucky();
 							power_efficacy[i].color.w = 0; break;
-						case BULLET_INTERVAL:
-							Bullet_Interval();
+						case WEAPON_BULLET:
+							serect_weapon = 0;
 							power_efficacy[i].color.w = 0; break;
 						case BULLET_DAMAGE:
 							Bullet_Damage();
@@ -370,23 +377,23 @@ void choice_update()
 						case HP_UP:
 							HP();
 							power_efficacy[i].color.w = 0; break;
-						case BULLET_SCALE_UP:
-							Bullet_scale();
+						case WEAPON_SHELL:
+							serect_weapon = 2;
 							power_efficacy[i].color.w = 0; break;
-						case BULLET_SPEED_UP:
-							Bullet_speed();
+						case WEAPON_BEAM:
+							serect_weapon = 3;
 							power_efficacy[i].color.w = 0; break;
-						case BULLET_RAD_DOWN:
-							Bullet_rad();
+						case WEAPON_INGOT:
+							serect_weapon = 1;
 							power_efficacy[i].color.w = 0; break;
-						case BULLET_QUANTITY_UP:
-							Bullet_quantity();
+						case WEAPON_BANKROLL:
+							serect_weapon = 4;
 							power_efficacy[i].color.w = 0; break;
 						case ITEM_LUCKY:
 							Bullet_Lucky();
 							power_efficacy[i].color.w = 0; break;
-						case BULLET_INTERVAL:
-							Bullet_Interval();
+						case WEAPON_BULLET:
+							serect_weapon = 0;
 							power_efficacy[i].color.w = 0; break;
 						case BULLET_DAMAGE:
 							Bullet_Damage();
@@ -403,6 +410,8 @@ void choice_update()
 			{
 				choiceButton[i].scale.x = CHOICE_SCALE;
 				choiceButton[i].scale.y = CHOICE_SCALE;
+				/*power_efficacy[i].scale.x = POWER_EFFICACY_SCALE;
+				power_efficacy[i].scale.y = POWER_EFFICACY_SCALE;*/
 			}
 		}
 		break;

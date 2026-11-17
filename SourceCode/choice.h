@@ -5,9 +5,11 @@
 #define CHOICE_MAX           (3)
 #define CHOICE_SCALE         (1.0f)
 #define CHOICE_TEX_W        (384.0f)
-#define CHOICE_TEX_H         (768.0f)
+#define CHOICE_TEX_H         (600.0f)
 #define CHOICE_PIVOT_X      (192.0f)
-#define CHOICE_PIVOT_Y      (384.0f)
+#define CHOICE_PIVOT_Y      (300.0f)
+#define BUTTON_Y			   (600.0f)
+
 
 void choice_init();
 void choice_update();
@@ -20,12 +22,12 @@ void randoms();
 enum
 {
 	HP_UP,
-	BULLET_SCALE_UP,
-	BULLET_SPEED_UP,
-	BULLET_RAD_DOWN,
-	BULLET_QUANTITY_UP,
+	WEAPON_SHELL,
+	WEAPON_BEAM,
+	WEAPON_INGOT,
+	WEAPON_BANKROLL,
 	ITEM_LUCKY,
-	BULLET_INTERVAL,
+	WEAPON_BULLET,
 	BULLET_DAMAGE,
 	LOST_ITEM_ACQUISITION_RANGE,
 	LOSER
