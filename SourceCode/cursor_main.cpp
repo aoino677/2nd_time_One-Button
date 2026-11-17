@@ -102,6 +102,9 @@ void cursor_main_update()
                     if (timer == timer_down)
                     {
                         shot_bullet();
+                        //shot_bullet_Ingot();
+                        //shot_bullet_Shell();
+                        //shot_bullet_Beam();
                         timer--;
                     }
                     else if (timer == 0)
