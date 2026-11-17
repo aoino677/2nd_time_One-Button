@@ -135,6 +135,7 @@ void enemy_deinit()
 	safe_delete(sprTireback);
 	safe_delete(sprEnemy_hp);
 	safe_delete(sprBoss_hp);
+	safe_delete(sprWarning);
 }
 
 void enemy_update()
@@ -189,9 +190,13 @@ void enemy_update()
 				{
 					spawn_enemy_particles(enemy[i].pos.x, enemy[i].pos.y, 1.0f, 0.2f, 0.2f);
 				}
-				else
+				else if (enemy[i].type == ENEMY_TYPE_CRAYON)
 				{
 					spawn_enemy_particles(enemy[i].pos.x, enemy[i].pos.y, 0.9f, 0.9f, 0.9f);
+				}
+				else
+				{
+					spawn_enemy_particles(enemy[i].pos.x, enemy[i].pos.y, 1.0f, 0.0f, 0.0f);
 				}
 			}
 
@@ -254,7 +259,7 @@ void enemy_update()
 		crayon_spawn_timer++;
 
 		//ボスリスポーン
-		if (enemy_boss_timer >= 600)
+		if (enemy_boss_timer >= 2000)
 		{
 			for (int i = enemy_max; i < ENEMY_NUMBER; i++)
 			{
@@ -328,7 +333,7 @@ void enemy_bomb_explosion(int i)
 		float enemy_Vec_y = enemy[j].pos.y - enemy[i].pos.y;
 		float enemy_Vec = sqrtf(enemy_Vec_x * enemy_Vec_x + enemy_Vec_y * enemy_Vec_y);
 
-		if (enemy_Vec < 300.0f)
+		if (enemy_Vec < 150.0f)
 		{
 			enemy[j].hp -= 15;
 		}
@@ -449,17 +454,17 @@ void enemy_respawn(int i)
 {
 	enemy_type_render[i] = ENEMY;
 
-	int enemy_random = rand() % 25;
+	int enemy_random = rand() % 100;
 	
-	if (enemy_random <= 25)
+	/*if (enemy_random <= 25)
 	{
 		enemy[i].type = ENEMY_TYPE_BALLOON;
 		enemy_sprite[i] = sprCrayon;
 		enemy_setting(i, 1, 1, 2, 64, 160, 32, 80, 0.5, 0.5, 0);
-	}
+	}*/
 	
 	
-	/*if (enemy_random < 25)
+	if (enemy_random < 25)
 	{
 		enemy[i].type = ENEMY_TYPE_BOLL;
 		enemy_sprite[i] = sprBall;
@@ -483,7 +488,7 @@ void enemy_respawn(int i)
 		enemy_sprite[i] = sprCrayon;
 		enemy_setting(i, 3, 1, 1, 64, 160, 32, 80, 0.5, 0.5,0);
 		enemy[i].color = { 1.0f, 0.3f, 0.3f, 1.0f };
-	}*/
+	}
 
 	//出現場所
     if (enemy[i].type == ENEMY_TYPE_BALLOON)
@@ -561,16 +566,21 @@ void enemy_boss_respawn(int i)
 
 	switch (boss_state)
 	{
-	case 0:
+	/*case 0:
 		enemy[i].type = BOSS_TYPE_CRAYON;
+		enemy_setting(i, 100, 1, 2, 64, 160, 32, 80, 3, 3, 0);
+		break;*/
+		
+	case 0:
+	    enemy[i].type = BOSS_TYPE_CRAYON;
 		enemy_sprite[i] = sprCrayon;
 		enemy_setting(i, 300, 1, 0.5, 64, 160,32,80, 3, 3,0);
 		boss_state++;
 		break;
-	/*case 1:
+	case 1:
 		enemy[i].type = BOSS_TYPE_CAR;
 		enemy_sprite[i] = sprCar;
-		enemy_setting(i, 100, 1, 2, 128, 80, 64, 40, 2, 2,0);
+		enemy_setting(i, 100, 1, 0.5, 128, 80, 64, 40, 2.5, 2.5,0);
 		boss_state++;
 		break;
 	case 2:
@@ -596,10 +606,17 @@ void enemy_boss_respawn(int i)
 	case 6:
 		enemy[i].type = BOSS_TYPE_EXCAVATOR;
 		enemy_setting(i, 100, 1, 2, 64, 160, 32, 80, 3, 3,0);
-		break;*/
+		break;
 	}
 
-	enemy[i].pos.x = SCREEN_W + 200.0f;
+	if (enemy[i].type = BOSS_TYPE_ROBOT)
+	{
+		enemy[i].pos.x = SCREEN_W - 200.0f;
+		enemy[i].pos.y = SCREEN_H - 200.0f;
+	}
+	
+	
+	enemy[i].pos.x = SCREEN_W - 200.0f;
 	enemy[i].pos.y = SCREEN_H * 0.5f;
 
 	enemy_prev_hp[i] = enemy[i].hp;
@@ -614,15 +631,41 @@ void enemy_move(int i)
 		enemy[i].type == ENEMY_TYPE_BOBM ||
 		enemy[i].type == ENEMY_TYPE_PENCIL ||
 		enemy[i].type == BOSS_TYPE_CRAYON ||
-		enemy[i].type == BOSS_TYPE_CAR||
 		enemy[i].type == BOSS_TYPE_DOLL ||
 		enemy[i].type == BOSS_TYPE_ROBOT ||
 		enemy[i].type == BOSS_TYPE_HORSE ||
 		enemy[i].type == BOSS_TYPE_PENCIL ||
-		enemy[i].type == BOSS_TYPE_EXCAVATOR ||
 		enemy[i].type == ENEMY_TYPE_CRAYON)
 	{
 		enemy[i].pos.x -= enemy[i].moveSpeed;
+	}
+	else if (enemy[i].type == BOSS_TYPE_CAR)
+	{
+		enemy[i].pos.x -= enemy[i].moveSpeed;
+		if (enemy[i].pos.x <= 1600 && enemy[i].pos.x >= 1400)
+		{
+			enemy[i].pos.x -= enemy[i].moveSpeed * 3;
+			enemy[i].pos.y += enemy[i].moveSpeed * 8;
+		}
+		else if (enemy[i].pos.x <= 1200 && enemy[i].pos.x >= 1000)
+		{
+			enemy[i].pos.x -= enemy[i].moveSpeed * 3;
+			enemy[i].pos.y -= enemy[i].moveSpeed * 8;
+		}
+		else if (enemy[i].pos.x <= 800 && enemy[i].pos.x >= 600)
+		{
+			enemy[i].pos.x -= enemy[i].moveSpeed * 3;
+			enemy[i].pos.y += enemy[i].moveSpeed * 8;
+		}
+		else
+			enemy[i].pos.x -= enemy[i].moveSpeed;
+		
+	}
+	else if (enemy[i].type == BOSS_TYPE_ROBOT)
+	{
+		enemy[i].pos.x -= enemy[i].moveSpeed;
+
+
 	}
 	else if (enemy[i].type == ENEMY_TYPE_BALLOON)
 	{
@@ -631,7 +674,6 @@ void enemy_move(int i)
 			enemy[i].pos.x -= sinf(enemy[i].moveSpeed);
 			enemy[i].pos.y += enemy[i].moveSpeed * 2;
 		}
-			
 		else
 			enemy[i].pos.x -= enemy[i].moveSpeed;
 	}
@@ -780,7 +822,7 @@ void enemy_render()
 			sprite_render(
 				sprTirefront,
 				enemy[i].pos.x - 20, render_y + 60,
-				1, 1,
+				1.5, 1.5,
 				0, 0,
 				40, 40,
 				20, 20,
@@ -790,7 +832,7 @@ void enemy_render()
 			sprite_render(
 				sprTireback,
 				enemy[i].pos.x + 60, render_y + 60,
-				1, 1,
+				1.5, 1.5,
 				0, 0,
 				40, 40,
 				20, 20,
