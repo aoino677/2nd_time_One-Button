@@ -8,11 +8,11 @@
 #include <ctime>
 #include <stdlib.h>
 
-int damage = 0;
+int damage_up = 0;
 
 void efficacy_init()
 {
-	damage = 0;
+	damage_up = 0;
 }
 
 // プレイヤーのHPが上がる
@@ -54,7 +54,7 @@ void Bullet_Interval()
 // プレイヤーの攻撃力を増やす
 void Bullet_Damage()
 {
-	damage += BULLET_DAMAGE_UP;
+	damage_up += BULLET_DAMAGE_UP;
 }
 // 落とし物の取得範囲を広げる
 void Lost_Item_Acquisition_Range()
