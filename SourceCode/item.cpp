@@ -98,7 +98,7 @@ void item_drop(int enemy_index)
             case ENEMY_TYPE_BALLOON:
                 item_type[i] = 1;
                 break;
-            case ENEMY_TYPE_PENCIL:
+            case ENEMY_TYPE_ROCKET:
                 item_type[i] = 2;
                 break;
             case ENEMY_TYPE_BOBM:
