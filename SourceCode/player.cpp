@@ -77,8 +77,8 @@ void player_init()
 	sprPlayer = sprite_load(L"Data/Images/player.png");
 	sprBullet[0] = sprite_load(L"Data/Images/bullet.png");
 	sprBullet[1] = sprite_load(L"Data/Images/bullet.png");
-	sprBullet[2] = sprite_load(L"Data/Images/100yen.png");
-	sprBullet[3] = sprite_load(L"Data/Images/500yen.png");
+	sprBullet[2] = sprite_load(L"Data/Images/500yen.png");
+	sprBullet[3] = sprite_load(L"Data/Images/shell.png");
 	sprBullet[4] = sprite_load(L"Data/Images/issen.png");
 	sprBullet[5] = sprite_load(L"Data/Images/bankroll.png");
 
@@ -214,6 +214,7 @@ void shot_bullet_Shell()
 	VECTOR2 cursorPos ={ static_cast<float>(getCursorPosX()),static_cast<float>(getCursorPosY()) };
 	b_shell->pos = player.pos;
 	auto vec = cursorPos - player.pos;
+	b_shell->angle = atan2f(vec.y, vec.x);
 	b_shell->velocity = vec2Normalize(vec) * shell_speed / system::FRAME_RATE;
 	b_shell->spr = sprBullet[3];
 	b_shell->texSize = { 64, 64 };
@@ -520,6 +521,10 @@ void bullet_update()
 	if (TRG(0) & PAD_LEFT)
 	{
 		shot_bullet_Bankroll();
+	}
+	if (TRG(0) & PAD_TRG3)
+	{
+		shot_bullet();
 	}
 #endif
 	bullet_move();

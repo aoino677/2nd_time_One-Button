@@ -37,8 +37,10 @@ public:
 
 	static float crossZ(VECTOR2 a, VECTOR2 b);
 
-	static bool segment_ve_segment(const VECTOR2& a, const VECTOR2& b, const VECTOR2& c, const VECTOR2& d, VECTOR2& hit_pos, float& t);
-	static bool segment_vs_rect(const VECTOR2& a, const VECTOR2& b, const VECTOR2& pos, const VECTOR2& length);
-	static bool segment_vs_rect(const VECTOR2& a, const VECTOR2& b, const VECTOR2& pos, const VECTOR2& length, VECTOR2& hit_pos, float& min_t);
-	static bool triangle_vs_rect(const VECTOR2& A, const VECTOR2& B, const VECTOR2& C, const VECTOR2& pos, const VECTOR2& size);
+	static bool OBB_vs_OBB(const VECTOR2& pos1, const VECTOR2& length1, const VECTOR2& pivot1, float a1, const VECTOR2& pos2, const VECTOR2& length2, const VECTOR2& pivot2, float a2);
+
+	//static bool segment_ve_segment(const VECTOR2& a, const VECTOR2& b, const VECTOR2& c, const VECTOR2& d, VECTOR2& hit_pos, float& t);
+	//static bool segment_vs_rect(const VECTOR2& a, const VECTOR2& b, const VECTOR2& pos, const VECTOR2& length);
+	//static bool segment_vs_rect(const VECTOR2& a, const VECTOR2& b, const VECTOR2& pos, const VECTOR2& length, VECTOR2& hit_pos, float& min_t);
+	//static bool triangle_vs_rect(const VECTOR2& A, const VECTOR2& B, const VECTOR2& C, const VECTOR2& pos, const VECTOR2& size);
 };

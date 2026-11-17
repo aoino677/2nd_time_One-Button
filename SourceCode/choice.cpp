@@ -302,22 +302,22 @@ void choice_update()
 							HP();						
 							power_efficacy[i].color.w = 0 ;break;
 						case WEAPON_SHELL:
-							serect_weapon = 2;
+							serect_weapon = 1;
 							power_efficacy[i].color.w = 0; break;
 						case WEAPON_BEAM:
-							serect_weapon = 3;
+							serect_weapon = 2;
 							power_efficacy[i].color.w = 0; break;
 						case WEAPON_INGOT:
-							serect_weapon = 1;
+							serect_weapon = 3;
 							power_efficacy[i].color.w = 0; break;
 						case WEAPON_BANKROLL:
 							serect_weapon = 4;	
-							power_efficacy[i].color.w = 0; break; power_efficacy[i].color.w = 0; break;
+							power_efficacy[i].color.w = 0; break;
 						case ITEM_LUCKY:
 							Bullet_Lucky();			
 							power_efficacy[i].color.w = 0; break;
 						case WEAPON_BULLET:
-							serect_weapon = 0;
+							serect_weapon = 6;
 							power_efficacy[i].color.w = 0; break;
 						case BULLET_DAMAGE:
 							Bullet_Damage();		
@@ -340,13 +340,13 @@ void choice_update()
 							HP();
 							power_efficacy[i].color.w = 0; break;
 						case WEAPON_SHELL:
-							serect_weapon = 2;
+							serect_weapon = 1;
 							power_efficacy[i].color.w = 0; break;
 						case WEAPON_BEAM:
-							serect_weapon = 3;
+							serect_weapon = 2;
 							power_efficacy[i].color.w = 0; break;
 						case WEAPON_INGOT:
-							serect_weapon = 1;
+							serect_weapon = 3;
 							power_efficacy[i].color.w = 0; break;
 						case WEAPON_BANKROLL:
 							serect_weapon = 4;
@@ -355,7 +355,7 @@ void choice_update()
 							Bullet_Lucky();
 							power_efficacy[i].color.w = 0; break;
 						case WEAPON_BULLET:
-							serect_weapon = 0;
+							serect_weapon = 6;
 							power_efficacy[i].color.w = 0; break;
 						case BULLET_DAMAGE:
 							Bullet_Damage();
@@ -378,13 +378,13 @@ void choice_update()
 							HP();
 							power_efficacy[i].color.w = 0; break;
 						case WEAPON_SHELL:
-							serect_weapon = 2;
+							serect_weapon = 1;
 							power_efficacy[i].color.w = 0; break;
 						case WEAPON_BEAM:
-							serect_weapon = 3;
+							serect_weapon = 2;
 							power_efficacy[i].color.w = 0; break;
 						case WEAPON_INGOT:
-							serect_weapon = 1;
+							serect_weapon = 3;
 							power_efficacy[i].color.w = 0; break;
 						case WEAPON_BANKROLL:
 							serect_weapon = 4;
@@ -393,7 +393,7 @@ void choice_update()
 							Bullet_Lucky();
 							power_efficacy[i].color.w = 0; break;
 						case WEAPON_BULLET:
-							serect_weapon = 0;
+							serect_weapon = 6;
 							power_efficacy[i].color.w = 0; break;
 						case BULLET_DAMAGE:
 							Bullet_Damage();
@@ -492,6 +492,10 @@ void randoms()
 	// Ç©Ç‘Ç¡ÇƒÇ¢ÇΩÇÁçƒíäëI
 	while (10000)
 	{
+		if (random[0] == serect_weapon){ random[0] = rand() % EFFICACY_MAX; }
+		if (random[1] == serect_weapon){ random[1] = rand() % EFFICACY_MAX; }
+		if (random[2] == serect_weapon){ random[2] = rand() % EFFICACY_MAX; }
+
 		// [0]Ç‚[1]Ç‚[2]Ç∆àÍèèÇ»ÇÁçƒíäëI
 		if (random[0] == random[1])
 		{

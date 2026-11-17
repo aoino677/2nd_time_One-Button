@@ -40,7 +40,7 @@ void cursor_main_init()
     timer_down = TIMER;
     timer = timer_down;
 
-    serect_weapon = 0;
+    serect_weapon = 6;
 
     cursor_main = {};
 }
@@ -108,16 +108,16 @@ void cursor_main_update()
                     {
                         switch (serect_weapon)
                         {
-                        case 0:
+                        case 6:
                             shot_bullet();
                             break;
-                        case 1:
+                        case 3:
                             shot_bullet_Ingot();
                             break;
-                        case 2:
+                        case 1:
                             shot_bullet_Shell();
                             break;
-                        case 3:
+                        case 2:
                             shot_bullet_Beam();
                             break;
                         case 4:
