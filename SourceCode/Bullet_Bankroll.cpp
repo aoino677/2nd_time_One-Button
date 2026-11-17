@@ -70,6 +70,6 @@ void Bullet_Bankroll::render()
 
 bool Bullet_Bankroll::is_dead()
 {
-	//return angle > ToRadian(90);
-	return false;
+	return angle > ToRadian(100);
+	false;
 }
