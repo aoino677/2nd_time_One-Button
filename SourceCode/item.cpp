@@ -3,6 +3,7 @@
 #include "player.h"
 #include "Collision2D.h"
 #include "EXP.h"
+#include "power_efficacy.h"
 
 OBJ2D item[ITEM_MAX];
 
@@ -230,18 +231,24 @@ void item_update()
         {
             if (Blue_counter > 0)
             {
-                shot_bullet_Ingot();
+                Fever_Time_Start_Red();
                 Blue_counter--;
+               
+                Fever_Time_End_Red();
             }
             else if (Green_counter > 0)
             {
-                shot_bullet_Shell();
+                Fever_Time_Start_Red();
                 Green_counter--;
+               
+                Fever_Time_End_Red();
             }
             else if (Red_counter > 0)
             {
-                shot_bullet_Beam();
+                Fever_Time_Start_Red();
                 Red_counter--;
+                
+                Fever_Time_End_Red();
             }
         }
 

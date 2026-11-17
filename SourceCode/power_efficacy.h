@@ -22,18 +22,22 @@
 
 extern OBJ2D power_efficacy[EFFICACY_MAX];
 extern int damage_up;
+extern int efficacy_timer;
 
 void efficacy_init();
+void efficacy_update();
+void efficacy_render();
 extern void HP();
-extern void Bullet_speed();
-extern void Bullet_quantity();
+extern void Bullet_speed(); //
+extern void Bullet_quantity(); //
 extern void Bullet_Lucky();
-extern void Bullet_scale();
+extern void Bullet_scale(); //
 extern void Bullet_rad(float rad); //
-extern void Bullet_Interval();
-extern void Bullet_Damage();
+extern void Bullet_Interval(); //
+extern void Bullet_Damage(); 
 extern void Lost_Item_Acquisition_Range();
 extern void HP_Max();
-
+extern void Fever_Time_Start_Red();
+extern void Fever_Time_End_Red();
 extern void loser();
 

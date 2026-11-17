@@ -8,11 +8,17 @@
 #include <ctime>
 #include <stdlib.h>
 
-int damage_up = 0;
-
+int damage_up;
+int efficacy_timer;
 void efficacy_init()
 {
 	damage_up = 0;
+	efficacy_timer = 0;
+}
+
+void efficacy_update()
+{
+
 }
 
 // ÉvÉåÉCÉÑÅ[ÇÃHPÇ™è„Ç™ÇÈ
@@ -66,13 +72,34 @@ void HP_Max()
 {
 
 }
+// àÍíËéûä‘Ç†ÇŸÇ›ÇΩÇ¢Ç…ã≠Ç≠Ç∑ÇÈ
+void Fever_Time_Start_Red()
+{
+	bullet_lay_count += 100;
+	bullet_scale += 1.0f;
+	//precision_rad -= 3;
+	lucky += 50;
+	timer_down -= 10;
+	damage_up += 100;
+}
+
+void Fever_Time_End_Red()
+{
+	bullet_lay_count -= 100;
+	bullet_scale -= 1.0f;
+	//precision_rad += 3;
+	lucky -= 50;
+	timer_down += 10;
+	damage_up -= 100;
+}
 
 // ÇÕÇ∏ÇÍ
 void loser()
 {
-	player_hp += 0;
-	bullet_speed += 0;
 	bullet_lay_count += 0;
-	precision_rad += 0;
-	bullet_lay_gap += 0;
+}
+
+void efficacy_render()
+{
+	debug::setString("efficacy_timer:%d", efficacy_timer);
 }
