@@ -12,6 +12,7 @@
 extern OBJ2D cuesor_main;
 extern float cursor_scale;
 extern int timer_down;
+extern int serect_weapon;
 
 void cursor_main_init();
 void cursor_main_update();

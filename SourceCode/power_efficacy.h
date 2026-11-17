@@ -6,7 +6,7 @@
 #define BULLET_SCALE_INCREASED (0.05f)				// 増やす大きさの量
 #define ITEM_LUCKY_UP               (1)					//	アイテムを落とす確率を上げる
 #define BULLET_INTERVAL_UP        (1)					// 撃つ間隔が速くなる
-#define BULLET_DAMAGE_UP         (1)					// バレットのダメージが増える
+#define BULLET_DAMAGE_UP         (100)					// バレットのダメージが増える
 #define LOST_ITEM_ACQUISITION_RANGE_UP (0.2f)	// 落とした物の取得範囲を広げる
 #define HP_MAX_UP					   (3)					// HPの最大量を上げる
 
@@ -16,18 +16,20 @@
 // 画像
 #define POWER_EFFICACY_SCALE     (1.0f)
 #define POWER_EFFICACY_TEX_W     (384.0f)
-#define POWER_EFFICACY_TEX_H     (768.0f)
+#define POWER_EFFICACY_TEX_H     (600.0f)
 #define POWER_EFFICACY_PIVOT_X   (192.0f)
-#define POWER_EFFICACY_PIVOT_Y   (384.0f)
+#define POWER_EFFICACY_PIVOT_Y   (300.0f)
 
 extern OBJ2D power_efficacy[EFFICACY_MAX];
+extern int damage;
 
+void efficacy_init();
 extern void HP();
 extern void Bullet_speed();
 extern void Bullet_quantity();
 extern void Bullet_Lucky();
 extern void Bullet_scale();
-extern void Bullet_rad();
+extern void Bullet_rad(float rad); //
 extern void Bullet_Interval();
 extern void Bullet_Damage();
 extern void Lost_Item_Acquisition_Range();

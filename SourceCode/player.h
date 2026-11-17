@@ -1,5 +1,6 @@
 #pragma once
 #include "all.h"
+#include "power_efficacy.h"
 
 struct Player
 {
@@ -57,13 +58,13 @@ const float PLAYER_EASING = 0.99f;
 #define BULLET_SPEED (4000.0f)
 
 //‚P‰~
-#define Y1_DAMAGE (8)
+#define Y1_DAMAGE (8 + damage)
 
 //ŠLŠk
-#define SHELL_DAMAGE (30)//Y1_damage‚Ì”{—¦‚àæ‚Á‚Ä‚¢‚Ü‚·B
+#define SHELL_DAMAGE (30 + damage)//Y1_damage‚Ì”{—¦‚àæ‚Á‚Ä‚¢‚Ü‚·B
 
 //‰„‚×–_
-#define INGOT_DAMAGE (18)//Y1_damage‚Ì”{—¦‚àæ‚Á‚Ä‚¢‚Ü‚·B
+#define INGOT_DAMAGE (18 + damage)//Y1_damage‚Ì”{—¦‚àæ‚Á‚Ä‚¢‚Ü‚·B
 
 //ˆê‘M
-const float BEEM_DAMAGE = 25;
+const float BEEM_DAMAGE = 25 + damage;
