@@ -21,7 +21,7 @@ struct OBJ2D
     int type = 0;
     int move_timer = 0;
 
-    float timer = 0;                    // タイマー
+    int timer = 0;                    // EXPのレベルアップ用タイマー
 
     float r = 0;
 };
