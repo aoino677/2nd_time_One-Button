@@ -11,7 +11,8 @@ int EXP_state = 0;
 int exp_count;
 float acquisition_range;
 
-Sprite* sprEXP;
+#define EXP_SPR_COUNT 2
+Sprite* sprEXP[EXP_SPR_COUNT];
 OBJ2D EXP[EXP_COUNT];
 //std::vector<OBJ2D> EXP;
 
@@ -25,6 +26,9 @@ float color_w_EXP = 0;
 
 //ëOâÒHPÇãLâØÇ∑ÇÈîzóÒ
 static int prev_enemy_hp[ENEMY_NUMBER] = { 0 };
+
+#define EXP_TYPE_1YEN 0
+#define EXP_TYPE_2YEN 1
 
 
 void EXP_init()
@@ -43,7 +47,8 @@ void EXP_update()
         //////// èâä˙ê›íË ////////
 
         // EXPÇÃì«Ç›çûÇ›
-        sprEXP = sprite_load(L"./Data/Images/1yen.png");
+        sprEXP[EXP_TYPE_1YEN] = sprite_load(L"./Data/Images/1yen.png");
+        sprEXP[EXP_TYPE_2YEN] = sprite_load(L"./Data/Images/10yen.png");
 
         EXP_state++;
         break;
@@ -57,6 +62,7 @@ void EXP_update()
             EXP[i].texSize = { EXP_TEX_W    , EXP_TEX_H };
             EXP[i].pivot = { EXP_PIVOT_X , EXP_PIVOT_Y };
             EXP[i].color = { 1, 1, 1, 0 };
+            EXP[i].type = EXP_TYPE_1YEN;
         }
         EXP_state++;
         break;
@@ -75,6 +81,7 @@ void EXP_update()
                         EXP[exp_index].pos = enemy[i].pos;
                         EXP[exp_index].color.w = 1.0f;
                         EXP[exp_index].moveSpeed = 0;
+                        EXP[exp_index].type = EXP_TYPE_1YEN;
                         break;
                     }
                 }
@@ -173,7 +180,7 @@ void EXP_render()
     for (int i = 0; i < EXP_COUNT; i++)
     {
         sprite_render(
-            sprEXP,
+            sprEXP[EXP[i].type],
             EXP[i].pos.x, EXP[i].pos.y,
             EXP[i].scale.x, EXP[i].scale.y,
             0, 0,
@@ -205,7 +212,8 @@ void EXP_render()
 
 void EXP_deinit()
 {
+    for (int i = 0; i < EXP_SPR_COUNT; i++)
     {
-        safe_delete(sprEXP);
+        safe_delete(sprEXP[i]);
     }
 }
