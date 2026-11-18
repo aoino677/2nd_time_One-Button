@@ -13,6 +13,8 @@ extern int bullet_lay_count;
 extern float bullet_lay_gap;
 extern float bullet_scale;
 extern float precision_rad;
+extern float shell_damage;
+extern float shell_scale;
 
 extern float Y1_damage;
 

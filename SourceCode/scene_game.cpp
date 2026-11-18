@@ -84,6 +84,7 @@ void game_update()
 		//////// ’Êí ////////
 		pause_update();
 		choice_update_pause();
+		level_update();
 		
 		//========================================
 	   // ƒQ[ƒ€’†
@@ -96,7 +97,6 @@ void game_update()
 			item_update();
 			EXP_update();
 			enemy_update();
-			level_update();
 			shake_update();
 			effect_danger_update();
 			cursor_main_update();
