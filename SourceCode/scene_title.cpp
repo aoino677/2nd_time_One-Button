@@ -8,6 +8,7 @@
 
 //----< インクルード >-----------------------------------------------------------
 #include "all.h"
+#include "effect_scene_change.h"
 
 
 
@@ -27,6 +28,7 @@ void title_init()
 {
 	title_state = 0;
 	title_timer = 0;
+	scene_change_init();
 }
 
 //--------------------------------------
@@ -37,29 +39,28 @@ void title_update()
 	switch (title_state)
 	{
 	case 0:
-		//////// 初期設定 ////////
-
 		title_state++;
 		/*fallthrough*/
 	case 1:
-		//////// パラメータの設定 ////////
-
 		// ブレンドモードの設定
 		GameLib::setBlendMode(Blender::BS_ALPHA);
-
 		title_state++;
 		/*fallthrough*/
 	case 2:
-		//////// 通常時 ////////
+		// スペースキー（またはPAD_START）が押された瞬間
 		if (TRG(0) & PAD_START)
 		{
-			nextScene = SCENE_MENU;
-			break;
+			title_state = 3;
+
+			// 【重要】コインが降っている最中に切り替えるため、この瞬間に次のシーンへ代入する
+			// ※プロジェクトのシーン管理変数名（currentScene など）に合わせて書き換えてください
+			//nextScene = SCENE_MENU;
 		}
+		break;
 
-		
-
-
+	case 3:
+		// コインが降るアニメーションを更新し続ける
+		scene_change_update();
 		break;
 	}
 
@@ -74,12 +75,21 @@ void title_render()
 	// 画面をクリアする
 	GameLib::clear(0.2f, 0.2f, 0.2f);
 
+	primitive::rect(
+		0, 0,
+		1920, 1080,
+		0, 0,
+		0,
+		1, 0, 0
+	);
 
 	font::textOut(1, "GAME", 640, 200);
 	if ((title_timer / 20) % 2 == 0)
 	{
 		font::textOut(1, "PRESS SPACE KEY", 640, 300);
 	}
+
+	scene_change_render();
 }
 
 //--------------------------------------

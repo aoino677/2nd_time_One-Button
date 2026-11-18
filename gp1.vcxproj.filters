@@ -177,6 +177,9 @@
     <ClInclude Include="SourceCode\Bullet_Shell.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\effect_scene_change.h">
+      <Filter>ソース ファイル\Effect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameLib\debug.cpp">
@@ -304,6 +307,9 @@
     </ClCompile>
     <ClCompile Include="SourceCode\Bullet_Shell.cpp">
       <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\effect_scene_change.cpp">
+      <Filter>ソース ファイル\Effect</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
