@@ -27,6 +27,7 @@ float color_w_EXP = 0;
 //前回HPを記憶する配列
 static int prev_enemy_hp[ENEMY_NUMBER] = { 0 };
 
+//経験値の種類を表す定数
 #define EXP_TYPE_1YEN 0
 #define EXP_TYPE_2YEN 1
 
