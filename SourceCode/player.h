@@ -49,6 +49,7 @@ void shot_bullet_Ingot();
 void shot_bullet_Shell();
 void shot_bullet_Beam();
 void shot_bullet_Bankroll();
+void shot_bullet_Special();
 //=======================================================
 
 const float PLAYER_EASING = 0.99f;
@@ -61,9 +62,12 @@ const float PLAYER_EASING = 0.99f;
 
 //貝殻
 #define SHELL_DAMAGE (30)//Y1_damageの倍率も乗っています。
+#define SHELL_SPEED (2000)//1秒間当たりの進むスピード
 
 //延べ棒
 #define INGOT_DAMAGE (18)//Y1_damageの倍率も乗っています。
+#define INGOT_SPEED (100.0f)//1秒間当たりの進むスピード
+#define INGOT_ACCEL (100.0f)//1秒間当たりの加速度
 
 //一閃
 const float BEEM_DAMAGE = 15;

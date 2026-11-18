@@ -11,7 +11,8 @@ int EXP_state = 0;
 int exp_count;
 float acquisition_range;
 
-Sprite* sprEXP;
+#define EXP_SPR_COUNT 4
+Sprite* sprEXP[EXP_SPR_COUNT];
 OBJ2D EXP[EXP_COUNT];
 //std::vector<OBJ2D> EXP;
 
@@ -26,186 +27,225 @@ float color_w_EXP = 0;
 //前回HPを記憶する配列
 static int prev_enemy_hp[ENEMY_NUMBER] = { 0 };
 
+//経験値の種類を表す定数
+#define EXP_TYPE_1YEN 0
+#define EXP_TYPE_2YEN 1
+#define EXP_TYPE_4YEN 2
+#define EXP_TYPE_8YEN 3
+
 
 void EXP_init()
 {
 	EXP_timer = 0;
 	EXP_state = 0;
-    exp_count = 0;
-    acquisition_range = 1.0f;
+	exp_count = 0;
+	acquisition_range = 1.0f;
 }
 
 void EXP_update()
 {
-    switch (EXP_state)
-    {
-    case 0:
-        //////// 初期設定 ////////
+#ifdef _DEBUG
+	if (TRG(0) & PAD_TRG4)
+	{
+		EXP_levelUp_ALL();
+	}
+#endif // _DEBUG
 
-        // EXPの読み込み
-        sprEXP = sprite_load(L"./Data/Images/1yen.png");
+	switch (EXP_state)
+	{
+	case 0:
+		//////// 初期設定 ////////
 
-        EXP_state++;
-        break;
-    case 1:
-        // パラメーターの設定
-        for (int i = 0; i < EXP_COUNT; i++)
-        {
-            EXP[i] = {};
-            EXP[i].pos = { enemy[i].pos.x, enemy[i].pos.y };
-            EXP[i].scale = { EXP_SCALE    , EXP_SCALE };
-            EXP[i].texSize = { EXP_TEX_W    , EXP_TEX_H };
-            EXP[i].pivot = { EXP_PIVOT_X , EXP_PIVOT_Y };
-            EXP[i].color = { 1, 1, 1, 0 };
-        }
-        EXP_state++;
-        break;
-    case 2:
-        for (int i = 0; i < ENEMY_NUMBER; i++)
-        {
-            
-            //HPが0以下になった瞬間を検知する
-            if (prev_enemy_hp[i] > 0 && enemy[i].hp <= 0)
-            {
-                //空いているEXPを探してドロップさせる
-                for (int exp_index = 0; exp_index < EXP_COUNT; exp_index++)
-                {
-                    if (EXP[exp_index].color.w != 1.0f)
-                    {
-                        EXP[exp_index].pos = enemy[i].pos;
-                        EXP[exp_index].color.w = 1.0f;
-                        EXP[exp_index].moveSpeed = 0;
-                        break;
-                    }
-                }
-            }
+		// EXPの読み込み
+		sprEXP[EXP_TYPE_1YEN] = sprite_load(L"./Data/Images/1yen.png");
+		sprEXP[EXP_TYPE_2YEN] = sprite_load(L"./Data/Images/10yen.png");
+		sprEXP[EXP_TYPE_4YEN] = sprite_load(L"./Data/Images/100yen.png");
+		sprEXP[EXP_TYPE_8YEN] = sprite_load(L"./Data/Images/500yen.png");
 
-            //次のフレームの比較用に、現在のHPを保存しておく
-            prev_enemy_hp[i] = enemy[i].hp;
-        }
+		EXP_state++;
+		break;
+	case 1:
+		// パラメーターの設定
+		for (int i = 0; i < EXP_COUNT; i++)
+		{
+			EXP[i] = {};
+			EXP[i].pos = { enemy[i].pos.x, enemy[i].pos.y };
+			EXP[i].scale = { EXP_SCALE    , EXP_SCALE };
+			EXP[i].texSize = { EXP_TEX_W    , EXP_TEX_H };
+			EXP[i].pivot = { EXP_PIVOT_X , EXP_PIVOT_Y };
+			EXP[i].color = { 1, 1, 1, 0 };
+			EXP[i].type = EXP_TYPE_1YEN;
+		}
+		EXP_state++;
+		break;
+	case 2:
+		for (int i = 0; i < ENEMY_NUMBER; i++)
+		{
 
-        //既存のEXPの移動・プレイヤーとの当たり判定
-        for (int j = 0; j < EXP_COUNT; j++)
-        {
-            if (EXP[j].color.w != 1.0f)
-            {
-                EXP[j].pos = { -500, -500 };
-                continue;
-            }
-            EXP[j].moveSpeed += 100.0f / 60.0f;
-            EXP[j].pos.x -= EXP[j].moveSpeed;
-            if (EXP[j].pos.x < (SCREEN_H - EXP[j].pos.y) * 0.3584f / 0.9336f)
-            {
-                EXP[j].pos.x = (SCREEN_H - EXP[j].pos.y) * 0.3584f / 0.9336f;
-                color_w_EXP = 0.5f; // 当たり判定の透明度
-                VECTOR2 cursorPos = { static_cast<float>(getCursorPosX()), static_cast<float>(getCursorPosY()) };
-                posX_EXP = EXP[j].pos.x - (EXP[j].pivot.x * EXP[j].scale.x) * acquisition_range;
-                posY_EXP = EXP[j].pos.y - (EXP[j].pivot.y * EXP[j].scale.y) * acquisition_range;
-                LengthX_EXP = (EXP[j].texSize.x * EXP[j].scale.x) * acquisition_range;
-                LengthY_EXP = (EXP[j].texSize.y * EXP[j].scale.y) * acquisition_range;
-                playerLeftUp_EXP = player.pos - VECTOR2{ player.pivot.x * player.scale.x, player.pivot.y * player.scale.y };
-                playerLength_EXP = { player.texSize.x * player.scale.x, player.texSize.y * player.scale.y };
-                if (Collision2D::rect_vs_rect({ posX_EXP, posY_EXP }, { LengthX_EXP, LengthY_EXP }, playerLeftUp_EXP, playerLength_EXP))
-                {
-                    exp_count++;
-                    EXP[j].color.w = 0;
-                    color_w_EXP = 0.0f;
-                }
-            }
-        }
-        break;
-    }
-}
-        
-        /*case 2:
-        for (int enemy_index = 0; enemy_index < enemy_max; enemy_index++)
-        {
-            // 敵の色が０（敵が死んだら）になったらEXPが落ちる
-            if (enemy[enemy_index].hp <= 0)
-            {
-                for (int exp_index = 0; exp_index < EXP_COUNT; exp_index++)
-                {
-                    if (EXP[exp_index].color.w != 1.0f)
-                    {
-                        EXP[exp_index].pos = enemy[enemy_index].pos;
-                        EXP[exp_index].color.w = 1.0f;
-                        EXP[exp_index].moveSpeed = 0;
-                        break;
-                    }
-                }
-            }
-        }
+			//HPが0以下になった瞬間を検知する
+			if (prev_enemy_hp[i] > 0 && enemy[i].hp <= 0)
+			{
+				//空いているEXPを探してドロップさせる
+				for (int exp_index = 0; exp_index < EXP_COUNT; exp_index++)
+				{
+					if (EXP[exp_index].color.w != 1.0f)
+					{
+						EXP[exp_index].pos = enemy[i].pos;
+						EXP[exp_index].color.w = 1.0f;
+						EXP[exp_index].moveSpeed = 0;
+						EXP[exp_index].type = EXP_TYPE_1YEN;
+						break;
+					}
+				}
+			}
 
-        for (int j = 0; j < EXP_COUNT; j++)
-        {
-            if (EXP[j].color.w != 1.0f)
-            {
-                EXP[j].pos = { -500, -500 };
-                continue;
-            }
-            EXP[j].moveSpeed += 100.0f / 60.0f;
-            EXP[j].pos.x -= EXP[j].moveSpeed;
-            if (EXP[j].pos.x < (SCREEN_H - EXP[j].pos.y) * 0.3584f / 0.9336f)
-            {
-                EXP[j].pos.x = (SCREEN_H - EXP[j].pos.y) * 0.3584f / 0.9336f;
-                color_w_EXP = 0.5f; // 当たり判定の透明度
-                VECTOR2 cursorPos = { static_cast<float>(getCursorPosX()), static_cast<float>(getCursorPosY()) };
-                posX_EXP = EXP[j].pos.x - (EXP[j].pivot.x * EXP[j].scale.x) * acquisition_range;
-                posY_EXP = EXP[j].pos.y - (EXP[j].pivot.y * EXP[j].scale.y) * acquisition_range;
-                LengthX_EXP = (EXP[j].texSize.x * EXP[j].scale.x) * acquisition_range;
-                LengthY_EXP = (EXP[j].texSize.y * EXP[j].scale.y) * acquisition_range;
-                playerLeftUp_EXP = player.pos - VECTOR2{ player.pivot.x * player.scale.x, player.pivot.y * player.scale.y };
-                playerLength_EXP = { player.texSize.x * player.scale.x, player.texSize.y * player.scale.y };
-                if (Collision2D::rect_vs_rect({posX_EXP, posY_EXP }, {LengthX_EXP, LengthY_EXP }, playerLeftUp_EXP, playerLength_EXP))
-                {
-                    exp_count++;
-                    EXP[j].color.w = 0;
-                    color_w_EXP = 0.0f;
-                }
-            }
-        }
+			//次のフレームの比較用に、現在のHPを保存しておく
+			prev_enemy_hp[i] = enemy[i].hp;
+		}
+
+		//既存のEXPの移動・プレイヤーとの当たり判定
+		for (int j = 0; j < EXP_COUNT; j++)
+		{
+			if (EXP[j].color.w != 1.0f)
+			{
+				EXP[j].pos = { -500, -500 };
+				continue;
+			}
+			EXP[j].moveSpeed += 100.0f / 60.0f;
+			EXP[j].pos.x -= EXP[j].moveSpeed;
+			if (EXP[j].pos.x < (SCREEN_H - EXP[j].pos.y) * 0.3584f / 0.9336f)
+			{
+				EXP[j].pos.x = (SCREEN_H - EXP[j].pos.y) * 0.3584f / 0.9336f;
+				color_w_EXP = 0.5f; // 当たり判定の透明度
+				
+				{
+					EXP[j].timer++;
+					if (EXP[j].timer > 3 * system::FRAME_RATE && EXP[j].type < EXP_SPR_COUNT - 1)
+					{
+						EXP[j].timer = 0;
+						EXP[j].type++;
+					}
+				}
+
+				VECTOR2 cursorPos = { static_cast<float>(getCursorPosX()), static_cast<float>(getCursorPosY()) };
+				posX_EXP = EXP[j].pos.x - (EXP[j].pivot.x * EXP[j].scale.x) * acquisition_range;
+				posY_EXP = EXP[j].pos.y - (EXP[j].pivot.y * EXP[j].scale.y) * acquisition_range;
+				LengthX_EXP = (EXP[j].texSize.x * EXP[j].scale.x) * acquisition_range;
+				LengthY_EXP = (EXP[j].texSize.y * EXP[j].scale.y) * acquisition_range;
+				playerLeftUp_EXP = player.pos - VECTOR2{ player.pivot.x * player.scale.x, player.pivot.y * player.scale.y };
+				playerLength_EXP = { player.texSize.x * player.scale.x, player.texSize.y * player.scale.y };
+				if (Collision2D::rect_vs_rect({ posX_EXP, posY_EXP }, { LengthX_EXP, LengthY_EXP }, playerLeftUp_EXP, playerLength_EXP))
+				{
+					exp_count++;
+					EXP[j].color.w = 0;
+					color_w_EXP = 0.0f;
+				}
+			}
+		}
 		break;
 	}
+}
+
+/*case 2:
+for (int enemy_index = 0; enemy_index < enemy_max; enemy_index++)
+{
+	// 敵の色が０（敵が死んだら）になったらEXPが落ちる
+	if (enemy[enemy_index].hp <= 0)
+	{
+		for (int exp_index = 0; exp_index < EXP_COUNT; exp_index++)
+		{
+			if (EXP[exp_index].color.w != 1.0f)
+			{
+				EXP[exp_index].pos = enemy[enemy_index].pos;
+				EXP[exp_index].color.w = 1.0f;
+				EXP[exp_index].moveSpeed = 0;
+				break;
+			}
+		}
+	}
+}
+
+for (int j = 0; j < EXP_COUNT; j++)
+{
+	if (EXP[j].color.w != 1.0f)
+	{
+		EXP[j].pos = { -500, -500 };
+		continue;
+	}
+	EXP[j].moveSpeed += 100.0f / 60.0f;
+	EXP[j].pos.x -= EXP[j].moveSpeed;
+	if (EXP[j].pos.x < (SCREEN_H - EXP[j].pos.y) * 0.3584f / 0.9336f)
+	{
+		EXP[j].pos.x = (SCREEN_H - EXP[j].pos.y) * 0.3584f / 0.9336f;
+		color_w_EXP = 0.5f; // 当たり判定の透明度
+		VECTOR2 cursorPos = { static_cast<float>(getCursorPosX()), static_cast<float>(getCursorPosY()) };
+		posX_EXP = EXP[j].pos.x - (EXP[j].pivot.x * EXP[j].scale.x) * acquisition_range;
+		posY_EXP = EXP[j].pos.y - (EXP[j].pivot.y * EXP[j].scale.y) * acquisition_range;
+		LengthX_EXP = (EXP[j].texSize.x * EXP[j].scale.x) * acquisition_range;
+		LengthY_EXP = (EXP[j].texSize.y * EXP[j].scale.y) * acquisition_range;
+		playerLeftUp_EXP = player.pos - VECTOR2{ player.pivot.x * player.scale.x, player.pivot.y * player.scale.y };
+		playerLength_EXP = { player.texSize.x * player.scale.x, player.texSize.y * player.scale.y };
+		if (Collision2D::rect_vs_rect({posX_EXP, posY_EXP }, {LengthX_EXP, LengthY_EXP }, playerLeftUp_EXP, playerLength_EXP))
+		{
+			exp_count++;
+			EXP[j].color.w = 0;
+			color_w_EXP = 0.0f;
+		}
+	}
+}
+break;
+}
 }*/
 
 void EXP_render()
 {
-    for (int i = 0; i < EXP_COUNT; i++)
-    {
-        sprite_render(
-            sprEXP,
-            EXP[i].pos.x, EXP[i].pos.y,
-            EXP[i].scale.x, EXP[i].scale.y,
-            0, 0,
-            EXP[i].texSize.x, EXP[i].texSize.y,
-            EXP[i].pivot.x, EXP[i].pivot.y,
-            ToRadian(0),
-            1, 1, 1, EXP[i].color.w
-        );
-    }
+	for (int i = 0; i < EXP_COUNT; i++)
+	{
+		sprite_render(
+			sprEXP[EXP[i].type],
+			EXP[i].pos.x, EXP[i].pos.y,
+			EXP[i].scale.x, EXP[i].scale.y,
+			0, 0,
+			EXP[i].texSize.x, EXP[i].texSize.y,
+			EXP[i].pivot.x, EXP[i].pivot.y,
+			ToRadian(0),
+			1, 1, 1, EXP[i].color.w
+		);
+	}
 
-    primitive::rect(
-        posX_EXP, posY_EXP,
-        LengthX_EXP, LengthY_EXP,
-        0.0f, 0.0f,
-        0.0f,
-        1.0f, 0.0f, 0.0f, color_w_EXP,
-        false
-    );
+	primitive::rect(
+		posX_EXP, posY_EXP,
+		LengthX_EXP, LengthY_EXP,
+		0.0f, 0.0f,
+		0.0f,
+		1.0f, 0.0f, 0.0f, color_w_EXP,
+		false
+	);
 
-    primitive::rect(
-        playerLeftUp_EXP.x, playerLeftUp_EXP.y,
-        playerLength_EXP.x, playerLength_EXP.y,
-        0.0f, 0.0f,
-        0.0f,
-        0.0f, 1.0f, 0.0f, color_w_EXP,
-        false
-    );
+	primitive::rect(
+		playerLeftUp_EXP.x, playerLeftUp_EXP.y,
+		playerLength_EXP.x, playerLength_EXP.y,
+		0.0f, 0.0f,
+		0.0f,
+		0.0f, 1.0f, 0.0f, color_w_EXP,
+		false
+	);
 }
 
 void EXP_deinit()
 {
-    {
-        safe_delete(sprEXP);
-    }
+	for (int i = 0; i < EXP_SPR_COUNT; i++)
+	{
+		safe_delete(sprEXP[i]);
+	}
+}
+
+void EXP_levelUp_ALL()
+{
+	for (int i = 0; i < EXP_COUNT; i++)
+	{
+		if (EXP[i].color.w != 1.0f)continue;
+		if (EXP[i].type < EXP_SPR_COUNT - 1) { EXP[i].type++; };
+	}
+
 }

@@ -5,6 +5,7 @@
 #include "cursor_main.h"
 #include "item.h"
 #include "EXP.h"
+#include "enemy.h"
 #include <ctime>
 #include <stdlib.h>
 
@@ -15,12 +16,6 @@ void efficacy_init()
 	damage_up = 0;
 	efficacy_timer = 0;
 }
-
-void efficacy_update()
-{
-
-}
-
 // プレイヤーのHPが上がる
 void HP()
 {
@@ -70,36 +65,44 @@ void Lost_Item_Acquisition_Range()
 // HPの最大量を上げる
 void HP_Max()
 {
-
+	max_hp += 3;
 }
+//-------BULE----------------
+void Fever_Time_Start_Blue()
+{
+	for (int i = 0; i < ENEMY_NUMBER; i++)
+	{
+		enemy[i].moveSpeed = 0;
+	}
+}
+// 終わり
+void Fever_Time_End_Blue()
+{
+	for (int i = 0; i < ENEMY_NUMBER; i++)
+	{
+		enemy[i].moveSpeed = 1 + enemy_speed_up;
+	}
+}
+//-------BULE----------------
+// 
+//-------RED----------------
 // 一定時間あほみたいに強くする
 void Fever_Time_Start_Red()
 {
-	bullet_lay_count += 100;
-	bullet_scale += 1.0f;
-	//precision_rad -= 3;
 	lucky += 50;
 	timer_down -= 10;
-	damage_up += 100;
 }
-
+// 終わり
 void Fever_Time_End_Red()
 {
-	bullet_lay_count -= 100;
-	bullet_scale -= 1.0f;
-	//precision_rad += 3;
 	lucky -= 50;
 	timer_down += 10;
-	damage_up -= 100;
 }
+//-------RED----------------
+
 
 // はずれ
 void loser()
 {
 	bullet_lay_count += 0;
-}
-
-void efficacy_render()
-{
-	debug::setString("efficacy_timer:%d", efficacy_timer);
 }

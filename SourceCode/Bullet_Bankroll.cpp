@@ -64,16 +64,16 @@ void Bullet_Bankroll::attack(OBJ2D enemies[])
 
 	for (int i = 0; i < ENEMY_NUMBER; i++)
 	{
-		VECTOR2 enemy_begin = enemy[i].pos;
-		VECTOR2 enemy_pivot = VECTOR2{ enemy[i].scale.x * enemy[i].pivot.x, enemy[i].scale.y * enemy[i].pivot.y };//enemies[e]‚Ì¶ã
-		VECTOR2 enemy_size = { enemy[i].scale.x * enemy[i].texSize.x, enemy[i].scale.y * enemy[i].texSize.y };
+		VECTOR2 enemy_begin = enemies[i].pos;
+		VECTOR2 enemy_pivot = VECTOR2{ enemies[i].scale.x * enemies[i].pivot.x, enemies[i].scale.y * enemies[i].pivot.y };//enemies[e]‚Ì¶ã
+		VECTOR2 enemy_size = { enemies[i].scale.x * enemies[i].texSize.x, enemies[i].scale.y * enemies[i].texSize.y };
 
 		if (Collision2D::OBB_vs_OBB(pos, s, piv, angle, enemy_begin, enemy_size, enemy_pivot, 0))
 		{
 			bool check = false;
 			for (auto* e : attacked_enemies)
 			{
-				if (e == &enemy[i])
+				if (e == &enemies[i])
 				{
 					check = true;
 					break;
@@ -82,8 +82,8 @@ void Bullet_Bankroll::attack(OBJ2D enemies[])
 
 			if (!check)
 			{
-				enemy[i].hp -= attack_damage;
-				attacked_enemies.push_back(&enemy[i]);
+				enemies[i].hp -= attack_damage;
+				attacked_enemies.push_back(&enemies[i]);
 			}
 		}
 	}

@@ -88,3 +88,4 @@ void tires_move(float boss_x, float boss_y);
 //ŠO•”QÆ•Ï”
 extern OBJ2D enemy[ENEMY_NUMBER];
 extern int enemy_max;
+extern float enemy_speed_up;
