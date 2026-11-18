@@ -37,12 +37,15 @@ float bullet_scale = BULLET_SCALE;//’e‚Ì‘å‚«‚³
 float Y1_damage = Y1_DAMAGE;
 
 float ingot_damage = INGOT_DAMAGE;
-float ingot_speed = 100.0f;
+float ingot_speed = INGOT_SPEED;
+float ingot_accel = INGOT_ACCEL;
 float ingot_scale = 1.5f;
 
 float shell_damage = SHELL_DAMAGE;
-float shell_speed = 400.0f;
+float shell_speed = SHELL_SPEED;
+float shell_scale = 2.5f;
 
+float beem_damage = BEEM_DAMAGE;
 float beem_speed = 4000;
 float beem_scale = 1.5f;
 
@@ -210,7 +213,7 @@ void shot_bullet_Ingot()
 	float damage = ingot_damage + damage_up;
 		  damage *= Y1_damage / Y1_DAMAGE;
 	b_ingot->attack_damage = static_cast<int>(damage);
-	b_ingot->accel_velocity.y = 100/ system::FRAME_RATE;
+	b_ingot->accel_velocity.y = ingot_accel / system::FRAME_RATE;
 	b_ingot->velocity.y = ingot_speed / system::FRAME_RATE;
 	player_bullets.push_back(b_ingot);
 }
@@ -224,7 +227,7 @@ void shot_bullet_Shell()
 	b_shell->velocity = vec2Normalize(vec) * shell_speed / system::FRAME_RATE;
 	b_shell->spr = sprBullet[3];
 	b_shell->texSize = { 64, 16 };
-	b_shell->scale = { 2, 2 };
+	b_shell->scale = { shell_scale, shell_scale };
 	float damage = shell_damage + damage_up;
 	   	  damage *= Y1_damage / Y1_DAMAGE;
 	b_shell->attack_damage = static_cast<int>(damage);
@@ -238,7 +241,7 @@ void shot_bullet_Beam()
 	b_beem->texSize = { 64, 64 };
 	b_beem->pos = { -b_beem->texSize.x, static_cast<float>(getCursorPosY()) };
 	b_beem->scale = { beem_scale, beem_scale };
-	float damage = BEEM_DAMAGE + damage_up;
+	float damage = beem_damage + damage_up;
 	damage *= Y1_damage / Y1_DAMAGE;
 	b_beem->attack_damage = static_cast<int>(damage);
 	b_beem->accel_velocity.x = 10 / system::FRAME_RATE;
