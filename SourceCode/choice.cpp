@@ -299,7 +299,7 @@ void choice_update()
 						switch (random[0])
 						{
 						case HP_UP:
-							HP();						
+							HP_Max();
 							power_efficacy[i].color.w = 0 ;break;
 						case WEAPON_SHELL:
 							serect_weapon = 1;
@@ -337,7 +337,7 @@ void choice_update()
 						switch (random[1])
 						{
 						case HP_UP:
-							HP();
+							HP_Max();
 							power_efficacy[i].color.w = 0; break;
 						case WEAPON_SHELL:
 							serect_weapon = 1;
@@ -375,7 +375,7 @@ void choice_update()
 						switch (random[2])
 						{
 						case HP_UP:
-							HP();
+							HP_Max();
 							power_efficacy[i].color.w = 0; break;
 						case WEAPON_SHELL:
 							serect_weapon = 1;
