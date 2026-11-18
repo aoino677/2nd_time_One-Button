@@ -49,6 +49,7 @@ void shot_bullet_Ingot();
 void shot_bullet_Shell();
 void shot_bullet_Beam();
 void shot_bullet_Bankroll();
+void shot_bullet_Special();
 //=======================================================
 
 const float PLAYER_EASING = 0.99f;

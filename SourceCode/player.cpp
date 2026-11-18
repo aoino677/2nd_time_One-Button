@@ -265,6 +265,22 @@ void shot_bullet_Bankroll()
 	b_roll->roll_max = ToRadian(100);
 	player_bullets.push_back(b_roll);
 }
+void shot_bullet_Special()
+{
+	const int SPECIAL_DAMAGE = 30;
+	VECTOR2 cursor_pos = { static_cast<float>(getCursorPosX()), static_cast<float>(getCursorPosY()) };
+	for (int i = 0; i < ENEMY_NUMBER; i++)
+	{
+		VECTOR2 enemy_begin = enemy[i].pos - VECTOR2{ enemy[i].scale.x * enemy[i].pivot.x, enemy[i].scale.y * enemy[i].pivot.y };//enemy[e]‚Ì¶ã
+		VECTOR2 enemy_size = { enemy[i].scale.x * enemy[i].texSize.x, enemy[i].scale.y * enemy[i].texSize.y };
+		VECTOR2 bullet_center = cursor_pos;
+		float bullet_radius = 96;
+		if (Collision2D::circle_vs_rect(bullet_center, bullet_radius, enemy_begin, enemy_size) && enemy[i].hp > 0)
+		{
+			enemy[i].hp -= SPECIAL_DAMAGE;
+		}
+	}
+}
 //#define SHOT_AIM_TARGET
 //#define SHOT_AIM_AND_CLICK_TARGET
 
@@ -387,6 +403,11 @@ void player_update()
 	player_move();
 	//player_shot_bullet();
 	bullet_update();
+
+	if (TRG(0) & PAD_START)
+	{
+		shot_bullet_Special();
+	}
 
 #ifdef _DEBUG
 	debug::setString("[player debug]------------------------");
