@@ -26,9 +26,7 @@ int Red_counter;
 int Pink_counter;
 
 bool fever_blue;
-bool fever_green;
 bool fever_red;
-bool fever_pink;
 
 float posX;
 float posY;
@@ -61,9 +59,7 @@ void item_init()
     }
 
     fever_blue     = false ;
-    fever_green   = false ;
     fever_red      = false ;
-    fever_pink     = false ;
 
     random = 0;
     lucky = ITEM_RANDOM;
@@ -101,19 +97,19 @@ void item_drop(int enemy_index)
             switch (enemy[enemy_index].type)
             {
             case ENEMY_TYPE_BOLL:
-                item_type[i] = 0;
+                item_type[i] = rand() % 4;
                 break;
             case ENEMY_TYPE_BALLOON:
-                item_type[i] = 1;
+                item_type[i] = rand() % 4;
                 break;
             case ENEMY_TYPE_ROCKET:
-                item_type[i] = 2;
+                item_type[i] = rand() % 4;
                 break;
             case ENEMY_TYPE_BOBM:
-                item_type[i] = 0;
+                item_type[i] = rand() % 4;
                 break;
             case ENEMY_TYPE_CRAYON:
-                item_type[i] = 1;
+                item_type[i] = rand() % 4;
                 break;
             default:
                 // 対応していない敵はドロップしない
@@ -250,9 +246,8 @@ void item_update()
             }
             else if (Green_counter > 0)
             {
-                Fever_Time_Start_Blue();
+                EXP_levelUp_ALL();
                 Green_counter--;
-                fever_green = true;
             }
             else if (Red_counter > 0)
             {
@@ -262,9 +257,8 @@ void item_update()
             }
             else if (Pink_counter > 0)
             {
-                
+                HP_Max();
                 Pink_counter--;
-                fever_pink = true;
             }
         }
 
@@ -279,17 +273,6 @@ void item_update()
                 efficacy_timer = 0;
             }
         }
-        // グリーンの効果
-        if (fever_green == true)
-        {
-            efficacy_timer++;
-            if (efficacy_timer >= 300)
-            {
-                Fever_Time_End_Blue();
-                fever_green = false;
-                efficacy_timer = 0;
-            }
-        }
         // レッドの効果
         if (fever_red == true)
         {
@@ -298,17 +281,6 @@ void item_update()
             {
                 Fever_Time_End_Red();
                 fever_red = false;
-                efficacy_timer = 0;
-            }
-        }
-        // ピンクの効果
-        if (fever_pink == true)
-        {
-            efficacy_timer++;
-            if (efficacy_timer >= 300)
-            {
-               
-                fever_pink = false;
                 efficacy_timer = 0;
             }
         }

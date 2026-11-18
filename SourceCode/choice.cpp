@@ -490,7 +490,7 @@ void randoms()
 	}
 
 	// ‚©‚Ô‚Á‚Ä‚¢‚½‚çÄ’Š‘I
-	while (10000)
+	for(;;)
 	{
 		if (random[0] == serect_weapon){ random[0] = rand() % EFFICACY_MAX; }
 		if (random[1] == serect_weapon){ random[1] = rand() % EFFICACY_MAX; }

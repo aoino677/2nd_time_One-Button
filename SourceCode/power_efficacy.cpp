@@ -65,7 +65,7 @@ void Lost_Item_Acquisition_Range()
 // HPÇÃç≈ëÂó Çè„Ç∞ÇÈ
 void HP_Max()
 {
-
+	max_hp += 3;
 }
 //-------BULE----------------
 void Fever_Time_Start_Blue()
@@ -105,9 +105,4 @@ void Fever_Time_End_Red()
 void loser()
 {
 	bullet_lay_count += 0;
-}
-
-void efficacy_render()
-{
-	debug::setString("efficacy_timer:%d", efficacy_timer);
 }

@@ -16,7 +16,7 @@ void EXP_render();
 void EXP_deinit();
 
 //¶‘¶‚µ‚Ä‚¢‚éEXP‚ÌƒŒƒxƒ‹‚ğ‘S‚Äã‚°‚éB
-void EXP_levelUp_ALL();
+extern void EXP_levelUp_ALL();
 
 // externéŒ¾
 extern Sprite* sprEXP[];
