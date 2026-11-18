@@ -37,6 +37,10 @@ extern void Bullet_Interval(); //
 extern void Bullet_Damage(); 
 extern void Lost_Item_Acquisition_Range();
 extern void HP_Max();
+
+extern void Fever_Time_Start_Blue();
+extern void Fever_Time_End_Blue();
+
 extern void Fever_Time_Start_Red();
 extern void Fever_Time_End_Red();
 extern void loser();

@@ -7,8 +7,8 @@
 
 OBJ2D item[ITEM_MAX];
 
-// 画像は3種類だけ
-Sprite* spritem[3];
+// 画像は4種類だけ
+Sprite* spritem[4];
 
 // アイテムごとの種類
 int item_type[ITEM_MAX];
@@ -23,8 +23,12 @@ int lucky;
 int Blue_counter;
 int Green_counter;
 int Red_counter;
+int Pink_counter;
 
-int item_timer_rimit;
+bool fever_blue;
+bool fever_green;
+bool fever_red;
+bool fever_pink;
 
 float posX;
 float posY;
@@ -45,6 +49,7 @@ void item_init()
     Blue_counter = 0;
     Green_counter = 0;
     Red_counter = 0;
+    Pink_counter = 0;
 
     for (int i = 0; i < ITEM_MAX; i++)
     {
@@ -55,7 +60,10 @@ void item_init()
         item_timer[i] = 1;
     }
 
-    item_timer_rimit = 0;
+    fever_blue     = false ;
+    fever_green   = false ;
+    fever_red      = false ;
+    fever_pink     = false ;
 
     random = 0;
     lucky = ITEM_RANDOM;
@@ -128,6 +136,7 @@ void item_update()
         spritem[0] = sprite_load(L"./Data/Images/itemBlue.png");
         spritem[1] = sprite_load(L"./Data/Images/itemGreen.png");
         spritem[2] = sprite_load(L"./Data/Images/itemRed.png");
+        spritem[3] = sprite_load(L"./Data/Images/itemPink.png");
 
         item_state++;
         break;
@@ -137,11 +146,11 @@ void item_update()
         for (int i = 0; i < ITEM_MAX; i++)
         {
             item[i] = {};
-            item[i].pos = { -500, -500 };
-            item[i].scale = { ITEM_SCALE, ITEM_SCALE };
-            item[i].texSize = { ITEM_TEXSIZE_X,ITEM_TEXSIZE_Y };
-            item[i].pivot = { ITEM_PIVOT_X,ITEM_PIVOT_Y };
-            item[i].color = { 1, 1, 1, 0 };
+            item[i].pos      = { -500, -500 };
+            item[i].scale    = { ITEM_SCALE, ITEM_SCALE };
+            item[i].texSize  = { ITEM_TEXSIZE_X,ITEM_TEXSIZE_Y };
+            item[i].pivot    = { ITEM_PIVOT_X,ITEM_PIVOT_Y };
+            item[i].color    = { 1, 1, 1, 0 };
 
             item_type[i] = -1;
             item_timer[i] = 1;
@@ -204,6 +213,10 @@ void item_update()
                         case 2:
                             Red_counter++;
                             break;
+
+                        case 3:
+                            Pink_counter++;
+                            break;
                         }
 
                         // アイテムを消す
@@ -231,27 +244,74 @@ void item_update()
         {
             if (Blue_counter > 0)
             {
-                Fever_Time_Start_Red();
+                Fever_Time_Start_Blue();
                 Blue_counter--;
-               
-                Fever_Time_End_Red();
+                fever_blue = true;
             }
             else if (Green_counter > 0)
             {
-                Fever_Time_Start_Red();
+                Fever_Time_Start_Blue();
                 Green_counter--;
-               
-                Fever_Time_End_Red();
+                fever_green = true;
             }
             else if (Red_counter > 0)
             {
                 Fever_Time_Start_Red();
                 Red_counter--;
+                fever_red = true;
+            }
+            else if (Pink_counter > 0)
+            {
                 
-                Fever_Time_End_Red();
+                Pink_counter--;
+                fever_pink = true;
             }
         }
 
+        // ブルーの効果
+        if (fever_blue == true)
+        {
+            efficacy_timer++;
+            if (efficacy_timer >= 300)
+            {
+                Fever_Time_End_Blue();
+                fever_blue = false;
+                efficacy_timer = 0;
+            }
+        }
+        // グリーンの効果
+        if (fever_green == true)
+        {
+            efficacy_timer++;
+            if (efficacy_timer >= 300)
+            {
+                Fever_Time_End_Blue();
+                fever_green = false;
+                efficacy_timer = 0;
+            }
+        }
+        // レッドの効果
+        if (fever_red == true)
+        {
+            efficacy_timer++;
+            if (efficacy_timer >= 300)
+            {
+                Fever_Time_End_Red();
+                fever_red = false;
+                efficacy_timer = 0;
+            }
+        }
+        // ピンクの効果
+        if (fever_pink == true)
+        {
+            efficacy_timer++;
+            if (efficacy_timer >= 300)
+            {
+               
+                fever_pink = false;
+                efficacy_timer = 0;
+            }
+        }
         break;
     }
 }
