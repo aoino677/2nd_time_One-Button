@@ -42,6 +42,13 @@ void EXP_init()
 
 void EXP_update()
 {
+#ifdef _DEBUG
+    if (TRG(0) & PAD_TRG4)
+    {
+        EXP_levelUp_ALL();
+    }
+#endif // _DEBUG
+
     switch (EXP_state)
     {
     case 0:
@@ -217,4 +224,14 @@ void EXP_deinit()
     {
         safe_delete(sprEXP[i]);
     }
+}
+
+void EXP_levelUp_ALL()
+{
+    for (int i = 0; i < EXP_COUNT; i++)
+    {
+        if (EXP[i].color.w != 1.0f)continue;
+        if (EXP[i].type < EXP_SPR_COUNT - 1) { EXP[i].type++; };
+    }
+
 }
