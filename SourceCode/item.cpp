@@ -320,10 +320,7 @@ void item_render()
         0.0f, 1.0f, 0.0f, color_w,
         false
     );
-
-    debug::setString("Blue_counter:%d", Blue_counter);
-    debug::setString("Green_counter:%d", Green_counter);
-    debug::setString("Red_counter:%d", Red_counter);
+    
 }
 
 

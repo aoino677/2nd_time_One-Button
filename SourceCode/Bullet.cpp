@@ -2,6 +2,7 @@
 #include "enemy.h"
 #include "Collision2D.h"
 #include "player.h"
+#include "Level.h"
 using namespace GameLib;
 
 const float INGOT_LATE = 0.2f;
