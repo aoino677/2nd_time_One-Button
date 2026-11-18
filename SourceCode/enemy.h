@@ -6,7 +6,7 @@
 #define ENEMY_TYPE_CRAYON    0  //クレヨン
 #define ENEMY_TYPE_BOLL      1  //ボール
 #define ENEMY_TYPE_BALLOON   2  //風船
-#define ENEMY_TYPE_PENCIL    3  //ロケット鉛筆
+#define ENEMY_TYPE_ROCKET    3  //ロケット鉛筆
 #define ENEMY_TYPE_BOBM      5  //ボム
 
 //ボス敵

@@ -142,6 +142,7 @@ void game_render()
 	cursor_main_render();
 	choice_render();
 	pause_render(); // ‚±‚êˆÈã‰º‚É‘‚©‚È‚¢
+	efficacy_render();
 }
 
 //--------------------------------------
