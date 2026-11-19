@@ -547,14 +547,16 @@ void enemy_move(int i)
 		if (enemy[i].pos.y < enemy_target_y[i])
 		{
 			swing_speed = cosf(enemy[i].pos.y * 0.05f) * 1.5f;
-			enemy[i].pos.y += enemy[i].moveSpeed ;
+			enemy[i].pos.y += enemy[i].moveSpeed;
 			enemy[i].pos.x += swing_speed;
 
-			balloon_pos_x[i] == enemy[i].pos.x;
-			balloon_pos_y[i] == enemy[i].pos.y-80;
+			// == ではなく = で代入する
+			balloon_pos_x[i] = enemy[i].pos.x;
+			balloon_pos_y[i] = enemy[i].pos.y - 130;
 		}
 		else
 		{
+			// 敵は横移動、風船は上へ上昇（2D座標で上がマイナス方向の場合）
 			enemy[i].pos.x -= enemy[i].moveSpeed;
 			balloon_pos_y[i] -= 5;
 		}
@@ -918,11 +920,11 @@ void enemy_render()
 		{
 			sprite_render(
 				sprBalloon,
-				balloon_pos_y[i], balloon_pos_y[i] ,
+				balloon_pos_x[i], balloon_pos_y[i], // X座標を balloon_pos_x[i] に修正
 				render_scale_x, render_scale_y,
 				0, 0,
-				enemy[i].texSize.x, enemy[i].texSize.y,
-				enemy[i].pivot.x, enemy[i].pivot.y,
+				80, 122,
+				40, 61,
 				ToRadian(0),
 				enemy[i].color.x, enemy[i].color.y, enemy[i].color.z);
 		}

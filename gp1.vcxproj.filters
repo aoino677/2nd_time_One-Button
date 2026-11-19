@@ -189,6 +189,9 @@
     <ClInclude Include="SourceCode\effect_count_down.h">
       <Filter>ソース ファイル\Effect</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\result_screen.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameLib\debug.cpp">
@@ -328,6 +331,9 @@
     </ClCompile>
     <ClCompile Include="SourceCode\effect_count_down.cpp">
       <Filter>ソース ファイル\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\result_screen.cpp">
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

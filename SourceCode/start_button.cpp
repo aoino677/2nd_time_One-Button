@@ -16,7 +16,7 @@ int title_state;
 
 extern bool gameEnd;
 
-// 初期化
+//初期化
 void title_button_init()
 {
     title_button_state = 0;
@@ -34,16 +34,17 @@ void title_button_update()
     {
     case 0:
     
-       // ボタン画像読み込み
+       //ボタン画像読み込み
         sprtitleButton = sprite_load(L"./Data/Images/NewGame_sin.png");
         
         title_button_state++;
+        break;
     
     case 1:
         //ゲームスタートボタン初期化
         titleButton = {};
 
-        titleButton.pos = { 1500.0f, 850.0f };
+        titleButton.pos = { 1400.0f, 650.0f };
 
         titleButton.scale =
         {
@@ -67,7 +68,7 @@ void title_button_update()
 
         titleButton.color = { 1.0f, 1.0f, 1.0f, 1.0f };
 
-
+        title_button_state++;
         break;
         
     case 2:
@@ -100,19 +101,19 @@ void title_button_update()
             mouseY >= top &&
             mouseY <= bottom)
         {
-            // マウスを乗せると少し拡大
+            //マウスを乗せると少し拡大
             titleButton.scale.x = TITLE_BUTTON_SCALE + 0.1f;
             titleButton.scale.y = TITLE_BUTTON_SCALE + 0.1f;
 
-            // クリックでゲーム開始
-            if (TRG(1) & PAD_START)
+            //クリックでゲーム開始
+            if (TRG(0) & PAD_START)
             {
                 title_state = 3;
             }
         }
         else
         {
-            // 通常サイズ
+            //通常サイズ
             titleButton.scale.x = TITLE_BUTTON_SCALE;
             titleButton.scale.y = TITLE_BUTTON_SCALE;
         }

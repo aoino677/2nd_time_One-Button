@@ -16,8 +16,8 @@
 
 
 //------< 変数 >----------------------------------------------------------------
-//int title_state = 0;     // 状態
-int title_timer = 0;     // タイマー
+//int title_state = 0;     //状態
+int title_timer = 0;     //タイマー
 
 //--------------------------------------
 //  初期設定
@@ -27,7 +27,7 @@ void title_init()
 	title_state = 0;
 	title_timer = 0;
 	scene_change_init();
-	void title_button_init();
+	title_button_init();
 }
 
 //--------------------------------------
@@ -46,10 +46,10 @@ void title_update()
 		title_state++;
 		/*fallthrough*/
 	case 2:
-		if (TRG(0) & PAD_START)
+		/*if (TRG(0) & PAD_START)
 		{
 			title_state = 3;
-		}
+		}*/
 		title_button_update();
 		break;
 

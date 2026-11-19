@@ -23,15 +23,16 @@
 #include "Time_limit.h"
 #include "power_efficacy.h"
 #include "item.h"
+#include "result_screen.h"
 
 
 //------< 定数 >----------------------------------------------------------------
 
 
 //------< 変数 >----------------------------------------------------------------
-int game_state = 0;     // 状態
-int game_timer = 0;     // タイマー
-int time_limit = 0;       // 制限時間
+int game_state = 0;     //状態
+int game_timer = 0;     //タイマー
+int time_limit = 0;       //制限時間
 
 bool choice_pause = false;
 bool pause = false;
@@ -58,6 +59,7 @@ void game_init()
 	time_limit_init();
 	item_init();
 	efficacy_init();
+	result_screen_init();
 }
 
 //--------------------------------------
@@ -81,14 +83,22 @@ void game_update()
 		game_state++;
 		/*fallthrough*/
 	case 2:
+		//リザルト表示中はゲーム停止
+		if (result_active)
+		{
+			result_screen_update();
+			cursor_main_update();
+			break;
+		}
+
 		//////// 通常時 ////////
 		pause_update();
 		choice_update_pause();
 		level_update();
-		
+
 		//========================================
-	   // ゲーム中
-	   //========================================
+		// ゲーム中
+		//========================================
 
 		if (pause == false && choice_pause == false)
 		{
@@ -101,14 +111,17 @@ void game_update()
 			effect_danger_update();
 			cursor_main_update();
 		}
+
+		//仮リザルト
 		if (TRG(0) & PAD_TRG1)
 		{
-			nextScene = SCENE_RESULT;
+			result_active = true;
 			break;
 		}
-	//========================================
-	 // ポーズ中
-	 //========================================
+
+		//========================================
+		// ポーズ中
+		//========================================
 		if (pause == true || choice_pause == true)
 		{
 			//cursor_main_update();
@@ -139,9 +152,12 @@ void game_render()
 	hp_render();
 	effect_danger_render();
 	time_limit_render();
-	cursor_main_render();
 	choice_render();
 	pause_render(); // これ以上下に書かない
+
+    
+	cursor_main_render();
+	result_screen_render();
 }
 
 //--------------------------------------
@@ -157,4 +173,5 @@ void game_deinit()
 	cursor_main_deinit();
 	choice_deinit();
 	item_deinit();
+	result_screen_deinit();
 }
