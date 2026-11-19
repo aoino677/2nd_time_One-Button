@@ -75,7 +75,7 @@ void choice_update_pause()
 {
 	if (!choice_pause)
 	{
-		if (exp_count >= level_max || TRG(0) & PAD_TRG2)
+		if (exp_count >= level_max)
 		{
 			level_up_count++;
 			for (int i = 1; i <= level_up_count; i++)
