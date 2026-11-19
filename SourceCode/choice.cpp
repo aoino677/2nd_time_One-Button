@@ -83,8 +83,8 @@ void choice_update_pause()
 			{
 				for (; T_or_F(level_up_count);)
 				{
+					exp_count -= level_max;
 					level_max += LEVEL_COUNT_INCREAS;
-					exp_count = 0;
 					choice_pause = true;
 					choice_effect_y = static_cast<float>(SCREEN_H);
 					choice_effect_alpha = 0.0f;
