@@ -35,8 +35,6 @@ void Bullet_Ingot::update()
 		}
 	}
 
-	debug::setString("%d", after_images.size());
-
 	if (pos.x + texSize.x > 0
 	 && pos.x - texSize.x < SCREEN_W
 	 && pos.y + texSize.y > 0
