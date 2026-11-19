@@ -50,7 +50,7 @@ void Bullet_Lucky()
 // 弾の撃つ間隔が短くなる
 void Bullet_Interval()
 {
-	timer_down -= BULLET_INTERVAL_UP;
+	timer_down_bullet -= BULLET_INTERVAL_UP;
 }
 // プレイヤーの攻撃力を増やす
 void Bullet_Damage()
@@ -90,13 +90,23 @@ void Fever_Time_End_Blue()
 void Fever_Time_Start_Red()
 {
 	lucky += 50;
-	timer_down -= 10;
+	// 全武器のクールタイムを短くする
+	timer_down_bullet -= 10;		// Y1
+	timer_down_shell -= 10;			// Shell
+	timet_down_ingot -= 10;			// Ingot
+	timer_down_beam -= 10;		// Beam
+	timer_down_bankroll -= 10;		// Bankroll
 }
 // 終わり
 void Fever_Time_End_Red()
 {
 	lucky -= 50;
-	timer_down += 10;
+	// 全武器のクールタイムを元に戻す
+	timer_down_bullet += 10;		// Y1
+	timer_down_shell += 10;			// Shell
+	timet_down_ingot += 10;		// Ingot
+	timer_down_beam += 10;		// Beam
+	timer_down_bankroll += 10;	// Bankroll
 }
 //-------RED----------------
 

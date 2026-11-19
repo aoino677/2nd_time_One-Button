@@ -13,10 +13,16 @@ extern int bullet_lay_count;
 extern float bullet_lay_gap;
 extern float bullet_scale;
 extern float precision_rad;
-extern float shell_damage;
-extern float shell_scale;
 
 extern float Y1_damage;
+extern float shell_damage;
+extern float shell_scale;
+extern float ingot_damage;
+extern float ingot_scale;
+extern float beem_damage;
+extern float beem_scale;
+extern float bankrool_damage;
+extern float bankrool_scale;
 
 struct Bullet_Y1_AfterImage
 {
@@ -60,10 +66,10 @@ const float PLAYER_EASING = 0.99f;
 #define BULLET_SPEED (4000.0f)
 
 //‚P‰~
-#define Y1_DAMAGE (8)
+#define Y1_DAMAGE (1)
 
 //ŠLŠk
-#define SHELL_DAMAGE (30)//Y1_damage‚Ì”{—¦‚àæ‚Á‚Ä‚¢‚Ü‚·B
+#define SHELL_DAMAGE (1)//Y1_damage‚Ì”{—¦‚àæ‚Á‚Ä‚¢‚Ü‚·B
 #define SHELL_SPEED (2000)//1•bŠÔ“–‚½‚è‚Ìi‚ŞƒXƒs[ƒh
 
 //‰„‚×–_
