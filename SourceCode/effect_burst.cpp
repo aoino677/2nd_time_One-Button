@@ -70,8 +70,8 @@ void particle_render()
 		primitive::rect(
 			particle[i].x - particle[i].size * 0.5f,
 			particle[i].y - particle[i].size * 0.5f,
-			particle[i].size,
-			particle[i].size,
+			particle[i].size, particle[i].size,
+			0, 0, 
 			0,
 			particle[i].r,
 			particle[i].g,

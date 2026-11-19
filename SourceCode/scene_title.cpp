@@ -9,13 +9,14 @@
 //----< インクルード >-----------------------------------------------------------
 #include "all.h"
 #include "effect_scene_change.h"
+#include "start_button.h"
 
 
 //------< 定数 >----------------------------------------------------------------
 
 
 //------< 変数 >----------------------------------------------------------------
-int title_state = 0;     // 状態
+//int title_state = 0;     // 状態
 int title_timer = 0;     // タイマー
 
 //--------------------------------------
@@ -26,6 +27,7 @@ void title_init()
 	title_state = 0;
 	title_timer = 0;
 	scene_change_init();
+	void title_button_init();
 }
 
 //--------------------------------------
@@ -48,6 +50,7 @@ void title_update()
 		{
 			title_state = 3;
 		}
+		title_button_update();
 		break;
 
 	case 3:
@@ -81,6 +84,7 @@ void title_render()
 		font::textOut(1, "PRESS SPACE KEY", 640, 300);
 	}
 
+	title_button_render();
 	scene_change_render();
 }
 
@@ -89,6 +93,6 @@ void title_render()
 //--------------------------------------
 void title_deinit()
 {
-
+	title_button_deinit();
 
 }

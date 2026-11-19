@@ -71,7 +71,6 @@ void enemy_damage_effect(int i);
 void particle_render();
 void effect_boss_respawn();
 void effect_boss_render();
-void tires_update();
 void tires_render();
 void tires_move(float boss_x, float boss_y);
 

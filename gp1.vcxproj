@@ -124,6 +124,7 @@ attrib +h SourceCode\gp1.log
     <ClInclude Include="SourceCode\common.h" />
     <ClInclude Include="SourceCode\cursor_main.h" />
     <ClInclude Include="SourceCode\effect_burst.h" />
+    <ClInclude Include="SourceCode\effect_count_down.h" />
     <ClInclude Include="SourceCode\effect_danger.h" />
     <ClInclude Include="SourceCode\effect_scene_change.h" />
     <ClInclude Include="SourceCode\enemy.h" />
@@ -142,6 +143,7 @@ attrib +h SourceCode\gp1.log
     <ClInclude Include="SourceCode\scene_resulet.h" />
     <ClInclude Include="SourceCode\scene_title.h" />
     <ClInclude Include="SourceCode\shake.h" />
+    <ClInclude Include="SourceCode\start_button.h" />
     <ClInclude Include="SourceCode\Time_limit.h" />
   </ItemGroup>
   <ItemGroup>
@@ -170,6 +172,7 @@ attrib +h SourceCode\gp1.log
     <ClCompile Include="SourceCode\Collision2D.cpp" />
     <ClCompile Include="SourceCode\cursor_main.cpp" />
     <ClCompile Include="SourceCode\effect_burst.cpp" />
+    <ClCompile Include="SourceCode\effect_count_down.cpp" />
     <ClCompile Include="SourceCode\effect_danger.cpp" />
     <ClCompile Include="SourceCode\effect_scene_change.cpp" />
     <ClCompile Include="SourceCode\enemy.cpp" />
@@ -188,6 +191,7 @@ attrib +h SourceCode\gp1.log
     <ClCompile Include="SourceCode\scene_resulet.cpp" />
     <ClCompile Include="SourceCode\scene_title.cpp" />
     <ClCompile Include="SourceCode\shake.cpp" />
+    <ClCompile Include="SourceCode\start_button.cpp" />
     <ClCompile Include="SourceCode\Time_limit.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

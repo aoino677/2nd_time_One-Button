@@ -21,4 +21,6 @@ void title_update();
 void title_render();
 void title_deinit();
 
+extern int title_state;
+
 #endif//SCENE_title_H
