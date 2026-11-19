@@ -199,19 +199,21 @@ void item_update()
                         switch (item_type[i])
                         {
                         case 0:
-                            Blue_counter++;
+                            Fever_Time_Start_Blue();
+                            fever_blue = true;
                             break;
 
                         case 1:
-                            Green_counter++;
+                            EXP_levelUp_ALL();
                             break;
 
                         case 2:
-                            Red_counter++;
+                            Fever_Time_Start_Red();
+                            fever_red = true;
                             break;
 
                         case 3:
-                            Pink_counter++;
+                            HP();
                             break;
                         }
 
@@ -231,34 +233,6 @@ void item_update()
                         item_timer[i]--;
                     }
                 }
-            }
-        }
-
-
-        // STARTボタンでアイテム使用
-        if (TRG(0) & PAD_START)
-        {
-            if (Blue_counter > 0)
-            {
-                Fever_Time_Start_Blue();
-                Blue_counter--;
-                fever_blue = true;
-            }
-            else if (Green_counter > 0)
-            {
-                EXP_levelUp_ALL();
-                Green_counter--;
-            }
-            else if (Red_counter > 0)
-            {
-                Fever_Time_Start_Red();
-                Red_counter--;
-                fever_red = true;
-            }
-            else if (Pink_counter > 0)
-            {
-                HP_Max();
-                Pink_counter--;
             }
         }
 
@@ -301,7 +275,7 @@ void item_render()
         }
 
         // アイテムの種類に合わせた画像を表示
-        if (item_type[i] < 0 || item_type[i] > 2)
+        if (item_type[i] < 0 || item_type[i] > 3)
         {
             continue;
         }
@@ -346,17 +320,14 @@ void item_render()
         0.0f, 1.0f, 0.0f, color_w,
         false
     );
-
-    debug::setString("Blue_counter:%d", Blue_counter);
-    debug::setString("Green_counter:%d", Green_counter);
-    debug::setString("Red_counter:%d", Red_counter);
+    
 }
 
 
 // 終了処理
 void item_deinit()
 {
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < 4; i++)
     {
         safe_delete(spritem[i]);
     }

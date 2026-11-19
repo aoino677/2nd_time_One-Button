@@ -3,6 +3,7 @@
 #include "power_efficacy.h"
 #include "player.h"
 #include "cursor_main.h"
+#include "Level.h"
 #include <ctime>
 #include <stdlib.h>
 
@@ -39,7 +40,7 @@ void choice_init()
 	sprpower_efficacy[6] = sprite_load(L"./Data/images/card_rifle.png");
 	sprpower_efficacy[7] = sprite_load(L"./Data/images/card_attack.png");
 	sprpower_efficacy[8] = sprite_load(L"./Data/images/Acquisition_Range_efficacy.png");
-	//sprpower_efficacy[9] = sprite_load(L"./Data/images/Bullet_rad_efficacy.png");
+	sprpower_efficacy[9] = sprite_load(L"./Data/images/card_range.png");
 	//sprpower_efficacy[10] = sprite_load(L"./Data/images/Bullet_rad_efficacy.png");
 	//sprpower_efficacy[11] = sprite_load(L"./Data/images/Bullet_rad_efficacy.png");
 
@@ -182,6 +183,10 @@ void choice_update()
 		case LOST_ITEM_ACQUISITION_RANGE: // 落とし物の取得範囲を広げる
 			power_efficacy[8].pos = { 450,BUTTON_Y };
 			power_efficacy[8].color.w = 1;break;
+
+		case CURSOR_BIG: // カーソルを大きくする
+			power_efficacy[9].pos = { 450,BUTTON_Y };
+			power_efficacy[9].color.w = 1; break;
 		}
 		switch (random[1])
 		{
@@ -220,6 +225,10 @@ void choice_update()
 		case LOST_ITEM_ACQUISITION_RANGE: // 落とし物の取得範囲を広げる
 			power_efficacy[8].pos = { 950,BUTTON_Y };
 			power_efficacy[8].color.w = 1; break;
+
+		case CURSOR_BIG: // カーソルを大きくする
+			power_efficacy[9].pos = { 950,BUTTON_Y };
+			power_efficacy[9].color.w = 1; break;
 		}
 		switch (random[2])
 		{
@@ -258,6 +267,10 @@ void choice_update()
 		case LOST_ITEM_ACQUISITION_RANGE: // 落とし物の取得範囲を広げる
 			power_efficacy[8].pos = { 1450,BUTTON_Y };
 			power_efficacy[8].color.w = 1; break;
+
+		case CURSOR_BIG: // カーソルを大きくする
+			power_efficacy[9].pos = { 1450,BUTTON_Y };
+			power_efficacy[9].color.w = 1; break;
 		}
 		for (int i = 0; i < CHOICE_MAX; i++)
 		{
@@ -299,10 +312,12 @@ void choice_update()
 						switch (random[0])
 						{
 						case HP_UP:
-							HP();						
+							HP_Max();
 							power_efficacy[i].color.w = 0 ;break;
 						case WEAPON_SHELL:
 							serect_weapon = 1;
+							if (level_up_weapon[SHELL] == 0)	{level_up_weapon[SHELL] = level_1;}
+							else if (level_up_weapon[SHELL] < level_8){level_up_weapon[SHELL]++;}
 							power_efficacy[i].color.w = 0; break;
 						case WEAPON_BEAM:
 							serect_weapon = 2;
@@ -318,12 +333,16 @@ void choice_update()
 							power_efficacy[i].color.w = 0; break;
 						case WEAPON_BULLET:
 							serect_weapon = 6;
+							if (level_up_weapon[Y1] < level_8) { level_up_weapon[Y1]++; }
 							power_efficacy[i].color.w = 0; break;
 						case BULLET_DAMAGE:
 							Bullet_Damage();		
 							power_efficacy[i].color.w = 0; break;
 						case LOST_ITEM_ACQUISITION_RANGE:
 							Lost_Item_Acquisition_Range();
+							power_efficacy[i].color.w = 0; break;
+						case CURSOR_BIG:
+							Cursor_big();
 							power_efficacy[i].color.w = 0; break;
 						}
 						break;
@@ -337,10 +356,12 @@ void choice_update()
 						switch (random[1])
 						{
 						case HP_UP:
-							HP();
+							HP_Max();
 							power_efficacy[i].color.w = 0; break;
 						case WEAPON_SHELL:
 							serect_weapon = 1;
+							if (level_up_weapon[SHELL] == 0) { level_up_weapon[SHELL] = level_1; }
+							else if (level_up_weapon[SHELL] < level_8) { level_up_weapon[SHELL]++; }
 							power_efficacy[i].color.w = 0; break;
 						case WEAPON_BEAM:
 							serect_weapon = 2;
@@ -356,12 +377,16 @@ void choice_update()
 							power_efficacy[i].color.w = 0; break;
 						case WEAPON_BULLET:
 							serect_weapon = 6;
+							if (level_up_weapon[Y1] < level_8) { level_up_weapon[Y1]++; }
 							power_efficacy[i].color.w = 0; break;
 						case BULLET_DAMAGE:
 							Bullet_Damage();
 							power_efficacy[i].color.w = 0; break;
 						case LOST_ITEM_ACQUISITION_RANGE:
 							Lost_Item_Acquisition_Range();
+							power_efficacy[i].color.w = 0; break;
+						case CURSOR_BIG:
+							Cursor_big();
 							power_efficacy[i].color.w = 0; break;
 						}
 						break;
@@ -375,9 +400,11 @@ void choice_update()
 						switch (random[2])
 						{
 						case HP_UP:
-							HP();
+							HP_Max();
 							power_efficacy[i].color.w = 0; break;
 						case WEAPON_SHELL:
+							if (level_up_weapon[SHELL] == 0) { level_up_weapon[SHELL] = level_1; }
+							else if (level_up_weapon[SHELL] < level_8) { level_up_weapon[SHELL]++; }
 							serect_weapon = 1;
 							power_efficacy[i].color.w = 0; break;
 						case WEAPON_BEAM:
@@ -394,12 +421,16 @@ void choice_update()
 							power_efficacy[i].color.w = 0; break;
 						case WEAPON_BULLET:
 							serect_weapon = 6;
+							if (level_up_weapon[Y1] < level_8){level_up_weapon[Y1]++;}
 							power_efficacy[i].color.w = 0; break;
 						case BULLET_DAMAGE:
 							Bullet_Damage();
 							power_efficacy[i].color.w = 0; break;
 						case LOST_ITEM_ACQUISITION_RANGE:
 							Lost_Item_Acquisition_Range();
+							power_efficacy[i].color.w = 0; break;
+						case CURSOR_BIG:
+							Cursor_big();
 							power_efficacy[i].color.w = 0; break;
 						}
 						break;
@@ -460,6 +491,9 @@ void choice_render()
 				1, 1, 1, power_efficacy[i].color.w
 			);
 		}
+		debug::setString("SHELL LEVEL:%d", level_up_weapon[SHELL]);
+		debug::setString("SHELL DAMAGE:%f", shell_damage);
+		debug::setString("SHELL SCALE:%f", shell_scale);
 	}
 }
 

@@ -24,6 +24,13 @@ int timer = 0;
 // 武器選択値
 int serect_weapon;
 
+// カーソルの当たり判定サイズ
+float cursor_hitbox_half_width = 10.0f;
+float cursor_hitbox_half_height = 10.0f;
+
+// 通常時のスケール
+float cursor_normal_scale = CURSOL_MAIN_SCALE;
+
 //==================================================
 // 初期化
 //==================================================
@@ -43,6 +50,11 @@ void cursor_main_init()
     serect_weapon = 6;
 
     cursor_main = {};
+
+    cursor_normal_scale = CURSOL_MAIN_SCALE;
+
+    cursor_hitbox_half_width = 10.0f;
+    cursor_hitbox_half_height = 10.0f;
 }
 
 
@@ -90,55 +102,70 @@ void cursor_main_update()
         cursor_main_posX = (float)getCursorPosX();
         cursor_main_posY = (float)getCursorPosY();
 
+        if (timer > timer_down)
+        {
+            timer = timer_down;
+        }
         for (int i = 0; i < ENEMY_NUMBER; i++)
         {
-            float left   = enemy[i].pos.x - enemy[i].pivot.x * ENEMY_SCALE;
-            float right = enemy[i].pos.x + (enemy[i].texSize.x - enemy[i].pivot.x) * ENEMY_SCALE;
-            float top   = enemy[i].pos.y - enemy[i].pivot.y * ENEMY_SCALE;
-            float bottom = enemy[i].pos.y + (enemy[i].texSize.y - enemy[i].pivot.y) * ENEMY_SCALE;
+            // 敵の当たり判定
+            float enemy_left = enemy[i].pos.x - enemy[i].pivot.x * ENEMY_SCALE;
+            float enemy_right = enemy[i].pos.x + (enemy[i].texSize.x - enemy[i].pivot.x) * ENEMY_SCALE;
+            float enemy_top = enemy[i].pos.y - enemy[i].pivot.y * ENEMY_SCALE;
+            float enemy_bottom = enemy[i].pos.y + (enemy[i].texSize.y - enemy[i].pivot.y) * ENEMY_SCALE;
 
-            if (cursor_main_posX >= left &&
-                cursor_main_posX <= right &&
-                cursor_main_posY >= top &&
-                cursor_main_posY <= bottom)
+            // カーソル中央の当たり判定
+            float cursor_left = cursor_main_posX - cursor_hitbox_half_width;
+            float cursor_right = cursor_main_posX + cursor_hitbox_half_width;
+            float cursor_top = cursor_main_posY - cursor_hitbox_half_height;
+            float cursor_bottom = cursor_main_posY + cursor_hitbox_half_height;
+
+            // 敵とカーソルの衝突判定
+            if (cursor_left <= enemy_right &&
+                cursor_right >= enemy_left &&
+                cursor_top <= enemy_bottom &&
+                cursor_bottom >= enemy_top)
             {
-                //while (timer >= 0)
+                if (timer == timer_down)
                 {
-                    if (timer == timer_down)
+                    switch (serect_weapon)
                     {
-                        switch (serect_weapon)
-                        {
-                        case 6:
-                            shot_bullet();
-                            break;
-                        case 3:
-                            shot_bullet_Ingot();
-                            break;
-                        case 1:
-                            shot_bullet_Shell();
-                            break;
-                        case 2:
-                            shot_bullet_Beam();
-                            break;
-                        case 4:
-                            shot_bullet_Bankroll();
-                            break;
-                        }
-                        timer--;
+                    case 6:
+                        shot_bullet();
+                        break;
+
+                    case 3:
+                        shot_bullet_Ingot();
+                        break;
+
+                    case 1:
+                        shot_bullet_Shell();
+                        break;
+
+                    case 2:
+                        shot_bullet_Beam();
+                        break;
+
+                    case 4:
+                        shot_bullet_Bankroll();
+                        break;
                     }
-                    else if (timer == 0)
-                    {
-                        timer = timer_down;
-                    }
-                    else
-                    {
-                        timer--;
-                    }
-                    
-                    break;
+
+                    timer--;
                 }
+                else if (timer == 0)
+                {
+                    timer = timer_down;
+                }
+                else
+                {
+                    timer--;
+                }
+
+                break;
             }
         }
+      
         
 
         // 取得した位置に画像を配置
@@ -174,4 +201,18 @@ void cursor_main_render()
         ToRadian(0),
         cursor_main.color.x, cursor_main.color.y, cursor_main.color.z, cursor_main.color.w
     );
+
+
+}
+
+// カーソルを大きくして、その分当たり判定も大きくする
+void Cursor_big()
+{
+    // 1回呼び出すごとに少し大きくする
+    cursor_main.scale.x += 0.1f;
+    cursor_main.scale.y += 0.1f;
+
+    // 当たり判定も少し大きくする
+    cursor_hitbox_half_width += 2.0f;
+    cursor_hitbox_half_height += 2.0f;
 }
