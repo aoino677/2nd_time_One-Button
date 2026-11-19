@@ -3,6 +3,7 @@
 #include "cursor_main.h"
 #include "enemy.h"
 #include "player.h"
+#include "Level.h"
 
 //==================================================
 // 変数
@@ -146,35 +147,104 @@ void cursor_main_update()
                 cursor_top <= enemy_bottom &&
                 cursor_bottom >= enemy_top)
             {
-                if (serect_weapon == 6)
+                //==========================================
+                // 一円玉マシンガン
+                //==========================================
+                if (level_up_weapon[Y1] > 0)
                 {
-                    if (timer_bullet == timer_down_bullet) { shot_bullet(); timer_bullet--;; }
-                    else if (timer_bullet == 0) { timer_bullet = timer_down_bullet; }
-                    else { timer_bullet--; }
+                    if (timer_bullet == timer_down_bullet)
+                    {
+                        shot_bullet();
+                        timer_bullet--;
+                    }
+                    else if (timer_bullet == 0)
+                    {
+                        timer_bullet = timer_down_bullet;
+                    }
+                    else
+                    {
+                        timer_bullet--;
+                    }
                 }
-                if (serect_weapon == 1)
+
+                //==========================================
+                // 貝殻ミサイル
+                //==========================================
+                if (level_up_weapon[SHELL] > 0)
                 {
-                    if (timer_shell == timer_down_shell) { shot_bullet_Shell(); timer_shell--;; }
-                    else if (timer_shell == 0) { timer_shell = timer_down_shell; }
-                    else { timer_shell--; }
+                    if (timer_shell == timer_down_shell)
+                    {
+                        shot_bullet_Shell();
+                        timer_shell--;
+                    }
+                    else if (timer_shell == 0)
+                    {
+                        timer_shell = timer_down_shell;
+                    }
+                    else
+                    {
+                        timer_shell--;
+                    }
                 }
-                if (serect_weapon == 3)
+
+                //==========================================
+                // インゴット
+                //==========================================
+                if (level_up_weapon[INGOT] > 0)
                 {
-                    if (timer_ingot == timet_down_ingot) { shot_bullet_Ingot(); timer_ingot--;; }
-                    else if (timer_ingot == 0) { timer_ingot = timet_down_ingot; }
-                    else { timer_ingot--; }
+                    if (timer_ingot == timet_down_ingot)
+                    {
+                        shot_bullet_Ingot();
+                        timer_ingot--;
+                    }
+                    else if (timer_ingot == 0)
+                    {
+                        timer_ingot = timet_down_ingot;
+                    }
+                    else
+                    {
+                        timer_ingot--;
+                    }
                 }
-                if (serect_weapon == 2)
+
+                //==========================================
+                // ビーム
+                //==========================================
+                if (level_up_weapon[BEAM] > 0)
                 {
-                    if (timer_beam == timer_down_beam) { shot_bullet_Beam(); timer_beam--; }
-                    else if (timer_beam == 0) { timer_beam = timer_down_beam; }
-                    else { timer_beam--; }
+                    if (timer_beam == timer_down_beam)
+                    {
+                        shot_bullet_Beam();
+                        timer_beam--;
+                    }
+                    else if (timer_beam == 0)
+                    {
+                        timer_beam = timer_down_beam;
+                    }
+                    else
+                    {
+                        timer_beam--;
+                    }
                 }
-                if (serect_weapon == 4)
+
+                //==========================================
+                // バンクロール
+                //==========================================
+                if (level_up_weapon[BANKROLL] > 0)
                 {
-                    if (timer_bankroll == timer_down_bankroll) { shot_bullet_Bankroll(); timer_bankroll--; }
-                    else if (timer_bankroll == 0) { timer_bankroll = timer_down_bankroll; }
-                    else { timer_bankroll--; }
+                    if (timer_bankroll == timer_down_bankroll)
+                    {
+                        shot_bullet_Bankroll();
+                        timer_bankroll--;
+                    }
+                    else if (timer_bankroll == 0)
+                    {
+                        timer_bankroll = timer_down_bankroll;
+                    }
+                    else
+                    {
+                        timer_bankroll--;
+                    }
                 }
                 break;
             }
