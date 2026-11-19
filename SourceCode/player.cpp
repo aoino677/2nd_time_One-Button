@@ -1,5 +1,6 @@
 #include "player.h"
 #include "enemy.h"
+#include "effect_burst.h"
 #include "AttackCollision.h"
 #include "shake.h"
 #include <vector>
@@ -61,6 +62,8 @@ Sprite* sprBullet[SPR_BULLET_COUNT];
 OBJ2D player;
 std::vector<Bullet*> player_bullets;
 
+#define CAN_SHOT_SPECIAL_COUNT 3
+
 static const std::pair<VECTOR3, VECTOR3> afterimagecolors[IMAGE_COLOR_COUNT]
 {
 	//{{1.0f, 0.5f, 0.75f},{0.2f, 0, 1}} ,		// Pink to Blue
@@ -111,7 +114,7 @@ void player_init()
 	//
 	//can_rapid_shot = false;
 
-	left_shot_special = 3;
+	left_shot_special = CAN_SHOT_SPECIAL_COUNT;
 }
 
 void player_deinit()
@@ -286,17 +289,26 @@ void shot_bullet_Special()
 {
 	const int SPECIAL_DAMAGE = 30;
 	VECTOR2 cursor_pos = { static_cast<float>(getCursorPosX()), static_cast<float>(getCursorPosY()) };
+	bool check = false;
+	float bullet_radius = 96;
 	for (int i = 0; i < ENEMY_NUMBER; i++)
 	{
 		VECTOR2 enemy_begin = enemy[i].pos - VECTOR2{ enemy[i].scale.x * enemy[i].pivot.x, enemy[i].scale.y * enemy[i].pivot.y };//enemy[e]‚Ì¶ã
 		VECTOR2 enemy_size = { enemy[i].scale.x * enemy[i].texSize.x, enemy[i].scale.y * enemy[i].texSize.y };
 		VECTOR2 bullet_center = cursor_pos;
-		float bullet_radius = 96;
 		if (Collision2D::circle_vs_rect(bullet_center, bullet_radius, enemy_begin, enemy_size) && enemy[i].hp > 0)
 		{
 			enemy[i].hp -= SPECIAL_DAMAGE;
+			check = true;
 		}
 	}
+
+	if (check)
+	{
+		particles_update(cursor_pos.x, cursor_pos.y, bullet_radius, 0, 0, 0);
+		left_shot_special--;
+	}
+
 }
 //#define SHOT_AIM_TARGET
 //#define SHOT_AIM_AND_CLICK_TARGET
@@ -426,7 +438,6 @@ void player_update()
 		if (left_shot_special > 0)
 		{
 			shot_bullet_Special();
-			left_shot_special--;
 		}
 	}
 
