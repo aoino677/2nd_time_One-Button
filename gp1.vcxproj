@@ -123,6 +123,7 @@ attrib +h SourceCode\gp1.log
     <ClInclude Include="SourceCode\Collision2D.h" />
     <ClInclude Include="SourceCode\common.h" />
     <ClInclude Include="SourceCode\cursor_main.h" />
+    <ClInclude Include="SourceCode\effect_burst.h" />
     <ClInclude Include="SourceCode\effect_danger.h" />
     <ClInclude Include="SourceCode\effect_scene_change.h" />
     <ClInclude Include="SourceCode\enemy.h" />
@@ -168,6 +169,7 @@ attrib +h SourceCode\gp1.log
     <ClCompile Include="SourceCode\choice.cpp" />
     <ClCompile Include="SourceCode\Collision2D.cpp" />
     <ClCompile Include="SourceCode\cursor_main.cpp" />
+    <ClCompile Include="SourceCode\effect_burst.cpp" />
     <ClCompile Include="SourceCode\effect_danger.cpp" />
     <ClCompile Include="SourceCode\effect_scene_change.cpp" />
     <ClCompile Include="SourceCode\enemy.cpp" />

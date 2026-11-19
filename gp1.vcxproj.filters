@@ -180,6 +180,9 @@
     <ClInclude Include="SourceCode\effect_scene_change.h">
       <Filter>ソース ファイル\Effect</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\effect_burst.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameLib\debug.cpp">
@@ -310,6 +313,9 @@
     </ClCompile>
     <ClCompile Include="SourceCode\effect_scene_change.cpp">
       <Filter>ソース ファイル\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\effect_burst.cpp">
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

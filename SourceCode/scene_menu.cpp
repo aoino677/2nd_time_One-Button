@@ -10,15 +10,12 @@
 #include "all.h"
 #include "effect_scene_change.h"
 
-
 //------< 定数 >----------------------------------------------------------------
-
 
 //------< 変数 >----------------------------------------------------------------
 int menu_state = 0;     // 状態
 int menu_timer = 0;     // タイマー
 bool is_effect_cleaned_up = false;
-
 
 //--------------------------------------
 //  初期設定
@@ -38,7 +35,7 @@ void menu_update()
 	if (!is_scene_change_finished())
 	{
 		scene_change_update();
-		return; // エフェクトが終わるまではメニューの操作を受け付けないようにする
+		return; //エフェクトが終わるまではメニューの操作を受け付けない
 	}
 	
 	
@@ -98,7 +95,6 @@ void menu_render()
 	}
 	else if (!is_effect_cleaned_up)
 	{
-		//
 		scene_change_deinit();
 		is_effect_cleaned_up = true;
 	}

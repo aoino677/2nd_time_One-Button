@@ -5,14 +5,13 @@
 #include "bullet.h"
 #include "AttackCollision.h"
 #include "item.h"
+#include "effect_burst.h"
 #include <vector>
 #include <cstdlib>
 #include <cmath>
 
 //enemy構造体
 OBJ2D enemy[ENEMY_NUMBER];
-
-PARTICLE enemy_particle[PARTICLE_NUMBER];
 
 TireEffect tire_particles[TIRE_PARTICLE_NUMBER];
 
@@ -84,13 +83,14 @@ int robot_wait_timer = 0;
 //エネミー初期化
 void enemy_init()
 {
+	particles_init();
+	
 	enemy_state = 0;
 	boss_state = 0;
 	enemy_powerup_timer = 0;
 	enemy_boss_timer = 0;
 	crayon_spawn_timer = 0;
 	enemy_max = 3;
-
 
 	enemy_hp_up = 0.0f;
 	enemy_speed_up = 0.0f;
@@ -115,12 +115,8 @@ void enemy_init()
 	
 	}
 
-	for (int i = 0; i < PARTICLE_NUMBER; i++) 
+	for (int i = 0; i < TIRE_PARTICLE_NUMBER; i++) 
 	{
-		enemy_particle[i].active = false;
-	}
-
-	for (int i = 0; i < TIRE_PARTICLE_NUMBER; i++) {
 		tire_particles[i].active = false;
 	}
 }
@@ -181,19 +177,19 @@ void enemy_update()
 				item_drop(i);
 				if (enemy_type_render[i] == BOSS)
 				{
-					spawn_enemy_particles(enemy[i].pos.x, enemy[i].pos.y, 1.0f, 0.6f, 0.1f);
-					spawn_enemy_particles(enemy[i].pos.x, enemy[i].pos.y, 1.0f, 1.0f, 1.0f);
+					particles_update(enemy[i].pos.x, enemy[i].pos.y,8,1.0f, 0.6f, 0.1f);
+					particles_update(enemy[i].pos.x, enemy[i].pos.y, 8,1.0f, 1.0f, 1.0f);
 				
 					if (enemy[i].type == BOSS_TYPE_CAR)
 						tires_move(enemy[i].pos.x, enemy[i].pos.y);
 					
 				}
 				else if (enemy[i].type == ENEMY_TYPE_BOBM)
-				    spawn_enemy_particles(enemy[i].pos.x, enemy[i].pos.y, 1.0f, 0.2f, 0.2f);
+				    particles_update(enemy[i].pos.x, enemy[i].pos.y,8, 1.0f, 0.2f, 0.2f);
 			    else if (enemy[i].type == ENEMY_TYPE_CRAYON)
-					spawn_enemy_particles(enemy[i].pos.x, enemy[i].pos.y, 0.9f, 0.9f, 0.9f);
+					particles_update(enemy[i].pos.x, enemy[i].pos.y,8, 0.9f, 0.9f, 0.9f);
 				else
-					spawn_enemy_particles(enemy[i].pos.x, enemy[i].pos.y, 1.0f, 0.0f, 0.0f);
+					particles_update(enemy[i].pos.x, enemy[i].pos.y,8, 1.0f, 0.0f, 0.0f);
 			}
 
 			//ダメージを受けた瞬間の判定（前回のHPより減っていれば被弾タイマーセット）
@@ -253,7 +249,7 @@ void enemy_update()
 		crayon_spawn_timer++;
 
 		//ボスリスポーン
-		if (enemy_boss_timer >=600)
+		if (enemy_boss_timer >=300)
 		{
 			for (int i = enemy_max; i < ENEMY_NUMBER; i++)
 			{
@@ -360,9 +356,9 @@ void enemy_respawn(int i)
 
 	if (enemy_random <= 25)
 	{
-		enemy[i].type = ENEMY_TYPE_BALLOON;
-		enemy_sprite[i] = sprCrayon;
-		enemy_setting(i, 1, 1, 2, 64, 160, 32, 80, 1, 1, 0);
+		enemy[i].type = ENEMY_TYPE_ROCKET;
+		enemy_sprite[i] = sprRocket;
+		enemy_setting(i, 1, 1, 1, 160, 40, 80, 20, 1, 1, 0);
 	}
 	
 	/*if (enemy_random < 25)
@@ -423,9 +419,9 @@ void enemy_boss_respawn(int i)
 	switch (boss_state)
 	{
 	case 0:
-		enemy[i].type = BOSS_TYPE_ROBOT;
-		enemy_sprite[i] = sprCrayon;
-		enemy_setting(i, 300, 1, 0.5, 64, 160, 32, 80, 3, 3, 0);
+		enemy[i].type = BOSS_TYPE_CAR;
+		enemy_sprite[i] = sprCar;
+		enemy_setting(i, 100, 1, 0.5, 128, 80, 64, 40, 2.5, 2.5, 0);
 		//boss_state++;
 
 	/*case 0:
@@ -607,14 +603,10 @@ void enemy_knockback_check(int i)
 		enemy[i].pos.x += 3.0f;
 
 		if (enemy_knockback_timer[i] > 7)
-		{
-			enemy[i].pos.y -= 1.5f;
-		}
+		    enemy[i].pos.y -= 1.5f;
 		else
-		{
 			enemy[i].pos.y += 1.5f;
-		}
-
+		
 		enemy[i].color = { 1.0f, 0.3f, 0.3f, 1.0f };
 		enemy_knockback_timer[i]--;
 	}
@@ -623,7 +615,7 @@ void enemy_knockback_check(int i)
 //ボムが爆発したときの周辺へのダメージ
 void enemy_bomb_explosion(int i)
 {
-	spawn_enemy_particles(enemy[i].pos.x, enemy[i].pos.y, 1.0f, 0.4f, 0.1f);
+	particles_update(enemy[i].pos.x, enemy[i].pos.y,8, 1.0f, 0.4f, 0.1f);
 
 	for (int j = 0; j < ENEMY_NUMBER; j++)
 	{
@@ -648,31 +640,31 @@ void tires_move(float boss_x, float boss_y)
 	for (int i = 0; i < TIRE_PARTICLE_NUMBER; i++)
 	{
 		tire_particles[i].active = true;
-		// ボスカーの中心付近からスポーンさせる
+		
+		//カーの中心付近からスポーン
 		tire_particles[i].x = boss_x;
 		tire_particles[i].y = boss_y;
 
-		// --- 右へぶっ飛ぶように初速（vx）をかなり大きく、重力をゼロ（またはマイナス）にする ---
-		float speed = (float)(rand() % 5 + 12); // 速度 12 〜 16（かなり高速！）
+		float speed = (float)(rand() % 5 + 12);
 
 		switch (i)
 		{
-		case 0: // 右斜め上へ（空高く右へぶっ飛ぶ）
+		case 0: //右斜め上へ（空高く右へぶっ飛ぶ）
 			tire_particles[i].vx = speed * 1.2f;
 			tire_particles[i].vy = -8.0f; // ぐっと上へ突き上げる
 			tire_particles[i].sprite = sprTirefront;
 			break;
-		case 1: // まっすぐ右へ（水平に弾丸のように飛ぶ）
+		case 1: //まっすぐ右へ（水平に弾丸のように飛ぶ）
 			tire_particles[i].vx = speed * 1.4f;
 			tire_particles[i].vy = -3.0f;
 			tire_particles[i].sprite = sprTireback;
 			break;
-		case 2: // やや低い軌道で右へ
+		case 2: //やや低い軌道で右へ
 			tire_particles[i].vx = speed * 1.3f;
 			tire_particles[i].vy = -1.0f;
 			tire_particles[i].sprite = sprTirefront;
 			break;
-		case 3: // 右斜め下へ（地面を這うように猛スピードで右へ）
+		case 3: //右斜め下へ（地面を這うように猛スピードで右へ）
 			tire_particles[i].vx = speed * 1.5f;
 			tire_particles[i].vy = 2.0f;
 			tire_particles[i].sprite = sprTireback;
@@ -684,7 +676,7 @@ void tires_move(float boss_x, float boss_y)
 	}
 }
 
-// 毎フレームのタイヤの動きと描画を更新する関数
+//毎フレームのタイヤの動きと描画を更新する関数
 void tires_update()
 {
 	for (int i = 0; i < TIRE_PARTICLE_NUMBER; i++)
@@ -701,9 +693,8 @@ void tires_update()
 
 		// 画面外（下や右）に行ったら非アクティブにする
 		if (tire_particles[i].y > SCREEN_H + 100.0f)
-		{
-			tire_particles[i].active = false;
-		}
+		    tire_particles[i].active = false;
+		
 
 		// 描画
 		sprite_render(
@@ -721,28 +712,24 @@ void tires_update()
 
 void effect_boss_respawn()
 {
-	// 始まりはパッと出しつつ、etimer が 0 以上の間は赤みが「薄くなったり濃くなったり」周期的に変化する
 	effect_boss_clear = 1.0f;
 
 	if (etimer >= 0.0f)
 	{
-		// etimer の進みに合わせて sinf を動かすことで、赤みが明滅します
-		// 周期の速さは掛け算する数値（例: 0.1f）で調整できます
-		effect_boss_wave = (sinf(etimer * 0.15f) + 1.0f) * 0.5f; // 0.0 〜 1.0 の間で往復
-
-		// 例として、真っ暗（0.3）〜真っ赤（1.0）の間でフワフワ明滅させる場合
+		effect_boss_wave = (sinf(etimer * 0.15f) + 1.0f) * 0.5f; 
 		effect_boss_clear = 0.3f + (0.7f * effect_boss_wave);
 	}
 	else
 	{
-		// etimer が 0 を切ってからの終わり際は、だんだん薄くフェードアウトして消える
-		float fade_alpha = etimer / -30.0f; // 0 から -30 にかけて進行
-		if (fade_alpha > 1.0f) fade_alpha = 1.0f;
-		effect_boss_clear = 1.0f - fade_alpha; // 1.0 → 0.0 へ
-		if (effect_boss_clear < 0.0f) effect_boss_clear = 0.0f;
+		float fade_alpha = etimer / -30.0f;
+		if (fade_alpha > 1.0f) 
+			fade_alpha = 1.0f;
+		effect_boss_clear = 1.0f - fade_alpha; 
+		if (effect_boss_clear < 0.0f) 
+			effect_boss_clear = 0.0f;
 	}
 
-	// 赤みの濃さに反映（最大値を 0.8f などに調整）
+	// 赤みの濃さに反映(最大値は0.8f)
 	effect_boss_clear = 0.8f * effect_boss_clear;
 
 	// 警告画像の横スクロール
@@ -788,76 +775,9 @@ void enemy_damage_effect(int i)
 	}
 }
 
-//死亡エフェクト
-void spawn_enemy_particles(float x, float y, float r, float g, float b)
-{
-	int spawn_count = 12;
-	int created = 0;
 
-	for (int i = 0; i < PARTICLE_NUMBER; i++)
-	{
-		if (!enemy_particle[i].active)
-		{
-			enemy_particle[i].active = true;
-			enemy_particle[i].x = x;
-			enemy_particle[i].y = y;
 
-			float angle = (float)(rand() % 360) * 3.14159f / 180.0f;
-			float speed = (float)(rand() % 8 + 2);
-			enemy_particle[i].vx = cosf(angle) * speed;
-			enemy_particle[i].vy = sinf(angle) * speed;
 
-			enemy_particle[i].size = (float)(rand() % 8 + 6);
-			enemy_particle[i].max_life = rand() % 20 + 20;
-			enemy_particle[i].life = enemy_particle[i].max_life;
-			enemy_particle[i].alpha = 1.0f;
-
-			enemy_particle[i].r = r;
-			enemy_particle[i].g = g;
-			enemy_particle[i].b = b;
-
-			created++;
-			if (created >= spawn_count) break;
-		}
-	}
-}
-
-//死亡エフェクト
-void particle_render()
-{
-	for (int i = 0; i < PARTICLE_NUMBER; i++)
-	{
-		if (!enemy_particle[i].active) continue;
-
-		enemy_particle[i].life--;
-		if (enemy_particle[i].life <= 0)
-		{
-			enemy_particle[i].active = false;
-			continue;
-		}
-
-		enemy_particle[i].x += enemy_particle[i].vx;
-		enemy_particle[i].y += enemy_particle[i].vy;
-
-		enemy_particle[i].vx *= 0.92f;
-		enemy_particle[i].vy *= 0.92f;
-
-		enemy_particle[i].alpha = (float)enemy_particle[i].life / (float)enemy_particle[i].max_life;
-
-		primitive::rect(
-			enemy_particle[i].x - enemy_particle[i].size * 0.5f,
-			enemy_particle[i].y - enemy_particle[i].size * 0.5f,
-			enemy_particle[i].size,
-			enemy_particle[i].size,
-			0,
-			enemy_particle[i].r,
-			enemy_particle[i].g,
-			enemy_particle[i].b,
-			enemy_particle[i].alpha,
-			1
-		);
-	}
-}
 
 void tires_render()
 {
@@ -865,21 +785,21 @@ void tires_render()
 	{
 		if (!tire_particles[i].active) continue;
 
-		// 移動と重力の影響
+		//移動と重力の影響
 		tire_particles[i].x += tire_particles[i].vx;
 		tire_particles[i].y += tire_particles[i].vy;
-		tire_particles[i].vy += 0.4f; // 重力で少し下に落ちる
+		tire_particles[i].vy += 0.4f; //重力で少し下に落ちる
 
-		// 回転させる
+		//回転させる
 		tire_particles[i].rot += tire_particles[i].rot_speed;
 
-		// 画面外（下や右）に行ったら非アクティブにする
+		//画面外（下や右）に行ったら非アクティブにする
 		if (tire_particles[i].y > SCREEN_H + 100.0f)
 		{
 			tire_particles[i].active = false;
 		}
 
-		// 描画
+		//描画
 		sprite_render(
 			tire_particles[i].sprite,
 			tire_particles[i].x, tire_particles[i].y,
@@ -895,59 +815,50 @@ void tires_render()
 
 void effect_boss_render()
 {
-	
-	
-		// etimer が 0 を切ってからだんだん薄くする割合（0.0f（濃い） 〜 1.0f（完全に消える））を計算
-		float fade_alpha = 0.0f;
-		if (etimer < 0.0f)
-		{
-			// etimer が 0 から -30 にかけて、0.0 → 1.0 へ進む割合を作る
-			fade_alpha = etimer / -30.0f;
-			if (fade_alpha > 1.0f) fade_alpha = 1.0f;
-		}
-		// 描画用の「残存不透明度」（1.0 → 0.0 へ減っていく）
-		float draw_alpha = 1.0f - fade_alpha;
+	float fade_alpha = 0.0f;
+	if (etimer < 0.0f)
+	{
+		// etimer が 0 から -30 にかけて、0.0 → 1.0 へ進む割合を作る
+		fade_alpha = etimer / -30.0f;
+		if (fade_alpha > 1.0f) fade_alpha = 1.0f;
+	}
+	float draw_alpha = 1.0f - fade_alpha;
 
-		// 背景の黒い暗転（だんだん薄くなる）
-		primitive::rect(
-			0, 0,
-			1920, 1080,
-			0, 0,
-			0,
-			0, 0, 0, 0.5f * draw_alpha
-		);
+	// 背景の黒い暗転（だんだん薄くなる）
+	primitive::rect(
+		0, 0,
+		1920, 1080,
+		0, 0,
+		0,
+		0, 0, 0, 0.5f * draw_alpha);
 
-		// 赤い警告レイヤー（だんだん薄くなる）
-		primitive::rect(
-			0.0f, 0.0f,
-			1920.0f, 1080.0f,
-			0.0f, 0.0f,
-			0.0f,
-			1.0f, 0.0f, 0.0f, effect_boss_clear * draw_alpha
-		);
+	//赤い警告
+	primitive::rect(
+		0.0f, 0.0f,
+		1920.0f, 1080.0f,
+		0.0f, 0.0f,
+		0.0f,
+		1.0f, 0.0f, 0.0f, effect_boss_clear * draw_alpha);
 
-		// ★ 警告画像も `draw_alpha` をかけてだんだん薄くする！
-		sprite_render(
-			sprWarning,
-			x_1, 0,
-			1.0f, 1.0f,
-			0, 0,
-			1915, 1080, // ※お手元の画像のテクスチャサイズに合わせてください
-			0, 0,
-			0.0f,
-			1.0f, 1.0f, 1.0f, draw_alpha // 最後の引数が透明度（アルファ）です
-		);
-		sprite_render(
-			sprWarning,
-			x_2, 0,
-			1.0f, 1.0f,
-			0, 0,
-			1915, 1080, // ※お手元の画像のテクスチャサイズに合わせてください
-			0, 0,
-			0.0f,
-			1.0f, 1.0f, 1.0f, draw_alpha // 最後の引数が透明度（アルファ）です
-		);
+    sprite_render(
+		sprWarning,
+		x_1, 0,
+		1.0f, 1.0f,
+		0, 0,
+		1915, 1080, 
+		0, 0,
+		0.0f,
+		1.0f, 1.0f, 1.0f, draw_alpha);
 	
+	sprite_render(
+		sprWarning,
+		x_2, 0,
+		1.0f, 1.0f,
+		0, 0,
+		1915, 1080, 
+		0, 0,
+		0.0f,
+		1.0f, 1.0f, 1.0f, draw_alpha );
 }
 
 //描画処理
@@ -1012,9 +923,6 @@ void enemy_render()
 				20, 20,
 				tire_angle[i],
 				enemy[i].color.x, enemy[i].color.y, enemy[i].color.z);
-
-
-
 		}
 		if (enemy[i].type == ENEMY_TYPE_BOLL)
 		{
@@ -1028,8 +936,7 @@ void enemy_render()
 				ToRadian(0),
 				enemy[i].color.x, enemy[i].color.y, enemy[i].color.z);
 		}
-
-
+		
 		//HP割合
 		enemy_hp_rate[i] = (float)enemy[i].hp / (float)enemy_max_hp[i];
 		if (enemy_hp_rate[i] < 0.0f) enemy_hp_rate[i] = 0.0f;
@@ -1057,14 +964,14 @@ void enemy_render()
 			if (enemy[i].type == ENEMY_TYPE_ROCKET)
 			{
 				enemy_hp_bar_max[i] = 80.0f * enemy_hp_rate[i];
-				bar_pos_y = render_y - 40.0f;
+				bar_pos_y = render_y - 50.0f;
 
-				primitive::rect(enemy[i].pos.x - 40, bar_pos_y, 80, 10, 0, 0, 0, 1, 0, 0);
-				primitive::rect(enemy[i].pos.x - 40, bar_pos_y, enemy_hp_bar_max[i], 10, 0, 0, 0, 0, 1, 0);
+				primitive::rect(enemy[i].pos.x - 25, bar_pos_y, 80, 10, 0, 0, 0, 1, 0, 0);
+				primitive::rect(enemy[i].pos.x - 25, bar_pos_y, enemy_hp_bar_max[i], 10, 0, 0, 0, 0, 1, 0);
 
 				sprite_render(
 					sprEnemy_hp,
-					enemy[i].pos.x - 43, bar_pos_y - 3);
+					enemy[i].pos.x - 28, bar_pos_y - 3);
 			}
 			else
 			{
@@ -1078,10 +985,8 @@ void enemy_render()
 					sprEnemy_hp,
 					enemy[i].pos.x - 43, bar_pos_y - 3);
 			}
-			
 		}
-
-	}
+    }
 		
 	if (respawn == true)
 	{
@@ -1089,6 +994,4 @@ void enemy_render()
 	}
 
 	debug::setString("etimer:%f", etimer);
-	
-    
 }

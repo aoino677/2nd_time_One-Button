@@ -23,7 +23,7 @@
 #define ENEMY             0
 #define BOSS              1
 
-#define PARTICLE_NUMBER 150 
+
 
 #define TIRE_PARTICLE_NUMBER 4
 
@@ -44,17 +44,7 @@ struct TireEffect {
 	Sprite* sprite; // 前輪か後輪の画像
 };
 
-//死亡エフェクト構造体
-struct PARTICLE {
-	bool active;      // 使用中かどうか
-	float x, y;       // 座標
-	float vx, vy;     // 速度（移動方向とスピード）
-	float size;       // ブロックの大きさ
-	float alpha;      // 透明度
-	int life;         // 残り寿命
-	int max_life;     // 全体の寿命
-	float r, g, b;    // 色（赤・緑・青）
-};
+
 
 //基本関数
 void enemy_init();
@@ -77,7 +67,7 @@ void enemy_knockback_check(int i);
 
 //エフェクト関数
 void enemy_damage_effect(int i);
-void spawn_enemy_particles(float x, float y, float r, float g, float b);
+
 void particle_render();
 void effect_boss_respawn();
 void effect_boss_render();
