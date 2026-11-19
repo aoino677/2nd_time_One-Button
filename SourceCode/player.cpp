@@ -55,7 +55,8 @@ Sprite* sprLeftSpecial;
 float bankrool_damage = 20;
 
 Sprite* sprPlayer;
-Sprite* sprBullet[6];
+#define SPR_BULLET_COUNT 5
+Sprite* sprBullet[SPR_BULLET_COUNT];
 OBJ2D player;
 std::vector<Bullet*> player_bullets;
 
@@ -116,7 +117,7 @@ void player_deinit()
 {
 	safe_delete(sprPlayer);
 	safe_delete(sprLeftSpecial);
-	for (int i = 0; i < 6; i++)
+	for (int i = 0; i < SPR_BULLET_COUNT; i++)
 	{
 		safe_delete(sprBullet[i]);
 	}
@@ -500,12 +501,9 @@ void player_render()
 
 	for (int i = 0; i < left_shot_special; i++)
 	{
-
 		sprite_render(
 			sprLeftSpecial,
-			16 + 64 * i, 16,
-			1, 1,
-			0, 0
+			16 + 64 * i, 16
 		);
 	}
 }
