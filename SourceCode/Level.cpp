@@ -1,6 +1,7 @@
 #include "Level.h"
 #include "player.h"
 #include "cursor_main.h"
+#include "power_efficacy.h"
 
 // 一円玉マシンガンのレベル性能設定
 struct WEAPON_LEVEL_DATA
@@ -108,7 +109,7 @@ void level_update()
 	// ダメージ
 	Y1_damage = Y1_DAMAGE * data.damage / 100.0f;
 	// クールタイム
-	timer_down_bullet = static_cast<int>(TIMER * data.cooltime / 100.0f + 0.5f);
+	timer_down_bullet = static_cast<int>(TIMER * data.cooltime / 100.0f * red_cooltime_rate * bullet_interval_rate + 0.5f);
 	// クールタイムの最低値
 	if (timer_down_bullet < 1)
 	{
@@ -135,7 +136,7 @@ void level_update()
 		// ダメージ
 		shell_damage = SHELL_DAMAGE * shell_data.damage / 100.0f;
 		// クールタイム
-		timer_down_shell = static_cast<int>(TIMER_SHELL * shell_data.cooltime / 500.0f + 0.5f);
+		timer_down_shell = static_cast<int>(TIMER_SHELL * shell_data.cooltime / 500.0f * red_cooltime_rate * bullet_interval_rate + 0.5f);
 		// クールタイムの最低値
 		if (timer_down_shell < 1)
 		{
@@ -161,7 +162,7 @@ void level_update()
 		// ダメージ
 		ingot_damage = INGOT_DAMAGE * ingot_data.damage / 100.0f;
 		// クールタイム
-		timet_down_ingot = static_cast<int>(TIMER_INGOT * ingot_data.cooltime / 100.0f + 0.5f);
+		timet_down_ingot = static_cast<int>(TIMER_INGOT * ingot_data.cooltime / 100.0f * red_cooltime_rate * bullet_interval_rate + 0.5f);
 		// クールタイムの最低値
 		if (timet_down_ingot < 1)
 		{
@@ -190,7 +191,7 @@ void level_update()
 		// ダメージ
 		beem_damage = BEEM_DAMAGE * beam_data.damage / 100.0f;
 		// クールタイム
-		timer_down_beam = static_cast<int>(TIMER_BEAM * beam_data.cooltime / 100.0f + 0.5f);
+		timer_down_beam = static_cast<int>(TIMER_BEAM * beam_data.cooltime / 100.0f * red_cooltime_rate * bullet_interval_rate + 0.5f);
 		// クールタイムの最低値
 		if (timer_down_beam < 1)
 		{
@@ -219,8 +220,7 @@ void level_update()
 		// ダメージ
 		bankrool_damage = 20.0f * bankroll_data.damage / 100.0f;
 		// クールタイム
-		timer_down_bankroll = static_cast<int>(
-			TIMER_BANKROLL * bankroll_data.cooltime / 100.0f + 0.5f);
+		timer_down_bankroll = static_cast<int>(TIMER_BANKROLL * bankroll_data.cooltime / 100.0f * red_cooltime_rate * bullet_interval_rate + 0.5f);
 		// クールタイムの最低値
 		if (timer_down_bankroll < 1)
 		{

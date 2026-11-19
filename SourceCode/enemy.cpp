@@ -48,6 +48,7 @@ int enemy_damage_timer[ENEMY_NUMBER];         //通常被弾時の赤色点滅�
 int enemy_knockback_timer[ENEMY_NUMBER];      //HP半分以下のノックバック用タイマー
 bool enemy_half_knockback_done[ENEMY_NUMBER]; //HP半分以下のノックバックが完了したか
 int enemy_prev_hp[ENEMY_NUMBER];              //ダメージ検知用の前回HP記憶配列
+float hit_buck;											// ノックバックをプラスする数値
 
 //強化類
 float enemy_hp_up;               //HP増加量
@@ -95,7 +96,7 @@ void enemy_init()
 	enemy_hp_up = 0.0f;
 	enemy_speed_up = 0.0f;
 	enemy_attack_up = 0.0f;
-
+	hit_buck = 0.0f;
 	respawn = false;
 	
 	for (int i = 0; i < ENEMY_NUMBER; i++)
@@ -600,7 +601,7 @@ void enemy_knockback_check(int i)
 	//タイマーがあるときは後ろに下がる
 	if (enemy_knockback_timer[i] > 0)
 	{
-		enemy[i].pos.x += 3.0f;
+		enemy[i].pos.x += 3.0f + hit_buck;
 
 		if (enemy_knockback_timer[i] > 7)
 		    enemy[i].pos.y -= 1.5f;
