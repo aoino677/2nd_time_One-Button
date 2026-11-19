@@ -1,73 +1,74 @@
-#include "player.h"
+ï»¿#include "player.h"
 #include "enemy.h"
 #include "shake.h"
 #include "Hp.h"
 #include "bullet.h"
 #include "AttackCollision.h"
 #include "item.h"
+#include "effect_burst.h"
 #include <vector>
 #include <cstdlib>
 #include <cmath>
 
-//enemy\‘¢‘Ì
+//enemyæ§‹é€ ä½“
 OBJ2D enemy[ENEMY_NUMBER];
 
-PARTICLE enemy_particle[PARTICLE_NUMBER];
+TireEffect tire_particles[TIRE_PARTICLE_NUMBER];
 
-//“G‰æ‘œ
+//æ•µç”»åƒ
 Sprite* enemy_sprite[ENEMY_NUMBER];
-Sprite* sprCrayon;                      //ƒNƒŒƒˆƒ“‰æ‘œ
-Sprite* sprBall;                        //ƒ{[ƒ‹‰æ‘œ
-Sprite* sprRocket;                      //ƒƒPƒbƒg‰æ‘œ
+Sprite* sprCrayon;                      //ã‚¯ãƒ¬ãƒ¨ãƒ³ç”»åƒ
+Sprite* sprBall;                        //ãƒœãƒ¼ãƒ«ç”»åƒ
+Sprite* sprRocket;                      //ãƒ­ã‚±ãƒƒãƒˆç”»åƒ
+Sprite* sprCar;                         //ã‚«ãƒ¼ç”»åƒ
 
-Sprite* sprCar;                         //ƒJ[‰æ‘œ
-
-//“GƒTƒu‰æ‘œ
-Sprite* sprShadow;                      //ƒ{[ƒ‹‰e
-Sprite* sprTirefront;                   //‘O—Ö
-Sprite* sprTireback;                    //Œã—Ö
+//æ•µã‚µãƒ–ç”»åƒ
+Sprite* sprShadow;                      //ãƒœãƒ¼ãƒ«å½±
+Sprite* sprTirefront;                   //å‰è¼ª
+Sprite* sprTireback;                    //å¾Œè¼ª
 Sprite* sprWarning;
 
-//HP˜g
-Sprite* sprEnemy_hp;                    //“GHP˜g
-Sprite* sprBoss_hp;                     //ƒ{ƒXHP˜g
+//HPæ 
+Sprite* sprEnemy_hp;                    //æ•µHPæ 
+Sprite* sprBoss_hp;                     //ãƒœã‚¹HPæ 
 
-// state—Ş
+// stateé¡
 int enemy_state;
 int boss_state;
 
-// ƒ^ƒCƒ}[—Ş
-int enemy_powerup_timer;               //‹­‰»ƒ^ƒCƒ}[
-int enemy_boss_timer;                  //ƒ{ƒXƒ^ƒCƒ}[
-int crayon_spawn_timer;                //ƒNƒŒƒˆƒ“ƒ^ƒCƒ}[
-int enemy_attack_timer[ENEMY_NUMBER];  //UŒ‚ƒ^ƒCƒ}[
-int enemy_anim_timer[ENEMY_NUMBER];    //ƒAƒjƒ[ƒVƒ‡ƒ“ƒ^ƒCƒ}[
+// ã‚¿ã‚¤ãƒãƒ¼é¡
+int enemy_powerup_timer;               //å¼·åŒ–ã‚¿ã‚¤ãƒãƒ¼
+int enemy_boss_timer;                  //ãƒœã‚¹ã‚¿ã‚¤ãƒãƒ¼
+int crayon_spawn_timer;                //ã‚¯ãƒ¬ãƒ¨ãƒ³ã‚¿ã‚¤ãƒãƒ¼
+int enemy_attack_timer[ENEMY_NUMBER];  //æ”»æ’ƒã‚¿ã‚¤ãƒãƒ¼
+int enemy_anim_timer[ENEMY_NUMBER];    //ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¿ã‚¤ãƒãƒ¼
 
-//”í’eEƒmƒbƒNƒoƒbƒN—p•Ï”
-int enemy_damage_timer[ENEMY_NUMBER];         //’Êí”í’e‚ÌÔF“_–Å—pƒ^ƒCƒ}[
-int enemy_knockback_timer[ENEMY_NUMBER];      //HP”¼•ªˆÈ‰º‚ÌƒmƒbƒNƒoƒbƒN—pƒ^ƒCƒ}[
-bool enemy_half_knockback_done[ENEMY_NUMBER]; //HP”¼•ªˆÈ‰º‚ÌƒmƒbƒNƒoƒbƒN‚ªŠ®—¹‚µ‚½‚©
-int enemy_prev_hp[ENEMY_NUMBER];              //ƒ_ƒ[ƒWŒŸ’m—p‚Ì‘O‰ñHP‹L‰¯”z—ñ
+//è¢«å¼¾ãƒ»ãƒãƒƒã‚¯ãƒãƒƒã‚¯ç”¨å¤‰æ•°
+int enemy_damage_timer[ENEMY_NUMBER];         //é€šå¸¸è¢«å¼¾æ™‚ã®èµ¤è‰²ç‚¹æ»…ç”¨ã‚¿ã‚¤ãƒãƒ¼
+int enemy_knockback_timer[ENEMY_NUMBER];      //HPåŠåˆ†ä»¥ä¸‹ã®ãƒãƒƒã‚¯ãƒãƒƒã‚¯ç”¨ã‚¿ã‚¤ãƒãƒ¼
+bool enemy_half_knockback_done[ENEMY_NUMBER]; //HPåŠåˆ†ä»¥ä¸‹ã®ãƒãƒƒã‚¯ãƒãƒƒã‚¯ãŒå®Œäº†ã—ãŸã‹
+int enemy_prev_hp[ENEMY_NUMBER];              //ãƒ€ãƒ¡ãƒ¼ã‚¸æ¤œçŸ¥ç”¨ã®å‰å›HPè¨˜æ†¶é…åˆ—
 
-//‹­‰»—Ş
-float enemy_hp_up;               //HP‘‰Á—Ê
-float enemy_speed_up;            //ƒXƒs[ƒh‘‰Á—Ê
-float enemy_attack_up ;          //UŒ‚‘‰Á—Ê
+//å¼·åŒ–é¡
+float enemy_hp_up;               //HPå¢—åŠ é‡
+float enemy_speed_up;            //ã‚¹ãƒ”ãƒ¼ãƒ‰å¢—åŠ é‡
+float enemy_attack_up ;          //æ”»æ’ƒå¢—åŠ é‡
 
-//HPƒQ[ƒW—Ş
-int enemy_max_hp[ENEMY_NUMBER];        //HPÅ‘å—Ê
-float enemy_hp_bar_max[ENEMY_NUMBER];  //Å‘åHPƒQ[ƒW
-float enemy_hp_rate[ENEMY_NUMBER];     //HPŠ„‡
+//HPã‚²ãƒ¼ã‚¸é¡
+int enemy_max_hp[ENEMY_NUMBER];        //HPæœ€å¤§é‡
+float enemy_hp_bar_max[ENEMY_NUMBER];  //æœ€å¤§HPã‚²ãƒ¼ã‚¸
+float enemy_hp_rate[ENEMY_NUMBER];     //HPå‰²åˆ
 
-//ƒGƒlƒ~[î•ñ
-int enemy_max;                         // Å‘åƒŠƒXƒ|[ƒ“”
-int enemy_type_render[ENEMY_NUMBER];   // “Gƒ^ƒCƒv•`‰æ
-float enemy_border[ENEMY_NUMBER];      // Å‘åˆÚ“®’l
+//ã‚¨ãƒãƒŸãƒ¼æƒ…å ±
+int enemy_max;                         // æœ€å¤§ãƒªã‚¹ãƒãƒ¼ãƒ³æ•°
+int enemy_type_render[ENEMY_NUMBER];   // æ•µã‚¿ã‚¤ãƒ—æç”»
+float enemy_border[ENEMY_NUMBER];      // æœ€å¤§ç§»å‹•å€¤
 float enemy_target_y[ENEMY_NUMBER];
 
 float tire_angle[ENEMY_NUMBER];
 float gravity=0.5;
 
+//ä»®å¤‰æ•°
 bool respawn;
 float x_1 = 0;
 float x_2 = 1915;
@@ -75,11 +76,15 @@ float etimer=300;
 float effect_boss_clear = 0.0f;
 float effect_boss_timer = 0.0f;
 float effect_boss_wave = 0.0f;
+float swing_speed;
+int robot_wait_timer = 0;
 
 
-//ƒGƒlƒ~[‰Šú‰»
+//ã‚¨ãƒãƒŸãƒ¼åˆæœŸåŒ–
 void enemy_init()
 {
+	particles_init();
+	
 	enemy_state = 0;
 	boss_state = 0;
 	enemy_powerup_timer = 0;
@@ -105,10 +110,14 @@ void enemy_init()
 		enemy_knockback_timer[i] = 0;
 		enemy_half_knockback_done[i] = false;
 		enemy_prev_hp[i] = 0;
+		enemy[i].type = ENEMY_TYPE_NONE; 
+		enemy[i].pos = { 0.0f, 0.0f };  
+	
 	}
 
-	for (int i = 0; i < PARTICLE_NUMBER; i++) {
-		enemy_particle[i].active = false;
+	for (int i = 0; i < TIRE_PARTICLE_NUMBER; i++) 
+	{
+		tire_particles[i].active = false;
 	}
 }
 
@@ -153,7 +162,7 @@ void enemy_update()
 			enemy_respawn(i);
 		}
 
-		//ƒNƒŒƒˆƒ“‘à—ñ
+		//ã‚¯ãƒ¬ãƒ¨ãƒ³éšŠåˆ—
 		enemy_crayon_respawn();
 
 		enemy_state++;
@@ -162,30 +171,34 @@ void enemy_update()
 	case 2:
 		for (int i = 0; i < ENEMY_NUMBER; i++)
 		{
-			//HP‚ª0ˆÈ‰º‚É‚È‚Á‚½uŠÔ(€–S•ƒp[ƒeƒBƒNƒ‹”­¶)
+			//HPãŒ0ä»¥ä¸‹ã«ãªã£ãŸç¬é–“(æ­»äº¡ï¼†ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ç™ºç”Ÿ)
 			if (enemy[i].hp <= 0 && enemy_prev_hp[i] > 0)
 			{
 				item_drop(i);
 				if (enemy_type_render[i] == BOSS)
 				{
-					spawn_enemy_particles(enemy[i].pos.x, enemy[i].pos.y, 1.0f, 0.6f, 0.1f);
-					spawn_enemy_particles(enemy[i].pos.x, enemy[i].pos.y, 1.0f, 1.0f, 1.0f);
+					particles_update(enemy[i].pos.x, enemy[i].pos.y,8,1.0f, 0.6f, 0.1f);
+					particles_update(enemy[i].pos.x, enemy[i].pos.y, 8,1.0f, 1.0f, 1.0f);
+				
+					if (enemy[i].type == BOSS_TYPE_CAR)
+						tires_move(enemy[i].pos.x, enemy[i].pos.y);
+					
 				}
 				else if (enemy[i].type == ENEMY_TYPE_BOBM)
-				    spawn_enemy_particles(enemy[i].pos.x, enemy[i].pos.y, 1.0f, 0.2f, 0.2f);
+				    particles_update(enemy[i].pos.x, enemy[i].pos.y,8, 1.0f, 0.2f, 0.2f);
 			    else if (enemy[i].type == ENEMY_TYPE_CRAYON)
-					spawn_enemy_particles(enemy[i].pos.x, enemy[i].pos.y, 0.9f, 0.9f, 0.9f);
+					particles_update(enemy[i].pos.x, enemy[i].pos.y,8, 0.9f, 0.9f, 0.9f);
 				else
-					spawn_enemy_particles(enemy[i].pos.x, enemy[i].pos.y, 1.0f, 0.0f, 0.0f);
+					particles_update(enemy[i].pos.x, enemy[i].pos.y,8, 1.0f, 0.0f, 0.0f);
 			}
 
-			//ƒ_ƒ[ƒW‚ğó‚¯‚½uŠÔ‚Ì”»’èi‘O‰ñ‚ÌHP‚æ‚èŒ¸‚Á‚Ä‚¢‚ê‚Î”í’eƒ^ƒCƒ}[ƒZƒbƒgj
+			//ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’å—ã‘ãŸç¬é–“ã®åˆ¤å®šï¼ˆå‰å›ã®HPã‚ˆã‚Šæ¸›ã£ã¦ã„ã‚Œã°è¢«å¼¾ã‚¿ã‚¤ãƒãƒ¼ã‚»ãƒƒãƒˆï¼‰
 			if (enemy[i].hp < enemy_prev_hp[i] && enemy[i].hp > 0)
 			{
 				enemy_damage_timer[i] = 10; 
 			}
 
-			//Œ»İ‚ÌHP‚ğŸƒtƒŒ[ƒ€‚Ì”äŠr—p‚É•Û‘¶
+			//ç¾åœ¨ã®HPã‚’æ¬¡ãƒ•ãƒ¬ãƒ¼ãƒ ã®æ¯”è¼ƒç”¨ã«ä¿å­˜
 			enemy_prev_hp[i] = enemy[i].hp;
 
 			if (enemy[i].hp <= 0)
@@ -203,10 +216,10 @@ void enemy_update()
 				continue;
 			}
 
-			//–h‰qƒ‰ƒCƒ“
+			//é˜²è¡›ãƒ©ã‚¤ãƒ³
 			if (enemy[i].pos.x > enemy_border[i] || enemy[i].pos.x > 530)
 			{
-				//‰ñ“]
+				//å›è»¢
 				if (enemy[i].type == ENEMY_TYPE_BOLL)
 					enemy[i].angle -= 0.06;
 				if (enemy[i].type == BOSS_TYPE_CAR)
@@ -222,10 +235,10 @@ void enemy_update()
 				}
 			}
 
-			//ƒ_ƒ[ƒW‚ÌÔF“_–Å
+			//ãƒ€ãƒ¡ãƒ¼ã‚¸æ™‚ã®èµ¤è‰²ç‚¹æ»…
 			enemy_damage_effect(i);
 
-			//ƒmƒbƒNƒoƒbƒN
+			//ãƒãƒƒã‚¯ãƒãƒƒã‚¯
 			enemy_knockback_check(i);
 
 			enemy_anim_timer[i]++;
@@ -235,8 +248,8 @@ void enemy_update()
 		enemy_boss_timer++;
 		crayon_spawn_timer++;
 
-		//ƒ{ƒXƒŠƒXƒ|[ƒ“
-		if (enemy_boss_timer >= 2000)
+		//ãƒœã‚¹ãƒªã‚¹ãƒãƒ¼ãƒ³
+		if (enemy_boss_timer >=300)
 		{
 			for (int i = enemy_max; i < ENEMY_NUMBER; i++)
 			{
@@ -255,157 +268,92 @@ void enemy_update()
 			etimer--;
 		}
 		
-		//ƒNƒŒƒˆƒ“ƒŠƒXƒ|[ƒ“
+		//ã‚¯ãƒ¬ãƒ¨ãƒ³ãƒªã‚¹ãƒãƒ¼ãƒ³
 		if (crayon_spawn_timer >= 140)
 		{
 			enemy_crayon_respawn();
 			crayon_spawn_timer = 0;
 		}
 		
-		//ŠÔŒo‰ß‚Åƒpƒ[ƒAƒbƒv
+		//æ™‚é–“çµŒéã§ãƒ‘ãƒ¯ãƒ¼ã‚¢ãƒƒãƒ—
 		enemy_powerup();
 
 		break;
 	}
 }
 
-void effect_boss_respawn()
+//æ•µã®åˆæœŸè¨­å®š(ç•ªå·ãƒ»HPãƒ»æ”»æ’ƒåŠ›ãƒ»ã‚¹ãƒ”ãƒ¼ãƒ‰ãƒ»ç”»åƒå¹…ãƒ»ä¸­å¿ƒç‚¹ãƒ»ã‚¹ã‚±ãƒ¼ãƒ«ãƒ»è§’åº¦)
+void enemy_setting(int i, int hp, int attack, float speed, float a, float b, float x, float y, float  n, float  m, int z)
 {
-	//ˆÃ“]
-	effect_boss_timer += 0.05f;
-	effect_boss_wave = (sinf(effect_boss_timer) + 1.0f) * 0.5f;
-	effect_boss_clear = 0.4f * effect_boss_wave;
-	
-	x_1 -= 5;
-	x_2 -= 5;
-	if (x_1 < -1915)
-		x_1 = 1915;
-	if (x_2 < -1915)
-		x_2 = 1915;
+	enemy_max_hp[i] = hp + (int)enemy_hp_up;
+	enemy[i].hp = enemy_max_hp[i];
+	enemy_prev_hp[i] = enemy[i].hp;
 
-	if (etimer < 0)
-	{
-		respawn = false;
-		x_1 = 0;
-		x_2 = 1915;
-		etimer = 300;
-	}
+	enemy[i].attack = attack + (int)enemy_attack_up;
+	enemy_damage_timer[i] = 0;
+
+	enemy[i].moveSpeed = speed + enemy_speed_up;
+	enemy[i].texSize = { a,b };
+	enemy[i].pivot = { x,y };
+	enemy[i].scale = { n,m };
+	enemy[i].angle = z;
+
+	enemy_knockback_timer[i] = 0;
+	enemy_half_knockback_done[i] = false;
 }
 
-
-//ƒ{ƒ€‚ª”š”­‚µ‚½‚Æ‚«‚Ìü•Ó‚Ö‚Ìƒ_ƒ[ƒW
-void enemy_bomb_explosion(int i)
+//ã‚¯ãƒ¬ãƒ¨ãƒ³ãƒªã‚¹ãƒãƒ¼ãƒ³
+void enemy_crayon_respawn()
 {
-	spawn_enemy_particles(enemy[i].pos.x, enemy[i].pos.y, 1.0f, 0.4f, 0.1f);
+	int squad_max = 5;
+	int spawned_count = 0;
 
-	for (int j = 0; j < ENEMY_NUMBER; j++)
+	for (int i = enemy_max; i < ENEMY_NUMBER; i++)
 	{
-		if (i == j) continue;
-		if (enemy[j].hp <= 0) continue;
-
-		float enemy_Vec_x = enemy[j].pos.x - enemy[i].pos.x;
-		float enemy_Vec_y = enemy[j].pos.y - enemy[i].pos.y;
-		float enemy_Vec = sqrtf(enemy_Vec_x * enemy_Vec_x + enemy_Vec_y * enemy_Vec_y);
-
-		if (enemy_Vec < 150.0f)
+		if (enemy[i].hp <= 0)
 		{
-			enemy[j].hp -= 15;
-		}
-	}
-}
+			int idx = i;
+			bool is_bomb = (rand() % 100 < 15);
 
-//ƒ_ƒ[ƒW‚ğó‚¯‚½‚Æ‚«‚ÌƒGƒtƒFƒNƒg
-void enemy_damage_effect(int i)
-{
-	if (enemy_damage_timer[i] > 0)
-	{
-		//”í’eƒ^ƒCƒ}[‚ªc‚Á‚Ä‚¢‚éŠÔ‚ÍÔ‚­Œõ‚ç‚¹‚é
-		enemy[i].color = { 1.0f, 0.3f, 0.3f, 1.0f };
-		enemy_damage_timer[i]--;
-	}
-	else
-	{
-		//‚í‚©‚è‚â‚·‚­‚·‚é‚½‚ß‚ÉÔ‚­‚·‚é
-		if (enemy[i].type == ENEMY_TYPE_BOBM)
-		{
-			enemy[i].color = { 1.0f, 0.3f, 0.3f, 1.0f };
-		}
-		else
-		{
-			enemy[i].color = { 1.0f, 1.0f, 1.0f, 1.0f };
+			if (is_bomb)
+			{
+				enemy[idx].type = ENEMY_TYPE_BOBM;
+				enemy_sprite[idx] = sprCrayon;
+				enemy_setting(i, 3, 1, 1, 64, 160, 32, 80, 1, 1, 0);
+				enemy[idx].color = { 1.0f, 0.3f, 0.3f, 1.0f };
+			}
+			else
+			{
+				enemy[idx].type = ENEMY_TYPE_CRAYON;
+				enemy_sprite[idx] = sprCrayon;
+				enemy_setting(i, 3, 1, 1, 64, 160, 32, 80, 1, 1, 0);
+				enemy[idx].color = { 1.0f, 1.0f, 1.0f, 1.0f };
+			}
+
+			enemy_type_render[idx] = ENEMY;
+
+
+			enemy[idx].pos.x = SCREEN_W + 180.0f - (spawned_count * 20.0f);
+			enemy[idx].pos.y = 420.0f + (spawned_count * 150.0f);
+
+			enemy_prev_hp[idx] = enemy[idx].hp;
+			spawned_count++;
+
+			if (spawned_count >= squad_max)
+			{
+				break;
+			}
 		}
 	}
 }
 
-//€–SƒGƒtƒFƒNƒg
-void spawn_enemy_particles(float x, float y, float r, float g, float b)
-{
-	int spawn_count = 12;
-	int created = 0;
-
-	for (int i = 0; i < PARTICLE_NUMBER; i++)
-	{
-		if (!enemy_particle[i].active)
-		{
-			enemy_particle[i].active = true;
-			enemy_particle[i].x = x;
-			enemy_particle[i].y = y;
-
-			float angle = (float)(rand() % 360) * 3.14159f / 180.0f;
-			float speed = (float)(rand() % 8 + 2);
-			enemy_particle[i].vx = cosf(angle) * speed;
-			enemy_particle[i].vy = sinf(angle) * speed;
-
-			enemy_particle[i].size = (float)(rand() % 8 + 6);
-			enemy_particle[i].max_life = rand() % 20 + 20;
-			enemy_particle[i].life = enemy_particle[i].max_life;
-			enemy_particle[i].alpha = 1.0f;
-
-			enemy_particle[i].r = r;
-			enemy_particle[i].g = g;
-			enemy_particle[i].b = b;
-
-			created++;
-			if (created >= spawn_count) break;
-		}
-	}
-}
-
-//ƒmƒbƒNƒoƒbƒN
-void enemy_knockback_check(int i)
-{
-	if (enemy[i].hp <= enemy_max_hp[i] / 2 && !enemy_half_knockback_done[i])
-	{
-		enemy_knockback_timer[i] = 15;
-		enemy_half_knockback_done[i] = true;
-	}
-
-	//ƒ^ƒCƒ}[‚ª‚ ‚é‚Æ‚«‚ÍŒã‚ë‚É‰º‚ª‚é
-	if (enemy_knockback_timer[i] > 0)
-	{
-		enemy[i].pos.x += 3.0f;
-
-		if (enemy_knockback_timer[i] > 7)
-		{
-			enemy[i].pos.y -= 1.5f;
-		}
-		else
-		{
-			enemy[i].pos.y += 1.5f;
-		}
-
-		enemy[i].color = { 1.0f, 0.3f, 0.3f, 1.0f };
-		enemy_knockback_timer[i]--;
-	}
-}
-
-//“Gİ’è
+//æ•µè¨­å®š
 void enemy_respawn(int i)
 {
 	enemy_type_render[i] = ENEMY;
 
-	int enemy_random = rand() % 100;
-	
+	int enemy_random = rand() % 25;
+
 	if (enemy_random <= 25)
 	{
 		enemy[i].type = ENEMY_TYPE_ROCKET;
@@ -413,14 +361,13 @@ void enemy_respawn(int i)
 		enemy_setting(i, 1, 1, 1, 160, 40, 80, 20, 1, 1, 0);
 	}
 	
-	
 	/*if (enemy_random < 25)
 	{
 		enemy[i].type = ENEMY_TYPE_BOLL;
 		enemy_sprite[i] = sprBall;
 		enemy_setting(i, 3, 1, 5, 40, 40, 20, 20, 2, 2,0);
 	}
-    else if (enemy_random >= 25 && enemy_random < 50)
+	else if (enemy_random >= 25 && enemy_random < 50)
 	{
 		enemy[i].type = ENEMY_TYPE_BALLOON;
 		enemy_sprite[i] = sprCrayon;
@@ -440,8 +387,8 @@ void enemy_respawn(int i)
 		enemy[i].color = { 1.0f, 0.3f, 0.3f, 1.0f };
 	}*/
 
-	//oŒ»êŠ
-    if (enemy[i].type == ENEMY_TYPE_BALLOON)
+	//å‡ºç¾å ´æ‰€
+	if (enemy[i].type == ENEMY_TYPE_BALLOON)
 	{
 		enemy[i].pos.x = rand() % 400 + 1300;
 		enemy[i].pos.y = -50.0f;
@@ -455,59 +402,14 @@ void enemy_respawn(int i)
 	}
 	else
 	{
-		enemy[i].pos.x = SCREEN_W + 50.0f;
+		enemy[i].pos.x = SCREEN_W + 100.0f;
 		enemy[i].pos.y = rand() % 724 + 340;
 	}
 
 	enemy_prev_hp[i] = enemy[i].hp;
 }
 
-//ƒNƒŒƒˆƒ“ƒŠƒXƒ|[ƒ“
-void enemy_crayon_respawn()
-{
-	int squad_max = 5;
-	int spawned_count = 0;
-
-	for (int i = enemy_max; i < ENEMY_NUMBER; i++)
-	{
-		if (enemy[i].hp <= 0)
-		{
-			int idx = i;
-			bool is_bomb = (rand() % 100 < 15);
-
-			if (is_bomb)
-			{
-				enemy[idx].type = ENEMY_TYPE_BOBM;
-				enemy_sprite[idx] = sprCrayon;
-				enemy_setting(i, 3, 1, 1, 64, 160, 32, 80, 1, 1,0);
-				enemy[idx].color = { 1.0f, 0.3f, 0.3f, 1.0f };
-			}
-			else
-			{
-				enemy[idx].type = ENEMY_TYPE_CRAYON;
-				enemy_sprite[idx] = sprCrayon;
-				enemy_setting(i, 3, 1, 1, 64, 160, 32, 80, 1, 1,0);
-				enemy[idx].color = { 1.0f, 1.0f, 1.0f, 1.0f };
-			}
-
-			enemy_type_render[idx] = ENEMY;
-			
-
-			enemy[idx].pos.x = SCREEN_W + 180.0f - (spawned_count * 20.0f);
-			enemy[idx].pos.y = 420.0f + (spawned_count * 150.0f);
-
-			enemy_prev_hp[idx] = enemy[idx].hp;
-			spawned_count++;
-
-			if (spawned_count >= squad_max)
-			{
-				break;
-			}
-		}
-	}
-}
-
-//ƒ{ƒX‚ÌƒŠƒXƒ|[ƒ“
+//ãƒœã‚¹ã®ãƒªã‚¹ãƒãƒ¼ãƒ³
 void enemy_boss_respawn(int i)
 {
 	enemy_type_render[i] = BOSS;
@@ -516,13 +418,14 @@ void enemy_boss_respawn(int i)
 
 	switch (boss_state)
 	{
-	/*case 0:
-		enemy[i].type = BOSS_TYPE_CAR;
-		enemy_setting(i, 100, 1, 2, 64, 160, 32, 80, 3, 3, 0);
-		break;*/
-		
 	case 0:
-	    enemy[i].type = BOSS_TYPE_CRAYON;
+		enemy[i].type = BOSS_TYPE_CAR;
+		enemy_sprite[i] = sprCar;
+		enemy_setting(i, 100, 1, 0.5, 128, 80, 64, 40, 2.5, 2.5, 0);
+		//boss_state++;
+
+	/*case 0:
+		enemy[i].type = BOSS_TYPE_CRAYON;
 		enemy_sprite[i] = sprCrayon;
 		enemy_setting(i, 300, 1, 0.5, 64, 160,32,80, 3, 3,0);
 		boss_state++;
@@ -556,25 +459,25 @@ void enemy_boss_respawn(int i)
 	case 6:
 		enemy[i].type = BOSS_TYPE_EXCAVATOR;
 		enemy_setting(i, 100, 1, 2, 64, 160, 32, 80, 3, 3,0);
-		break;
+		break;*/
 	}
 
-	//ƒŠƒXƒ|[ƒ“
-	if (enemy[i].type = BOSS_TYPE_ROBOT)
+	//ãƒªã‚¹ãƒãƒ¼ãƒ³
+	if (enemy[i].type == BOSS_TYPE_ROBOT)
 	{
 		enemy[i].pos.x = SCREEN_W - 100.0f;
-		enemy[i].pos.y = - 300.0f;
+		enemy[i].pos.y = -300.0f;
 	}
 	else
 	{
-		enemy[i].pos.x = SCREEN_W - 200.0f;
+		enemy[i].pos.x = SCREEN_W + 200.0f;
 		enemy[i].pos.y = SCREEN_H * 0.5f;
 	}
-	
+
 	enemy_prev_hp[i] = enemy[i].hp;
 }
 
-//“G‚Ìi‚İ•û
+//æ•µã®é€²ã¿æ–¹
 void enemy_move(int i)
 {
 	enemy_border[i] = 270 + (SCREEN_H - enemy[i].pos.y) * 0.3584f / 0.9336f;
@@ -610,27 +513,32 @@ void enemy_move(int i)
 		}
 		else
 			enemy[i].pos.x -= enemy[i].moveSpeed;
-		
-	}
+    }
 	else if (enemy[i].type == BOSS_TYPE_ROBOT)
 	{
-		
+
 		if (enemy[i].pos.y < 500)
 		{
-			enemy[i].pos.x -= sinf(enemy[i].moveSpeed);
-			gravity *= 1.01;
-			enemy[i].pos.y += enemy[i].moveSpeed *gravity;
+			float drop_speed = 2.0f + (enemy_anim_timer[i] * 0.3f);
+			enemy[i].pos.y += drop_speed;
+			robot_wait_timer = 120;
 		}
 		else
-			enemy[i].pos.x -= enemy[i].moveSpeed;
-
+		{
+			//ã—ã°ã‚‰ãå¾…æ©Ÿã™ã‚‹
+			if (robot_wait_timer > 0)
+				robot_wait_timer--; 
+			else
+				enemy[i].pos.x -= enemy[i].moveSpeed;
+		}
 	}
 	else if (enemy[i].type == ENEMY_TYPE_BALLOON)
 	{
-		if (enemy[i].pos.y < enemy_target_y[i]) 
+		if (enemy[i].pos.y < enemy_target_y[i])
 		{
-			enemy[i].pos.x -= sinf(enemy[i].moveSpeed);
-			enemy[i].pos.y += enemy[i].moveSpeed * 2;
+			swing_speed = cosf(enemy[i].pos.y * 0.05f) * 1.5f;
+			enemy[i].pos.y += enemy[i].moveSpeed ;
+			enemy[i].pos.x += swing_speed;
 		}
 		else
 			enemy[i].pos.x -= enemy[i].moveSpeed;
@@ -648,27 +556,7 @@ void enemy_move(int i)
 	}
 }
 
-//“G‚Ì‰Šúİ’è(”Ô†EHPEUŒ‚—ÍEƒXƒs[ƒhE‰æ‘œ•E’†S“_EƒXƒP[ƒ‹EŠp“x)
-void enemy_setting(int i, int hp, int attack, float speed, float a, float b, float x, float y, float  n, float  m,int z)
-{
-	enemy_max_hp[i] = hp + (int)enemy_hp_up;
-	enemy[i].hp = enemy_max_hp[i];
-	enemy_prev_hp[i] = enemy[i].hp;
-
-	enemy[i].attack = attack + (int)enemy_attack_up;
-	enemy_damage_timer[i] = 0;
-
-	enemy[i].moveSpeed = speed + enemy_speed_up;
-	enemy[i].texSize = { a,b };
-	enemy[i].pivot = { x,y };
-	enemy[i].scale = { n,m };
-	enemy[i].angle = z;
-
-	enemy_knockback_timer[i] = 0;
-	enemy_half_knockback_done[i] = false;
-}
-
-//“G‚ÌUŒ‚
+//æ•µã®æ”»æ’ƒ
 void enemy_attack_action(int i)
 {
 	enemy_attack_timer[i]++;
@@ -688,7 +576,7 @@ void enemy_attack_action(int i)
 	}
 }
 
-//ƒpƒ[ƒAƒbƒv
+//ãƒ‘ãƒ¯ãƒ¼ã‚¢ãƒƒãƒ—
 void enemy_powerup()
 {
 	if (enemy_powerup_timer > 1200)
@@ -700,48 +588,287 @@ void enemy_powerup()
 	}
 }
 
-//€–SƒGƒtƒFƒNƒg
-void particle_update_and_render()
+//ãƒãƒƒã‚¯ãƒãƒƒã‚¯
+void enemy_knockback_check(int i)
 {
-	for (int i = 0; i < PARTICLE_NUMBER; i++)
+	if (enemy[i].hp <= enemy_max_hp[i] / 2 && !enemy_half_knockback_done[i])
 	{
-		if (!enemy_particle[i].active) continue;
+		enemy_knockback_timer[i] = 15;
+		enemy_half_knockback_done[i] = true;
+	}
 
-		enemy_particle[i].life--;
-		if (enemy_particle[i].life <= 0)
+	//ã‚¿ã‚¤ãƒãƒ¼ãŒã‚ã‚‹ã¨ãã¯å¾Œã‚ã«ä¸‹ãŒã‚‹
+	if (enemy_knockback_timer[i] > 0)
+	{
+		enemy[i].pos.x += 3.0f;
+
+		if (enemy_knockback_timer[i] > 7)
+		    enemy[i].pos.y -= 1.5f;
+		else
+			enemy[i].pos.y += 1.5f;
+		
+		enemy[i].color = { 1.0f, 0.3f, 0.3f, 1.0f };
+		enemy_knockback_timer[i]--;
+	}
+}
+
+//ãƒœãƒ ãŒçˆ†ç™ºã—ãŸã¨ãã®å‘¨è¾ºã¸ã®ãƒ€ãƒ¡ãƒ¼ã‚¸
+void enemy_bomb_explosion(int i)
+{
+	particles_update(enemy[i].pos.x, enemy[i].pos.y,8, 1.0f, 0.4f, 0.1f);
+
+	for (int j = 0; j < ENEMY_NUMBER; j++)
+	{
+		if (i == j) continue;
+		if (enemy[j].hp <= 0) continue;
+
+		float enemy_Vec_x = enemy[j].pos.x - enemy[i].pos.x;
+		float enemy_Vec_y = enemy[j].pos.y - enemy[i].pos.y;
+		float enemy_Vec = sqrtf(enemy_Vec_x * enemy_Vec_x + enemy_Vec_y * enemy_Vec_y);
+
+		if (enemy_Vec < 250.0f)
 		{
-			enemy_particle[i].active = false;
-			continue;
+			enemy[j].hp -= 15;
+		}
+	}
+}
+
+//CARã®ã‚¿ã‚¤ãƒ¤ãƒ€ãƒ¡ãƒ¼ã‚¸
+void tires_move(float boss_x, float boss_y)
+{
+	// 4ã¤ã®ã‚¿ã‚¤ãƒ¤ã‚’ã™ã¹ã¦ã€Œå³æ–¹å‘ã€ã¸å‹¢ã„ã‚ˆãé£›ã°ã™
+	for (int i = 0; i < TIRE_PARTICLE_NUMBER; i++)
+	{
+		tire_particles[i].active = true;
+		
+		//ã‚«ãƒ¼ã®ä¸­å¿ƒä»˜è¿‘ã‹ã‚‰ã‚¹ãƒãƒ¼ãƒ³
+		tire_particles[i].x = boss_x;
+		tire_particles[i].y = boss_y;
+
+		float speed = (float)(rand() % 5 + 12);
+
+		switch (i)
+		{
+		case 0: //å³æ–œã‚ä¸Šã¸ï¼ˆç©ºé«˜ãå³ã¸ã¶ã£é£›ã¶ï¼‰
+			tire_particles[i].vx = speed * 1.2f;
+			tire_particles[i].vy = -8.0f; // ãã£ã¨ä¸Šã¸çªãä¸Šã’ã‚‹
+			tire_particles[i].sprite = sprTirefront;
+			break;
+		case 1: //ã¾ã£ã™ãå³ã¸ï¼ˆæ°´å¹³ã«å¼¾ä¸¸ã®ã‚ˆã†ã«é£›ã¶ï¼‰
+			tire_particles[i].vx = speed * 1.4f;
+			tire_particles[i].vy = -3.0f;
+			tire_particles[i].sprite = sprTireback;
+			break;
+		case 2: //ã‚„ã‚„ä½ã„è»Œé“ã§å³ã¸
+			tire_particles[i].vx = speed * 1.3f;
+			tire_particles[i].vy = -1.0f;
+			tire_particles[i].sprite = sprTirefront;
+			break;
+		case 3: //å³æ–œã‚ä¸‹ã¸ï¼ˆåœ°é¢ã‚’é€™ã†ã‚ˆã†ã«çŒ›ã‚¹ãƒ”ãƒ¼ãƒ‰ã§å³ã¸ï¼‰
+			tire_particles[i].vx = speed * 1.5f;
+			tire_particles[i].vy = 2.0f;
+			tire_particles[i].sprite = sprTireback;
+			break;
 		}
 
-		enemy_particle[i].x += enemy_particle[i].vx;
-		enemy_particle[i].y += enemy_particle[i].vy;
+		tire_particles[i].rot = (float)(rand() % 360);
+		tire_particles[i].rot_speed = (float)(rand() % 40 - 20) * 0.1f; // ãã‚‹ãã‚‹é«˜é€Ÿå›è»¢
+	}
+}
 
-		enemy_particle[i].vx *= 0.92f;
-		enemy_particle[i].vy *= 0.92f;
+//æ¯ãƒ•ãƒ¬ãƒ¼ãƒ ã®ã‚¿ã‚¤ãƒ¤ã®å‹•ãã¨æç”»ã‚’æ›´æ–°ã™ã‚‹é–¢æ•°
+void tires_update()
+{
+	for (int i = 0; i < TIRE_PARTICLE_NUMBER; i++)
+	{
+		if (!tire_particles[i].active) continue;
 
-		enemy_particle[i].alpha = (float)enemy_particle[i].life / (float)enemy_particle[i].max_life;
+		// ç§»å‹•ã¨é‡åŠ›ã®å½±éŸ¿
+		tire_particles[i].x += tire_particles[i].vx;
+		tire_particles[i].y += tire_particles[i].vy;
+		tire_particles[i].vy += 0.1f; // é‡åŠ›ã§å°‘ã—ä¸‹ã«è½ã¡ã‚‹
 
-		primitive::rect(
-			enemy_particle[i].x - enemy_particle[i].size * 0.5f,
-			enemy_particle[i].y - enemy_particle[i].size * 0.5f,
-			enemy_particle[i].size,
-			enemy_particle[i].size,
-			0,
-			enemy_particle[i].r,
-			enemy_particle[i].g,
-			enemy_particle[i].b,
-			enemy_particle[i].alpha,
-			1
+		// å›è»¢ã•ã›ã‚‹
+		tire_particles[i].rot += tire_particles[i].rot_speed;
+
+		// ç”»é¢å¤–ï¼ˆä¸‹ã‚„å³ï¼‰ã«è¡Œã£ãŸã‚‰éã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã«ã™ã‚‹
+		if (tire_particles[i].y > SCREEN_H + 100.0f)
+		    tire_particles[i].active = false;
+		
+
+		// æç”»
+		sprite_render(
+			tire_particles[i].sprite,
+			tire_particles[i].x, tire_particles[i].y,
+			1.5f, 1.5f,
+			0, 0,
+			40, 40,
+			20, 20,
+			tire_particles[i].rot,
+			1.0f, 1.0f, 1.0f, 1.0f
 		);
 	}
 }
 
-//•`‰æˆ—
+void effect_boss_respawn()
+{
+	effect_boss_clear = 1.0f;
+
+	if (etimer >= 0.0f)
+	{
+		effect_boss_wave = (sinf(etimer * 0.15f) + 1.0f) * 0.5f; 
+		effect_boss_clear = 0.3f + (0.7f * effect_boss_wave);
+	}
+	else
+	{
+		float fade_alpha = etimer / -30.0f;
+		if (fade_alpha > 1.0f) 
+			fade_alpha = 1.0f;
+		effect_boss_clear = 1.0f - fade_alpha; 
+		if (effect_boss_clear < 0.0f) 
+			effect_boss_clear = 0.0f;
+	}
+
+	// èµ¤ã¿ã®æ¿ƒã•ã«åæ˜ (æœ€å¤§å€¤ã¯0.8f)
+	effect_boss_clear = 0.8f * effect_boss_clear;
+
+	// è­¦å‘Šç”»åƒã®æ¨ªã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«
+	x_1 -= 5;
+	x_2 -= 5;
+	if (x_1 < -1915)
+		x_1 = 1915;
+	if (x_2 < -1915)
+		x_2 = 1915;
+
+	etimer--;
+
+	if (etimer < -30.0f)
+	{
+		respawn = false;
+		x_1 = 0;
+		x_2 = 1915;
+		etimer = 300;
+		effect_boss_clear = 0.0f;
+	}
+}
+
+//ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚’å—ã‘ãŸã¨ãã®ã‚¨ãƒ•ã‚§ã‚¯ãƒˆ
+void enemy_damage_effect(int i)
+{
+	if (enemy_damage_timer[i] > 0)
+	{
+		//è¢«å¼¾ã‚¿ã‚¤ãƒãƒ¼ãŒæ®‹ã£ã¦ã„ã‚‹é–“ã¯èµ¤ãå…‰ã‚‰ã›ã‚‹
+		enemy[i].color = { 1.0f, 0.3f, 0.3f, 1.0f };
+		enemy_damage_timer[i]--;
+	}
+	else
+	{
+		//ã‚ã‹ã‚Šã‚„ã™ãã™ã‚‹ãŸã‚ã«èµ¤ãã™ã‚‹
+		if (enemy[i].type == ENEMY_TYPE_BOBM)
+		{
+			enemy[i].color = { 1.0f, 0.3f, 0.3f, 1.0f };
+		}
+		else
+		{
+			enemy[i].color = { 1.0f, 1.0f, 1.0f, 1.0f };
+		}
+	}
+}
+
+
+
+
+
+void tires_render()
+{
+	for (int i = 0; i < TIRE_PARTICLE_NUMBER; i++)
+	{
+		if (!tire_particles[i].active) continue;
+
+		//ç§»å‹•ã¨é‡åŠ›ã®å½±éŸ¿
+		tire_particles[i].x += tire_particles[i].vx;
+		tire_particles[i].y += tire_particles[i].vy;
+		tire_particles[i].vy += 0.4f; //é‡åŠ›ã§å°‘ã—ä¸‹ã«è½ã¡ã‚‹
+
+		//å›è»¢ã•ã›ã‚‹
+		tire_particles[i].rot += tire_particles[i].rot_speed;
+
+		//ç”»é¢å¤–ï¼ˆä¸‹ã‚„å³ï¼‰ã«è¡Œã£ãŸã‚‰éã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã«ã™ã‚‹
+		if (tire_particles[i].y > SCREEN_H + 100.0f)
+		{
+			tire_particles[i].active = false;
+		}
+
+		//æç”»
+		sprite_render(
+			tire_particles[i].sprite,
+			tire_particles[i].x, tire_particles[i].y,
+			1.5f, 1.5f,
+			0, 0,
+			40, 40,
+			20, 20,
+			tire_particles[i].rot,
+			1.0f, 1.0f, 1.0f, 1.0f
+		);
+	}
+}
+
+void effect_boss_render()
+{
+	float fade_alpha = 0.0f;
+	if (etimer < 0.0f)
+	{
+		// etimer ãŒ 0 ã‹ã‚‰ -30 ã«ã‹ã‘ã¦ã€0.0 â†’ 1.0 ã¸é€²ã‚€å‰²åˆã‚’ä½œã‚‹
+		fade_alpha = etimer / -30.0f;
+		if (fade_alpha > 1.0f) fade_alpha = 1.0f;
+	}
+	float draw_alpha = 1.0f - fade_alpha;
+
+	// èƒŒæ™¯ã®é»’ã„æš—è»¢ï¼ˆã ã‚“ã ã‚“è–„ããªã‚‹ï¼‰
+	primitive::rect(
+		0, 0,
+		1920, 1080,
+		0, 0,
+		0,
+		0, 0, 0, 0.5f * draw_alpha);
+
+	//èµ¤ã„è­¦å‘Š
+	primitive::rect(
+		0.0f, 0.0f,
+		1920.0f, 1080.0f,
+		0.0f, 0.0f,
+		0.0f,
+		1.0f, 0.0f, 0.0f, effect_boss_clear * draw_alpha);
+
+    sprite_render(
+		sprWarning,
+		x_1, 0,
+		1.0f, 1.0f,
+		0, 0,
+		1915, 1080, 
+		0, 0,
+		0.0f,
+		1.0f, 1.0f, 1.0f, draw_alpha);
+	
+	sprite_render(
+		sprWarning,
+		x_2, 0,
+		1.0f, 1.0f,
+		0, 0,
+		1915, 1080, 
+		0, 0,
+		0.0f,
+		1.0f, 1.0f, 1.0f, draw_alpha );
+}
+
+//æç”»å‡¦ç†
 void enemy_render()
 {
-	//€–SƒGƒtƒFƒNƒg
-	particle_update_and_render();
+	//æ­»äº¡ã‚¨ãƒ•ã‚§ã‚¯ãƒˆ
+	particle_render();
+
+	//CARæ­»äº¡ã‚¨ãƒ•ã‚§ã‚¯ãƒˆ
+	tires_render();
 
 	for (int i = 0; i < ENEMY_NUMBER; i++)
 	{
@@ -751,7 +878,7 @@ void enemy_render()
 		float render_scale_x = enemy[i].scale.x;
 		float render_scale_y = enemy[i].scale.y;
 
-		//ƒNƒŒƒˆƒ“ƒWƒƒƒ“ƒv
+		//ã‚¯ãƒ¬ãƒ¨ãƒ³ã‚¸ãƒ£ãƒ³ãƒ—
 		if (enemy[i].type == ENEMY_TYPE_CRAYON)
 		{
 			float seed = (float)(i * 53);
@@ -764,7 +891,7 @@ void enemy_render()
 			}
 		}
 
-		//“G‰æ‘œ
+		//æ•µç”»åƒ
 		sprite_render(
 			enemy_sprite[i],
 			enemy[i].pos.x, render_y,
@@ -779,7 +906,7 @@ void enemy_render()
 		{
 			sprite_render(
 				sprTirefront,
-				enemy[i].pos.x - 20, render_y + 60,
+				enemy[i].pos.x - 30, render_y + 70,
 				1.5, 1.5,
 				0, 0,
 				40, 40,
@@ -789,16 +916,13 @@ void enemy_render()
 
 			sprite_render(
 				sprTireback,
-				enemy[i].pos.x + 60, render_y + 60,
+				enemy[i].pos.x + 80, render_y + 70,
 				1.5, 1.5,
 				0, 0,
 				40, 40,
 				20, 20,
 				tire_angle[i],
 				enemy[i].color.x, enemy[i].color.y, enemy[i].color.z);
-
-
-
 		}
 		if (enemy[i].type == ENEMY_TYPE_BOLL)
 		{
@@ -812,14 +936,13 @@ void enemy_render()
 				ToRadian(0),
 				enemy[i].color.x, enemy[i].color.y, enemy[i].color.z);
 		}
-
-
-		//HPŠ„‡
+		
+		//HPå‰²åˆ
 		enemy_hp_rate[i] = (float)enemy[i].hp / (float)enemy_max_hp[i];
 		if (enemy_hp_rate[i] < 0.0f) enemy_hp_rate[i] = 0.0f;
 		if (enemy_hp_rate[i] > 1.0f) enemy_hp_rate[i] = 1.0f;
 
-		//HPƒQ[ƒW‚Ì‘å‚«‚³
+		//HPã‚²ãƒ¼ã‚¸ã®å¤§ãã•
 		if (enemy_type_render[i] == BOSS)
 		{
 			enemy_hp_bar_max[i] = 200.0f * enemy_hp_rate[i];
@@ -837,51 +960,38 @@ void enemy_render()
 		}
 		else
 		{
-			enemy_hp_bar_max[i] = 80.0f * enemy_hp_rate[i];
-			float bar_pos_y = render_y - 100.0f;
+			float bar_pos_y;
+			if (enemy[i].type == ENEMY_TYPE_ROCKET)
+			{
+				enemy_hp_bar_max[i] = 80.0f * enemy_hp_rate[i];
+				bar_pos_y = render_y - 50.0f;
 
-			primitive::rect(enemy[i].pos.x - 40, bar_pos_y, 80, 10, 0, 0, 0, 1, 0, 0);
-			primitive::rect(enemy[i].pos.x - 40, bar_pos_y, enemy_hp_bar_max[i], 10, 0, 0, 0, 0, 1, 0);
+				primitive::rect(enemy[i].pos.x - 25, bar_pos_y, 80, 10, 0, 0, 0, 1, 0, 0);
+				primitive::rect(enemy[i].pos.x - 25, bar_pos_y, enemy_hp_bar_max[i], 10, 0, 0, 0, 0, 1, 0);
 
-			sprite_render(
-				sprEnemy_hp,
-				enemy[i].pos.x - 43, bar_pos_y - 3);
+				sprite_render(
+					sprEnemy_hp,
+					enemy[i].pos.x - 28, bar_pos_y - 3);
+			}
+			else
+			{
+				enemy_hp_bar_max[i] = 80.0f * enemy_hp_rate[i];
+				bar_pos_y = render_y - 100.0f;
+
+				primitive::rect(enemy[i].pos.x - 40, bar_pos_y, 80, 10, 0, 0, 0, 1, 0, 0);
+				primitive::rect(enemy[i].pos.x - 40, bar_pos_y, enemy_hp_bar_max[i], 10, 0, 0, 0, 0, 1, 0);
+
+				sprite_render(
+					sprEnemy_hp,
+					enemy[i].pos.x - 43, bar_pos_y - 3);
+			}
 		}
-
-	}
+    }
 		
 	if (respawn == true)
 	{
-		primitive::rect(
-			0, 0,
-			1920, 1080,
-			0, 0,
-			0,
-			0, 0, 0, 0.3
-		);
-
-		primitive::rect(
-			0.0f, 0.0f,
-			1920.0f, 1080.0f,
-			0.0f, 0.0f,
-			0.0f,
-			1.0f, 0.0f, 0.0f, effect_boss_clear
-		);
-		
-		sprite_render(
-			sprWarning,
-			x_1, 0
-		);
-		sprite_render(
-			sprWarning,
-			x_2, 0
-		);
-	 
-		
-	
+		effect_boss_render();
 	}
 
 	debug::setString("etimer:%f", etimer);
-	
-    
 }
