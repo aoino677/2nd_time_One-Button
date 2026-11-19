@@ -8,6 +8,13 @@
 #define EXP_TEX_H        (64.0f)
 #define EXP_PIVOT_X      (32.0f)
 #define EXP_PIVOT_Y      (32.0f)
+// -------------------------------------------------------
+// Ç®ã‡Ç≤Ç∆ÇÃåoå±ílêî
+// -------------------------------------------------------
+#define COUNTER_1Y	(1)
+#define COUNTER_10Y	(2)
+#define COUNTER_100Y	(4)
+#define COUNTER_500Y	(8)
 
 
 void EXP_init();
