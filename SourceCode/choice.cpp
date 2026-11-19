@@ -339,22 +339,18 @@ void choice_update()
 							HP_Max();
 							power_efficacy[i].color.w = 0 ;break;
 						case WEAPON_SHELL:
-							serect_weapon = 1;
 							if (level_up_weapon[SHELL] == 0)	{level_up_weapon[SHELL] = level_1;}
 							else if (level_up_weapon[SHELL] < level_8){level_up_weapon[SHELL]++;}
 							power_efficacy[i].color.w = 0; break;
 						case WEAPON_BEAM:
-							serect_weapon = 2;
 							if (level_up_weapon[BEAM] == 0) { level_up_weapon[BEAM] = level_1; }
 							else if (level_up_weapon[BEAM] < level_8) { level_up_weapon[BEAM]++; }
 							power_efficacy[i].color.w = 0; break;
 						case WEAPON_INGOT:
-							serect_weapon = 3;
 							if (level_up_weapon[INGOT] == 0) { level_up_weapon[INGOT] = level_1; }
 							else if (level_up_weapon[INGOT] < level_8) { level_up_weapon[INGOT]++; }
 							power_efficacy[i].color.w = 0; break;
 						case WEAPON_BANKROLL:
-							serect_weapon = 4;	
 							if (level_up_weapon[BANKROLL] == 0) { level_up_weapon[BANKROLL] = level_1; }
 							else if (level_up_weapon[BANKROLL] < level_8) { level_up_weapon[BANKROLL]++; }
 							power_efficacy[i].color.w = 0; break;
@@ -362,7 +358,6 @@ void choice_update()
 							Bullet_Lucky();			
 							power_efficacy[i].color.w = 0; break;
 						case WEAPON_BULLET:
-							serect_weapon = 6;
 							if (level_up_weapon[Y1] < level_8) { level_up_weapon[Y1]++; }
 							power_efficacy[i].color.w = 0; break;
 						case BULLET_DAMAGE:
@@ -395,22 +390,18 @@ void choice_update()
 							HP_Max();
 							power_efficacy[i].color.w = 0; break;
 						case WEAPON_SHELL:
-							serect_weapon = 1;
 							if (level_up_weapon[SHELL] == 0) { level_up_weapon[SHELL] = level_1; }
 							else if (level_up_weapon[SHELL] < level_8) { level_up_weapon[SHELL]++; }
 							power_efficacy[i].color.w = 0; break;
 						case WEAPON_BEAM:
-							serect_weapon = 2;
 							if (level_up_weapon[BEAM] == 0) { level_up_weapon[BEAM] = level_1; }
 							else if (level_up_weapon[BEAM] < level_8) { level_up_weapon[BEAM]++; }
 							power_efficacy[i].color.w = 0; break;
 						case WEAPON_INGOT:
-							serect_weapon = 3;
 							if (level_up_weapon[INGOT] == 0) { level_up_weapon[INGOT] = level_1; }
 							else if (level_up_weapon[INGOT] < level_8) { level_up_weapon[INGOT]++; }
 							power_efficacy[i].color.w = 0; break;
 						case WEAPON_BANKROLL:
-							serect_weapon = 4;
 							if (level_up_weapon[BANKROLL] == 0) { level_up_weapon[BANKROLL] = level_1; }
 							else if (level_up_weapon[BANKROLL] < level_8) { level_up_weapon[BANKROLL]++; }
 							power_efficacy[i].color.w = 0; break;
@@ -418,7 +409,6 @@ void choice_update()
 							Bullet_Lucky();
 							power_efficacy[i].color.w = 0; break;
 						case WEAPON_BULLET:
-							serect_weapon = 6;
 							if (level_up_weapon[Y1] < level_8) { level_up_weapon[Y1]++; }
 							power_efficacy[i].color.w = 0; break;
 						case BULLET_DAMAGE:
@@ -453,20 +443,16 @@ void choice_update()
 						case WEAPON_SHELL:
 							if (level_up_weapon[SHELL] == 0) { level_up_weapon[SHELL] = level_1; }
 							else if (level_up_weapon[SHELL] < level_8) { level_up_weapon[SHELL]++; }
-							serect_weapon = 1;
 							power_efficacy[i].color.w = 0; break;
 						case WEAPON_BEAM:
-							serect_weapon = 2;
 							if (level_up_weapon[BEAM] == 0) { level_up_weapon[BEAM] = level_1; }
 							else if (level_up_weapon[BEAM] < level_8) { level_up_weapon[BEAM]++; }
 							power_efficacy[i].color.w = 0; break;
 						case WEAPON_INGOT:
-							serect_weapon = 3;
 							if (level_up_weapon[INGOT] == 0) { level_up_weapon[INGOT] = level_1; }
 							else if (level_up_weapon[INGOT] < level_8) { level_up_weapon[INGOT]++; }
 							power_efficacy[i].color.w = 0; break;
 						case WEAPON_BANKROLL:
-							serect_weapon = 4;
 							if (level_up_weapon[BANKROLL] == 0) { level_up_weapon[BANKROLL] = level_1; }
 							else if (level_up_weapon[BANKROLL] < level_8) { level_up_weapon[BANKROLL]++; }
 							power_efficacy[i].color.w = 0; break;
@@ -474,7 +460,6 @@ void choice_update()
 							Bullet_Lucky();
 							power_efficacy[i].color.w = 0; break;
 						case WEAPON_BULLET:
-							serect_weapon = 6;
 							if (level_up_weapon[Y1] < level_8){level_up_weapon[Y1]++;}
 							power_efficacy[i].color.w = 0; break;
 						case BULLET_DAMAGE:
@@ -586,10 +571,6 @@ void randoms()
 	// ‚©‚Ô‚Á‚Ä‚¢‚½‚çÄ’Š‘I
 	for(;;)
 	{
-		if (random[0] == serect_weapon){ random[0] = rand() % EFFICACY_MAX; }
-		if (random[1] == serect_weapon){ random[1] = rand() % EFFICACY_MAX; }
-		if (random[2] == serect_weapon){ random[2] = rand() % EFFICACY_MAX; }
-
 		// [0]‚â[1]‚â[2]‚Æˆê‚È‚çÄ’Š‘I
 		if (random[0] == random[1])
 		{
