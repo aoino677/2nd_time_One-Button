@@ -79,3 +79,8 @@ const float PLAYER_EASING = 0.99f;
 
 //ˆê‘M
 const float BEEM_DAMAGE = 15;
+
+//ƒXƒyƒVƒƒƒ‹‹Z
+#define CAN_SHOT_SPECIAL_COUNT 3
+#define SPECIAL_RANGE (200.0f)
+const VECTOR3 bullet_special_color = { 1.0f, 0.0f, 0.0f };
