@@ -99,7 +99,7 @@ void player_init()
 	sprBullet[BEEM] = sprite_load(L"Data/Images/issen.png");
 	sprBullet[BANKROLL] = sprite_load(L"Data/Images/bankroll.png");
 	
-	sprLeftSpecial = sprite_load(L"Data/Images/coin.png");
+	sprLeftSpecial = sprite_load(L"Data/Images/bomb_icon.png");
 
 	player.pos = PLAYER_POS;
 	player.texSize = PLAYER_TEX_SIZE;
@@ -503,7 +503,8 @@ void player_render()
 	{
 		sprite_render(
 			sprLeftSpecial,
-			16 + 64 * i, 16
+			16 + 128 * i, 16,
+			2, 2
 		);
 	}
 }
