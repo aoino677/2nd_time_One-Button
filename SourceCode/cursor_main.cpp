@@ -3,6 +3,7 @@
 #include "cursor_main.h"
 #include "enemy.h"
 #include "player.h"
+#include "Level.h"
 
 //==================================================
 // 変数
@@ -18,8 +19,18 @@ int cursor_main_timer = 0;
 // マウス位置
 float cursor_main_posX = 0.0f;
 float cursor_main_posY = 0.0f;
-int timer_down;
-int timer = 0;
+
+// それぞれのタイマー
+int timer_bullet;
+int timer_down_bullet;
+int timer_shell;
+int timer_down_shell;
+int timer_ingot;
+int timet_down_ingot;
+int timer_beam;
+int timer_down_beam;
+int timer_bankroll;
+int timer_down_bankroll;
 
 // 武器選択値
 int serect_weapon;
@@ -43,9 +54,18 @@ void cursor_main_init()
 
     cursor_main_posX = 0.0f;
     cursor_main_posY = 0.0f;
+    
+    timer_down_bullet = TIMER;
+    timer_bullet = timer_down_bullet;
+    timer_down_shell = TIMER_SHELL;
+    timer_shell = timer_down_shell;
+    timer_ingot = TIMER_INGOT;
+    timet_down_ingot = timer_ingot;
+    timer_down_beam = TIMER_BEAM;
+    timer_beam = timer_down_beam;
+    timer_down_bankroll = TIMER_BANKROLL;
+    timer_bankroll = timer_down_bankroll;
 
-    timer_down = TIMER;
-    timer = timer_down;
 
     serect_weapon = 6;
 
@@ -101,12 +121,13 @@ void cursor_main_update()
         // マウスの位置を取得
         cursor_main_posX = (float)getCursorPosX();
         cursor_main_posY = (float)getCursorPosY();
-
-        if (timer > timer_down)
-        {
-            timer = timer_down;
-        }
-        for (int i = 0; i < ENEMY_NUMBER; i++)
+       
+        // クールタイムの上限
+        if (timer_bullet > timer_down_bullet) { timer_bullet = timer_down_bullet; }
+        if (timer_shell > timer_down_shell) { timer_shell = timer_down_shell; }
+        if (timer_ingot > timet_down_ingot) { timer_ingot = timet_down_ingot; }
+        if (timer_beam > timer_down_beam) { timer_beam = timer_down_beam; }
+        if (timer_bankroll > timer_down_bankroll) { timer_bankroll = timer_down_bankroll; }        for (int i = 0; i < ENEMY_NUMBER; i++)
         {
             // 敵の当たり判定
             float enemy_left = enemy[i].pos.x - enemy[i].pivot.x * ENEMY_SCALE;
@@ -126,42 +147,105 @@ void cursor_main_update()
                 cursor_top <= enemy_bottom &&
                 cursor_bottom >= enemy_top)
             {
-                if (timer == timer_down)
+                //==========================================
+                // 一円玉マシンガン
+                //==========================================
+                if (level_up_weapon[Y1] > 0)
                 {
-                    switch (serect_weapon)
+                    if (timer_bullet == timer_down_bullet)
                     {
-                    case 6:
                         shot_bullet();
-                        break;
-
-                    case 3:
-                        shot_bullet_Ingot();
-                        break;
-
-                    case 1:
-                        shot_bullet_Shell();
-                        break;
-
-                    case 2:
-                        shot_bullet_Beam();
-                        break;
-
-                    case 4:
-                        shot_bullet_Bankroll();
-                        break;
+                        timer_bullet--;
                     }
-
-                    timer--;
-                }
-                else if (timer == 0)
-                {
-                    timer = timer_down;
-                }
-                else
-                {
-                    timer--;
+                    else if (timer_bullet == 0)
+                    {
+                        timer_bullet = timer_down_bullet;
+                    }
+                    else
+                    {
+                        timer_bullet--;
+                    }
                 }
 
+                //==========================================
+                // 貝殻ミサイル
+                //==========================================
+                if (level_up_weapon[SHELL] > 0)
+                {
+                    if (timer_shell == timer_down_shell)
+                    {
+                        shot_bullet_Shell();
+                        timer_shell--;
+                    }
+                    else if (timer_shell == 0)
+                    {
+                        timer_shell = timer_down_shell;
+                    }
+                    else
+                    {
+                        timer_shell--;
+                    }
+                }
+
+                //==========================================
+                // インゴット
+                //==========================================
+                if (level_up_weapon[INGOT] > 0)
+                {
+                    if (timer_ingot == timet_down_ingot)
+                    {
+                        shot_bullet_Ingot();
+                        timer_ingot--;
+                    }
+                    else if (timer_ingot == 0)
+                    {
+                        timer_ingot = timet_down_ingot;
+                    }
+                    else
+                    {
+                        timer_ingot--;
+                    }
+                }
+
+                //==========================================
+                // ビーム
+                //==========================================
+                if (level_up_weapon[BEAM] > 0)
+                {
+                    if (timer_beam == timer_down_beam)
+                    {
+                        shot_bullet_Beam();
+                        timer_beam--;
+                    }
+                    else if (timer_beam == 0)
+                    {
+                        timer_beam = timer_down_beam;
+                    }
+                    else
+                    {
+                        timer_beam--;
+                    }
+                }
+
+                //==========================================
+                // バンクロール
+                //==========================================
+                if (level_up_weapon[BANKROLL] > 0)
+                {
+                    if (timer_bankroll == timer_down_bankroll)
+                    {
+                        shot_bullet_Bankroll();
+                        timer_bankroll--;
+                    }
+                    else if (timer_bankroll == 0)
+                    {
+                        timer_bankroll = timer_down_bankroll;
+                    }
+                    else
+                    {
+                        timer_bankroll--;
+                    }
+                }
                 break;
             }
         }

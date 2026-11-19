@@ -1,5 +1,6 @@
 #include "player.h"
 #include "enemy.h"
+#include "effect_burst.h"
 #include "AttackCollision.h"
 #include "shake.h"
 #include <vector>
@@ -17,7 +18,7 @@
 float bullet_speed = BULLET_SPEED;//î≠éÀÇ∑ÇÈíeÇÃ1ïbìñÇΩÇËÇÃë¨ìx
 float shot_per_second = 20.0f; //ÇPïbä‘Ç…î≠éÀÇ∑ÇÈíeÇÃêî	
 //float rapid_coolDown = RAPID_COOLDOWN; //òAéÀäJénéûä‘
-float precision_rad = ToRadian(5); //ë_Ç¡ÇΩï˚å¸Ç…îÚÇ‘ê∏ìx
+float precision_rad = ToRadian(0); //ë_Ç¡ÇΩï˚å¸Ç…îÚÇ‘ê∏ìx
 
 float Y1_shot_timer = 0;
 
@@ -49,12 +50,19 @@ float beem_damage = BEEM_DAMAGE;
 float beem_speed = 4000;
 float beem_scale = 1.5f;
 
+int left_shot_special = 3;
+Sprite* sprLeftSpecial;
+
 float bankrool_damage = 20;
+float bankrool_scale = 1.0f;
 
 Sprite* sprPlayer;
-Sprite* sprBullet[6];
+#define SPR_BULLET_COUNT 5
+Sprite* sprBullet[SPR_BULLET_COUNT];
 OBJ2D player;
 std::vector<Bullet*> player_bullets;
+
+#define CAN_SHOT_SPECIAL_COUNT 3
 
 static const std::pair<VECTOR3, VECTOR3> afterimagecolors[IMAGE_COLOR_COUNT]
 {
@@ -76,6 +84,11 @@ std::vector<Bullet_Y1_AfterImage*> y1_after_images;
 
 VECTOR2 cursor_pos{};
 
+enum BULLET_SPR
+{
+	Y1, INGOT, SHELL, BEEM, BANKROLL
+};
+
 void set_vector_Bullet_Y1_AfterImage(Bullet_Y1_AfterImage* image)
 {
 	y1_after_images.push_back(image);
@@ -84,12 +97,13 @@ void set_vector_Bullet_Y1_AfterImage(Bullet_Y1_AfterImage* image)
 void player_init()
 {
 	sprPlayer = sprite_load(L"Data/Images/player.png");
-	sprBullet[0] = sprite_load(L"Data/Images/bullet.png");
-	sprBullet[1] = sprite_load(L"Data/Images/bullet.png");
-	sprBullet[2] = sprite_load(L"Data/Images/500yen.png");
-	sprBullet[3] = sprite_load(L"Data/Images/shell.png");
-	sprBullet[4] = sprite_load(L"Data/Images/issen.png");
-	sprBullet[5] = sprite_load(L"Data/Images/bankroll.png");
+	sprBullet[Y1] = sprite_load(L"Data/Images/bullet.png");
+	sprBullet[INGOT] = sprite_load(L"Data/Images/500yen.png");
+	sprBullet[SHELL] = sprite_load(L"Data/Images/shell.png");
+	sprBullet[BEEM] = sprite_load(L"Data/Images/issen.png");
+	sprBullet[BANKROLL] = sprite_load(L"Data/Images/bankroll.png");
+	
+	sprLeftSpecial = sprite_load(L"Data/Images/bomb_icon.png");
 
 	player.pos = PLAYER_POS;
 	player.texSize = PLAYER_TEX_SIZE;
@@ -99,12 +113,15 @@ void player_init()
 	//is_rapid = false;
 	//
 	//can_rapid_shot = false;
+
+	left_shot_special = CAN_SHOT_SPECIAL_COUNT;
 }
 
 void player_deinit()
 {
 	safe_delete(sprPlayer);
-	for (int i = 0; i < 6; i++)
+	safe_delete(sprLeftSpecial);
+	for (int i = 0; i < SPR_BULLET_COUNT; i++)
 	{
 		safe_delete(sprBullet[i]);
 	}
@@ -153,7 +170,7 @@ void shot_bullet()
 		{
 			VECTOR2 vec = cursorPos - player.pos;
 			auto* b = new Bullet_Y1();
-			b->spr = sprBullet[1];
+			b->spr = sprBullet[Y1];
 			b->texSize = { 64, 8 };
 			b->pos = player.pos;
 			b->scale = { bullet_scale , bullet_scale };
@@ -206,7 +223,7 @@ void shot_bullet()
 void shot_bullet_Ingot()
 {
 	auto* b_ingot = new Bullet_Ingot();
-	b_ingot->spr = sprBullet[2];
+	b_ingot->spr = sprBullet[INGOT];
 	b_ingot->scale = { ingot_scale, ingot_scale };
 	b_ingot->texSize = { 64, 64 };
 	b_ingot->pos = { static_cast<float>(getCursorPosX()), -b_ingot->texSize.y };
@@ -227,12 +244,12 @@ void shot_bullet_Shell()
 	//float gravity = 100 / system::FRAME_RATE;
 	b_shell->velocity = vec2Normalize(vec)* shell_speed / system::FRAME_RATE;
 	b_shell->angle = atan2f(vec.y, vec.x);
-	//b_shell->accel_velocity.y = 100 / system::FRAME_RATE;
-	b_shell->spr = sprBullet[3];
+	//b_shell->accel_velocity.y = gravity;
+	b_shell->spr = sprBullet[SHELL];
 	b_shell->texSize = { 64, 16 };
 	b_shell->scale = { shell_scale, shell_scale };
 	float damage = shell_damage + damage_up;
-	   	  damage *= Y1_damage / Y1_DAMAGE;
+	   	  //damage *= Y1_damage / Y1_DAMAGE;
 	b_shell->attack_damage = static_cast<int>(damage);
 	player_bullets.push_back(b_shell);
 }
@@ -240,7 +257,7 @@ void shot_bullet_Shell()
 void shot_bullet_Beam()
 {
 	auto* b_beem = new Bullet_Ingot();
-	b_beem->spr = sprBullet[4];
+	b_beem->spr = sprBullet[BEEM];
 	b_beem->texSize = { 64, 64 };
 	b_beem->pos = { -b_beem->texSize.x, static_cast<float>(getCursorPosY()) };
 	b_beem->scale = { beem_scale, beem_scale };
@@ -254,12 +271,12 @@ void shot_bullet_Beam()
 void shot_bullet_Bankroll()
 {
 	auto* b_roll = new Bullet_Bankroll();
-	b_roll->spr = sprBullet[5];
+	b_roll->spr = sprBullet[BANKROLL];
 	b_roll->texSize = { 320, 160 };
 	b_roll->pos = player.pos;
 	b_roll->pivot.x = -b_roll->texSize.x * 0.5f;
 	b_roll->pivot.y = b_roll->texSize.y * 0.5f;
-	b_roll->scale = { 1, 1 };
+	b_roll->scale = { bankrool_scale, bankrool_scale };
 	b_roll->angle = -ToRadian(90);
 	float damage = bankrool_damage;
 	damage *= Y1_damage / Y1_DAMAGE;
@@ -272,17 +289,26 @@ void shot_bullet_Special()
 {
 	const int SPECIAL_DAMAGE = 30;
 	VECTOR2 cursor_pos = { static_cast<float>(getCursorPosX()), static_cast<float>(getCursorPosY()) };
+	bool check = false;
+	float bullet_radius = 96;
 	for (int i = 0; i < ENEMY_NUMBER; i++)
 	{
 		VECTOR2 enemy_begin = enemy[i].pos - VECTOR2{ enemy[i].scale.x * enemy[i].pivot.x, enemy[i].scale.y * enemy[i].pivot.y };//enemy[e]ÇÃç∂è„
 		VECTOR2 enemy_size = { enemy[i].scale.x * enemy[i].texSize.x, enemy[i].scale.y * enemy[i].texSize.y };
 		VECTOR2 bullet_center = cursor_pos;
-		float bullet_radius = 96;
 		if (Collision2D::circle_vs_rect(bullet_center, bullet_radius, enemy_begin, enemy_size) && enemy[i].hp > 0)
 		{
 			enemy[i].hp -= SPECIAL_DAMAGE;
+			check = true;
 		}
 	}
+
+	if (check)
+	{
+		particles_update(cursor_pos.x, cursor_pos.y, bullet_radius, 0, 0, 0);
+		left_shot_special--;
+	}
+
 }
 //#define SHOT_AIM_TARGET
 //#define SHOT_AIM_AND_CLICK_TARGET
@@ -409,7 +435,10 @@ void player_update()
 
 	if (TRG(0) & PAD_START)
 	{
-		shot_bullet_Special();
+		if (left_shot_special > 0)
+		{
+			shot_bullet_Special();
+		}
 	}
 
 #ifdef _DEBUG
@@ -466,7 +495,7 @@ void player_render()
 		VECTOR3 color = afterimagecolors[image->color_index].first * k + afterimagecolors[image->color_index].second * (1 - k);
 
 		sprite_render(
-			sprBullet[0],
+			sprBullet[Y1],
 			image->pos.x, image->pos.y,
 			1, 1,
 			0, 0,
@@ -480,6 +509,15 @@ void player_render()
 	for (auto* bullet : player_bullets)
 	{
 		bullet->render();
+	}
+
+	for (int i = 0; i < left_shot_special; i++)
+	{
+		sprite_render(
+			sprLeftSpecial,
+			16 + 128 * i, 16,
+			2, 2
+		);
 	}
 }
 

@@ -11,10 +11,14 @@
 
 int damage_up;
 int efficacy_timer;
+float red_cooltime_rate;
+float bullet_interval_rate;
 void efficacy_init()
 {
 	damage_up = 0;
 	efficacy_timer = 0;
+	red_cooltime_rate = 1.0f;
+	bullet_interval_rate = 1.0f;
 }
 // プレイヤーのHPが上がる
 void HP()
@@ -46,11 +50,20 @@ void Bullet_rad(float rad)
 void Bullet_Lucky()
 {
 	lucky -= ITEM_LUCKY_UP;
+	if (lucky < 5)
+	{
+		lucky = 5;
+	}
 }
 // 弾の撃つ間隔が短くなる
 void Bullet_Interval()
 {
-	timer_down -= BULLET_INTERVAL_UP;
+	bullet_interval_rate -= 0.05f;
+
+	if (bullet_interval_rate < 0.5f)
+	{
+		bullet_interval_rate = 0.5f;
+	}
 }
 // プレイヤーの攻撃力を増やす
 void Bullet_Damage()
@@ -66,6 +79,11 @@ void Lost_Item_Acquisition_Range()
 void HP_Max()
 {
 	max_hp += 3;
+}
+// ヒットバックする距離を増やす
+void Hit_Bag()
+{
+	hit_buck += 1.0f;
 }
 //-------BULE----------------
 void Fever_Time_Start_Blue()
@@ -89,14 +107,12 @@ void Fever_Time_End_Blue()
 // 一定時間あほみたいに強くする
 void Fever_Time_Start_Red()
 {
-	lucky += 50;
-	timer_down -= 10;
+	red_cooltime_rate = 0.05f;
 }
 // 終わり
 void Fever_Time_End_Red()
 {
-	lucky -= 50;
-	timer_down += 10;
+	red_cooltime_rate = 1.0f;
 }
 //-------RED----------------
 

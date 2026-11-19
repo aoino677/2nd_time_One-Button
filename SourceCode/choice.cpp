@@ -31,18 +31,18 @@ void choice_init()
 	// choiceButtonの読み込み
 	sprchoicebar = sprite_load(L"./Data/Images/card_frame.png");
 	// 文の読み込み
-	sprpower_efficacy[0] = sprite_load(L"./Data/images/HP_efficacy.png");
+	sprpower_efficacy[0] = sprite_load(L"./Data/images/card_hp.png");
 	sprpower_efficacy[1] = sprite_load(L"./Data/images/card_shell.png");
 	sprpower_efficacy[2] = sprite_load(L"./Data/images/card_issen.png");
 	sprpower_efficacy[3] = sprite_load(L"./Data/images/card_fall.png");
-	sprpower_efficacy[4] = sprite_load(L"./Data/images/Bullet_quantity_efficacy.png");
-	sprpower_efficacy[5] = sprite_load(L"./Data/images/Item_Lucky_efficacy.png");
+	sprpower_efficacy[4] = sprite_load(L"./Data/images/card_bankroll.png");
+	sprpower_efficacy[5] = sprite_load(L"./Data/images/card_lucky.png");
 	sprpower_efficacy[6] = sprite_load(L"./Data/images/card_rifle.png");
 	sprpower_efficacy[7] = sprite_load(L"./Data/images/card_attack.png");
 	sprpower_efficacy[8] = sprite_load(L"./Data/images/Acquisition_Range_efficacy.png");
 	sprpower_efficacy[9] = sprite_load(L"./Data/images/card_range.png");
-	//sprpower_efficacy[10] = sprite_load(L"./Data/images/Bullet_rad_efficacy.png");
-	//sprpower_efficacy[11] = sprite_load(L"./Data/images/Bullet_rad_efficacy.png");
+	sprpower_efficacy[10] = sprite_load(L"./Data/images/card_rapid.png");
+	sprpower_efficacy[11] = sprite_load(L"./Data/images/card_knokback.png");
 
 	// パラメーターの設定
 	for (int i = 0; i < CHOICE_MAX; i++)
@@ -187,6 +187,14 @@ void choice_update()
 		case CURSOR_BIG: // カーソルを大きくする
 			power_efficacy[9].pos = { 450,BUTTON_Y };
 			power_efficacy[9].color.w = 1; break;
+
+		case BULLET_INTERVAL: // 弾の間隔を短くする
+			power_efficacy[10].pos = { 450,BUTTON_Y };
+			power_efficacy[10].color.w = 1; break;
+
+		case HIT_BUCK: // ヒットバックする距離を増やす
+			power_efficacy[11].pos = { 450,BUTTON_Y };
+			power_efficacy[11].color.w = 1; break;
 		}
 		switch (random[1])
 		{
@@ -229,6 +237,14 @@ void choice_update()
 		case CURSOR_BIG: // カーソルを大きくする
 			power_efficacy[9].pos = { 950,BUTTON_Y };
 			power_efficacy[9].color.w = 1; break;
+
+		case BULLET_INTERVAL: // 弾の間隔を短くする
+			power_efficacy[10].pos = { 950,BUTTON_Y };
+			power_efficacy[10].color.w = 1; break;
+
+		case HIT_BUCK: // ヒットバックする距離を増やす
+			power_efficacy[11].pos = { 950,BUTTON_Y };
+			power_efficacy[11].color.w = 1; break;
 		}
 		switch (random[2])
 		{
@@ -271,6 +287,14 @@ void choice_update()
 		case CURSOR_BIG: // カーソルを大きくする
 			power_efficacy[9].pos = { 1450,BUTTON_Y };
 			power_efficacy[9].color.w = 1; break;
+
+		case BULLET_INTERVAL: // 弾の間隔を短くする
+			power_efficacy[10].pos = { 1450,BUTTON_Y };
+			power_efficacy[10].color.w = 1; break;
+
+		case HIT_BUCK: // ヒットバックする距離を増やす
+			power_efficacy[11].pos = { 1450,BUTTON_Y };
+			power_efficacy[11].color.w = 1; break;
 		}
 		for (int i = 0; i < CHOICE_MAX; i++)
 		{
@@ -315,24 +339,25 @@ void choice_update()
 							HP_Max();
 							power_efficacy[i].color.w = 0 ;break;
 						case WEAPON_SHELL:
-							serect_weapon = 1;
 							if (level_up_weapon[SHELL] == 0)	{level_up_weapon[SHELL] = level_1;}
 							else if (level_up_weapon[SHELL] < level_8){level_up_weapon[SHELL]++;}
 							power_efficacy[i].color.w = 0; break;
 						case WEAPON_BEAM:
-							serect_weapon = 2;
+							if (level_up_weapon[BEAM] == 0) { level_up_weapon[BEAM] = level_1; }
+							else if (level_up_weapon[BEAM] < level_8) { level_up_weapon[BEAM]++; }
 							power_efficacy[i].color.w = 0; break;
 						case WEAPON_INGOT:
-							serect_weapon = 3;
+							if (level_up_weapon[INGOT] == 0) { level_up_weapon[INGOT] = level_1; }
+							else if (level_up_weapon[INGOT] < level_8) { level_up_weapon[INGOT]++; }
 							power_efficacy[i].color.w = 0; break;
 						case WEAPON_BANKROLL:
-							serect_weapon = 4;	
+							if (level_up_weapon[BANKROLL] == 0) { level_up_weapon[BANKROLL] = level_1; }
+							else if (level_up_weapon[BANKROLL] < level_8) { level_up_weapon[BANKROLL]++; }
 							power_efficacy[i].color.w = 0; break;
 						case ITEM_LUCKY:
 							Bullet_Lucky();			
 							power_efficacy[i].color.w = 0; break;
 						case WEAPON_BULLET:
-							serect_weapon = 6;
 							if (level_up_weapon[Y1] < level_8) { level_up_weapon[Y1]++; }
 							power_efficacy[i].color.w = 0; break;
 						case BULLET_DAMAGE:
@@ -343,6 +368,12 @@ void choice_update()
 							power_efficacy[i].color.w = 0; break;
 						case CURSOR_BIG:
 							Cursor_big();
+							power_efficacy[i].color.w = 0; break;
+						case BULLET_INTERVAL:
+							Bullet_Interval();
+							power_efficacy[i].color.w = 0; break;
+						case HIT_BUCK:
+							Hit_Bag();
 							power_efficacy[i].color.w = 0; break;
 						}
 						break;
@@ -359,24 +390,25 @@ void choice_update()
 							HP_Max();
 							power_efficacy[i].color.w = 0; break;
 						case WEAPON_SHELL:
-							serect_weapon = 1;
 							if (level_up_weapon[SHELL] == 0) { level_up_weapon[SHELL] = level_1; }
 							else if (level_up_weapon[SHELL] < level_8) { level_up_weapon[SHELL]++; }
 							power_efficacy[i].color.w = 0; break;
 						case WEAPON_BEAM:
-							serect_weapon = 2;
+							if (level_up_weapon[BEAM] == 0) { level_up_weapon[BEAM] = level_1; }
+							else if (level_up_weapon[BEAM] < level_8) { level_up_weapon[BEAM]++; }
 							power_efficacy[i].color.w = 0; break;
 						case WEAPON_INGOT:
-							serect_weapon = 3;
+							if (level_up_weapon[INGOT] == 0) { level_up_weapon[INGOT] = level_1; }
+							else if (level_up_weapon[INGOT] < level_8) { level_up_weapon[INGOT]++; }
 							power_efficacy[i].color.w = 0; break;
 						case WEAPON_BANKROLL:
-							serect_weapon = 4;
+							if (level_up_weapon[BANKROLL] == 0) { level_up_weapon[BANKROLL] = level_1; }
+							else if (level_up_weapon[BANKROLL] < level_8) { level_up_weapon[BANKROLL]++; }
 							power_efficacy[i].color.w = 0; break;
 						case ITEM_LUCKY:
 							Bullet_Lucky();
 							power_efficacy[i].color.w = 0; break;
 						case WEAPON_BULLET:
-							serect_weapon = 6;
 							if (level_up_weapon[Y1] < level_8) { level_up_weapon[Y1]++; }
 							power_efficacy[i].color.w = 0; break;
 						case BULLET_DAMAGE:
@@ -387,6 +419,12 @@ void choice_update()
 							power_efficacy[i].color.w = 0; break;
 						case CURSOR_BIG:
 							Cursor_big();
+							power_efficacy[i].color.w = 0; break;
+						case BULLET_INTERVAL:
+							Bullet_Interval();
+							power_efficacy[i].color.w = 0; break;
+						case HIT_BUCK:
+							Hit_Bag();
 							power_efficacy[i].color.w = 0; break;
 						}
 						break;
@@ -405,22 +443,23 @@ void choice_update()
 						case WEAPON_SHELL:
 							if (level_up_weapon[SHELL] == 0) { level_up_weapon[SHELL] = level_1; }
 							else if (level_up_weapon[SHELL] < level_8) { level_up_weapon[SHELL]++; }
-							serect_weapon = 1;
 							power_efficacy[i].color.w = 0; break;
 						case WEAPON_BEAM:
-							serect_weapon = 2;
+							if (level_up_weapon[BEAM] == 0) { level_up_weapon[BEAM] = level_1; }
+							else if (level_up_weapon[BEAM] < level_8) { level_up_weapon[BEAM]++; }
 							power_efficacy[i].color.w = 0; break;
 						case WEAPON_INGOT:
-							serect_weapon = 3;
+							if (level_up_weapon[INGOT] == 0) { level_up_weapon[INGOT] = level_1; }
+							else if (level_up_weapon[INGOT] < level_8) { level_up_weapon[INGOT]++; }
 							power_efficacy[i].color.w = 0; break;
 						case WEAPON_BANKROLL:
-							serect_weapon = 4;
+							if (level_up_weapon[BANKROLL] == 0) { level_up_weapon[BANKROLL] = level_1; }
+							else if (level_up_weapon[BANKROLL] < level_8) { level_up_weapon[BANKROLL]++; }
 							power_efficacy[i].color.w = 0; break;
 						case ITEM_LUCKY:
 							Bullet_Lucky();
 							power_efficacy[i].color.w = 0; break;
 						case WEAPON_BULLET:
-							serect_weapon = 6;
 							if (level_up_weapon[Y1] < level_8){level_up_weapon[Y1]++;}
 							power_efficacy[i].color.w = 0; break;
 						case BULLET_DAMAGE:
@@ -431,6 +470,12 @@ void choice_update()
 							power_efficacy[i].color.w = 0; break;
 						case CURSOR_BIG:
 							Cursor_big();
+							power_efficacy[i].color.w = 0; break;
+						case BULLET_INTERVAL:
+							Bullet_Interval();
+							power_efficacy[i].color.w = 0; break;
+						case HIT_BUCK:
+							Hit_Bag();
 							power_efficacy[i].color.w = 0; break;
 						}
 						break;
@@ -526,10 +571,6 @@ void randoms()
 	// かぶっていたら再抽選
 	for(;;)
 	{
-		if (random[0] == serect_weapon){ random[0] = rand() % EFFICACY_MAX; }
-		if (random[1] == serect_weapon){ random[1] = rand() % EFFICACY_MAX; }
-		if (random[2] == serect_weapon){ random[2] = rand() % EFFICACY_MAX; }
-
 		// [0]や[1]や[2]と一緒なら再抽選
 		if (random[0] == random[1])
 		{
