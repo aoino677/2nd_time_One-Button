@@ -14,6 +14,7 @@ void Bullet_Shell::attack(OBJ2D[])
 	s.y = scale.y + texSize.y;
 	for (int i = 0; i < ENEMY_NUMBER; i++)
 	{
+		if (enemy[i].hp <= 0) continue;
 		VECTOR2 enemy_begin = enemy[i].pos - VECTOR2{ enemy[i].scale.x * enemy[i].pivot.x, enemy[i].scale.y * enemy[i].pivot.y };//enemies[e]‚Ì¶ã
 		VECTOR2 enemy_size = { enemy[i].scale.x * enemy[i].texSize.x, enemy[i].scale.y * enemy[i].texSize.y };
 		if (Collision2D::OBB_vs_OBB(pos, s, {0,0}, 0, enemy_begin, enemy_size, {0,0}, 0))
