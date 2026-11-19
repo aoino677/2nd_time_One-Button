@@ -136,7 +136,21 @@ void EXP_update()
 				playerLength_EXP = { player.texSize.x * player.scale.x, player.texSize.y * player.scale.y };
 				if (Collision2D::rect_vs_rect({ posX_EXP, posY_EXP }, { LengthX_EXP, LengthY_EXP }, playerLeftUp_EXP, playerLength_EXP))
 				{
-					exp_count++;
+					switch (EXP[j].type)
+					{
+					case EXP_TYPE_1YEN:
+						exp_count += 1;
+						break;
+					case EXP_TYPE_2YEN:
+						exp_count += 2;
+						break;
+					case EXP_TYPE_4YEN:
+						exp_count += 4;
+						break;
+					case EXP_TYPE_8YEN:
+						exp_count += 8;
+						break;
+					}
 					EXP[j].color.w = 0;
 					color_w_EXP = 0.0f;
 				}

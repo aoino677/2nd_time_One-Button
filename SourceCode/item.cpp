@@ -299,28 +299,6 @@ void item_render()
         // 取得ゲージ
         primitive::rect(item[i].pos.x - 60, bar_pos_y, item_timer[i], 10, 0, 0, 0, 0, 0, 0, 1.0f);
     }
-
-    // 当たり判定確認用
-    primitive::rect(
-        posX, posY,
-        LengthX, LengthY,
-        0.0f, 0.0f,
-        0.0f,
-        0.0f, 0.0f, 1.0f, color_w,
-        false
-    );
-
-    primitive::rect(
-        playerLeftUp.x,
-        playerLeftUp.y,
-        playerLength.x,
-        playerLength.y,
-        0.0f, 0.0f,
-        0.0f,
-        0.0f, 1.0f, 0.0f, color_w,
-        false
-    );
-    
 }
 
 

@@ -32,7 +32,6 @@ float Y1_shot_timer = 0;
 
 int bullet_lay_count = 1;
 float bullet_lay_gap = ToRadian(7);//’e‚ÌŠÔŠu
-#define BULLET_SCALE (1.0f)
 float bullet_scale = BULLET_SCALE;//’e‚Ì‘å‚«‚³
 
 float Y1_damage = Y1_DAMAGE;
@@ -47,7 +46,8 @@ float shell_speed = SHELL_SPEED;
 float shell_scale = 2.5f;
 
 float beem_damage = BEEM_DAMAGE;
-float beem_speed = 4000;
+float beem_speed = BEEM_SPEED;
+float beem_accel = BEEM_ACCEL;
 float beem_scale = 1.5f;
 
 int left_shot_special = 3;
@@ -62,7 +62,6 @@ Sprite* sprBullet[SPR_BULLET_COUNT];
 OBJ2D player;
 std::vector<Bullet*> player_bullets;
 
-#define CAN_SHOT_SPECIAL_COUNT 3
 
 static const std::pair<VECTOR3, VECTOR3> afterimagecolors[IMAGE_COLOR_COUNT]
 {
@@ -228,7 +227,7 @@ void shot_bullet_Ingot()
 	b_ingot->texSize = { 64, 64 };
 	b_ingot->pos = { static_cast<float>(getCursorPosX()), -b_ingot->texSize.y };
 	float damage = ingot_damage + damage_up;
-		  damage *= Y1_damage / Y1_DAMAGE;
+		  //damage *= Y1_damage / Y1_DAMAGE;
 	b_ingot->attack_damage = static_cast<int>(damage);
 	b_ingot->accel_velocity.y = ingot_accel / system::FRAME_RATE;
 	b_ingot->velocity.y = ingot_speed / system::FRAME_RATE;
@@ -262,9 +261,9 @@ void shot_bullet_Beam()
 	b_beem->pos = { -b_beem->texSize.x, static_cast<float>(getCursorPosY()) };
 	b_beem->scale = { beem_scale, beem_scale };
 	float damage = beem_damage + damage_up;
-	damage *= Y1_damage / Y1_DAMAGE;
+	//damage *= Y1_damage / Y1_DAMAGE;
 	b_beem->attack_damage = static_cast<int>(damage);
-	b_beem->accel_velocity.x = 10 / system::FRAME_RATE;
+	b_beem->accel_velocity.x = beem_accel / system::FRAME_RATE;
 	b_beem->velocity.x = beem_speed / system::FRAME_RATE;
 	player_bullets.push_back(b_beem);
 }
@@ -279,7 +278,7 @@ void shot_bullet_Bankroll()
 	b_roll->scale = { bankrool_scale, bankrool_scale };
 	b_roll->angle = -ToRadian(90);
 	float damage = bankrool_damage;
-	damage *= Y1_damage / Y1_DAMAGE;
+	//damage *= Y1_damage / Y1_DAMAGE;
 	b_roll->attack_damage = static_cast<int>(damage);
 	b_roll->roll_speed = ToRadian(720);
 	b_roll->roll_max = ToRadian(100);
@@ -287,10 +286,9 @@ void shot_bullet_Bankroll()
 }
 void shot_bullet_Special()
 {
-	const int SPECIAL_DAMAGE = 30;
 	VECTOR2 cursor_pos = { static_cast<float>(getCursorPosX()), static_cast<float>(getCursorPosY()) };
 	bool check = false;
-	float bullet_radius = 96;
+	float bullet_radius = SPECIAL_RANGE;
 	for (int i = 0; i < ENEMY_NUMBER; i++)
 	{
 		VECTOR2 enemy_begin = enemy[i].pos - VECTOR2{ enemy[i].scale.x * enemy[i].pivot.x, enemy[i].scale.y * enemy[i].pivot.y };//enemy[e]‚Ì¶ã
@@ -305,7 +303,8 @@ void shot_bullet_Special()
 
 	if (check)
 	{
-		particles_update(cursor_pos.x, cursor_pos.y, bullet_radius, 0, 0, 0);
+		particles_update(cursor_pos.x, cursor_pos.y, bullet_radius, 
+			bullet_special_color.x, bullet_special_color.y, bullet_special_color.z);
 		left_shot_special--;
 	}
 

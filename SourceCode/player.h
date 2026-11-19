@@ -62,20 +62,30 @@ void shot_bullet_Special();
 
 const float PLAYER_EASING = 0.99f;
 
+#define BULLET_SCALE (1.0f)
+
 //#define RAPID_COOLDOWN (0.2f)
+
+//１円===================================================
+#define Y1_DAMAGE (1)
 #define BULLET_SPEED (4000.0f)
 
-//１円
-#define Y1_DAMAGE (1)
+//貝殻===================================================
+#define SHELL_DAMAGE (1)
+#define SHELL_SPEED (2000.0f)//1秒間当たりの進むスピード
 
-//貝殻
-#define SHELL_DAMAGE (1)//Y1_damageの倍率も乗っています。
-#define SHELL_SPEED (2000)//1秒間当たりの進むスピード
-
-//延べ棒
-#define INGOT_DAMAGE (18)//Y1_damageの倍率も乗っています。
+//延べ棒=================================================
+#define INGOT_DAMAGE (18)//Y1_damageの倍率は乗らなくなりました。
 #define INGOT_SPEED (100.0f)//1秒間当たりの進むスピード
 #define INGOT_ACCEL (100.0f)//1秒間当たりの加速度
 
-//一閃
-const float BEEM_DAMAGE = 15;
+//一閃===================================================
+#define BEEM_DAMAGE (18)//Y1_damageの倍率は乗らなくなりました。
+#define BEEM_SPEED (4000.0f)//1秒間当たりの進むスピード
+#define BEEM_ACCEL (10.0f)//1秒間当たりの加速度
+
+//スペシャル技===========================================
+#define CAN_SHOT_SPECIAL_COUNT 3
+#define SPECIAL_DAMAGE (30)
+#define SPECIAL_RANGE (200.0f)
+const VECTOR3 bullet_special_color = { 1.0f, 0.0f, 0.0f };

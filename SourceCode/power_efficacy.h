@@ -10,7 +10,7 @@
 #define LOST_ITEM_ACQUISITION_RANGE_UP (0.2f)	// 落とした物の取得範囲を広げる
 #define HP_MAX_UP					   (3)					// HPの最大量を上げる
 
-#define EFFICACY_MAX (12)								// エフェクトの個数
+#define EFFICACY_MAX (11)								// エフェクトの個数
 
 
 // 画像
