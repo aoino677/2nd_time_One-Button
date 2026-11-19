@@ -62,7 +62,6 @@ Sprite* sprBullet[SPR_BULLET_COUNT];
 OBJ2D player;
 std::vector<Bullet*> player_bullets;
 
-#define CAN_SHOT_SPECIAL_COUNT 3
 
 static const std::pair<VECTOR3, VECTOR3> afterimagecolors[IMAGE_COLOR_COUNT]
 {
@@ -290,7 +289,7 @@ void shot_bullet_Special()
 	const int SPECIAL_DAMAGE = 30;
 	VECTOR2 cursor_pos = { static_cast<float>(getCursorPosX()), static_cast<float>(getCursorPosY()) };
 	bool check = false;
-	float bullet_radius = 96;
+	float bullet_radius = SPECIAL_RANGE;
 	for (int i = 0; i < ENEMY_NUMBER; i++)
 	{
 		VECTOR2 enemy_begin = enemy[i].pos - VECTOR2{ enemy[i].scale.x * enemy[i].pivot.x, enemy[i].scale.y * enemy[i].pivot.y };//enemy[e]‚Ì¶ã
@@ -305,7 +304,8 @@ void shot_bullet_Special()
 
 	if (check)
 	{
-		particles_update(cursor_pos.x, cursor_pos.y, bullet_radius, 0, 0, 0);
+		particles_update(cursor_pos.x, cursor_pos.y, bullet_radius, 
+			bullet_special_color.x, bullet_special_color.y, bullet_special_color.z);
 		left_shot_special--;
 	}
 
