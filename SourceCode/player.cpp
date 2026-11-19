@@ -63,11 +63,11 @@ static const std::pair<VECTOR3, VECTOR3> afterimagecolors[IMAGE_COLOR_COUNT]
 	//{{0.2f, 0.8f, 0.0f},{1.0f, 1.0f, 1.0f}} ,	// Green to White
 	//{{0.2f, 0.7f, 1.0f},{1.0f, 0.9f, 0.75f}} ,	// Blue to Cream Yellow
 	//{{0.8f, 0.8f, 0.8f},{0.7f, 0.5f, 1.0f}} ,	// Gray to Purple
-	{{1, 1, 1},{1.0f, 0.5f, 0.75f}} ,		// Pink to Blue
-	{{1, 1, 1},{1.0f, 0.75f, 0.0f}} ,	// Yellow to Red
-	{{1, 1, 1},{0.2f, 0.8f, 0.0f}} ,	// Green to White
-	{{1, 1, 1},{0.2f, 0.7f, 1.0f}} ,	// Blue to Cream Yellow
-	{{1, 1, 1},{0.8f, 0.8f, 0.8f}} ,	// Gray to Purple
+	{{1, 1, 1},{1.0f, 0.5f, 0.75f}} ,	// Pink
+	{{1, 1, 1},{1.0f, 0.75f, 0.0f}} ,	// Yellow
+	{{1, 1, 1},{0.2f, 0.8f, 0.0f}} ,	// Green
+	{{1, 1, 1},{0.2f, 0.7f, 1.0f}} ,	// Blue
+	{{1, 1, 1},{0.7f, 0.5f, 1.0f}} ,	// Purple
 };
 
 #define Y1_AFTERIMAGE_ALIVETIME (0.5f)
@@ -223,8 +223,11 @@ void shot_bullet_Shell()
 	VECTOR2 cursorPos ={ static_cast<float>(getCursorPosX()),static_cast<float>(getCursorPosY()) };
 	b_shell->pos = player.pos;
 	auto vec = cursorPos - player.pos;
+	//float seconds = 0.3f * system::FRAME_RATE;
+	//float gravity = 100 / system::FRAME_RATE;
+	b_shell->velocity = vec2Normalize(vec)* shell_speed / system::FRAME_RATE;
 	b_shell->angle = atan2f(vec.y, vec.x);
-	b_shell->velocity = vec2Normalize(vec) * shell_speed / system::FRAME_RATE;
+	//b_shell->accel_velocity.y = 100 / system::FRAME_RATE;
 	b_shell->spr = sprBullet[3];
 	b_shell->texSize = { 64, 16 };
 	b_shell->scale = { shell_scale, shell_scale };

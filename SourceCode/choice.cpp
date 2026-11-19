@@ -3,6 +3,7 @@
 #include "power_efficacy.h"
 #include "player.h"
 #include "cursor_main.h"
+#include "Level.h"
 #include <ctime>
 #include <stdlib.h>
 
@@ -315,6 +316,8 @@ void choice_update()
 							power_efficacy[i].color.w = 0 ;break;
 						case WEAPON_SHELL:
 							serect_weapon = 1;
+							if (level_up_weapon[SHELL] == 0)	{level_up_weapon[SHELL] = level_1;}
+							else if (level_up_weapon[SHELL] < level_8){level_up_weapon[SHELL]++;}
 							power_efficacy[i].color.w = 0; break;
 						case WEAPON_BEAM:
 							serect_weapon = 2;
@@ -330,6 +333,7 @@ void choice_update()
 							power_efficacy[i].color.w = 0; break;
 						case WEAPON_BULLET:
 							serect_weapon = 6;
+							if (level_up_weapon[Y1] < level_8) { level_up_weapon[Y1]++; }
 							power_efficacy[i].color.w = 0; break;
 						case BULLET_DAMAGE:
 							Bullet_Damage();		
@@ -356,6 +360,8 @@ void choice_update()
 							power_efficacy[i].color.w = 0; break;
 						case WEAPON_SHELL:
 							serect_weapon = 1;
+							if (level_up_weapon[SHELL] == 0) { level_up_weapon[SHELL] = level_1; }
+							else if (level_up_weapon[SHELL] < level_8) { level_up_weapon[SHELL]++; }
 							power_efficacy[i].color.w = 0; break;
 						case WEAPON_BEAM:
 							serect_weapon = 2;
@@ -371,6 +377,7 @@ void choice_update()
 							power_efficacy[i].color.w = 0; break;
 						case WEAPON_BULLET:
 							serect_weapon = 6;
+							if (level_up_weapon[Y1] < level_8) { level_up_weapon[Y1]++; }
 							power_efficacy[i].color.w = 0; break;
 						case BULLET_DAMAGE:
 							Bullet_Damage();
@@ -396,6 +403,8 @@ void choice_update()
 							HP_Max();
 							power_efficacy[i].color.w = 0; break;
 						case WEAPON_SHELL:
+							if (level_up_weapon[SHELL] == 0) { level_up_weapon[SHELL] = level_1; }
+							else if (level_up_weapon[SHELL] < level_8) { level_up_weapon[SHELL]++; }
 							serect_weapon = 1;
 							power_efficacy[i].color.w = 0; break;
 						case WEAPON_BEAM:
@@ -412,6 +421,7 @@ void choice_update()
 							power_efficacy[i].color.w = 0; break;
 						case WEAPON_BULLET:
 							serect_weapon = 6;
+							if (level_up_weapon[Y1] < level_8){level_up_weapon[Y1]++;}
 							power_efficacy[i].color.w = 0; break;
 						case BULLET_DAMAGE:
 							Bullet_Damage();
@@ -481,6 +491,9 @@ void choice_render()
 				1, 1, 1, power_efficacy[i].color.w
 			);
 		}
+		debug::setString("SHELL LEVEL:%d", level_up_weapon[SHELL]);
+		debug::setString("SHELL DAMAGE:%f", shell_damage);
+		debug::setString("SHELL SCALE:%f", shell_scale);
 	}
 }
 

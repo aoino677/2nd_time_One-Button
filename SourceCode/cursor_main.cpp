@@ -102,6 +102,10 @@ void cursor_main_update()
         cursor_main_posX = (float)getCursorPosX();
         cursor_main_posY = (float)getCursorPosY();
 
+        if (timer > timer_down)
+        {
+            timer = timer_down;
+        }
         for (int i = 0; i < ENEMY_NUMBER; i++)
         {
             // 敵の当たり判定
@@ -197,6 +201,8 @@ void cursor_main_render()
         ToRadian(0),
         cursor_main.color.x, cursor_main.color.y, cursor_main.color.z, cursor_main.color.w
     );
+
+
 }
 
 // カーソルを大きくして、その分当たり判定も大きくする
