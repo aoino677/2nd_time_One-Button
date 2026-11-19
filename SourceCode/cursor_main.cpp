@@ -164,13 +164,13 @@ void cursor_main_update()
                     else if (timer_ingot == 0) { timer_ingot = timet_down_ingot; }
                     else { timer_ingot--; }
                 }
-                if (serect_weapon == 4)
+                if (serect_weapon == 2)
                 {
                     if (timer_beam == timer_down_beam) { shot_bullet_Beam(); timer_beam--; }
                     else if (timer_beam == 0) { timer_beam = timer_down_beam; }
                     else { timer_beam--; }
                 }
-                if (serect_weapon == 5)
+                if (serect_weapon == 4)
                 {
                     if (timer_bankroll == timer_down_bankroll) { shot_bullet_Bankroll(); timer_bankroll--; }
                     else if (timer_bankroll == 0) { timer_bankroll = timer_down_bankroll; }
