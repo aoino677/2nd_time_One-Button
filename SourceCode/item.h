@@ -19,4 +19,5 @@ void item_deinit();
 // “G‚ª€–S‚µ‚½‚Æ‚«‚ÉŒÄ‚Ño‚·
 void item_drop(int enemy_index);
 
+extern bool fever_blue;
 extern int lucky;
