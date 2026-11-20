@@ -294,22 +294,22 @@ void choice_update()
 			float top = buttonY - choiceButton[i].pivot.y * choiceButton[i].scale.y;
 			float bottom = buttonY + (choiceButton[i].texSize.y - choiceButton[i].pivot.y) * choiceButton[i].scale.y;
 
-		/*	float buttonY1 = power_efficacy[i].pos.y + choice_effect_y;
-			float left1 = power_efficacy[i].pos.x - power_efficacy[i].pivot.x * power_efficacy[i].scale.x;
-			float right1 = power_efficacy[i].pos.x + (power_efficacy[i].texSize.x - power_efficacy[i].pivot.x) * power_efficacy[i].scale.x;
-			float top1 = buttonY1 - power_efficacy[i].pivot.y * power_efficacy[i].scale.y;
-			float bottom1 = buttonY1 + (power_efficacy[i].texSize.y - power_efficacy[i].pivot.y) * power_efficacy[i].scale.y;*/
+			float buttonY1 = power_efficacy[random[i]].pos.y + choice_effect_y;
+			float left1 = power_efficacy[random[i]].pos.x - power_efficacy[random[i]].pivot.x * power_efficacy[random[i]].scale.x;
+			float right1 = power_efficacy[random[i]].pos.x + (power_efficacy[random[i]].texSize.x - power_efficacy[random[i]].pivot.x) * power_efficacy[random[i]].scale.x;
+			float top1 = buttonY1 - power_efficacy[random[i]].pivot.y * power_efficacy[random[i]].scale.y;
+			float bottom1 = buttonY1 + (power_efficacy[random[i]].texSize.y - power_efficacy[random[i]].pivot.y) * power_efficacy[random[i]].scale.y;
 			
 			//----------------------------------
 			// ポーズボタンの判定
 			//----------------------------------
-			if (mouseX >= left &&mouseX <= right &&mouseY >= top &&mouseY <= bottom /*|| 
-				mouseX >= left1 && mouseX <= right1 && mouseY >= top1 && mouseY <= bottom1*/)
+			if (mouseX >= left &&mouseX <= right &&mouseY >= top &&mouseY <= bottom || 
+				mouseX >= left1 && mouseX <= right1 && mouseY >= top1 && mouseY <= bottom1)
 			{
 				choiceButton[i].scale.x = CHOICE_SCALE + 0.1f;
 				choiceButton[i].scale.y = CHOICE_SCALE + 0.1f;
-				/*power_efficacy[i].scale.x = POWER_EFFICACY_SCALE + 0.1f;
-				power_efficacy[i].scale.y = POWER_EFFICACY_SCALE + 0.1f;*/
+				power_efficacy[random[i]].scale.x = POWER_EFFICACY_SCALE + 0.1f;
+				power_efficacy[random[i]].scale.y = POWER_EFFICACY_SCALE + 0.1f;
 				if (TRG(0) & PAD_START)
 				{
 					switch (i)
@@ -464,8 +464,8 @@ void choice_update()
 			{
 				choiceButton[i].scale.x = CHOICE_SCALE;
 				choiceButton[i].scale.y = CHOICE_SCALE;
-				/*power_efficacy[i].scale.x = POWER_EFFICACY_SCALE;
-				power_efficacy[i].scale.y = POWER_EFFICACY_SCALE;*/
+				power_efficacy[random[i]].scale.x = POWER_EFFICACY_SCALE;
+				power_efficacy[random[i]].scale.y = POWER_EFFICACY_SCALE;
 			}
 		}
 		break;
