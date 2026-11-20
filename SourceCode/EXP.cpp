@@ -5,6 +5,7 @@
 #include <vector>
 #include "Collision2D.h"
 #include "power_efficacy.h"
+#include "effect_burst.h"
 
 int EXP_timer = 0;
 int EXP_state = 0;
@@ -266,8 +267,14 @@ void EXP_levelUp_ALL()
 {
 	for (int i = 0; i < EXP_COUNT; i++)
 	{
+		float range = 15;
 		if (EXP[i].color.w != 1.0f)continue;
-		if (EXP[i].type < EXP_SPR_COUNT - 1) { EXP[i].type++; };
+		if (EXP[i].type < EXP_SPR_COUNT - 1)
+		{
+			EXP[i].type++;
+			particles_update
+			(EXP[i].pos.x, EXP[i].pos.y, range, 0, 0, 0);
+		};
 	}
 
 }
