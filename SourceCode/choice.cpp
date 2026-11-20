@@ -11,6 +11,8 @@ OBJ2D choiceButton[CHOICE_MAX];
 Sprite* sprchoicebar;
 OBJ2D power_efficacy[EFFICACY_MAX]; // 効能の個数
 Sprite* sprpower_efficacy[EFFICACY_MAX];
+OBJ2D levelup;
+Sprite* sprlevelup;
 
 int choice_state = 0;
 int choice_timer = 0;
@@ -42,6 +44,8 @@ void choice_init()
 	sprpower_efficacy[8] = sprite_load(L"./Data/images/card_range.png");
 	sprpower_efficacy[9] = sprite_load(L"./Data/images/card_rapid.png");
 	sprpower_efficacy[10] = sprite_load(L"./Data/images/card_knokback.png");
+	// 「レベルアップ！」の画像読み込み
+	sprlevelup = sprite_load(L"./Data/Images/levelUP.png");
 
 	// パラメーターの設定
 	for (int i = 0; i < CHOICE_MAX; i++)
@@ -69,6 +73,12 @@ void choice_init()
 		power_efficacy[i].pos = choiceButton[1].pos;
 		power_efficacy[i].pos = choiceButton[2].pos;
 	}
+	levelup = {};
+	levelup.pos			= { LEVELUP_POS_X , LEVELUP_POS_Y };
+	levelup.scale		= { static_cast<float>(LEVELUP_SCALE), static_cast<float>(LEVELUP_SCALE) };
+	levelup.texSize		= { static_cast<float>(LEVELUP_TEX_W), static_cast<float>(LEVELUP_TEX_H) };
+	levelup.pivot		= { static_cast<float>(LEVELUP_PIVOT_X), static_cast<float>(LEVELUP_PIVOT_Y) };
+	levelup.color		= { 1.0f, 1.0f, 1.0f, 1.0f };
 }
 
 void choice_update_pause()
@@ -122,9 +132,9 @@ void choice_update()
 		// 背景を徐々に暗くする
 		choice_effect_alpha += 0.04f;
 
-		if (choice_effect_alpha >= 0.8f)
+		if (choice_effect_alpha >= 0.9f)
 		{
-			choice_effect_alpha = 0.8f;
+			choice_effect_alpha = 0.9f;
 		}
 
 		// ボタンを下から上へ移動
@@ -485,7 +495,7 @@ void choice_render()
 			static_cast<float>(SCREEN_H),
 			0.0f, 0.0f,
 			0.0f,
-			0.0f, 0.0f, 0.0f,
+			1.00f, 0.78f, 0.55f,
 			choice_effect_alpha
 		);
 		for (int i = 0; i < CHOICE_MAX; i++)
@@ -514,6 +524,16 @@ void choice_render()
 				1, 1, 1, power_efficacy[i].color.w
 			);
 		}
+		sprite_render(
+			sprlevelup,
+			levelup.pos.x, levelup.pos.y,
+			levelup.scale.x, levelup.scale.y,
+			0, 0,
+			levelup.texSize.x, levelup.texSize.y,
+			levelup.pivot.x, levelup.pivot.y,
+			ToRadian(0),
+			1.0f, 1.0f, 1.0f, 1.0f
+		);
 	}
 }
 

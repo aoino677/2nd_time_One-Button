@@ -222,25 +222,28 @@ void enemy_update()
 				}
 				continue;
 			}
-
-			//防衛ライン
-			if (enemy[i].pos.x > enemy_border[i] || enemy[i].pos.x > 600)
+			if (fever_blue == false)
 			{
-				//回転
-				if (enemy[i].type == ENEMY_TYPE_BOLL)
-					enemy[i].angle -= 0.06;
-				if (enemy[i].type == BOSS_TYPE_CAR)
-					tire_angle[i] -= 0.06;
-				
-				enemy_move(i);
-			}
-			else
-			{
-				if (enemy[i].type != ENEMY_TYPE_BOBM)
+				//防衛ライン
+				if (enemy[i].pos.x > enemy_border[i] || enemy[i].pos.x > 600)
 				{
-					enemy_attack_action(i);
+					//回転
+					if (enemy[i].type == ENEMY_TYPE_BOLL)
+						enemy[i].angle -= 0.06;
+					if (enemy[i].type == BOSS_TYPE_CAR)
+						tire_angle[i] -= 0.06;
+
+					enemy_move(i);
+				}
+				else
+				{
+					if (enemy[i].type != ENEMY_TYPE_BOBM)
+					{
+						enemy_attack_action(i);
+					}
 				}
 			}
+			
 
 			//ダメージ時の赤色点滅
 			enemy_damage_effect(i);
@@ -255,36 +258,40 @@ void enemy_update()
 		enemy_boss_timer++;
 		crayon_spawn_timer++;
 
-		//ボスリスポーン
-		if (enemy_boss_timer >=1200)
+		if (fever_blue == false)
 		{
-			for (int i = enemy_max; i < ENEMY_NUMBER; i++)
+			//ボスリスポーン
+			if (enemy_boss_timer >= 1200)
 			{
-				if (enemy[i].hp <= 0)
+				for (int i = enemy_max; i < ENEMY_NUMBER; i++)
 				{
-					respawn = true;
-					enemy_boss_respawn(i);
-					enemy_boss_timer = 0;
-					break;
+					if (enemy[i].hp <= 0)
+					{
+						respawn = true;
+						enemy_boss_respawn(i);
+						enemy_boss_timer = 0;
+						break;
+					}
 				}
 			}
-		}
-		if (respawn == true)
-		{
-			effect_boss_respawn();
-			etimer--;
-		}
-		
-		//クレヨンリスポーン
-		if (crayon_spawn_timer >= 200)
-		{
-			enemy_crayon_respawn();
-			crayon_spawn_timer = 0;
-		}
-		
-		//時間経過でパワーアップ
-		enemy_powerup();
+			if (respawn == true)
+			{
+				effect_boss_respawn();
+				etimer--;
+			}
 
+			//クレヨンリスポーン
+			if (crayon_spawn_timer >= 200)
+			{
+				enemy_crayon_respawn();
+				crayon_spawn_timer = 0;
+			}
+
+			//時間経過でパワーアップ
+			enemy_powerup();
+
+		}
+		
 		break;
 	}
 }
@@ -312,108 +319,116 @@ void enemy_setting(int i, int hp, int attack, float speed, float a, float b, flo
 //クレヨンリスポーン
 void enemy_crayon_respawn()
 {
-	int squad_max = 5;
-	int spawned_count = 0;
-
-	for (int i = enemy_max; i < ENEMY_NUMBER; i++)
+	if (fever_blue == false)
 	{
-		if (enemy[i].hp <= 0)
+		int squad_max = 5;
+		int spawned_count = 0;
+
+		for (int i = enemy_max; i < ENEMY_NUMBER; i++)
 		{
-			int idx = i;
-			bool is_bomb = (rand() % 100 < 5);
-
-			if (is_bomb)
+			if (enemy[i].hp <= 0)
 			{
-				enemy[idx].type = ENEMY_TYPE_BOBM;
-				enemy_sprite[idx] = sprEnemyCrayon;
-				enemy_setting(i, 3, 1, 1, 64, 160, 32, 80, 1, 1, 0);
-				enemy[idx].color = { 1.0f, 0.3f, 0.3f, 1.0f };
-			}
-			else
-			{
-				enemy[idx].type = ENEMY_TYPE_CRAYON;
-				enemy_sprite[idx] = sprEnemyCrayon;
-				enemy_setting(i, 3, 1, 1, 64, 160, 32, 80, 1, 1, 0);
-				enemy[idx].color = { 1.0f, 1.0f, 1.0f, 1.0f };
-			}
+				int idx = i;
+				bool is_bomb = (rand() % 100 < 5);
 
-			enemy_type_render[idx] = ENEMY;
+				if (is_bomb)
+				{
+					enemy[idx].type = ENEMY_TYPE_BOBM;
+					enemy_sprite[idx] = sprEnemyCrayon;
+					enemy_setting(i, 3, 1, 1, 64, 160, 32, 80, 1, 1, 0);
+					enemy[idx].color = { 1.0f, 0.3f, 0.3f, 1.0f };
+				}
+				else
+				{
+					enemy[idx].type = ENEMY_TYPE_CRAYON;
+					enemy_sprite[idx] = sprEnemyCrayon;
+					enemy_setting(i, 3, 1, 1, 64, 160, 32, 80, 1, 1, 0);
+					enemy[idx].color = { 1.0f, 1.0f, 1.0f, 1.0f };
+				}
+
+				enemy_type_render[idx] = ENEMY;
 
 
-			enemy[idx].pos.x = SCREEN_W + 180.0f - (spawned_count * 20.0f);
-			enemy[idx].pos.y = 420.0f + (spawned_count * 150.0f);
+				enemy[idx].pos.x = SCREEN_W + 180.0f - (spawned_count * 20.0f);
+				enemy[idx].pos.y = 420.0f + (spawned_count * 150.0f);
 
-			enemy_prev_hp[idx] = enemy[idx].hp;
-			spawned_count++;
+				enemy_prev_hp[idx] = enemy[idx].hp;
+				spawned_count++;
 
-			if (spawned_count >= squad_max)
-			{
-				break;
+				if (spawned_count >= squad_max)
+				{
+					break;
+				}
 			}
 		}
 	}
+
 }
 
 //敵設定
 void enemy_respawn(int i)
 {
-	enemy_type_render[i] = ENEMY;
-
-	int enemy_random = rand() % 100;
-
-	/*if (enemy_random <= 25)
+	if (fever_blue == false)
 	{
-		enemy[i].type = ENEMY_TYPE_BALLOON;
-		enemy_sprite[i] = sprEnemyCrayon;
-		enemy_setting(i, 1, 1, 2, 64, 160, 32, 80, 1, 1, 0);
-	}*/
+		enemy_type_render[i] = ENEMY;
+
+		int enemy_random = rand() % 100;
+
+		/*if (enemy_random <= 25)
+		{
+			enemy[i].type = ENEMY_TYPE_BALLOON;
+			enemy_sprite[i] = sprEnemyCrayon;
+			enemy_setting(i, 1, 1, 2, 64, 160, 32, 80, 1, 1, 0);
+		}*/
+
+		if (enemy_random < 25)
+		{
+			enemy[i].type = ENEMY_TYPE_BOLL;
+			enemy_sprite[i] = sprEnemyBall;
+			enemy_setting(i, 3, 1, 5, 40, 40, 20, 20, 2, 2, 0);
+		}
+		else if (enemy_random >= 25 && enemy_random < 50)
+		{
+			enemy[i].type = ENEMY_TYPE_BALLOON;
+			enemy_sprite[i] = sprEnemyCrayon;
+			enemy_setting(i, 1, 1, 2, 64, 160, 32, 80, 1, 1, 0);
+		}
+		else if (enemy_random >= 50 && enemy_random < 75)
+		{
+			enemy[i].type = ENEMY_TYPE_ROCKET;
+			enemy_sprite[i] = sprEnemyRocket;
+			enemy_setting(i, 1, 1, 3, 160, 40, 80, 20, 1, 1, 0);
+		}
+		else if (enemy_random >= 75)
+		{
+			enemy[i].type = ENEMY_TYPE_BOBM;
+			enemy_sprite[i] = sprEnemyCrayon;
+			enemy_setting(i, 3, 1, 1, 64, 160, 32, 80, 1, 1, 0);
+			enemy[i].color = { 1.0f, 0.3f, 0.3f, 1.0f };
+		}
+
+		//出現場所
+		if (enemy[i].type == ENEMY_TYPE_BALLOON)
+		{
+			enemy[i].pos.x = rand() % 400 + 1300;
+			enemy[i].pos.y = -50.0f;
+			enemy_target_y[i] = (float)(rand() % 400 + 600);
+		}
+		else if (enemy[i].type == ENEMY_TYPE_ROCKET)
+		{
+			enemy[i].pos.x = enemy[i].pos.x = SCREEN_W + 50.0f;
+			enemy[i].pos.y = rand() % 200 + 50;
+			enemy_target_y[i] = (float)(rand() % 400 + 600);
+		}
+		else
+		{
+			enemy[i].pos.x = SCREEN_W + 100.0f;
+			enemy[i].pos.y = rand() % 724 + 340;
+		}
+
+		enemy_prev_hp[i] = enemy[i].hp;
+	}
 	
-	if (enemy_random < 25)
-	{
-		enemy[i].type = ENEMY_TYPE_BOLL;
-		enemy_sprite[i] = sprEnemyBall;
-		enemy_setting(i, 3, 1, 5, 40, 40, 20, 20, 2, 2,0);
-	}
-	else if (enemy_random >= 25 && enemy_random < 50)
-	{
-		enemy[i].type = ENEMY_TYPE_BALLOON;
-		enemy_sprite[i] = sprEnemyCrayon;
-		enemy_setting(i, 1, 1, 2, 64, 160, 32, 80, 1, 1,0);
-	}
-	else if (enemy_random >= 50 && enemy_random < 75)
-	{
-		enemy[i].type = ENEMY_TYPE_ROCKET;
-		enemy_sprite[i] = sprEnemyRocket;
-		enemy_setting(i, 1, 1, 3, 160, 40, 80, 20, 1, 1,0);
-	}
-	else if (enemy_random >= 75)
-	{
-		enemy[i].type = ENEMY_TYPE_BOBM;
-		enemy_sprite[i] = sprEnemyCrayon;
-		enemy_setting(i, 3, 1, 1, 64, 160, 32, 80, 1, 1,0);
-		enemy[i].color = { 1.0f, 0.3f, 0.3f, 1.0f };
-	}
-
-	//出現場所
-	if (enemy[i].type == ENEMY_TYPE_BALLOON)
-	{
-		enemy[i].pos.x = rand() % 400 + 1300;
-		enemy[i].pos.y = -50.0f;
-		enemy_target_y[i] = (float)(rand() % 400 + 600);
-	}
-	else if (enemy[i].type == ENEMY_TYPE_ROCKET)
-	{
-		enemy[i].pos.x = enemy[i].pos.x = SCREEN_W + 50.0f;
-		enemy[i].pos.y = rand() % 200 + 50;
-		enemy_target_y[i] = (float)(rand() % 400 + 600);
-	}
-	else
-	{
-		enemy[i].pos.x = SCREEN_W + 100.0f;
-		enemy[i].pos.y = rand() % 724 + 340;
-	}
-
-	enemy_prev_hp[i] = enemy[i].hp;
 }
 
 //ボスのリスポーン
@@ -422,154 +437,160 @@ void enemy_boss_respawn(int i)
 	enemy_type_render[i] = BOSS;
 	enemy_sprite[i] = sprEnemyCrayon;
 	enemy[i].color = { 1, 1, 1, 1 };
-
-	switch (boss_state)
+	if (fever_blue == false)
 	{
-	//case 0:
-	//	enemy[i].type = BOSS_TYPE_ROBOT;
-	//	enemy_setting(i, 10000, 1, 0.3, 64, 160, 32, 80, 3, 3, 0);
-	//	//boss_state++;
+		switch (boss_state)
+		{
+			//case 0:
+			//	enemy[i].type = BOSS_TYPE_ROBOT;
+			//	enemy_setting(i, 10000, 1, 0.3, 64, 160, 32, 80, 3, 3, 0);
+			//	//boss_state++;
 
-	case 0:
-		enemy[i].type = BOSS_TYPE_CRAYON;
-		enemy_sprite[i] = sprEnemyCrayon;
-		enemy_setting(i, 700, 1, 0.5, 64, 160,32,80, 3, 3,0);
-		boss_state++;
-		break;
-	case 1:
-		enemy[i].type = BOSS_TYPE_CAR;
-		enemy_sprite[i] = sprEnemyCar;
-		enemy_setting(i, 100, 1, 0, 128, 80, 64, 40, 2.5, 2.5,0);
-		boss_state++;
-		break;
-	case 2:
-		enemy[i].type = BOSS_TYPE_DOLL;
-		enemy_setting(i, 100, 1, 2, 64, 160, 32, 80, 3, 3,0);
-		boss_state++;
-		break;
-	case 3:
-		enemy[i].type = BOSS_TYPE_ROBOT;
-		enemy_setting(i, 100, 1, 2, 64, 160, 32, 80, 3, 3,0);
-		boss_state++;
-		break;
-	case 4:
-		enemy[i].type = BOSS_TYPE_HORSE;
-		enemy_setting(i, 100, 1, 2, 64, 160, 32, 80, 3, 3,0);
-		boss_state++;
-		break;
-	case 5:
-		enemy[i].type = BOSS_TYPE_PENCIL;
-		enemy_setting(i, 100, 1, 2, 64, 160, 32, 80, 3, 3,0);
-		boss_state++;
-		break;
-	case 6:
-		enemy[i].type = BOSS_TYPE_EXCAVATOR;
-		enemy_setting(i, 100, 1, 2, 64, 160, 32, 80, 3, 3,0);
-		break;
+		case 0:
+			enemy[i].type = BOSS_TYPE_CRAYON;
+			enemy_sprite[i] = sprEnemyCrayon;
+			enemy_setting(i, 700, 1, 0.5, 64, 160, 32, 80, 3, 3, 0);
+			boss_state++;
+			break;
+		case 1:
+			enemy[i].type = BOSS_TYPE_CAR;
+			enemy_sprite[i] = sprEnemyCar;
+			enemy_setting(i, 100, 1, 0, 128, 80, 64, 40, 2.5, 2.5, 0);
+			boss_state++;
+			break;
+		case 2:
+			enemy[i].type = BOSS_TYPE_DOLL;
+			enemy_setting(i, 100, 1, 2, 64, 160, 32, 80, 3, 3, 0);
+			boss_state++;
+			break;
+		case 3:
+			enemy[i].type = BOSS_TYPE_ROBOT;
+			enemy_setting(i, 100, 1, 2, 64, 160, 32, 80, 3, 3, 0);
+			boss_state++;
+			break;
+		case 4:
+			enemy[i].type = BOSS_TYPE_HORSE;
+			enemy_setting(i, 100, 1, 2, 64, 160, 32, 80, 3, 3, 0);
+			boss_state++;
+			break;
+		case 5:
+			enemy[i].type = BOSS_TYPE_PENCIL;
+			enemy_setting(i, 100, 1, 2, 64, 160, 32, 80, 3, 3, 0);
+			boss_state++;
+			break;
+		case 6:
+			enemy[i].type = BOSS_TYPE_EXCAVATOR;
+			enemy_setting(i, 100, 1, 2, 64, 160, 32, 80, 3, 3, 0);
+			break;
+		}
+
+		//リスポーン
+		if (enemy[i].type == BOSS_TYPE_ROBOT)
+		{
+			enemy[i].pos.x = SCREEN_W - 100.0f;
+			enemy[i].pos.y = -300.0f;
+		}
+		else
+		{
+			enemy[i].pos.x = SCREEN_W + 200.0f;
+			enemy[i].pos.y = SCREEN_H * 0.5f;
+		}
+
+		enemy_prev_hp[i] = enemy[i].hp;
 	}
 
-	//リスポーン
-	if (enemy[i].type == BOSS_TYPE_ROBOT)
-	{
-		enemy[i].pos.x = SCREEN_W - 100.0f;
-		enemy[i].pos.y = -300.0f;
-	}
-	else
-	{
-		enemy[i].pos.x = SCREEN_W + 200.0f;
-		enemy[i].pos.y = SCREEN_H * 0.5f;
-	}
-
-	enemy_prev_hp[i] = enemy[i].hp;
 }
 
 //敵の進み方
 void enemy_move(int i)
 {
 	enemy_border[i] = 270 + (SCREEN_H - enemy[i].pos.y) * 0.3584f / 0.9336f;
-
-	if (enemy[i].type == ENEMY_TYPE_BOLL ||
-		enemy[i].type == ENEMY_TYPE_BOBM ||
-		enemy[i].type == ENEMY_TYPE_ROCKET ||
-		enemy[i].type == BOSS_TYPE_CRAYON ||
-		enemy[i].type == BOSS_TYPE_DOLL ||
-		enemy[i].type == BOSS_TYPE_HORSE ||
-		enemy[i].type == BOSS_TYPE_PENCIL ||
-		enemy[i].type == ENEMY_TYPE_CRAYON)
+	if (fever_blue == false)
 	{
-		enemy[i].pos.x -= enemy[i].moveSpeed;
-	}
-	else if (enemy[i].type == ENEMY_TYPE_ROCKET)
-	{
-		enemy_border[i] = 300;
-		enemy[i].pos.x -= enemy[i].moveSpeed;
-	}
-	else if (enemy[i].type == BOSS_TYPE_CAR)
-	{
-		enemy[i].pos.x -= enemy[i].moveSpeed;
-		if (enemy[i].pos.x <= 1600 && enemy[i].pos.x >= 1400)
+		if (enemy[i].type == ENEMY_TYPE_BOLL ||
+			enemy[i].type == ENEMY_TYPE_BOBM ||
+			enemy[i].type == ENEMY_TYPE_ROCKET ||
+			enemy[i].type == BOSS_TYPE_CRAYON ||
+			enemy[i].type == BOSS_TYPE_DOLL ||
+			enemy[i].type == BOSS_TYPE_HORSE ||
+			enemy[i].type == BOSS_TYPE_PENCIL ||
+			enemy[i].type == ENEMY_TYPE_CRAYON)
 		{
-			enemy[i].pos.x -= enemy[i].moveSpeed * 3;
-			enemy[i].pos.y += enemy[i].moveSpeed * 8;
-		}
-		else if (enemy[i].pos.x <= 1200 && enemy[i].pos.x >= 1000)
-		{
-			enemy[i].pos.x -= enemy[i].moveSpeed * 3;
-			enemy[i].pos.y -= enemy[i].moveSpeed * 8;
-		}
-		else if (enemy[i].pos.x <= 800 && enemy[i].pos.x >= 600)
-		{
-			enemy[i].pos.x -= enemy[i].moveSpeed * 3;
-			enemy[i].pos.y += enemy[i].moveSpeed * 8;
-		}
-		else
 			enemy[i].pos.x -= enemy[i].moveSpeed;
-    }
-	else if (enemy[i].type == BOSS_TYPE_ROBOT)
-	{
-		if (enemy[i].pos.y < 500)
-		{
-			float drop_speed = 2.0f + (enemy_anim_timer[i] * 0.3f);
-			enemy[i].pos.y += drop_speed;
-			robot_wait_timer = 120;
 		}
-		else
+		else if (enemy[i].type == ENEMY_TYPE_ROCKET)
 		{
-			//しばらく待機する
-			if (robot_wait_timer > 0)
-				robot_wait_timer--; 
+			enemy_border[i] = 300;
+			enemy[i].pos.x -= enemy[i].moveSpeed;
+		}
+		else if (enemy[i].type == BOSS_TYPE_CAR)
+		{
+			enemy[i].pos.x -= enemy[i].moveSpeed;
+			if (enemy[i].pos.x <= 1600 && enemy[i].pos.x >= 1400)
+			{
+				enemy[i].pos.x -= enemy[i].moveSpeed * 3;
+				enemy[i].pos.y += enemy[i].moveSpeed * 8;
+			}
+			else if (enemy[i].pos.x <= 1200 && enemy[i].pos.x >= 1000)
+			{
+				enemy[i].pos.x -= enemy[i].moveSpeed * 3;
+				enemy[i].pos.y -= enemy[i].moveSpeed * 8;
+			}
+			else if (enemy[i].pos.x <= 800 && enemy[i].pos.x >= 600)
+			{
+				enemy[i].pos.x -= enemy[i].moveSpeed * 3;
+				enemy[i].pos.y += enemy[i].moveSpeed * 8;
+			}
 			else
 				enemy[i].pos.x -= enemy[i].moveSpeed;
 		}
-	}
-	else if (enemy[i].type == ENEMY_TYPE_BALLOON)
-	{
-		if (enemy[i].pos.y < enemy_target_y[i])
+		else if (enemy[i].type == BOSS_TYPE_ROBOT)
 		{
-			swing_speed = cosf(enemy[i].pos.y * 0.05f) * 1.5f;
-			enemy[i].pos.y += enemy[i].moveSpeed;
-			enemy[i].pos.x += swing_speed;
+			if (enemy[i].pos.y < 500)
+			{
+				float drop_speed = 2.0f + (enemy_anim_timer[i] * 0.3f);
+				enemy[i].pos.y += drop_speed;
+				robot_wait_timer = 120;
+			}
+			else
+			{
+				//しばらく待機する
+				if (robot_wait_timer > 0)
+					robot_wait_timer--;
+				else
+					enemy[i].pos.x -= enemy[i].moveSpeed;
+			}
+		}
+		else if (enemy[i].type == ENEMY_TYPE_BALLOON)
+		{
+			if (enemy[i].pos.y < enemy_target_y[i])
+			{
+				swing_speed = cosf(enemy[i].pos.y * 0.05f) * 1.5f;
+				enemy[i].pos.y += enemy[i].moveSpeed;
+				enemy[i].pos.x += swing_speed;
 
-			balloon_pos_x[i] = enemy[i].pos.x;
-			balloon_pos_y[i] = enemy[i].pos.y - 130;
+				balloon_pos_x[i] = enemy[i].pos.x;
+				balloon_pos_y[i] = enemy[i].pos.y - 130;
+			}
+			else
+			{
+				enemy[i].pos.x -= enemy[i].moveSpeed;
+				balloon_pos_y[i] -= 5;
+			}
 		}
-		else
-		{
-			enemy[i].pos.x -= enemy[i].moveSpeed;
-			balloon_pos_y[i] -= 5;
-		}
-	}
 
-	if (enemy[i].type == ENEMY_TYPE_BOBM)
-	{
-		if (enemy[i].pos.x <= enemy_border[i])
+		if (enemy[i].type == ENEMY_TYPE_BOBM)
 		{
-			player_hp -= (enemy[i].attack * 3);
-			shake(50, 50);
-			enemy_bomb_explosion(i);
-			enemy[i].hp = 0;
+			if (enemy[i].pos.x <= enemy_border[i])
+			{
+				player_hp -= (enemy[i].attack * 3);
+				shake(50, 50);
+				enemy_bomb_explosion(i);
+				enemy[i].hp = 0;
+			}
 		}
 	}
+	
 }
 
 //敵の攻撃
@@ -855,18 +876,22 @@ void enemy_render()
 		float render_scale_x = enemy[i].scale.x;
 		float render_scale_y = enemy[i].scale.y;
 
-		//クレヨンジャンプ
-		if (enemy[i].type == ENEMY_TYPE_CRAYON)
+		if (fever_blue == false)
 		{
-			float seed = (float)(i * 53);
-			float time = (float)enemy_anim_timer[i] * 0.08f + seed;
-			float s = sinf(time);
-			if (s > 0.7f)
+			//クレヨンジャンプ
+			if (enemy[i].type == ENEMY_TYPE_CRAYON)
 			{
-				float jump_height = (s - 0.7f) * 30.0f;
-				render_y -= jump_height;
+				float seed = (float)(i * 53);
+				float time = (float)enemy_anim_timer[i] * 0.08f + seed;
+				float s = sinf(time);
+				if (s > 0.7f)
+				{
+					float jump_height = (s - 0.7f) * 30.0f;
+					render_y -= jump_height;
+				}
 			}
 		}
+		
 
 		//敵画像
 		sprite_render(
