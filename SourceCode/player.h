@@ -47,7 +47,7 @@ void player_update();
 void player_render();
 
 //void set_canRapidShot(bool);
-void set_shotPerSecond(float);
+//void set_shotPerSecond(float);
 
 void bullet_update();
 
