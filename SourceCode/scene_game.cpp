@@ -159,11 +159,11 @@ void game_render()
 	hp_render();
 	effect_danger_render();
 	time_limit_render();
+	cursor_main_render();
 	choice_render();
 	pause_render(); // ‚±‚êˆÈã‰º‚É‘‚©‚È‚¢
 
     
-	cursor_main_render();
 	result_screen_render();
 
 	if (!is_scene_change_finished())

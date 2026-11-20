@@ -1,7 +1,7 @@
 #pragma once
 #include "all.h"
 
-#define EXP_COUNT      (256)      // EXP‚ÌŒÂ”
+#define EXP_COUNT      (100)      // EXP‚ÌŒÂ”
 
 #define EXP_SCALE        (0.4f)
 #define EXP_TEX_W        (64.0f)
