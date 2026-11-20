@@ -70,7 +70,7 @@ const float PLAYER_EASING = 0.99f;
 bool is_end_firing_rapid(); //連射中か確認する関数（true : 連射中, false : 連射中じゃない）
 #define Y1_DAMAGE (1)
 #define BULLET_SPEED (4000.0f)
-#define Y1_RAPID_INTERVAL (0.1f)
+#define Y1_RAPID_INTERVAL (0.15f)
 
 //貝殻===================================================
 #define SHELL_DAMAGE (1)

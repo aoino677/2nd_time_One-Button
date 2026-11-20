@@ -65,10 +65,8 @@ Sprite* sprBullet[SPR_BULLET_COUNT];
 OBJ2D player;
 std::vector<Bullet*> player_bullets;
 
-	int Y1_left_rapid_shot = 0;//残り連射回数
-	int Y1_rapid_shot_timer = 0;//時間
-
-
+int Y1_left_rapid_shot = 0;//残り連射回数
+int Y1_rapid_shot_timer = 0;//時間
 
 static const std::pair<VECTOR3, VECTOR3> afterimagecolors[IMAGE_COLOR_COUNT]
 {
@@ -108,7 +106,7 @@ void player_init()
 	sprBullet[SHELL] = sprite_load(L"Data/Images/shell.png");
 	sprBullet[BEEM] = sprite_load(L"Data/Images/issen.png");
 	sprBullet[BANKROLL] = sprite_load(L"Data/Images/bankroll.png");
-	
+
 	sprLeftSpecial = sprite_load(L"Data/Images/bomb_icon.png");
 
 	player.pos = PLAYER_POS;
@@ -150,7 +148,7 @@ void player_deinit()
 #define OLD_SHOT
 //#define NEW_SHOT
 //Bullet----------------------------------------------------------
-void shot_bullet_single()
+void shot_bullet_single(float zure)
 {
 
 	VECTOR2 cursorPos = { static_cast<float>(getCursorPosX()), static_cast<float>(getCursorPosY()) };
@@ -167,9 +165,9 @@ void shot_bullet_single()
 	//	{0, 0}, {100, 0}, {0, 50}, {-100, 0}, {0, -50},
 	//	{70, 35},{70, -35},{-70, 35},{-70, -35},
 	//};
-	std::random_device rd;
-	std::mt19937 mt(rd());
-	std::uniform_real_distribution<float> distribution(-precision_rad, precision_rad);
+	//std::random_device rd;
+	//std::mt19937 mt(rd());
+	//std::uniform_real_distribution<float> distribution(-precision_rad, precision_rad);
 
 	for (int i = 0; i < bullet_lay_count; i++)
 	{
@@ -184,9 +182,10 @@ void shot_bullet_single()
 			//float f = (rand() / (float)RAND_MAX) * 2 - 1;//乱数設定
 			//float k = atan2f(vec.y, vec.x) +f * precision_rad;//拡散角度設定
 			//b->angle = k;
-			b->angle = distribution(mt);
-			b->angle += atan2f(vec.y, vec.x);
-			b->angle += bullet_lay_gap * i - bullet_lay_gap * (bullet_lay_count - 1) / 2.0f;//端になるほど斜めになる。
+			//b->angle = distribution(mt);
+			b->angle = atan2f(vec.y, vec.x);
+			b->angle += zure;
+			//b->angle += bullet_lay_gap * i - bullet_lay_gap * (bullet_lay_count - 1) / 2.0f;//端になるほど斜めになる。
 			vec = { cosf(b->angle), sinf(b->angle) };
 			b->velocity = vec2Normalize(vec) * bullet_speed / system::FRAME_RATE;
 			b->angle += ToRadian(180);
@@ -231,7 +230,7 @@ void shot_bullet()
 {
 	Y1_left_rapid_shot = 3 - 1;
 	Y1_rapid_shot_timer = 0;
-	shot_bullet_single();
+	shot_bullet_single(0);
 }
 
 void shot_bullet_Ingot()
@@ -242,7 +241,7 @@ void shot_bullet_Ingot()
 	b_ingot->texSize = { 64, 64 };
 	b_ingot->pos = { static_cast<float>(getCursorPosX()), -b_ingot->texSize.y };
 	float damage = ingot_damage + damage_up;
-		  //damage *= Y1_damage / Y1_DAMAGE;
+	//damage *= Y1_damage / Y1_DAMAGE;
 	b_ingot->attack_damage = static_cast<float>(damage);
 	b_ingot->accel_velocity.y = ingot_accel / system::FRAME_RATE;
 	b_ingot->velocity.y = ingot_speed / system::FRAME_RATE;
@@ -251,19 +250,19 @@ void shot_bullet_Ingot()
 void shot_bullet_Shell()
 {
 	auto* b_shell = new Bullet_Shell();
-	VECTOR2 cursorPos ={ static_cast<float>(getCursorPosX()),static_cast<float>(getCursorPosY()) };
+	VECTOR2 cursorPos = { static_cast<float>(getCursorPosX()),static_cast<float>(getCursorPosY()) };
 	b_shell->pos = player.pos;
 	auto vec = cursorPos - player.pos;
 	//float seconds = 0.3f * system::FRAME_RATE;
 	//float gravity = 100 / system::FRAME_RATE;
-	b_shell->velocity = vec2Normalize(vec)* shell_speed / system::FRAME_RATE;
+	b_shell->velocity = vec2Normalize(vec) * shell_speed / system::FRAME_RATE;
 	b_shell->angle = atan2f(vec.y, vec.x);
 	//b_shell->accel_velocity.y = gravity;
 	b_shell->spr = sprBullet[SHELL];
 	b_shell->texSize = { 64, 16 };
 	b_shell->scale = { shell_scale, shell_scale };
 	float damage = shell_damage + damage_up;
-	   	  //damage *= Y1_damage / Y1_DAMAGE;
+	//damage *= Y1_damage / Y1_DAMAGE;
 	b_shell->attack_damage = static_cast<float>(damage);
 	player_bullets.push_back(b_shell);
 }
@@ -317,7 +316,7 @@ void shot_bullet_Special()
 
 	if (check)
 	{
-		particles_update(cursor_pos.x, cursor_pos.y, bullet_radius, 
+		particles_update(cursor_pos.x, cursor_pos.y, bullet_radius,
 			bullet_special_color.x, bullet_special_color.y, bullet_special_color.z);
 		left_shot_special--;
 	}
@@ -325,7 +324,7 @@ void shot_bullet_Special()
 }
 bool is_end_firing_rapid()
 {
-	return Y1_left_rapid_shot <= 0 ;
+	return Y1_left_rapid_shot <= 0;
 }
 
 void delete_bullet()
@@ -404,7 +403,7 @@ void bullet_update()
 		Y1_rapid_shot_timer++;
 		if (Y1_rapid_shot_timer >= Y1_RAPID_INTERVAL * system::FRAME_RATE)
 		{
-			shot_bullet_single();
+			shot_bullet_single(Y1_left_rapid_shot % 2 * ToRadian(2) - ToRadian(1));
 			Y1_rapid_shot_timer = 0;
 			Y1_left_rapid_shot--;
 			if (Y1_left_rapid_shot < 0)Y1_left_rapid_shot = 0;
