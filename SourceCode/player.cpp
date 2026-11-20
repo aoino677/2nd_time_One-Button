@@ -22,13 +22,13 @@ float precision_rad = ToRadian(0); //狙った方向に飛ぶ精度
 
 float Y1_shot_timer = 0;
 
-//float shot_timer;			//弾発射の待機時間
-//float rapid_timer;			//完了したら連射に移行する
-//bool is_rapid;				//連射中か
+//float shot_timer;			
+//float rapid_timer;		
+//bool is_rapid;			
 
-//bool can_rapid_shot;		//連射可能か
-//int rapidShoted_bullet_count;//連射した弾数
-//int cast_bullet;			//発射を待機している弾
+//bool can_rapid_shot;		
+//int rapidShoted_bullet_count;
+//int cast_bullet;	
 
 int bullet_lay_count = 1;
 float bullet_lay_gap = ToRadian(7);//弾の間隔
@@ -55,6 +55,9 @@ Sprite* sprLeftSpecial;
 
 float bankrool_damage = 20;
 float bankrool_scale = 1.0f;
+
+float player_bullet_Y1_timer = 0;
+
 
 Sprite* sprPlayer;
 #define SPR_BULLET_COUNT 5
@@ -143,8 +146,9 @@ void player_deinit()
 #define OLD_SHOT
 //#define NEW_SHOT
 
-void shot_bullet()
+void shot_bullet_single()
 {
+
 	VECTOR2 cursorPos = { static_cast<float>(getCursorPosX()), static_cast<float>(getCursorPosY()) };
 	//if (cursorPos.y < 380) cursorPos.y = 380;
 #ifdef NEW_SHOT
@@ -155,10 +159,10 @@ void shot_bullet()
 	//float length = vec2Length(vec);
 #endif
 
-	VECTOR2 a[9] = {
-		{0, 0}, {100, 0}, {0, 50}, {-100, 0}, {0, -50},
-		{70, 35},{70, -35},{-70, 35},{-70, -35},
-	};
+	//VECTOR2 a[9] = {
+	//	{0, 0}, {100, 0}, {0, 50}, {-100, 0}, {0, -50},
+	//	{70, 35},{70, -35},{-70, 35},{-70, -35},
+	//};
 	std::random_device rd;
 	std::mt19937 mt(rd());
 	std::uniform_real_distribution<float> distribution(-precision_rad, precision_rad);
@@ -217,6 +221,16 @@ void shot_bullet()
 		rapidShoted_bullet_count++;
 #endif
 	}
+}
+
+int Y1_left_rapid_shot = 0;
+int Y1_rapid_shot_timer = 0;
+
+void shot_bullet()
+{
+	Y1_left_rapid_shot = 3 - 1;
+	Y1_rapid_shot_timer = 0;
+	shot_bullet_single();
 }
 
 void shot_bullet_Ingot()
@@ -308,6 +322,10 @@ void shot_bullet_Special()
 		left_shot_special--;
 	}
 
+}
+bool is_end_firing_rapid()
+{
+	return Y1_left_rapid_shot <= 0 ;
 }
 //#define SHOT_AIM_TARGET
 //#define SHOT_AIM_AND_CLICK_TARGET
@@ -600,6 +618,19 @@ void bullet_update()
 		shot_bullet();
 	}
 #endif
+
+	if (Y1_left_rapid_shot > 0)
+	{
+		Y1_rapid_shot_timer++;
+		if (Y1_rapid_shot_timer >= Y1_RAPID_INTERVAL * system::FRAME_RATE)
+		{
+			shot_bullet_single();
+			Y1_rapid_shot_timer = 0;
+			Y1_left_rapid_shot--;
+			if (Y1_left_rapid_shot < 0)Y1_left_rapid_shot = 0;
+		}
+
+	}
 	bullet_move();
 
 	bullet_attack();
