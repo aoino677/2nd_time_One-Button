@@ -65,6 +65,10 @@ Sprite* sprBullet[SPR_BULLET_COUNT];
 OBJ2D player;
 std::vector<Bullet*> player_bullets;
 
+	int Y1_left_rapid_shot = 0;//écÇËòAéÀâÒêî
+	int Y1_rapid_shot_timer = 0;//éûä‘
+
+
 
 static const std::pair<VECTOR3, VECTOR3> afterimagecolors[IMAGE_COLOR_COUNT]
 {
@@ -145,7 +149,7 @@ void player_deinit()
 
 #define OLD_SHOT
 //#define NEW_SHOT
-
+//Bullet----------------------------------------------------------
 void shot_bullet_single()
 {
 
@@ -223,9 +227,6 @@ void shot_bullet_single()
 	}
 }
 
-int Y1_left_rapid_shot = 0;
-int Y1_rapid_shot_timer = 0;
-
 void shot_bullet()
 {
 	Y1_left_rapid_shot = 3 - 1;
@@ -266,7 +267,6 @@ void shot_bullet_Shell()
 	b_shell->attack_damage = static_cast<float>(damage);
 	player_bullets.push_back(b_shell);
 }
-
 void shot_bullet_Beam()
 {
 	auto* b_beem = new Bullet_Ingot();
@@ -327,8 +327,104 @@ bool is_end_firing_rapid()
 {
 	return Y1_left_rapid_shot <= 0 ;
 }
+
+void delete_bullet()
+{
+	for (auto itr = player_bullets.begin(); itr != player_bullets.end();)
+	{
+		if ((*itr)->is_dead())
+		{
+			delete* itr;
+			itr = player_bullets.erase(itr);
+		}
+		else
+		{
+			itr++;
+		}
+	}
+}
+
+void bullet_attack()
+{
+	for (auto* bullet : player_bullets)
+	{
+		bullet->attack(enemy);
+	}
+}
+
+void bullet_move()
+{
+	for (auto* bullet : player_bullets)
+	{
+		bullet->update();
+	}
+
+	for (auto itr = y1_after_images.begin(); itr != y1_after_images.end();)
+	{
+		(*itr)->timer += 1 / system::FRAME_RATE;
+		if ((*itr)->timer > Y1_AFTERIMAGE_ALIVETIME)
+		{
+			delete* itr;
+			itr = y1_after_images.erase(itr);
+		}
+		else
+		{
+			itr++;
+		}
+	}
+}
+
+void bullet_update()
+{
+#ifdef _DEBUG
+	if (TRG(0) & PAD_DOWN)
+	{
+		shot_bullet_Ingot();
+	}
+	if (TRG(0) & PAD_UP)
+	{
+		shot_bullet_Shell();
+	}
+	if (TRG(0) & PAD_RIGHT)
+	{
+		shot_bullet_Beam();
+	}
+	if (TRG(0) & PAD_LEFT)
+	{
+		shot_bullet_Bankroll();
+	}
+	if (TRG(0) & PAD_TRG3)
+	{
+		shot_bullet();
+	}
+#endif
+
+	if (Y1_left_rapid_shot > 0)
+	{
+		Y1_rapid_shot_timer++;
+		if (Y1_rapid_shot_timer >= Y1_RAPID_INTERVAL * system::FRAME_RATE)
+		{
+			shot_bullet_single();
+			Y1_rapid_shot_timer = 0;
+			Y1_left_rapid_shot--;
+			if (Y1_left_rapid_shot < 0)Y1_left_rapid_shot = 0;
+		}
+
+	}
+	bullet_move();
+
+	bullet_attack();
+
+	delete_bullet();
+}
+//void set_shotPerSecond(float value)
+//{
+//	shot_per_second = value;
+//}
+
 //#define SHOT_AIM_TARGET
 //#define SHOT_AIM_AND_CLICK_TARGET
+//Player----------------------------------------------------------
 
 void player_shot_bullet()
 {
@@ -542,100 +638,5 @@ void player_render()
 //{
 //	//can_rapid_shot = b;
 //}
-
-void set_shotPerSecond(float value)
-{
-	shot_per_second = value;
-}
-
-void delete_bullet()
-{
-	for (auto itr = player_bullets.begin(); itr != player_bullets.end();)
-	{
-		if ((*itr)->is_dead())
-		{
-			delete* itr;
-			itr = player_bullets.erase(itr);
-		}
-		else
-		{
-			itr++;
-		}
-	}
-}
-
-void bullet_attack()
-{
-	for (auto* bullet : player_bullets)
-	{
-		bullet->attack(enemy);
-	}
-}
-
-void bullet_move()
-{
-	for (auto* bullet : player_bullets)
-	{
-		bullet->update();
-	}
-
-	for (auto itr = y1_after_images.begin(); itr != y1_after_images.end();)
-	{
-		(*itr)->timer += 1 / system::FRAME_RATE;
-		if ((*itr)->timer > Y1_AFTERIMAGE_ALIVETIME)
-		{
-			delete *itr;
-			itr = y1_after_images.erase(itr);
-		}
-		else
-		{
-			itr++;
-		}
-	}
-}
-
-void bullet_update()
-{
-#ifdef _DEBUG
-	if (TRG(0) & PAD_DOWN)
-	{
-		shot_bullet_Ingot();
-	}
-	if (TRG(0) & PAD_UP)
-	{
-		shot_bullet_Shell();
-	}
-	if (TRG(0) & PAD_RIGHT)
-	{
-		shot_bullet_Beam();
-	}
-	if (TRG(0) & PAD_LEFT)
-	{
-		shot_bullet_Bankroll();
-	}
-	if (TRG(0) & PAD_TRG3)
-	{
-		shot_bullet();
-	}
-#endif
-
-	if (Y1_left_rapid_shot > 0)
-	{
-		Y1_rapid_shot_timer++;
-		if (Y1_rapid_shot_timer >= Y1_RAPID_INTERVAL * system::FRAME_RATE)
-		{
-			shot_bullet_single();
-			Y1_rapid_shot_timer = 0;
-			Y1_left_rapid_shot--;
-			if (Y1_left_rapid_shot < 0)Y1_left_rapid_shot = 0;
-		}
-
-	}
-	bullet_move();
-
-	bullet_attack();
-
-	delete_bullet();
-}
 
 Bullet_Y1_AfterImage::Bullet_Y1_AfterImage(const VECTOR2& pos, const float angle, const int c) : pos(pos), angle(angle), color_index(c) {}
