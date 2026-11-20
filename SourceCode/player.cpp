@@ -183,7 +183,7 @@ void shot_bullet()
 			b->velocity = vec2Normalize(vec) * bullet_speed / system::FRAME_RATE;
 			b->angle += ToRadian(180);
 			b->end_pos = { (float)SCREEN_W, (float)SCREEN_H };
-			b->attack_damage = static_cast<int>(Y1_damage + damage_up);
+			b->attack_damage = static_cast<float>(Y1_damage + damage_up);
 			b->color_index = rand() % IMAGE_COLOR_COUNT;
 			//b->pos += vec * shot_timer;
 			player_bullets.push_back(b);
@@ -228,7 +228,7 @@ void shot_bullet_Ingot()
 	b_ingot->pos = { static_cast<float>(getCursorPosX()), -b_ingot->texSize.y };
 	float damage = ingot_damage + damage_up;
 		  //damage *= Y1_damage / Y1_DAMAGE;
-	b_ingot->attack_damage = static_cast<int>(damage);
+	b_ingot->attack_damage = static_cast<float>(damage);
 	b_ingot->accel_velocity.y = ingot_accel / system::FRAME_RATE;
 	b_ingot->velocity.y = ingot_speed / system::FRAME_RATE;
 	player_bullets.push_back(b_ingot);
@@ -249,7 +249,7 @@ void shot_bullet_Shell()
 	b_shell->scale = { shell_scale, shell_scale };
 	float damage = shell_damage + damage_up;
 	   	  //damage *= Y1_damage / Y1_DAMAGE;
-	b_shell->attack_damage = static_cast<int>(damage);
+	b_shell->attack_damage = static_cast<float>(damage);
 	player_bullets.push_back(b_shell);
 }
 
@@ -262,7 +262,7 @@ void shot_bullet_Beam()
 	b_beem->scale = { beem_scale, beem_scale };
 	float damage = beem_damage + damage_up;
 	//damage *= Y1_damage / Y1_DAMAGE;
-	b_beem->attack_damage = static_cast<int>(damage);
+	b_beem->attack_damage = static_cast<float>(damage);
 	b_beem->accel_velocity.x = beem_accel / system::FRAME_RATE;
 	b_beem->velocity.x = beem_speed / system::FRAME_RATE;
 	player_bullets.push_back(b_beem);
@@ -279,7 +279,7 @@ void shot_bullet_Bankroll()
 	b_roll->angle = -ToRadian(90);
 	float damage = bankrool_damage;
 	//damage *= Y1_damage / Y1_DAMAGE;
-	b_roll->attack_damage = static_cast<int>(damage);
+	b_roll->attack_damage = static_cast<float>(damage);
 	b_roll->roll_speed = ToRadian(720);
 	b_roll->roll_max = ToRadian(100);
 	player_bullets.push_back(b_roll);

@@ -9,13 +9,13 @@
 #include <ctime>
 #include <stdlib.h>
 
-int damage_up;
+float damage_up;
 int efficacy_timer;
 float red_cooltime_rate;
 float bullet_interval_rate;
 void efficacy_init()
 {
-	damage_up = 0;
+	damage_up = 0.0f;
 	efficacy_timer = 0;
 	red_cooltime_rate = 1.0f;
 	bullet_interval_rate = 1.0f;

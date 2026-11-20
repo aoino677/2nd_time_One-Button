@@ -301,7 +301,8 @@ void item_render()
         // 取得ゲージの背景
         float bar_pos_y = item[i].pos.y - 60.0f;
 
-        if (item_check == true)
+        //ゲージが最小の時は表示しない
+        if (item_timer[i] > 1)
         {
             // 取得ゲージ
             primitive::rect(item[i].pos.x - 60, bar_pos_y, ITEM_TIMER, 10, 0, 0, 0, 0, 0, 0, 0.5f);

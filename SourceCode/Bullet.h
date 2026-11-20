@@ -13,7 +13,7 @@ struct Bullet
 	VECTOR2 texSize = { 64, 8 };//‘å‚«‚³
 	float angle = 0;//Šp“x
 
-	int attack_damage = 10;
+	float attack_damage = 10.0f;
 
 	VECTOR2 end_pos;
 	VECTOR2 accel_velocity;//‰Á‘¬“x
