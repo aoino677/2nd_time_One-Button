@@ -88,23 +88,15 @@ void Hit_Bag()
 //-------BULE----------------
 void Fever_Time_Start_Blue()
 {
-	for (int i = 0; i < ENEMY_NUMBER; i++)
-	{
-		enemy[i].moveSpeed = 0;
-		swing_speed = 0;
-	}
+	fever_blue = true;
 }
 // I‚í‚è
 void Fever_Time_End_Blue()
 {
-	for (int i = 0; i < ENEMY_NUMBER; i++)
-	{
-		swing_speed = cosf(enemy[i].pos.y * 0.05f) * 1.5f;
-		enemy[i].moveSpeed = 1 + enemy_speed_up;
-	}
+	fever_blue = false;
 }
 //-------BULE----------------
-// 
+//
 //-------RED----------------
 // ˆê’èŽžŠÔ‚ ‚Ù‚Ý‚½‚¢‚É‹­‚­‚·‚é
 void Fever_Time_Start_Red()
