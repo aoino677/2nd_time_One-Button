@@ -31,6 +31,8 @@ int timer_beam;
 int timer_down_beam;
 int timer_bankroll;
 int timer_down_bankroll;
+int timer_special;
+int timer_down_special;
 
 // 武器選択値
 int serect_weapon;
@@ -65,7 +67,8 @@ void cursor_main_init()
     timer_beam = timer_down_beam;
     timer_down_bankroll = TIMER_BANKROLL;
     timer_bankroll = timer_down_bankroll;
-
+    timer_down_special = TIMER_SPECIAL;
+    timer_special =timer_down_special;
 
     serect_weapon = 6;
 
@@ -127,7 +130,10 @@ void cursor_main_update()
         if (timer_shell > timer_down_shell) { timer_shell = timer_down_shell; }
         if (timer_ingot > timet_down_ingot) { timer_ingot = timet_down_ingot; }
         if (timer_beam > timer_down_beam) { timer_beam = timer_down_beam; }
-        if (timer_bankroll > timer_down_bankroll) { timer_bankroll = timer_down_bankroll; }        for (int i = 0; i < ENEMY_NUMBER; i++)
+        if (timer_bankroll > timer_down_bankroll) { timer_bankroll = timer_down_bankroll; }       
+        if (timer_special > timer_down_special) { timer_special = timer_down_special; }
+        
+        for (int i = 0; i < ENEMY_NUMBER; i++)
         {
             // 敵の当たり判定
             float enemy_left = enemy[i].pos.x - enemy[i].pivot.x * ENEMY_SCALE;
@@ -246,6 +252,26 @@ void cursor_main_update()
                         timer_bankroll--;
                     }
                 }
+
+                //==========================================
+                // スペシャル
+                //==========================================
+               /* if (level_up_weapon[WEAPON_MAX] > 0)
+                {
+                    if (timer_special == timer_down_special)
+                    {
+                        shot_bullet_Special();
+                        timer_special--;
+                    }
+                    else if (timer_special == 0)
+                    {
+                        timer_special = timer_down_special;
+                    }
+                    else
+                    {
+                        timer_special--;
+                    }
+                }*/
                 break;
             }
         }

@@ -81,6 +81,20 @@ const WEAPON_LEVEL_DATA BANKROLL_LEVEL_DATA[8] =
 	{6494.472f,  70.000f, 171.154f }  // Lv8
 };
 
+// 黄金ビームのレベル性能設定
+//const WEAPON_LEVEL_DATA BANKROLL_LEVEL_DATA[8] =
+//{
+//	 フリーズ時間   クールタイム   攻撃範囲
+//	{ 3.000f, 400.000f, 100.000f }, // Lv1
+//	{ 3.245f, 393.813f, 103.020f }, // Lv2
+//	{ 3.704f, 382.575f, 108.202f }, // Lv3
+//	{ 4.411f, 362.952f, 115.672f }, // Lv4
+//	{ 5.397f, 329.808f, 125.562f }, // Lv5
+//	{ 6.700f, 275.344f, 138.010f }, // Lv6
+//	{ 8.362f, 187.862f, 153.158f }, // Lv7
+//	{ 10.427f, 500.000f, 171.154f } // Lv8
+//};
+
 void level_init()
 {
 	for (int i = 0; i < WEAPON_MAX; i++)
@@ -229,4 +243,33 @@ void level_update()
 		// 弾のスケール
 		bankrool_scale = bankroll_data.bullet_scale / 100.0f;
 	}
+	// -----------------------------------------------------------
+	// 黄金ビームのレベル
+
+	//int special_level = level_up_weapon[WEAPON_MAX];
+
+	//if (special_level > 0)
+	//{
+	//	if (special_level > level_8)
+	//	{
+	//		special_level = level_8;
+	//	}
+
+	//	level_up_weapon[WEAPON_MAX] = special_level;
+
+	//	const WEAPON_LEVEL_DATA& special_data =
+	//		BANKROLL_LEVEL_DATA[special_level - 1];
+
+	//	// ダメージ
+	//	bankrool_damage = 20.0f * special_data.damage / 100.0f;
+	//	// クールタイム
+	//	timer_down_bankroll = static_cast<int>(TIMER_BANKROLL * special_data.cooltime / 100.0f * red_cooltime_rate * bullet_interval_rate + 0.5f);
+	//	// クールタイムの最低値
+	//	if (timer_down_bankroll < 1)
+	//	{
+	//		timer_down_bankroll = 1;
+	//	}
+	//	// 弾のスケール
+	//	bankrool_scale = special_data.bullet_scale / 100.0f;
+	//}
 }

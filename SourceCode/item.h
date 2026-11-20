@@ -1,8 +1,8 @@
 #pragma once
 #include "all.h"
 
-#define ITEM_MAX (10)
-#define ITEM_RANDOM (30) // 50‰ñ‚É1‰ñ
+#define ITEM_MAX (256)
+#define ITEM_RANDOM (10) // 50‰ñ‚É1‰ñ
 #define ITEM_TIMER (120) // ƒAƒCƒeƒ€Žæ“¾‚Ü‚Å‚ÌŽžŠÔ
 
 #define ITEM_SCALE       (1.0f)

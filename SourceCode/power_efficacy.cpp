@@ -91,6 +91,7 @@ void Fever_Time_Start_Blue()
 	for (int i = 0; i < ENEMY_NUMBER; i++)
 	{
 		enemy[i].moveSpeed = 0;
+		swing_speed = 0;
 	}
 }
 // I‚í‚è
@@ -98,6 +99,7 @@ void Fever_Time_End_Blue()
 {
 	for (int i = 0; i < ENEMY_NUMBER; i++)
 	{
+		swing_speed = cosf(enemy[i].pos.y * 0.05f) * 1.5f;
 		enemy[i].moveSpeed = 1 + enemy_speed_up;
 	}
 }
@@ -107,11 +109,13 @@ void Fever_Time_End_Blue()
 // ˆê’èŽžŠÔ‚ ‚Ù‚Ý‚½‚¢‚É‹­‚­‚·‚é
 void Fever_Time_Start_Red()
 {
+	lucky += 30;
 	red_cooltime_rate = 0.05f;
 }
 // I‚í‚è
 void Fever_Time_End_Red()
 {
+	lucky -= 30;
 	red_cooltime_rate = 1.0f;
 }
 //-------RED----------------
