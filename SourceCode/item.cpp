@@ -37,6 +37,7 @@ VECTOR2 playerLeftUp;
 VECTOR2 playerLength;
 
 float color_w = 0;
+bool item_check;
 
 
 // 初期化
@@ -63,6 +64,7 @@ void item_init()
 
     random = 0;
     lucky = ITEM_RANDOM;
+    item_check = false;
 
     posX = 0;
     posY = 0;
@@ -193,6 +195,9 @@ void item_update()
                         item_timer[i]++;
                     }
 
+                    // アイテムのチェック
+                    item_check = true;
+
                     // ゲージが最大になったら取得
                     if (item_timer[i] >= ITEM_TIMER)
                     {
@@ -232,6 +237,8 @@ void item_update()
                     {
                         item_timer[i]--;
                     }
+
+                    item_check = false;
                 }
             }
         }
@@ -294,10 +301,12 @@ void item_render()
         // 取得ゲージの背景
         float bar_pos_y = item[i].pos.y - 60.0f;
 
-        primitive::rect(item[i].pos.x - 60, bar_pos_y, ITEM_TIMER, 10, 0, 0, 0, 0, 0, 0, 0.5f);
-
-        // 取得ゲージ
-        primitive::rect(item[i].pos.x - 60, bar_pos_y, item_timer[i], 10, 0, 0, 0, 0, 0, 0, 1.0f);
+        if (item_check == true)
+        {
+            // 取得ゲージ
+            primitive::rect(item[i].pos.x - 60, bar_pos_y, ITEM_TIMER, 10, 0, 0, 0, 0, 0, 0, 0.5f);
+            primitive::rect(item[i].pos.x - 60, bar_pos_y, item_timer[i], 10, 0, 0, 0, 0, 0, 0, 1.0f);
+        }
     }
 }
 
