@@ -24,6 +24,7 @@
 #include "power_efficacy.h"
 #include "item.h"
 #include "result_screen.h"
+#include "effect_scene_change.h"
 
 
 //------< 定数 >----------------------------------------------------------------
@@ -83,6 +84,12 @@ void game_update()
 		game_state++;
 		/*fallthrough*/
 	case 2:
+		if (!is_scene_change_finished())
+		{
+			scene_change_update();
+			return; //エフェクトが終わるまではメニューの操作を受け付けない
+		}
+		
 		//リザルト表示中はゲーム停止
 		if (result_active)
 		{
@@ -158,6 +165,15 @@ void game_render()
     
 	cursor_main_render();
 	result_screen_render();
+
+	if (!is_scene_change_finished())
+	{
+		scene_change_render();
+	}
+	else 
+	{
+		scene_change_deinit();
+	}
 }
 
 //--------------------------------------

@@ -117,11 +117,13 @@ void scene_change_update()
 			if (retry_mode)
 			{
 				result_active = false;
-				game_init();
+				//game_init();
 			}
 			else
 			{
-				nextScene = SCENE_MENU;
+				if(curScene==SCENE_TITLE)
+				    nextScene = SCENE_MENU;
+
 			}
 		}
 

@@ -1,5 +1,5 @@
 #include "obj2d.h"
-#include "start_button.h"
+#include "title_button.h"
 #include "scene_title.h"
 #include "cursor_main.h"
 
@@ -12,7 +12,6 @@ Sprite* sprtitleButton = nullptr;
 
 int title_button_state = 0;
 int title_button_timer = 0;
-int title_state;
 
 extern bool gameEnd;
 

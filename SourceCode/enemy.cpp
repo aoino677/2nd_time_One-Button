@@ -192,11 +192,11 @@ void enemy_update()
 						tires_move(enemy[i].pos.x, enemy[i].pos.y);
 				}
 				else if (enemy[i].type == ENEMY_TYPE_BOBM)
-				    particles_update(enemy[i].pos.x, enemy[i].pos.y,8, 1.0f, 0.2f, 0.2f);
+				    particles_update(enemy[i].pos.x, enemy[i].pos.y,15, 1.0f, 0.2f, 0.2f);
 			    else if (enemy[i].type == ENEMY_TYPE_CRAYON)
-					particles_update(enemy[i].pos.x, enemy[i].pos.y,8, 1.0f, 0.4f, 0.0f);
+					particles_update(enemy[i].pos.x, enemy[i].pos.y,8, 1.0f, 0.0f, 0.0f);
 				else
-					particles_update(enemy[i].pos.x, enemy[i].pos.y,8, 1.0f, 0.4f, 0.0f);
+					particles_update(enemy[i].pos.x, enemy[i].pos.y,8, 0.0f, 0.0f, 1.0f);
 			}
 
 			//ダメージを受けた瞬間の判定(前回のHPより減っていれば被弾タイマーセット)
@@ -255,20 +255,20 @@ void enemy_update()
 		enemy_boss_timer++;
 		crayon_spawn_timer++;
 
-		////ボスリスポーン
-		//if (enemy_boss_timer >=300)
-		//{
-		//	for (int i = enemy_max; i < ENEMY_NUMBER; i++)
-		//	{
-		//		if (enemy[i].hp <= 0)
-		//		{
-		//			respawn = true;
-		//			enemy_boss_respawn(i);
-		//			enemy_boss_timer = 0;
-		//			break;
-		//		}
-		//	}
-		//}
+		//ボスリスポーン
+		if (enemy_boss_timer >=300)
+		{
+			for (int i = enemy_max; i < ENEMY_NUMBER; i++)
+			{
+				if (enemy[i].hp <= 0)
+				{
+					respawn = true;
+					enemy_boss_respawn(i);
+					enemy_boss_timer = 0;
+					break;
+				}
+			}
+		}
 		if (respawn == true)
 		{
 			effect_boss_respawn();
@@ -276,7 +276,7 @@ void enemy_update()
 		}
 		
 		//クレヨンリスポーン
-		if (crayon_spawn_timer >= 140)
+		if (crayon_spawn_timer >= 200)
 		{
 			enemy_crayon_respawn();
 			crayon_spawn_timer = 0;
@@ -359,16 +359,16 @@ void enemy_respawn(int i)
 {
 	enemy_type_render[i] = ENEMY;
 
-	int enemy_random = rand() % 25;
+	int enemy_random = rand() % 100;
 
-	if (enemy_random <= 25)
+	/*if (enemy_random <= 25)
 	{
 		enemy[i].type = ENEMY_TYPE_BALLOON;
 		enemy_sprite[i] = sprEnemyCrayon;
 		enemy_setting(i, 1, 1, 2, 64, 160, 32, 80, 1, 1, 0);
-	}
+	}*/
 	
-	/*if (enemy_random < 25)
+	if (enemy_random < 25)
 	{
 		enemy[i].type = ENEMY_TYPE_BOLL;
 		enemy_sprite[i] = sprEnemyBall;
@@ -392,7 +392,7 @@ void enemy_respawn(int i)
 		enemy_sprite[i] = sprEnemyCrayon;
 		enemy_setting(i, 3, 1, 1, 64, 160, 32, 80, 1, 1,0);
 		enemy[i].color = { 1.0f, 0.3f, 0.3f, 1.0f };
-	}*/
+	}
 
 	//出現場所
 	if (enemy[i].type == ENEMY_TYPE_BALLOON)
@@ -425,21 +425,21 @@ void enemy_boss_respawn(int i)
 
 	switch (boss_state)
 	{
-	case 0:
-		enemy[i].type = BOSS_TYPE_ROBOT;
-		enemy_setting(i, 10000, 1, 0.3, 64, 160, 32, 80, 3, 3, 0);
-		//boss_state++;
+	//case 0:
+	//	enemy[i].type = BOSS_TYPE_ROBOT;
+	//	enemy_setting(i, 10000, 1, 0.3, 64, 160, 32, 80, 3, 3, 0);
+	//	//boss_state++;
 
-	/*case 0:
+	case 0:
 		enemy[i].type = BOSS_TYPE_CRAYON;
-		enemy_sprite[i] = sprCrayon;
-		enemy_setting(i, 300, 1, 0.5, 64, 160,32,80, 3, 3,0);
+		enemy_sprite[i] = sprEnemyCrayon;
+		enemy_setting(i, 700, 1, 0.5, 64, 160,32,80, 3, 3,0);
 		boss_state++;
 		break;
 	case 1:
 		enemy[i].type = BOSS_TYPE_CAR;
-		enemy_sprite[i] = sprCar;
-		enemy_setting(i, 100, 1, 0.5, 128, 80, 64, 40, 2.5, 2.5,0);
+		enemy_sprite[i] = sprEnemyCar;
+		enemy_setting(i, 100, 1, 0, 128, 80, 64, 40, 2.5, 2.5,0);
 		boss_state++;
 		break;
 	case 2:
@@ -465,7 +465,7 @@ void enemy_boss_respawn(int i)
 	case 6:
 		enemy[i].type = BOSS_TYPE_EXCAVATOR;
 		enemy_setting(i, 100, 1, 2, 64, 160, 32, 80, 3, 3,0);
-		break;*/
+		break;
 	}
 
 	//リスポーン
@@ -595,7 +595,7 @@ void enemy_attack_action(int i)
 //パワーアップ
 void enemy_powerup()
 {
-	if (enemy_powerup_timer > 1200)
+	if (enemy_powerup_timer > 3000)
 	{
 		enemy_hp_up += 2.0f;
 		enemy_speed_up += 0.2f;

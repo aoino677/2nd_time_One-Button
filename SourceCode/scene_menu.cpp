@@ -8,6 +8,7 @@
 
 //----< インクルード >-----------------------------------------------------------
 #include "all.h"
+#include "menu_button.h"
 #include "effect_scene_change.h"
 
 //------< 定数 >----------------------------------------------------------------
@@ -25,6 +26,7 @@ void menu_init()
 	menu_state = 0;
 	menu_timer = 0;
 	is_effect_cleaned_up = false;
+	menu_button_init();
 }
 
 //--------------------------------------
@@ -56,15 +58,13 @@ void menu_update()
 		/*fallthrough*/
 	case 2:
 		//////// 通常時 ////////
-		if (TRG(0) & PAD_START)
+		/*if (TRG(0) & PAD_START)
 		{
 			nextScene = SCENE_GAME;
 			break;
-		}
-
-
-
-
+		}*/
+		menu_button_update();
+		
 		break;
 	}
 
@@ -89,6 +89,8 @@ void menu_render()
 
 	font::textOut(1, "MENU", 640, 200);
 	
+	menu_button_render();
+	
 	if (!is_scene_change_finished())
 	{
 		scene_change_render();
@@ -105,6 +107,6 @@ void menu_render()
 //--------------------------------------
 void menu_deinit()
 {
-
+	menu_button_deinit();
 
 }

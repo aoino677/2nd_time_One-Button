@@ -18,3 +18,5 @@ bool result_screen_is_finished();
 #define SCREEN_SPEED      30.0f   // 落下スピード
 
 extern bool result_active;
+extern bool result_finished;
+extern bool result_landed;
