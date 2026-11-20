@@ -90,4 +90,6 @@ bool is_end_firing_rapid(); //˜AË’†‚©Šm”F‚·‚éŠÖ”itrue : ˜AË’†, false : ˜AË’
 #define CAN_SHOT_SPECIAL_COUNT 3
 #define SPECIAL_DAMAGE (30)
 #define SPECIAL_RANGE (200.0f)
+
+#define SE_BULLET_SPECIAL (5)
 const VECTOR3 bullet_special_color = { 1.0f, 0.0f, 0.0f };

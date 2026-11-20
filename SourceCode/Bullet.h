@@ -26,6 +26,7 @@ struct Bullet
 
 struct Bullet_Y1 : Bullet
 {
+	Bullet_Y1();
 	VECTOR2 old_pos;
 	int color_index = 0;
 	~Bullet_Y1()override = default;

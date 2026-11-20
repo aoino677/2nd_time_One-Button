@@ -3,9 +3,17 @@
 #include "Collision2D.h"
 #include "player.h"
 #include "Level.h"
+#include "../GameLib/game_lib.h"
+#include "bullet_se.h"
+
 using namespace GameLib;
 
 const float INGOT_LATE = 0.2f;
+
+Bullet_Y1::Bullet_Y1()
+{
+	music::play(SE_BULLET_1YEN, false);
+}
 
 void Bullet_Y1::update()
 {

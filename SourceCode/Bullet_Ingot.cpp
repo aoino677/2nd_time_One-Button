@@ -1,6 +1,18 @@
 #include "Bullet_Ingot.h"
 #include "enemy.h"
 #include "Collision2D.h"
+#include "bullet_se.h"
+
+Bullet_Ingot::Bullet_Ingot(Type type)
+{
+	switch (type)
+	{
+	case Type::Ingot:
+		music::play(SE_BULLET_INGOT, false);
+	case Type::Issen:
+		music::play(SE_BULLET_ISSEN, false);
+	}
+}
 
 Bullet_Ingot::~Bullet_Ingot()
 {

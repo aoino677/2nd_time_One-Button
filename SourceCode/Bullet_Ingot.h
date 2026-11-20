@@ -3,6 +3,11 @@
 
 struct Bullet_Ingot : Bullet
 {
+	enum Type
+	{
+		Ingot, Issen
+	};
+	Bullet_Ingot(Type type);
 	struct after_image
 	{
 		VECTOR2 pos;
