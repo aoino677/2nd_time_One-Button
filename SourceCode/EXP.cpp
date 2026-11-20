@@ -93,6 +93,8 @@ void EXP_update()
 						EXP[exp_index].pos = enemy[i].pos;
 						EXP[exp_index].color.w = 1.0f;
 						EXP[exp_index].moveSpeed = 0;
+						float moveY = 150.0f;
+						EXP[exp_index].moveSpeedY = (rand() / static_cast<float>(RAND_MAX) * moveY * 2 - moveY) / 60.0f;
 						EXP[exp_index].type = EXP_TYPE_1YEN;
 						break;
 					}
@@ -154,6 +156,12 @@ void EXP_update()
 					EXP[j].color.w = 0;
 					color_w_EXP = 0.0f;
 				}
+			}
+			else
+			{
+				EXP[j].pos.y += EXP[j].moveSpeedY;
+				if (EXP[j].pos.y < 0)EXP[j].pos.y = 0;
+				else if (EXP[j].pos.y > SCREEN_H)EXP[j].pos.y = SCREEN_H;
 			}
 		}
 		break;
