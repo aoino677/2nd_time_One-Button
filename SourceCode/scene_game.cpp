@@ -158,7 +158,7 @@ void game_render()
 	GameLib::clear(0.2f, 0.0f, 0.75f);
 	debug::setString("title_state:%d", time_limit);
 
-	
+	effect_game_start_render();
 	if (countdown_finished())
 	{
 		background_render();
@@ -174,7 +174,7 @@ void game_render()
 		choice_render();
 		pause_render(); // ‚±‚êˆÈã‰º‚É‘‚©‚È‚¢
 	}
-	effect_game_start_render();
+	
     
 	result_screen_render();
 }

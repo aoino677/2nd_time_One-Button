@@ -1,5 +1,16 @@
 #include"result_score.h"
 
+Sprete* sprNumber;
+
+Sprite* sprRankS;
+Sprite* sprRankA;
+Sprite* sprRankB;
+Sprite* sprRankC;
+Sprite* sprRankD;
+Sprite* sprRankE;
+
+int result_score_state;
+
 int score;
 int score_hp;
 int score_kill;
@@ -32,7 +43,32 @@ void result_score_deinit()
 
 void result_score_update()
 {
-    ten_thousand=/score
+    switch (result_score_state)
+    {
+    case 0:
+        sprNumber = sprite_load(L"./Data/Images/number.png");
+        
+        sprRankS=sprite_load(L"./Data/Images/rankS.png");
+        sprRankA=sprite_load(L"./Data/Images/rankA.png");
+        sprRankB=sprite_load(L"./Data/Images/rankB.png");
+        sprRankC=sprite_load(L"./Data/Images/rankC.png");
+        sprRankD=sprite_load(L"./Data/Images/rankD.png");
+        sprRankE=sprite_load(L"./Data/Images/rankE.png");
+        
+        result_score_state++;
+
+    case 1:
+        //倒した敵
+
+
+
+        //タワーHP
+
+
+        //総合スコア
+
+
+    }
 
     
 
