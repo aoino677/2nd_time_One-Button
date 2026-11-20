@@ -550,13 +550,11 @@ void enemy_move(int i)
 			enemy[i].pos.y += enemy[i].moveSpeed;
 			enemy[i].pos.x += swing_speed;
 
-			// == ではなく = で代入する
 			balloon_pos_x[i] = enemy[i].pos.x;
 			balloon_pos_y[i] = enemy[i].pos.y - 130;
 		}
 		else
 		{
-			// 敵は横移動、風船は上へ上昇（2D座標で上がマイナス方向の場合）
 			enemy[i].pos.x -= enemy[i].moveSpeed;
 			balloon_pos_y[i] -= 5;
 		}
@@ -798,13 +796,12 @@ void effect_boss_render()
 	float fade_alpha = 0.0f;
 	if (etimer < 0.0f)
 	{
-		// etimer が 0 から -30 にかけて、0.0 → 1.0 へ進む割合を作る
 		fade_alpha = etimer / -30.0f;
 		if (fade_alpha > 1.0f) fade_alpha = 1.0f;
 	}
 	float draw_alpha = 1.0f - fade_alpha;
 
-	// 背景の黒い暗転（だんだん薄くなる）
+	//背景の黒い暗転（だんだん薄くなる）
 	primitive::rect(
 		0, 0,
 		1920, 1080,
@@ -920,7 +917,7 @@ void enemy_render()
 		{
 			sprite_render(
 				sprBalloon,
-				balloon_pos_x[i], balloon_pos_y[i], // X座標を balloon_pos_x[i] に修正
+				balloon_pos_x[i], balloon_pos_y[i],
 				render_scale_x, render_scale_y,
 				0, 0,
 				80, 122,
