@@ -16,12 +16,12 @@ struct OBJ2D
     float moveSpeed = 0;                // キャラクターの移動速度
     float velocity = 0;                     // 球の速度
     float firingSpeed = 0;                // 球の連射速度
-    int hp = 0;                       // 体力
+    float hp = 0;                       // 体力
     int attack = 0;                 // 攻撃力
     int type = 0;
     int move_timer = 0;
 
     int timer = 0;                    // EXPのレベルアップ用タイマー
 
-    float r = 0;
+    float moveSpeedY = 0;
 };

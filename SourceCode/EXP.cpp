@@ -5,6 +5,7 @@
 #include <vector>
 #include "Collision2D.h"
 #include "power_efficacy.h"
+#include "effect_burst.h"
 
 int EXP_timer = 0;
 int EXP_state = 0;
@@ -93,6 +94,8 @@ void EXP_update()
 						EXP[exp_index].pos = enemy[i].pos;
 						EXP[exp_index].color.w = 1.0f;
 						EXP[exp_index].moveSpeed = 0;
+						float moveY = 150.0f;
+						EXP[exp_index].moveSpeedY = (rand() / static_cast<float>(RAND_MAX) * moveY * 2 - moveY) / 60.0f;
 						EXP[exp_index].type = EXP_TYPE_1YEN;
 						break;
 					}
@@ -124,6 +127,10 @@ void EXP_update()
 					{
 						EXP[j].timer = 0;
 						EXP[j].type++;
+
+						float range = 5;
+						particles_update
+						(EXP[j].pos.x, EXP[j].pos.y, range, 0, 0, 0);
 					}
 				}
 
@@ -154,6 +161,12 @@ void EXP_update()
 					EXP[j].color.w = 0;
 					color_w_EXP = 0.0f;
 				}
+			}
+			else
+			{
+				EXP[j].pos.y += EXP[j].moveSpeedY;
+				if (EXP[j].pos.y < 0)EXP[j].pos.y = 0;
+				else if (EXP[j].pos.y > SCREEN_H)EXP[j].pos.y = SCREEN_H;
 			}
 		}
 		break;
@@ -258,8 +271,14 @@ void EXP_levelUp_ALL()
 {
 	for (int i = 0; i < EXP_COUNT; i++)
 	{
+		float range = 15;
 		if (EXP[i].color.w != 1.0f)continue;
-		if (EXP[i].type < EXP_SPR_COUNT - 1) { EXP[i].type++; };
+		if (EXP[i].type < EXP_SPR_COUNT - 1)
+		{
+			EXP[i].type++;
+			particles_update
+			(EXP[i].pos.x, EXP[i].pos.y, range, 0, 0, 0);
+		};
 	}
 
 }

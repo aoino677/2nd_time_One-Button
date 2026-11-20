@@ -75,12 +75,12 @@ const float PLAYER_EASING = 0.99f;
 #define SHELL_SPEED (2000.0f)//1秒間当たりの進むスピード
 
 //延べ棒=================================================
-#define INGOT_DAMAGE (18)//Y1_damageの倍率は乗らなくなりました。
+#define INGOT_DAMAGE (1)//Y1_damageの倍率は乗らなくなりました。
 #define INGOT_SPEED (100.0f)//1秒間当たりの進むスピード
 #define INGOT_ACCEL (100.0f)//1秒間当たりの加速度
 
 //一閃===================================================
-#define BEEM_DAMAGE (18)//Y1_damageの倍率は乗らなくなりました。
+#define BEEM_DAMAGE (1)//Y1_damageの倍率は乗らなくなりました。
 #define BEEM_SPEED (4000.0f)//1秒間当たりの進むスピード
 #define BEEM_ACCEL (10.0f)//1秒間当たりの加速度
 
