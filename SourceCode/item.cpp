@@ -193,8 +193,6 @@ void item_update()
                     if (item_timer[i] < ITEM_TIMER)
                     {
                         item_timer[i]++;
-                        particles_update
-                        (EXP[i].pos.x, EXP[i].pos.y, range, 0, 0, 0);
                     }
 
                     // アイテムのチェック

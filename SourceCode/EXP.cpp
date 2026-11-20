@@ -127,6 +127,10 @@ void EXP_update()
 					{
 						EXP[j].timer = 0;
 						EXP[j].type++;
+
+						float range = 5;
+						particles_update
+						(EXP[j].pos.x, EXP[j].pos.y, range, 0, 0, 0);
 					}
 				}
 
