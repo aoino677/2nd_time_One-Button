@@ -25,6 +25,8 @@
 #include "item.h"
 #include "result_screen.h"
 #include "effect_scene_change.h"
+#include "effect_count_down.h"
+#include "effect_game_start.h"
 
 
 //------< 定数 >----------------------------------------------------------------
@@ -61,6 +63,8 @@ void game_init()
 	item_init();
 	efficacy_init();
 	result_screen_init();
+	countdown_init();
+	effect_game_start_init();
 }
 
 //--------------------------------------
@@ -84,11 +88,7 @@ void game_update()
 		game_state++;
 		/*fallthrough*/
 	case 2:
-		if (!is_scene_change_finished())
-		{
-			scene_change_update();
-			return; //エフェクトが終わるまではメニューの操作を受け付けない
-		}
+		countdown_update();
 		
 		//リザルト表示中はゲーム停止
 		if (result_active)
@@ -106,19 +106,27 @@ void game_update()
 		//========================================
 		// ゲーム中
 		//========================================
-
+		
+		
 		if (pause == false && choice_pause == false)
 		{
-			time_limit_update();
-			player_update();
-			item_update();
-			EXP_update();
-			enemy_update();
-			shake_update();
-			effect_danger_update();
-			cursor_main_update();
+			if (countdown_finished())
+			{
+				time_limit_update();
+				player_update();
+				item_update();
+				EXP_update();
+				enemy_update();
+				shake_update();
+				effect_danger_update();
+				cursor_main_update();
+				effect_game_start_update();
+			}
+			
 		}
-
+			
+		
+		
 		//仮リザルト
 		if (TRG(0) & PAD_TRG1)
 		{
@@ -150,30 +158,25 @@ void game_render()
 	GameLib::clear(0.2f, 0.0f, 0.75f);
 	debug::setString("title_state:%d", time_limit);
 
-	background_render();
-	enemy_render();
-	EXP_render();
-	player_render();
-	item_render();
-	level_up_render();
-	hp_render();
-	effect_danger_render();
-	time_limit_render();
-	cursor_main_render();
-	choice_render();
-	pause_render(); // これ以上下に書かない
-
+	
+	if (countdown_finished())
+	{
+		background_render();
+		enemy_render();
+		EXP_render();
+		player_render();
+		item_render();
+		level_up_render();
+		hp_render();
+		effect_danger_render();
+		time_limit_render();
+		cursor_main_render();
+		choice_render();
+		pause_render(); // これ以上下に書かない
+	}
+	effect_game_start_render();
     
 	result_screen_render();
-
-	if (!is_scene_change_finished())
-	{
-		scene_change_render();
-	}
-	else 
-	{
-		scene_change_deinit();
-	}
 }
 
 //--------------------------------------
@@ -190,4 +193,6 @@ void game_deinit()
 	choice_deinit();
 	item_deinit();
 	result_screen_deinit();
+	countdown_deinit();
+	effect_game_start_deinit();
 }

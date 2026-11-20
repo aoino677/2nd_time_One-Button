@@ -101,10 +101,6 @@ void result_button_update()
         break;
 
     case 1:
-        result_button_state++;
-        break;
-
-    case 2:
         // -------------------------
         // ボタン判定
         // -------------------------
@@ -185,39 +181,30 @@ void result_button_update()
 //------------------------------------------------------------
 void result_button_render()
 {
-    if (!result_active)
-    {
-        return;
-    }
-    
     //完全停止後にボタンを描画
-    
-    
-        for (int i = 0; i < 2; i++)
+    for (int i = 0; i < 2; i++)
+    {
+        if (sprResultButton[i] != nullptr)
         {
-            if (sprResultButton[i] != nullptr)
-            {
-                sprite_render(
-                    sprResultButton[i],
-                    resultButton[i].pos.x,
-                    resultButton[i].pos.y,
-                    resultButton[i].scale.x,
-                    resultButton[i].scale.y,
-                    resultButton[i].texPos.x,
-                    resultButton[i].texPos.y,
-                    resultButton[i].texSize.x,
-                    resultButton[i].texSize.y,
-                    resultButton[i].pivot.x,
-                    resultButton[i].pivot.y,
-                    ToRadian(0.0f),
-                    resultButton[i].color.x,
-                    resultButton[i].color.y,
-                    resultButton[i].color.z,
-                    resultButton[i].color.w
-                );
-            }
+            sprite_render(
+                sprResultButton[i],
+                resultButton[i].pos.x,
+                resultButton[i].pos.y,
+                resultButton[i].scale.x,
+                resultButton[i].scale.y,
+                resultButton[i].texPos.x,
+                resultButton[i].texPos.y,
+                resultButton[i].texSize.x,
+                resultButton[i].texSize.y,
+                resultButton[i].pivot.x,
+                resultButton[i].pivot.y,
+                ToRadian(0.0f),
+                resultButton[i].color.x,
+                resultButton[i].color.y,
+                resultButton[i].color.z,
+                resultButton[i].color.w);
         }
-    
+    }
 }
 
 //------------------------------------------------------------

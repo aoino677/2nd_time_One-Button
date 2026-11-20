@@ -29,7 +29,7 @@ void resulet_update()
         resulet_state++;
         /*fallthrough*/
     case 2:
-        //result_button_update();
+        result_button_update();
         if (TRG(0) & PAD_TRG1)
         {
             nextScene = SCENE_TITLE;
@@ -45,7 +45,7 @@ void resulet_render()
 {
     GameLib::clear(1.0f, 0.2f, 0.2f);
     font::textOut(1, "PRESS SPACE KEY", 640, 300);
-    
+    result_button_render();
     sprite_render(
         sprresult,
         0, 0
@@ -53,10 +53,11 @@ void resulet_render()
 
     sprite_render(
         sprResult_logo,
-        230, 0
+       400, 0,
+        0.8,0.8
     );
 
-    result_button_render();
+   
 }
 
 void resulet_deinit()

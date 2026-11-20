@@ -256,7 +256,7 @@ void enemy_update()
 		crayon_spawn_timer++;
 
 		//ボスリスポーン
-		if (enemy_boss_timer >=300)
+		if (enemy_boss_timer >=1200)
 		{
 			for (int i = enemy_max; i < ENEMY_NUMBER; i++)
 			{

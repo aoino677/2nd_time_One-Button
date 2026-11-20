@@ -93,8 +93,9 @@ void menu_render()
 	
 	if (!is_scene_change_finished())
 	{
+		menu_button_render();
 		scene_change_render();
-	}
+    }
 	else if (!is_effect_cleaned_up)
 	{
 		scene_change_deinit();

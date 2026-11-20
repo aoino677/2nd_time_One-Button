@@ -1,8 +1,8 @@
 #include "all.h"
 #include "effect_count_down.h"
 
-Sprite* sprcount[4] = { nullptr }; // 3, 2, 1, START の画像                  // 0:3, 1:2, 2:1, 3:START
-int frame_timer = 0;                  // フレームカウンター
+Sprite* sprcount[4] = { nullptr }; //3, 2, 1, START の画像
+int frame_timer = 0;                  //フレームカウンター
 int countdown_state;
 int count_phase;
 bool is_finished = false;
@@ -43,7 +43,7 @@ void countdown_update()
 	case 1:
 		frame_timer++;
 
-		if (frame_timer >= 30)
+		if (frame_timer >= 45)
 		{
 			frame_timer = 0;
 			count_phase++;
