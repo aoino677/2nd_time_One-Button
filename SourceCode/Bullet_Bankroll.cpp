@@ -1,12 +1,8 @@
 #include "Bullet_Bankroll.h"
 #include "Collision2D.h"
 #include "enemy.h"
-
-
-Bullet_Bankroll::Bullet_Bankroll()
-{
-	
-}
+#include "../GameLib/game_lib.h"
+#include "bullet_se.h"
 
 Bullet_Bankroll::~Bullet_Bankroll()
 {
@@ -84,6 +80,11 @@ void Bullet_Bankroll::attack(OBJ2D enemies[])
 			{
 				enemies[i].hp -= attack_damage;
 				attacked_enemies.push_back(&enemies[i]);
+				if (is_hit_least_once == false)
+				{
+					music::play(SE_BULLET_BANKROLL, false);
+					is_hit_least_once = true;
+				}
 			}
 		}
 	}

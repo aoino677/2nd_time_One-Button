@@ -70,7 +70,7 @@ const float PLAYER_EASING = 0.99f;
 bool is_end_firing_rapid(); //˜AË’†‚©Šm”F‚·‚éŠÖ”itrue : ˜AË’†, false : ˜AË’†‚¶‚á‚È‚¢j
 #define Y1_DAMAGE (1)
 #define BULLET_SPEED (4000.0f)
-#define Y1_RAPID_INTERVAL (0.1f)
+#define Y1_RAPID_INTERVAL (0.15f)
 
 //ŠLŠk===================================================
 #define SHELL_DAMAGE (1)
@@ -90,4 +90,6 @@ bool is_end_firing_rapid(); //˜AË’†‚©Šm”F‚·‚éŠÖ”itrue : ˜AË’†, false : ˜AË’
 #define CAN_SHOT_SPECIAL_COUNT 3
 #define SPECIAL_DAMAGE (30)
 #define SPECIAL_RANGE (200.0f)
+
+#define SE_BULLET_SPECIAL (5)
 const VECTOR3 bullet_special_color = { 1.0f, 0.0f, 0.0f };

@@ -118,6 +118,7 @@ attrib +h SourceCode\gp1.log
     <ClInclude Include="SourceCode\Bullet.h" />
     <ClInclude Include="SourceCode\Bullet_Bankroll.h" />
     <ClInclude Include="SourceCode\Bullet_Ingot.h" />
+    <ClInclude Include="SourceCode\bullet_se.h" />
     <ClInclude Include="SourceCode\Bullet_Shell.h" />
     <ClInclude Include="SourceCode\choice.h" />
     <ClInclude Include="SourceCode\Collision2D.h" />

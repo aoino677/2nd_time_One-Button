@@ -2,6 +2,13 @@
 #include"enemy.h"
 #include "Collision2D.h"
 
+#include "bullet_se.h"
+
+Bullet_Shell::Bullet_Shell()
+{
+	music::play(SE_BULLET_SHELL, false);
+}
+
 void Bullet_Shell::update()
 {
 	pos += velocity;
