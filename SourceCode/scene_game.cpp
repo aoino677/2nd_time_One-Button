@@ -73,7 +73,7 @@ void game_init()
 	{
 	}
 
-	music::load(BGM_BATTLE, L"Data/Sounds/BGM/game_normal2.wav");
+	music::load(BGM_BATTLE, L"Data/Sounds/BGM/game_normal3.wav");
 	music::load(BGM_BOSS, L"Data/Sounds/BGM/game_boss2.wav");
 
 	music::play(BGM_BATTLE, true);
