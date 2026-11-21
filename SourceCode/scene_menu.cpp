@@ -80,7 +80,6 @@ void menu_render()
 	font::textOut(1, "MENU", 640, 200);
 	
 	menu_button_render();
-<<<<<<< HEAD
 	
 	if (!is_scene_change_finished())
 	{
@@ -93,8 +92,7 @@ void menu_render()
 		is_effect_cleaned_up = true;
 	}
 	cursor_render();
-=======
->>>>>>> 0f634558dc2a8984a379dd75890c557d630f6787
+
 }
 
 //--------------------------------------

@@ -342,7 +342,7 @@ void choice_update()
 					power_efficacy[random[i]].scale.x = POWER_EFFICACY_SCALE + 0.1f;
 					power_efficacy[random[i]].scale.y = POWER_EFFICACY_SCALE + 0.1f;
 				}
-				level_text_scale[i] = 1.1f;
+				level_text_scale[i] = 2.1f;
 				if (TRG(0) & PAD_START)
 				{
 					switch (i)
@@ -513,7 +513,7 @@ void choice_update()
 					power_efficacy[random[i]].scale.x = POWER_EFFICACY_SCALE;
 					power_efficacy[random[i]].scale.y = POWER_EFFICACY_SCALE;
 				}
-				level_text_scale[i] = 1.0f;
+				level_text_scale[i] = 2.0f;
 			}
 		}
 		break;
@@ -604,7 +604,7 @@ void choice_render()
 			DrawLevelText(
 				random[i],
 				choiceButton[i].pos.x - 60,
-				choiceButton[i].pos.y + 240 + choice_effect_y,
+				choiceButton[i].pos.y + 230 + choice_effect_y,
 				level_text_scale[i]
 			);
 		}
@@ -806,7 +806,7 @@ void DrawLevelText(int type, float x, float y, float scale)
 	}
 	else
 	{
-		sprintf_s(str, "%d   %d", lv, lv + 1);
+		sprintf_s(str, "%d %d", lv, lv + 1);
 	}
 
 	font::textOut(
