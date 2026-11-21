@@ -10,7 +10,7 @@
 #include "all.h"
 #include "menu_button.h"
 #include "effect_scene_change.h"
-
+#include "cursor.h"
 //------< ’è” >----------------------------------------------------------------
 
 //------< •Ï” >----------------------------------------------------------------
@@ -27,6 +27,7 @@ void menu_init()
 	menu_timer = 0;
 	is_effect_cleaned_up = false;
 	menu_button_init();
+	cursor_init();
 }
 
 //--------------------------------------
@@ -64,7 +65,7 @@ void menu_update()
 			break;
 		}*/
 		menu_button_update();
-		
+		cursor_update();
 		break;
 	}
 
@@ -101,6 +102,7 @@ void menu_render()
 		scene_change_deinit();
 		is_effect_cleaned_up = true;
 	}
+	cursor_render();
 }
 
 //--------------------------------------
@@ -109,5 +111,5 @@ void menu_render()
 void menu_deinit()
 {
 	menu_button_deinit();
-
+	cursor_deinit();
 }
