@@ -27,7 +27,7 @@
 #include "effect_scene_change.h"
 #include "effect_count_down.h"
 #include "effect_game_start.h"
-
+#include "cursor.h"
 
 //------< 定数 >----------------------------------------------------------------
 #define BGM_BATTLE 6
@@ -67,6 +67,7 @@ void game_init()
 	result_screen_init();
 	countdown_init();
 	effect_game_start_init();
+	cursor_init();
 
 	// ゲーム開始時はWindows標準カーソルを非表示
 	while (ShowCursor(FALSE) >= 0)
@@ -153,7 +154,7 @@ void game_update()
 		//========================================
 		if (pause == true || choice_pause == true)
 		{
-			//cursor_main_update();
+			cursor_update();
 			choice_update();
 		}
 
@@ -191,6 +192,10 @@ void game_render()
 	
     
 	result_screen_render();
+	if (pause == true || choice_pause == true)
+	{
+		cursor_render();
+	}
 }
 
 //--------------------------------------
@@ -209,4 +214,5 @@ void game_deinit()
 	result_screen_deinit();
 	countdown_deinit();
 	effect_game_start_deinit();
+	cursor_deinit();
 }

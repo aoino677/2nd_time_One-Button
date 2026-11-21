@@ -10,7 +10,7 @@
 #include "all.h"
 #include "effect_scene_change.h"
 #include "title_button.h"
-
+#include "cursor.h"
 
 //------< 定数 >----------------------------------------------------------------
 
@@ -26,7 +26,13 @@ void title_init()
 {
 	title_state = 0;
 	title_timer = 0;
+	scene_change_init();
 	title_button_init();
+	cursor_init();
+	// ゲーム開始時はWindows標準カーソルを非表示
+	while (ShowCursor(FALSE) >= 0)
+	{
+	}
 }
 
 //--------------------------------------
@@ -45,9 +51,18 @@ void title_update()
 		title_state++;
 		/*fallthrough*/
 	case 2:
+		/*if (TRG(0) & PAD_START)
+		{
+			title_state = 3;
+		}*/
 		title_button_update();
+		cursor_update();
+		break;
 
-	    break;
+	case 3:
+		//アニメーションを更新し続ける
+		scene_change_update();
+		break;
 	}
 
 	title_timer++;
@@ -74,7 +89,10 @@ void title_render()
 	{
 		font::textOut(1, "PRESS SPACE KEY", 640, 300);
 	}
+
 	title_button_render();
+	scene_change_render();
+	cursor_render();
 }
 
 //--------------------------------------
@@ -83,4 +101,5 @@ void title_render()
 void title_deinit()
 {
 	title_button_deinit();
+	cursor_deinit();
 }

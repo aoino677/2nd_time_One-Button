@@ -1,5 +1,4 @@
 #include "all.h"
-#include "obj2d.h"
 #include "cursor_main.h"
 #include "enemy.h"
 #include "player.h"
@@ -54,7 +53,6 @@ float cursor_scale = CURSOL_MAIN_SCALE;
 
 void cursor_main_init()
 {
-    safe_delete(sprCursor_main);
     cursor_main_timer = 0;
     cursor_main_state = 0;
 
