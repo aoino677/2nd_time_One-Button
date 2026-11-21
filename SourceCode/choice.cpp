@@ -20,6 +20,7 @@ int level_up_count = 0;
 int random[3];
 float choice_effect_y = 0.0f;
 float choice_effect_alpha = 0.0f;
+float level_text_scale[CHOICE_MAX] = { 1.0f, 1.0f, 1.0f };
 
 void choice_init()
 {
@@ -320,6 +321,7 @@ void choice_update()
 				choiceButton[i].scale.y = CHOICE_SCALE + 0.1f;
 				power_efficacy[random[i]].scale.x = POWER_EFFICACY_SCALE + 0.1f;
 				power_efficacy[random[i]].scale.y = POWER_EFFICACY_SCALE + 0.1f;
+				level_text_scale[i] = 1.2f;
 				if (TRG(0) & PAD_START)
 				{
 					switch (i)
@@ -476,6 +478,7 @@ void choice_update()
 				choiceButton[i].scale.y = CHOICE_SCALE;
 				power_efficacy[random[i]].scale.x = POWER_EFFICACY_SCALE;
 				power_efficacy[random[i]].scale.y = POWER_EFFICACY_SCALE;
+				level_text_scale[i] = 1.0f;
 			}
 		}
 		break;
@@ -535,6 +538,18 @@ void choice_render()
 			1.0f, 1.0f, 1.0f, 1.0f
 		);
 	}
+	if (choice_pause)
+	{
+		DrawLevelText(random[0], choiceButton[0].pos.x - 120,
+			choiceButton[0].pos.y + 210 + choice_effect_y, level_text_scale[0]);
+
+		DrawLevelText(random[1], choiceButton[1].pos.x - 120,
+			choiceButton[1].pos.y + 210 + choice_effect_y, level_text_scale[1]);
+
+		DrawLevelText(random[2], choiceButton[2].pos.x - 120,
+			choiceButton[2].pos.y + 210 + choice_effect_y, level_text_scale[2]);
+	}
+
 }
 
 void choice_deinit()
@@ -586,4 +601,81 @@ void randoms()
 		}
 		continue;
 	}
+}
+
+void DrawLevelText(int type, float x, float y, float scale)
+{
+	char str[64];
+
+	int lv = 1;
+	int maxLv = level_8;
+
+	switch (type)
+	{
+	case HP_UP:
+		lv = hp_level;
+		maxLv = level_5;
+		break;
+
+	case WEAPON_SHELL:
+		lv = (level_up_weapon[SHELL] == 0) ? 1 : level_up_weapon[SHELL];
+		maxLv = level_8;
+		break;
+
+	case WEAPON_BEAM:
+		lv = (level_up_weapon[BEAM] == 0) ? 1 : level_up_weapon[BEAM];
+		maxLv = level_8;
+		break;
+
+	case WEAPON_INGOT:
+		lv = (level_up_weapon[INGOT] == 0) ? 1 : level_up_weapon[INGOT];
+		maxLv = level_8;
+		break;
+
+	case WEAPON_BANKROLL:
+		lv = (level_up_weapon[BANKROLL] == 0) ? 1 : level_up_weapon[BANKROLL];
+		maxLv = level_8;
+		break;
+
+	case ITEM_LUCKY:
+		lv = lucky_level;
+		maxLv = 16;
+		break;
+
+	case WEAPON_BULLET:
+		lv = (level_up_weapon[Y1] == 0) ? 1 : level_up_weapon[Y1];
+		maxLv = level_8;
+		break;
+
+	case BULLET_DAMAGE:
+		lv = bullet_damage_level;
+		maxLv = level_7;
+		break;
+
+	case CURSOR_BIG:
+		lv = cursor_level;
+		maxLv = level_8;
+		break;
+
+	case BULLET_INTERVAL:
+		lv = bullet_interval_level;
+		maxLv = level_7;
+		break;
+
+	case HIT_BUCK:
+		lv = hit_buck_level;
+		maxLv = level_5;
+		break;
+	}
+
+	if (lv >= maxLv)
+	{
+		sprintf_s(str, "MAX");
+	}
+	else
+	{
+		sprintf_s(str, "Lv.%d -> Lv.%d", lv, lv + 1);
+	}
+
+	font::textOut(6, str, x, y, scale, scale, 1.0f, 0.8f, 0.2f, 1.0f, TEXT_ALIGN::UPPER_LEFT, false);
 }

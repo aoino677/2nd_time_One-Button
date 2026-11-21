@@ -4,6 +4,7 @@
 #include "enemy.h"
 #include "player.h"
 #include "Level.h"
+#include "power_efficacy.h"
 
 //==================================================
 // 変数
@@ -44,6 +45,9 @@ float cursor_hitbox_half_height = 10.0f;
 // 通常時のスケール
 float cursor_normal_scale = CURSOL_MAIN_SCALE;
 
+float cursor_scale = CURSOL_MAIN_SCALE;
+
+
 //==================================================
 // 初期化
 //==================================================
@@ -75,6 +79,7 @@ void cursor_main_init()
     cursor_main = {};
 
     cursor_normal_scale = CURSOL_MAIN_SCALE;
+    cursor_scale = CURSOL_MAIN_SCALE;
 
     cursor_hitbox_half_width = 10.0f;
     cursor_hitbox_half_height = 10.0f;
@@ -287,6 +292,10 @@ void cursor_main_update()
             cursor_main_posY
         };
 
+        cursor_main.scale = {
+            cursor_scale,
+            cursor_scale
+        };
         break;
     }
     }
@@ -321,11 +330,16 @@ void cursor_main_render()
 // カーソルを大きくして、その分当たり判定も大きくする
 void Cursor_big()
 {
-    // 1回呼び出すごとに少し大きくする
+    if (cursor_level < level_8)
+    {
+        cursor_level++;
+    }
+
+    // カーソルサイズ
     cursor_main.scale.x += 0.1f;
     cursor_main.scale.y += 0.1f;
 
-    // 当たり判定も少し大きくする
+    // 当たり判定
     cursor_hitbox_half_width += 2.0f;
     cursor_hitbox_half_height += 2.0f;
 }

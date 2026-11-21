@@ -4,7 +4,7 @@
 #define HP_MAX (5)											// 増やすHP量
 #define BULLET_SPEED_INCREASED (200.0f)			// 増やすスピード量
 #define BULLET_SCALE_INCREASED (0.05f)				// 増やす大きさの量
-#define ITEM_LUCKY_UP               (1)					//	アイテムを落とす確率を上げる
+#define ITEM_LUCKY_UP               (3)					//	アイテムを落とす確率を上げる
 #define BULLET_INTERVAL_UP        (5)					// 撃つ間隔が速くなる
 #define BULLET_DAMAGE_UP         (1.0f)					// バレットのダメージが増える
 #define LOST_ITEM_ACQUISITION_RANGE_UP (0.2f)	// 落とした物の取得範囲を広げる
@@ -25,6 +25,13 @@ extern float damage_up;
 extern int efficacy_timer;
 extern float red_cooltime_rate;
 extern float bullet_interval_rate;
+
+extern int hp_level;
+extern int lucky_level;
+extern int bullet_damage_level;
+extern int cursor_level;
+extern int bullet_interval_level;
+extern int hit_buck_level;
 
 void efficacy_init();
 extern void HP();

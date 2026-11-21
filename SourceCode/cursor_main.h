@@ -25,7 +25,7 @@ extern int timet_down_ingot;
 extern int timer_down_beam;
 extern int timer_down_bankroll;
 extern int timer_down_special;
-
+extern float cursor_scale;
 extern int serect_weapon;
 
 void cursor_main_init();

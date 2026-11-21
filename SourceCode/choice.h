@@ -26,6 +26,7 @@ void choice_render();
 void choice_deinit();
 bool T_or_F(int level_up_count);
 void randoms();
+void DrawLevelText(int type, float x, float y, float scale);
 
 enum
 {
