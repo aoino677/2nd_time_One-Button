@@ -9,8 +9,10 @@ Bullet_Ingot::Bullet_Ingot(Type type)
 	{
 	case Type::Ingot:
 		music::play(SE_BULLET_INGOT, false);
+		break;
 	case Type::Issen:
 		music::play(SE_BULLET_ISSEN, false);
+		break;
 	}
 }
 
