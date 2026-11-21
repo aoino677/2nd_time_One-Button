@@ -540,7 +540,7 @@ void choice_render()
 void choice_deinit()
 {
 	safe_delete(sprchoicebar);
-	safe_delete(sprlevelup;)
+	safe_delete(sprlevelup);
 	for (int i = 0; i < EFFICACY_MAX; i++)
 	{
 		safe_delete(sprpower_efficacy[i]);
