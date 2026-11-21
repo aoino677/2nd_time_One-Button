@@ -35,13 +35,6 @@ void menu_init()
 //--------------------------------------
 void menu_update()
 {
-	if (!is_scene_change_finished())
-	{
-		scene_change_update();
-		return; //エフェクトが終わるまではメニューの操作を受け付けない
-	}
-	
-	
 	switch (menu_state)
 	{
 	case 0:
@@ -59,11 +52,7 @@ void menu_update()
 		/*fallthrough*/
 	case 2:
 		//////// 通常時 ////////
-		/*if (TRG(0) & PAD_START)
-		{
-			nextScene = SCENE_GAME;
-			break;
-		}*/
+		
 		menu_button_update();
 		cursor_update();
 		break;
@@ -91,6 +80,7 @@ void menu_render()
 	font::textOut(1, "MENU", 640, 200);
 	
 	menu_button_render();
+<<<<<<< HEAD
 	
 	if (!is_scene_change_finished())
 	{
@@ -103,6 +93,8 @@ void menu_render()
 		is_effect_cleaned_up = true;
 	}
 	cursor_render();
+=======
+>>>>>>> 0f634558dc2a8984a379dd75890c557d630f6787
 }
 
 //--------------------------------------

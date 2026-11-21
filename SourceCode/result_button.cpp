@@ -3,13 +3,10 @@
 #include "result_button.h"
 #include "result_screen.h"
 #include "scene_game.h"
+#include "scene_title.h"
 #include "effect_scene_change.h"
 
 int result_button_state = 0;
-//int result_bounce_count = 0;
-//bool result_active ;
-//bool result_finished;
-//bool result_landed ;
 
 //------------------------------------------------------------
 // 結果画面ボタン
@@ -43,7 +40,6 @@ void result_button_init()
 //------------------------------------------------------------
 void result_button_update()
 {
-
     switch (result_button_state)
     {
     case 0:
@@ -57,41 +53,47 @@ void result_button_update()
             sprResultButton[1] = sprite_load(L"Data/Images/title_sin.png");
         }
 
-        // -------------------------
-        // RETRY
-        // -------------------------
+        //-------------------------
+        //RETRY
+        //-------------------------
         resultButton[0] = {};
-        resultButton[0].pos = { 500.0f, 850.0f };
-        resultButton[0].scale = {
+        resultButton[0].pos = { 500.0f, 950.0f };
+        resultButton[0].scale = 
+        {
             static_cast<float>(PAUSE_SCALE),
             static_cast<float>(PAUSE_SCALE)
         };
         resultButton[0].texPos = { 0.0f, 0.0f };
-        resultButton[0].texSize = {
+        resultButton[0].texSize = 
+        {
             static_cast<float>(PAUSE_TEX_W),
             static_cast<float>(PAUSE_TEX_H)
         };
-        resultButton[0].pivot = {
+        resultButton[0].pivot = 
+        {
             static_cast<float>(PAUSE_PIVOT_X),
             static_cast<float>(PAUSE_PIVOT_Y)
         };
         resultButton[0].color = { 1.0f, 1.0f, 1.0f, 1.0f };
 
-        // -------------------------
-        // TITLE
-        // -------------------------
+        //-------------------------
+        //TITLE
+        //-------------------------
         resultButton[1] = {};
-        resultButton[1].pos = { 1500.0f, 850.0f };
-        resultButton[1].scale = {
+        resultButton[1].pos = { 1500.0f, 950.0f };
+        resultButton[1].scale = 
+        {
             static_cast<float>(PAUSE_SCALE),
             static_cast<float>(PAUSE_SCALE)
         };
         resultButton[1].texPos = { 0.0f, 0.0f };
-        resultButton[1].texSize = {
+        resultButton[1].texSize = 
+        {
             static_cast<float>(PAUSE_TEX_W),
             static_cast<float>(PAUSE_TEX_H)
         };
-        resultButton[1].pivot = {
+        resultButton[1].pivot = 
+        {
             static_cast<float>(PAUSE_PIVOT_X),
             static_cast<float>(PAUSE_PIVOT_Y)
         };
@@ -101,77 +103,68 @@ void result_button_update()
         break;
 
     case 1:
-        // -------------------------
+        //-------------------------
         // ボタン判定
-        // -------------------------
-        if (result_landed)
+        //-------------------------
+
+        float mouseX = static_cast<float>(getCursorPosX());
+        float mouseY = static_cast<float>(getCursorPosY());
+
+        for (int i = 0; i < 2; i++)
         {
-            float mouseX = static_cast<float>(getCursorPosX());
-            float mouseY = static_cast<float>(getCursorPosY());
+            float left =
+                resultButton[i].pos.x -
+                resultButton[i].pivot.x * resultButton[i].scale.x;
 
-            for (int i = 0; i < 2; i++)
+            float right =
+                resultButton[i].pos.x +
+                (resultButton[i].texSize.x - resultButton[i].pivot.x) * resultButton[i].scale.x;
+
+            float top =
+                resultButton[i].pos.y -
+                resultButton[i].pivot.y * resultButton[i].scale.y;
+
+            float bottom =
+                resultButton[i].pos.y +
+                (resultButton[i].texSize.y - resultButton[i].pivot.y) * resultButton[i].scale.y;
+
+            if (mouseX >= left &&
+                mouseX <= right &&
+                mouseY >= top &&
+                mouseY <= bottom)
             {
-                float left =
-                    resultButton[i].pos.x -
-                    resultButton[i].pivot.x * resultButton[i].scale.x;
+                //マウスを乗せたら少し拡大
+                resultButton[i].scale.x = static_cast<float>(PAUSE_SCALE) + 0.1f;
+                resultButton[i].scale.y = static_cast<float>(PAUSE_SCALE) + 0.1f;
 
-                float right =
-                    resultButton[i].pos.x +
-                    (resultButton[i].texSize.x - resultButton[i].pivot.x) * resultButton[i].scale.x;
-
-                float top =
-                    resultButton[i].pos.y -
-                    resultButton[i].pivot.y * resultButton[i].scale.y;
-
-                float bottom =
-                    resultButton[i].pos.y +
-                    (resultButton[i].texSize.y - resultButton[i].pivot.y) * resultButton[i].scale.y;
-
-                if (mouseX >= left &&
-                    mouseX <= right &&
-                    mouseY >= top &&
-                    mouseY <= bottom)
+                if (TRG(0) & PAD_START)
                 {
-                    //マウスを乗せたら少し拡大
-                    resultButton[i].scale.x = static_cast<float>(PAUSE_SCALE) + 0.1f;
-                    resultButton[i].scale.y = static_cast<float>(PAUSE_SCALE) + 0.1f;
+                    result_active = false;
+                    result_finished = true;
+                    result_landed = false;
 
-                    if (TRG(0) & PAD_START)
+                    switch (i)
                     {
-                        switch (i)
-                        {
-                        case 0:
-                            //RETRY
-                            result_active = false;
-                            result_finished = true;
-                            result_landed = false;
-                           
-                            result_button_state = 1;
-                            scene_change_init();
-                            game_init();
-                            break;
+                    case 0:
+                        //RETRY
+                        scene_change_start(SCENE_GAME);
+                        break;
 
-                        case 1:
-                            //TITLE
-                            result_active = false;
-                            result_finished = true;
-                            result_landed = false;
-                            result_button_state = 1;
-                            nextScene = SCENE_TITLE;
-                            break;
-                        }
+                    case 1:
+                        //TITLE
+                        scene_change_start(SCENE_TITLE);
                         break;
                     }
-                }
-                else
-                {
-                    //通常サイズに戻す
-                    resultButton[i].scale.x = static_cast<float>(PAUSE_SCALE);
-                    resultButton[i].scale.y = static_cast<float>(PAUSE_SCALE);
+                    break;
                 }
             }
+            else
+            {
+                //通常サイズに戻す
+                resultButton[i].scale.x = static_cast<float>(PAUSE_SCALE);
+                resultButton[i].scale.y = static_cast<float>(PAUSE_SCALE);
+            }
         }
-
         break;
     }
 }

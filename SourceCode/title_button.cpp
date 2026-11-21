@@ -2,6 +2,7 @@
 #include "title_button.h"
 #include "scene_title.h"
 #include "cursor_main.h"
+#include "effect_scene_change.h"
 
 //--------------------------------------
 // メニューボタン
@@ -16,10 +17,17 @@ int title_button_timer = 0;
 extern bool gameEnd;
 
 //初期化
+//初期化
 void title_button_init()
 {
     title_button_state = 0;
     title_button_timer = 0;
+
+    if (sprtitleButton != nullptr)
+    {
+        safe_delete(sprtitleButton);
+        sprtitleButton = nullptr;
+    }
 
     titleButton = {};
 }
@@ -32,13 +40,13 @@ void title_button_update()
     switch (title_button_state)
     {
     case 0:
-    
-       //ボタン画像読み込み
+
+        //ボタン画像読み込み
         sprtitleButton = sprite_load(L"./Data/Images/NewGame_sin.png");
-        
+
         title_button_state++;
         break;
-    
+
     case 1:
         //ゲームスタートボタン初期化
         titleButton = {};
@@ -69,9 +77,9 @@ void title_button_update()
 
         title_button_state++;
         break;
-        
+
     case 2:
-    
+
         //----------------------------------
         // マウス座標
         //----------------------------------
@@ -104,11 +112,10 @@ void title_button_update()
             titleButton.scale.x = TITLE_BUTTON_SCALE + 0.1f;
             titleButton.scale.y = TITLE_BUTTON_SCALE + 0.1f;
 
-            //クリックでゲーム開始
+            //クリックでコイン演出つきでSCENE_MENUへ遷移開始
             if (TRG(0) & PAD_START)
-            {
-                title_state = 3;
-            }
+                scene_change_start(SCENE_MENU);
+            
         }
         else
         {
@@ -119,7 +126,7 @@ void title_button_update()
 
         title_button_timer = 0;
         break;
-    
+
     }
 }
 
@@ -128,7 +135,6 @@ void title_button_update()
 //--------------------------------------
 void title_button_render()
 {
-
     //----------------------------------
     // ゲームスタートボタン
     //----------------------------------
@@ -158,9 +164,14 @@ void title_button_render()
 //--------------------------------------
 // 終了処理
 //--------------------------------------
+// 終了処理
 void title_button_deinit()
 {
-    safe_delete(sprtitleButton);
+    if (sprtitleButton != nullptr)
+    {
+        safe_delete(sprtitleButton);
+        sprtitleButton = nullptr;
+    }
 
     title_button_state = 0;
     title_button_timer = 0;
