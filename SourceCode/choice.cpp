@@ -526,7 +526,7 @@ void choice_render()
 		}
 		sprite_render(
 			sprlevelup,
-			levelup.pos.x, levelup.pos.y,
+			levelup.pos.x, levelup.pos.y + choice_effect_y,
 			levelup.scale.x, levelup.scale.y,
 			0, 0,
 			levelup.texSize.x, levelup.texSize.y,
@@ -540,6 +540,7 @@ void choice_render()
 void choice_deinit()
 {
 	safe_delete(sprchoicebar);
+	safe_delete(sprlevelup;)
 	for (int i = 0; i < EFFICACY_MAX; i++)
 	{
 		safe_delete(sprpower_efficacy[i]);
