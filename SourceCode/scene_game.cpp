@@ -70,6 +70,8 @@ void game_init()
 	while (ShowCursor(FALSE) >= 0)
 	{
 	}
+
+	music::load(6, L"Data/Sounds/BGM/game_normal2.wav");
 }
 
 //--------------------------------------
