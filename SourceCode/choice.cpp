@@ -21,6 +21,7 @@ int random[3];
 float choice_effect_y = 0.0f;
 float choice_effect_alpha = 0.0f;
 float level_text_scale[CHOICE_MAX] = { 1.0f, 1.0f, 1.0f };
+int choice_count = CHOICE_MAX;
 
 void choice_init()
 {
@@ -45,6 +46,7 @@ void choice_init()
 	sprpower_efficacy[8] = sprite_load(L"./Data/images/card_range.png");
 	sprpower_efficacy[9] = sprite_load(L"./Data/images/card_rapid.png");
 	sprpower_efficacy[10] = sprite_load(L"./Data/images/card_knokback.png");
+	sprpower_efficacy[11] = sprite_load(L"./Data/images/card_score.png");
 	// 「レベルアップ！」の画像読み込み
 	sprlevelup = sprite_load(L"./Data/Images/levelUP.png");
 
@@ -201,6 +203,10 @@ void choice_update()
 		case HIT_BUCK: // ヒットバックする距離を増やす
 			power_efficacy[10].pos = { 450,BUTTON_Y };
 			power_efficacy[10].color.w = 1; break;
+
+		case SCORE: // スコアを増やす
+			power_efficacy[11].pos = { 450,BUTTON_Y };
+			power_efficacy[11].color.w = 1; break;
 		}
 		switch (random[1])
 		{
@@ -247,6 +253,10 @@ void choice_update()
 		case HIT_BUCK: // ヒットバックする距離を増やす
 			power_efficacy[10].pos = { 950,BUTTON_Y };
 			power_efficacy[10].color.w = 1; break;
+
+		case SCORE: // スコアを増やす
+			power_efficacy[11].pos = { 950,BUTTON_Y };
+			power_efficacy[11].color.w = 1; break;
 		}
 		switch (random[2])
 		{
@@ -293,8 +303,12 @@ void choice_update()
 		case HIT_BUCK: // ヒットバックする距離を増やす
 			power_efficacy[10].pos = { 1450,BUTTON_Y };
 			power_efficacy[10].color.w = 1; break;
+
+		case SCORE: // スコアを増やす
+			power_efficacy[11].pos = { 1450,BUTTON_Y };
+			power_efficacy[11].color.w = 1; break;
 		}
-		for (int i = 0; i < CHOICE_MAX; i++)
+		for (int i = 0; i < choice_count; i++)
 		{
 			float mouseX = static_cast<float>(getCursorPosX());
 			float mouseY = static_cast<float>(getCursorPosY());
@@ -305,17 +319,13 @@ void choice_update()
 			float top = buttonY - choiceButton[i].pivot.y * choiceButton[i].scale.y;
 			float bottom = buttonY + (choiceButton[i].texSize.y - choiceButton[i].pivot.y) * choiceButton[i].scale.y;
 
-			float buttonY1 = power_efficacy[random[i]].pos.y + choice_effect_y;
-			float left1 = power_efficacy[random[i]].pos.x - power_efficacy[random[i]].pivot.x * power_efficacy[random[i]].scale.x;
-			float right1 = power_efficacy[random[i]].pos.x + (power_efficacy[random[i]].texSize.x - power_efficacy[random[i]].pivot.x) * power_efficacy[random[i]].scale.x;
-			float top1 = buttonY1 - power_efficacy[random[i]].pivot.y * power_efficacy[random[i]].scale.y;
-			float bottom1 = buttonY1 + (power_efficacy[random[i]].texSize.y - power_efficacy[random[i]].pivot.y) * power_efficacy[random[i]].scale.y;
+			
 			
 			//----------------------------------
 			// ポーズボタンの判定
 			//----------------------------------
-			if (mouseX >= left &&mouseX <= right &&mouseY >= top &&mouseY <= bottom || 
-				mouseX >= left1 && mouseX <= right1 && mouseY >= top1 && mouseY <= bottom1)
+			if (mouseX >= left && mouseX <= right &&
+				mouseY >= top && mouseY <= bottom)
 			{
 				choiceButton[i].scale.x = CHOICE_SCALE + 0.1f;
 				choiceButton[i].scale.y = CHOICE_SCALE + 0.1f;
@@ -336,41 +346,44 @@ void choice_update()
 						{
 						case HP_UP:
 							HP_Max();
-							power_efficacy[i].color.w = 0 ;break;
+							power_efficacy[random[i]].color.w = 0 ;break;
 						case WEAPON_SHELL:
 							if (level_up_weapon[SHELL] == 0)	{level_up_weapon[SHELL] = level_1;}
 							else if (level_up_weapon[SHELL] < level_8){level_up_weapon[SHELL]++;}
-							power_efficacy[i].color.w = 0; break;
+							power_efficacy[random[i]].color.w = 0; break;
 						case WEAPON_BEAM:
 							if (level_up_weapon[BEAM] == 0) { level_up_weapon[BEAM] = level_1; }
 							else if (level_up_weapon[BEAM] < level_8) { level_up_weapon[BEAM]++; }
-							power_efficacy[i].color.w = 0; break;
+							power_efficacy[random[i]].color.w = 0; break;
 						case WEAPON_INGOT:
 							if (level_up_weapon[INGOT] == 0) { level_up_weapon[INGOT] = level_1; }
 							else if (level_up_weapon[INGOT] < level_8) { level_up_weapon[INGOT]++; }
-							power_efficacy[i].color.w = 0; break;
+							power_efficacy[random[i]].color.w = 0; break;
 						case WEAPON_BANKROLL:
 							if (level_up_weapon[BANKROLL] == 0) { level_up_weapon[BANKROLL] = level_1; }
 							else if (level_up_weapon[BANKROLL] < level_8) { level_up_weapon[BANKROLL]++; }
-							power_efficacy[i].color.w = 0; break;
+							power_efficacy[random[i]].color.w = 0; break;
 						case ITEM_LUCKY:
 							Bullet_Lucky();			
-							power_efficacy[i].color.w = 0; break;
+							power_efficacy[random[i]].color.w = 0; break;
 						case WEAPON_BULLET:
 							if (level_up_weapon[Y1] < level_8) { level_up_weapon[Y1]++; }
-							power_efficacy[i].color.w = 0; break;
+							power_efficacy[random[i]].color.w = 0; break;
 						case BULLET_DAMAGE:
 							Bullet_Damage();		
-							power_efficacy[i].color.w = 0; break;
+							power_efficacy[random[i]].color.w = 0; break;
 						case CURSOR_BIG:
 							Cursor_big();
-							power_efficacy[i].color.w = 0; break;
+							power_efficacy[random[i]].color.w = 0; break;
 						case BULLET_INTERVAL:
 							Bullet_Interval();
-							power_efficacy[i].color.w = 0; break;
+							power_efficacy[random[i]].color.w = 0; break;
 						case HIT_BUCK:
 							Hit_Bag();
-							power_efficacy[i].color.w = 0; break;
+							power_efficacy[random[i]].color.w = 0; break;
+						case SCORE:
+							Score_Up();
+							power_efficacy[random[i]].color.w = 0; break;
 						}
 						break;
 
@@ -384,41 +397,44 @@ void choice_update()
 						{
 						case HP_UP:
 							HP_Max();
-							power_efficacy[i].color.w = 0; break;
+							power_efficacy[random[i]].color.w = 0; break;
 						case WEAPON_SHELL:
 							if (level_up_weapon[SHELL] == 0) { level_up_weapon[SHELL] = level_1; }
 							else if (level_up_weapon[SHELL] < level_8) { level_up_weapon[SHELL]++; }
-							power_efficacy[i].color.w = 0; break;
+							power_efficacy[random[i]].color.w = 0; break;
 						case WEAPON_BEAM:
 							if (level_up_weapon[BEAM] == 0) { level_up_weapon[BEAM] = level_1; }
 							else if (level_up_weapon[BEAM] < level_8) { level_up_weapon[BEAM]++; }
-							power_efficacy[i].color.w = 0; break;
+							power_efficacy[random[i]].color.w = 0; break;
 						case WEAPON_INGOT:
 							if (level_up_weapon[INGOT] == 0) { level_up_weapon[INGOT] = level_1; }
 							else if (level_up_weapon[INGOT] < level_8) { level_up_weapon[INGOT]++; }
-							power_efficacy[i].color.w = 0; break;
+							power_efficacy[random[i]].color.w = 0; break;
 						case WEAPON_BANKROLL:
 							if (level_up_weapon[BANKROLL] == 0) { level_up_weapon[BANKROLL] = level_1; }
 							else if (level_up_weapon[BANKROLL] < level_8) { level_up_weapon[BANKROLL]++; }
-							power_efficacy[i].color.w = 0; break;
+							power_efficacy[random[i]].color.w = 0; break;
 						case ITEM_LUCKY:
 							Bullet_Lucky();
-							power_efficacy[i].color.w = 0; break;
+							power_efficacy[random[i]].color.w = 0; break;
 						case WEAPON_BULLET:
 							if (level_up_weapon[Y1] < level_8) { level_up_weapon[Y1]++; }
-							power_efficacy[i].color.w = 0; break;
+							power_efficacy[random[i]].color.w = 0; break;
 						case BULLET_DAMAGE:
 							Bullet_Damage();
-							power_efficacy[i].color.w = 0; break;
+							power_efficacy[random[i]].color.w = 0; break;
 						case CURSOR_BIG:
 							Cursor_big();
-							power_efficacy[i].color.w = 0; break;
+							power_efficacy[random[i]].color.w = 0; break;
 						case BULLET_INTERVAL:
 							Bullet_Interval();
-							power_efficacy[i].color.w = 0; break;
+							power_efficacy[random[i]].color.w = 0; break;
 						case HIT_BUCK:
 							Hit_Bag();
-							power_efficacy[i].color.w = 0; break;
+							power_efficacy[random[i]].color.w = 0; break;
+						case SCORE:
+							Score_Up();
+							power_efficacy[random[i]].color.w = 0; break;
 						}
 						break;
 
@@ -432,41 +448,44 @@ void choice_update()
 						{
 						case HP_UP:
 							HP_Max();
-							power_efficacy[i].color.w = 0; break;
+							power_efficacy[random[i]].color.w = 0; break;
 						case WEAPON_SHELL:
 							if (level_up_weapon[SHELL] == 0) { level_up_weapon[SHELL] = level_1; }
 							else if (level_up_weapon[SHELL] < level_8) { level_up_weapon[SHELL]++; }
-							power_efficacy[i].color.w = 0; break;
+							power_efficacy[random[i]].color.w = 0; break;
 						case WEAPON_BEAM:
 							if (level_up_weapon[BEAM] == 0) { level_up_weapon[BEAM] = level_1; }
 							else if (level_up_weapon[BEAM] < level_8) { level_up_weapon[BEAM]++; }
-							power_efficacy[i].color.w = 0; break;
+							power_efficacy[random[i]].color.w = 0; break;
 						case WEAPON_INGOT:
 							if (level_up_weapon[INGOT] == 0) { level_up_weapon[INGOT] = level_1; }
 							else if (level_up_weapon[INGOT] < level_8) { level_up_weapon[INGOT]++; }
-							power_efficacy[i].color.w = 0; break;
+							power_efficacy[random[i]].color.w = 0; break;
 						case WEAPON_BANKROLL:
 							if (level_up_weapon[BANKROLL] == 0) { level_up_weapon[BANKROLL] = level_1; }
 							else if (level_up_weapon[BANKROLL] < level_8) { level_up_weapon[BANKROLL]++; }
-							power_efficacy[i].color.w = 0; break;
+							power_efficacy[random[i]].color.w = 0; break;
 						case ITEM_LUCKY:
 							Bullet_Lucky();
-							power_efficacy[i].color.w = 0; break;
+							power_efficacy[random[i]].color.w = 0; break;
 						case WEAPON_BULLET:
 							if (level_up_weapon[Y1] < level_8){level_up_weapon[Y1]++;}
-							power_efficacy[i].color.w = 0; break;
+							power_efficacy[random[i]].color.w = 0; break;
 						case BULLET_DAMAGE:
 							Bullet_Damage();
-							power_efficacy[i].color.w = 0; break;
+							power_efficacy[random[i]].color.w = 0; break;
 						case CURSOR_BIG:
 							Cursor_big();
-							power_efficacy[i].color.w = 0; break;
+							power_efficacy[random[i]].color.w = 0; break;
 						case BULLET_INTERVAL:
 							Bullet_Interval();
-							power_efficacy[i].color.w = 0; break;
+							power_efficacy[random[i]].color.w = 0; break;
 						case HIT_BUCK:
 							Hit_Bag();
-							power_efficacy[i].color.w = 0; break;
+							power_efficacy[random[i]].color.w = 0; break;
+						case SCORE:
+							Score_Up();
+							power_efficacy[random[i]].color.w = 0; break;
 						}
 						break;
 					}
@@ -501,7 +520,7 @@ void choice_render()
 			1.00f, 0.78f, 0.55f,
 			choice_effect_alpha
 		);
-		for (int i = 0; i < CHOICE_MAX; i++)
+		for (int i = 0; i < choice_count; i++)
 		{
 			sprite_render(
 				sprchoicebar,
@@ -516,9 +535,15 @@ void choice_render()
 		}
 		for (int i = 0; i < EFFICACY_MAX; i++)
 		{
+			// SCOREは下でカードごとに描画する
+			if (i == SCORE)
+			{
+				continue;
+			}
+
 			sprite_render(
 				sprpower_efficacy[i],
-				power_efficacy[i].pos.x, power_efficacy[i].pos.y  + choice_effect_y,
+				power_efficacy[i].pos.x, power_efficacy[i].pos.y + choice_effect_y,
 				power_efficacy[i].scale.x, power_efficacy[i].scale.y,
 				0, 0,
 				power_efficacy[i].texSize.x, power_efficacy[i].texSize.y,
@@ -526,6 +551,24 @@ void choice_render()
 				ToRadian(0),
 				1, 1, 1, power_efficacy[i].color.w
 			);
+		}
+
+		// スコアアップはカードごとに描画する
+		for (int i = 0; i < choice_count; i++)
+		{
+			if (random[i] == SCORE)
+			{
+				sprite_render(
+					sprpower_efficacy[SCORE],
+					choiceButton[i].pos.x, choiceButton[i].pos.y + choice_effect_y,
+					power_efficacy[SCORE].scale.x, power_efficacy[SCORE].scale.y,
+					0, 0,
+					power_efficacy[SCORE].texSize.x, power_efficacy[SCORE].texSize.y,
+					power_efficacy[SCORE].pivot.x, power_efficacy[SCORE].pivot.y,
+					ToRadian(0),
+					1, 1, 1, power_efficacy[SCORE].color.w
+				);
+			}
 		}
 		sprite_render(
 			sprlevelup,
@@ -540,14 +583,15 @@ void choice_render()
 	}
 	if (choice_pause)
 	{
-		DrawLevelText(random[0], choiceButton[0].pos.x - 120,
-			choiceButton[0].pos.y + 210 + choice_effect_y, level_text_scale[0]);
-
-		DrawLevelText(random[1], choiceButton[1].pos.x - 120,
-			choiceButton[1].pos.y + 210 + choice_effect_y, level_text_scale[1]);
-
-		DrawLevelText(random[2], choiceButton[2].pos.x - 120,
-			choiceButton[2].pos.y + 210 + choice_effect_y, level_text_scale[2]);
+		for (int i = 0; i < choice_count; i++)
+		{
+			DrawLevelText(
+				random[i],
+				choiceButton[i].pos.x - 120,
+				choiceButton[i].pos.y + 210 + choice_effect_y,
+				level_text_scale[i]
+			);
+		}
 	}
 
 }
@@ -570,36 +614,103 @@ bool T_or_F(int level_up_count)
 
 void randoms()
 {
-	random[0] = rand() % EFFICACY_MAX;
-	random[1] = rand() % EFFICACY_MAX;
-	random[2] = rand() % EFFICACY_MAX;
+	int available[EFFICACY_MAX];
+	int available_count = 0;
 
+	// 強化できるものを調べる
+	for (int i = 0; i < EFFICACY_MAX - 1; i++)
+	{
+		bool can_level_up = false;
+
+		switch (i)
+		{
+		case HP_UP:
+			can_level_up = hp_level < level_5;
+			break;
+
+		case WEAPON_SHELL:
+			can_level_up = level_up_weapon[SHELL] < level_8;
+			break;
+
+		case WEAPON_BEAM:
+			can_level_up = level_up_weapon[BEAM] < level_8;
+			break;
+
+		case WEAPON_INGOT:
+			can_level_up = level_up_weapon[INGOT] < level_8;
+			break;
+
+		case WEAPON_BANKROLL:
+			can_level_up = level_up_weapon[BANKROLL] < level_8;
+			break;
+
+		case ITEM_LUCKY:
+			can_level_up = lucky_level < 16;
+			break;
+
+		case WEAPON_BULLET:
+			can_level_up = level_up_weapon[Y1] < level_8;
+			break;
+
+		case BULLET_DAMAGE:
+			can_level_up = bullet_damage_level < level_7;
+			break;
+
+		case CURSOR_BIG:
+			can_level_up = cursor_level < level_8;
+			break;
+
+		case BULLET_INTERVAL:
+			can_level_up = bullet_interval_level < level_7;
+			break;
+
+		case HIT_BUCK:
+			can_level_up = hit_buck_level < level_5;
+			break;
+		}
+
+		if (can_level_up)
+		{
+			available[available_count] = i;
+			available_count++;
+		}
+	}
+
+	// 全部MAXならスコアアップを3枚
+	if (available_count == 0)
+	{
+		choice_count = CHOICE_MAX;
+
+		for (int i = 0; i < CHOICE_MAX; i++)
+		{
+			random[i] = SCORE;
+		}
+	}
+	else
+	{
+		choice_count = available_count;
+
+		if (choice_count > CHOICE_MAX)
+		{
+			choice_count = CHOICE_MAX;
+		}
+
+		// 重複しないようにランダム抽選
+		for (int i = 0; i < choice_count; i++)
+		{
+			int index = rand() % available_count;
+
+			random[i] = available[index];
+
+			available[index] = available[available_count - 1];
+			available_count--;
+		}
+	}
+
+	// すべての画像を非表示にする
 	for (int i = 0; i < EFFICACY_MAX; i++)
 	{
 		power_efficacy[i].color.w = 0.0f;
-	}
-
-	// かぶっていたら再抽選
-	for(;;)
-	{
-		// [0]や[1]や[2]と一緒なら再抽選
-		if (random[0] == random[1])
-		{
-			random[0] = rand() % EFFICACY_MAX;
-		}
-		if (random[0] == random[2])
-		{
-			random[0] = rand() % EFFICACY_MAX;
-		}
-		if (random[1] == random[2])
-		{
-			random[1] = rand() % EFFICACY_MAX;
-		}
-		if (random[0] != random[1] && random[0] != random[2] && random[1] != random[2])
-		{
-			break;
-		}
-		continue;
 	}
 }
 

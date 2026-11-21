@@ -10,7 +10,7 @@
 #define LOST_ITEM_ACQUISITION_RANGE_UP (0.2f)	// 落とした物の取得範囲を広げる
 #define HP_MAX_UP					   (3)					// HPの最大量を上げる
 
-#define EFFICACY_MAX (11)								// エフェクトの個数
+#define EFFICACY_MAX (12)								// エフェクトの個数
 
 
 // 画像
@@ -46,6 +46,7 @@ extern void Lost_Item_Acquisition_Range();
 extern void HP_Max();
 extern void Cursor_big();
 extern void Hit_Bag();
+extern void Score_Up();
 
 extern void Fever_Time_Start_Blue();
 extern void Fever_Time_End_Blue();

@@ -121,6 +121,11 @@ void Hit_Bag()
 		hit_buck += 1.0f; // ‚±‚±‚ğG‚Á‚Ä‚­‚¾‚³‚¢
 	}
 }
+// ƒXƒRƒA‚ğã‚°‚é
+void Score_Up()
+{
+	// ??? += 1000;
+}
 //-------BULE----------------
 void Fever_Time_Start_Blue()
 {
