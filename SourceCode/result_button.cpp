@@ -40,12 +40,6 @@ void result_button_init()
 //------------------------------------------------------------
 void result_button_update()
 {
-     //コイン演出中はボタン入力を受け付けない
-    if (is_scene_changing())
-    {
-        return;
-    }
-
     switch (result_button_state)
     {
     case 0:
@@ -64,16 +58,19 @@ void result_button_update()
         //-------------------------
         resultButton[0] = {};
         resultButton[0].pos = { 500.0f, 950.0f };
-        resultButton[0].scale = {
+        resultButton[0].scale = 
+        {
             static_cast<float>(PAUSE_SCALE),
             static_cast<float>(PAUSE_SCALE)
         };
         resultButton[0].texPos = { 0.0f, 0.0f };
-        resultButton[0].texSize = {
+        resultButton[0].texSize = 
+        {
             static_cast<float>(PAUSE_TEX_W),
             static_cast<float>(PAUSE_TEX_H)
         };
-        resultButton[0].pivot = {
+        resultButton[0].pivot = 
+        {
             static_cast<float>(PAUSE_PIVOT_X),
             static_cast<float>(PAUSE_PIVOT_Y)
         };
@@ -84,16 +81,19 @@ void result_button_update()
         //-------------------------
         resultButton[1] = {};
         resultButton[1].pos = { 1500.0f, 950.0f };
-        resultButton[1].scale = {
+        resultButton[1].scale = 
+        {
             static_cast<float>(PAUSE_SCALE),
             static_cast<float>(PAUSE_SCALE)
         };
         resultButton[1].texPos = { 0.0f, 0.0f };
-        resultButton[1].texSize = {
+        resultButton[1].texSize = 
+        {
             static_cast<float>(PAUSE_TEX_W),
             static_cast<float>(PAUSE_TEX_H)
         };
-        resultButton[1].pivot = {
+        resultButton[1].pivot = 
+        {
             static_cast<float>(PAUSE_PIVOT_X),
             static_cast<float>(PAUSE_PIVOT_Y)
         };
@@ -104,7 +104,7 @@ void result_button_update()
 
     case 1:
         //-------------------------
-        //ボタン判定
+        // ボタン判定
         //-------------------------
 
         float mouseX = static_cast<float>(getCursorPosX());

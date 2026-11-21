@@ -123,7 +123,6 @@ attrib +h SourceCode\gp1.log
     <ClInclude Include="SourceCode\choice.h" />
     <ClInclude Include="SourceCode\Collision2D.h" />
     <ClInclude Include="SourceCode\common.h" />
-    <ClInclude Include="SourceCode\cursor.h" />
     <ClInclude Include="SourceCode\cursor_main.h" />
     <ClInclude Include="SourceCode\effect_burst.h" />
     <ClInclude Include="SourceCode\effect_count_down.h" />
@@ -176,7 +175,6 @@ attrib +h SourceCode\gp1.log
     <ClCompile Include="SourceCode\Bullet_Shell.cpp" />
     <ClCompile Include="SourceCode\choice.cpp" />
     <ClCompile Include="SourceCode\Collision2D.cpp" />
-    <ClCompile Include="SourceCode\cursor.cpp" />
     <ClCompile Include="SourceCode\cursor_main.cpp" />
     <ClCompile Include="SourceCode\effect_burst.cpp" />
     <ClCompile Include="SourceCode\effect_count_down.cpp" />

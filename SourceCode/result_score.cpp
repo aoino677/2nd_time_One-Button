@@ -24,7 +24,6 @@ int hundred;
 int thousand;
 int ten_thousand;
 
-// 数値を5桁に分解するだけのシンプルな関数
 void calc_digits(int value)
 {
     if (value < 0)     value = 0;
@@ -37,7 +36,7 @@ void calc_digits(int value)
     one = value % 10;
 }
 
-// x, y の位置から5桁を左から並べて描画
+//x, y の位置から5桁を左から並べて描画
 void draw_number_5(int x, int y)
 {
     int d[5] = { ten_thousand, thousand, hundred, ten, one };
@@ -68,6 +67,14 @@ void result_score_init()
 
 void result_score_deinit()
 {
+    safe_delete(sprNumber)
+    safe_delete(sprRankS)
+    safe_delete(sprRankA)
+    safe_delete(sprRankB)
+    safe_delete(sprRankC)
+    safe_delete(sprRankD)
+    safe_delete(sprRankE)
+    
 }
 
 void result_score_update()
@@ -84,12 +91,10 @@ void result_score_update()
         sprRankD = sprite_load(L"./Data/Images/rankD.png");
         sprRankE = sprite_load(L"./Data/Images/rankE.png");
 
-        result_score_state = 1;
+        result_score_state++;
         break;
 
     case 1:
-        // 倒した敵スコア・タワーHPスコア・総合スコアの計算
-        score = score_kill + score_hp;
         calc_digits(score);
         break;
     }
