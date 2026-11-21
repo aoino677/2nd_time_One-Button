@@ -11,7 +11,7 @@ struct Bullet_Bankroll : Bullet
 		float angle;
 		VECTOR4 color;
 	};
-	Bullet_Bankroll();
+	Bullet_Bankroll() = default;
 	~Bullet_Bankroll()override;
 	void update() override;
 	void attack(OBJ2D[]) override;
@@ -23,6 +23,8 @@ struct Bullet_Bankroll : Bullet
 
 	float roll_speed;
 	float roll_max;
+
+	bool is_hit_least_once = false;//1‰ñ‚«‚è‚Ì”»’è
 
 private:
 	std::vector<OBJ2D*> attacked_enemies;

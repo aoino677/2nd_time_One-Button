@@ -158,18 +158,21 @@ void cursor_main_update()
                 //==========================================
                 if (level_up_weapon[Y1] > 0)
                 {
-                    if (timer_bullet == timer_down_bullet)
+                    if (is_end_firing_rapid())
                     {
-                        shot_bullet();
-                        timer_bullet--;
-                    }
-                    else if (timer_bullet == 0)
-                    {
-                        timer_bullet = timer_down_bullet;
-                    }
-                    else
-                    {
-                        timer_bullet--;
+                        if (timer_bullet == timer_down_bullet)
+                        {
+                            shot_bullet();
+                            timer_bullet--;
+                        }
+                        else if (timer_bullet == 0)
+                        {
+                            timer_bullet = timer_down_bullet;
+                        }
+                        else
+                        {
+                            timer_bullet--;
+                        }
                     }
                 }
 
