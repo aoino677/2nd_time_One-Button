@@ -26,7 +26,6 @@ void title_init()
 {
 	title_state = 0;
 	title_timer = 0;
-	scene_change_init();
 	title_button_init();
 }
 
@@ -46,17 +45,9 @@ void title_update()
 		title_state++;
 		/*fallthrough*/
 	case 2:
-		/*if (TRG(0) & PAD_START)
-		{
-			title_state = 3;
-		}*/
 		title_button_update();
-		break;
 
-	case 3:
-		//アニメーションを更新し続ける
-		scene_change_update();
-		break;
+	    break;
 	}
 
 	title_timer++;
@@ -83,9 +74,7 @@ void title_render()
 	{
 		font::textOut(1, "PRESS SPACE KEY", 640, 300);
 	}
-
 	title_button_render();
-	scene_change_render();
 }
 
 //--------------------------------------
@@ -94,5 +83,4 @@ void title_render()
 void title_deinit()
 {
 	title_button_deinit();
-
 }

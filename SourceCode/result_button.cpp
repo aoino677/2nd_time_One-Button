@@ -3,6 +3,7 @@
 #include "result_button.h"
 #include "result_screen.h"
 #include "scene_game.h"
+#include "scene_title.h"
 #include "effect_scene_change.h"
 
 int result_button_state = 0;
@@ -39,6 +40,11 @@ void result_button_init()
 //------------------------------------------------------------
 void result_button_update()
 {
+     //コイン演出中はボタン入力を受け付けない
+    if (is_scene_changing())
+    {
+        return;
+    }
 
     switch (result_button_state)
     {
@@ -53,11 +59,11 @@ void result_button_update()
             sprResultButton[1] = sprite_load(L"Data/Images/title_sin.png");
         }
 
-        // -------------------------
-        // RETRY
-        // -------------------------
+        //-------------------------
+        //RETRY
+        //-------------------------
         resultButton[0] = {};
-        resultButton[0].pos = { 500.0f, 850.0f };
+        resultButton[0].pos = { 500.0f, 950.0f };
         resultButton[0].scale = {
             static_cast<float>(PAUSE_SCALE),
             static_cast<float>(PAUSE_SCALE)
@@ -73,11 +79,11 @@ void result_button_update()
         };
         resultButton[0].color = { 1.0f, 1.0f, 1.0f, 1.0f };
 
-        // -------------------------
-        // TITLE
-        // -------------------------
+        //-------------------------
+        //TITLE
+        //-------------------------
         resultButton[1] = {};
-        resultButton[1].pos = { 1500.0f, 850.0f };
+        resultButton[1].pos = { 1500.0f, 950.0f };
         resultButton[1].scale = {
             static_cast<float>(PAUSE_SCALE),
             static_cast<float>(PAUSE_SCALE)
@@ -97,9 +103,9 @@ void result_button_update()
         break;
 
     case 1:
-        // -------------------------
-        // ボタン判定
-        // -------------------------
+        //-------------------------
+        //ボタン判定
+        //-------------------------
 
         float mouseX = static_cast<float>(getCursorPosX());
         float mouseY = static_cast<float>(getCursorPosY());
@@ -133,27 +139,20 @@ void result_button_update()
 
                 if (TRG(0) & PAD_START)
                 {
+                    result_active = false;
+                    result_finished = true;
+                    result_landed = false;
+
                     switch (i)
                     {
                     case 0:
                         //RETRY
-                        result_active = false;
-                        result_finished = true;
-                        result_landed = false;
-
-                        result_button_state = 1;
-                        game_deinit();
-                        nextScene = SCENE_GAME;
-                        game_init();
+                        scene_change_start(SCENE_GAME);
                         break;
 
                     case 1:
                         //TITLE
-                        result_active = false;
-                        result_finished = true;
-                        result_landed = false;
-                        result_button_state = 1;
-                        nextScene = SCENE_TITLE;
+                        scene_change_start(SCENE_TITLE);
                         break;
                     }
                     break;
@@ -178,26 +177,26 @@ void result_button_render()
     //完全停止後にボタンを描画
     for (int i = 0; i < 2; i++)
     {
-
-
-        sprite_render(
-            sprResultButton[i],
-            resultButton[i].pos.x,
-            resultButton[i].pos.y,
-            resultButton[i].scale.x,
-            resultButton[i].scale.y,
-            resultButton[i].texPos.x,
-            resultButton[i].texPos.y,
-            resultButton[i].texSize.x,
-            resultButton[i].texSize.y,
-            resultButton[i].pivot.x,
-            resultButton[i].pivot.y,
-            ToRadian(0.0f),
-            resultButton[i].color.x,
-            resultButton[i].color.y,
-            resultButton[i].color.z,
-            resultButton[i].color.w);
-
+        if (sprResultButton[i] != nullptr)
+        {
+            sprite_render(
+                sprResultButton[i],
+                resultButton[i].pos.x,
+                resultButton[i].pos.y,
+                resultButton[i].scale.x,
+                resultButton[i].scale.y,
+                resultButton[i].texPos.x,
+                resultButton[i].texPos.y,
+                resultButton[i].texSize.x,
+                resultButton[i].texSize.y,
+                resultButton[i].pivot.x,
+                resultButton[i].pivot.y,
+                ToRadian(0.0f),
+                resultButton[i].color.x,
+                resultButton[i].color.y,
+                resultButton[i].color.z,
+                resultButton[i].color.w);
+        }
     }
 }
 

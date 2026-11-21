@@ -14,7 +14,7 @@
 //ƒ{ƒX“G
 #define BOSS_TYPE_CRAYON     5
 #define BOSS_TYPE_CAR        6
-#define BOSS_TYPE_DOLL       7
+#define BOSS_TYPE_BEAR       7
 #define BOSS_TYPE_ROBOT      8
 #define BOSS_TYPE_HORSE      9
 #define BOSS_TYPE_PENCIL     10

@@ -21,6 +21,7 @@ Sprite* sprEnemyCrayon;                      //クレヨン画像
 Sprite* sprEnemyBall;                        //ボール画像
 Sprite* sprEnemyRocket;                      //ロケット画像
 Sprite* sprEnemyCar;                         //カー画像
+Sprite* sprEnemyBear;                        //クマ画像
 
 //敵サブ画像
 Sprite* sprBalloon;
@@ -49,7 +50,7 @@ int enemy_damage_timer[ENEMY_NUMBER];         //通常被弾時の赤色点滅�
 int enemy_knockback_timer[ENEMY_NUMBER];      //HP半分以下のノックバック用タイマー
 bool enemy_half_knockback_done[ENEMY_NUMBER]; //HP半分以下のノックバックが完了したか
 int enemy_prev_hp[ENEMY_NUMBER];              //ダメージ検知用の前回HP記憶配列
-float hit_buck;											// ノックバックをプラスする数値
+float hit_buck;								  //ノックバックをプラスする数値
 
 //強化類
 float enemy_hp_up;               //HP増加量
@@ -62,13 +63,12 @@ float enemy_hp_bar_max[ENEMY_NUMBER];  //最大HPゲージ
 float enemy_hp_rate[ENEMY_NUMBER];     //HP割合
 
 //エネミー情報
-int enemy_max;                         // 最大リスポーン数
-int enemy_type_render[ENEMY_NUMBER];   // 敵タイプ描画
-float enemy_border[ENEMY_NUMBER];      // 最大移動値
-float enemy_target_y[ENEMY_NUMBER];
-
-float balloon_pos_x[ENEMY_NUMBER];
-float balloon_pos_y[ENEMY_NUMBER];
+int enemy_max;                         //最大リスポーン数
+int enemy_type_render[ENEMY_NUMBER];   //敵タイプ描画
+float enemy_border[ENEMY_NUMBER];      //最大移動値
+float enemy_target_y[ENEMY_NUMBER];    //着地地点
+float balloon_pos_x[ENEMY_NUMBER];     //バルーン位置X
+float balloon_pos_y[ENEMY_NUMBER];     //バルーン位置Y
 
 
 float tire_angle[ENEMY_NUMBER];
@@ -85,6 +85,15 @@ float effect_boss_wave = 0.0f;
 float swing_speed;
 int robot_wait_timer = 0;
 
+//クマの移動変数
+int bear_land_wait_max = 90;           //着地して溜める時間
+int bear_land_wait = 0;                //着地後の待機フレーム数
+float bear_ground_y = SCREEN_H * 0.5f; //着地・バウンド基準の地面の高さ
+float bear_vy = 0.0f;                  //縦方向の速度
+float bear_drop_gravity = 0.95f;       //降下時の加速（重め）
+float bear_jump_gravity = 0.28f;       //跳ね移動時の重力（ゆったり）
+float bear_jump_power = -6.5f;         //跳ね初速（低め・重め）
+bool bear_dropping = true;             //上から降下中かどうか
 
 //エネミー初期化
 void enemy_init()
@@ -150,8 +159,12 @@ void enemy_update()
 		sprEnemyCrayon = sprite_load(L"Data/Images/crayon.png");
 		sprEnemyBall = sprite_load(L"Data/Images/ball.png");
 		sprEnemyRocket = sprite_load(L"Data/Images/rocket.png");
-		sprShadow = sprite_load(L"Data/Images/ball_shadow.png");
 		sprEnemyCar = sprite_load(L"Data/Images/car.png");
+		sprEnemyBear = sprite_load(L"Data/Images/bear.png");
+		
+		
+		sprShadow = sprite_load(L"Data/Images/ball_shadow.png");
+		
 		sprTirefront = sprite_load(L"Data/Images/tire_front.png");
 		sprTireback = sprite_load(L"Data/Images/tire_back.png");
 		sprEnemy_hp = sprite_load(L"Data/Images/enemy_hp.png");
@@ -261,7 +274,7 @@ void enemy_update()
 		if (fever_blue == false)
 		{
 			//ボスリスポーン
-			if (enemy_boss_timer >= 1200)
+			if (enemy_boss_timer >= 200)
 			{
 				for (int i = enemy_max; i < ENEMY_NUMBER; i++)
 				{
@@ -441,12 +454,13 @@ void enemy_boss_respawn(int i)
 	{
 		switch (boss_state)
 		{
-			//case 0:
-			//	enemy[i].type = BOSS_TYPE_ROBOT;
-			//	enemy_setting(i, 10000, 1, 0.3, 64, 160, 32, 80, 3, 3, 0);
-			//	//boss_state++;
+			case 0:
+				enemy[i].type = BOSS_TYPE_BEAR;
+				enemy_sprite[i] = sprEnemyBear;
+				enemy_setting(i, 700, 1, 0.8, 514, 560, 257, 280, 1, 1, 0);
+				boss_state++;
 
-		case 0:
+		/*case 0:
 			enemy[i].type = BOSS_TYPE_CRAYON;
 			enemy_sprite[i] = sprEnemyCrayon;
 			enemy_setting(i, 700, 1, 0.5, 64, 160, 32, 80, 3, 3, 0);
@@ -459,7 +473,8 @@ void enemy_boss_respawn(int i)
 			boss_state++;
 			break;
 		case 2:
-			enemy[i].type = BOSS_TYPE_DOLL;
+			enemy[i].type = BOSS_TYPE_BEAR;
+			enemy_sprite[i] = sprEnemyCar;
 			enemy_setting(i, 100, 1, 2, 64, 160, 32, 80, 3, 3, 0);
 			boss_state++;
 			break;
@@ -481,13 +496,13 @@ void enemy_boss_respawn(int i)
 		case 6:
 			enemy[i].type = BOSS_TYPE_EXCAVATOR;
 			enemy_setting(i, 100, 1, 2, 64, 160, 32, 80, 3, 3, 0);
-			break;
+			break;*/
 		}
 
 		//リスポーン
-		if (enemy[i].type == BOSS_TYPE_ROBOT)
+		if (enemy[i].type == BOSS_TYPE_BEAR)
 		{
-			enemy[i].pos.x = SCREEN_W - 100.0f;
+			enemy[i].pos.x = SCREEN_W - 200.0f;
 			enemy[i].pos.y = -300.0f;
 		}
 		else
@@ -511,7 +526,6 @@ void enemy_move(int i)
 			enemy[i].type == ENEMY_TYPE_BOBM ||
 			enemy[i].type == ENEMY_TYPE_ROCKET ||
 			enemy[i].type == BOSS_TYPE_CRAYON ||
-			enemy[i].type == BOSS_TYPE_DOLL ||
 			enemy[i].type == BOSS_TYPE_HORSE ||
 			enemy[i].type == BOSS_TYPE_PENCIL ||
 			enemy[i].type == ENEMY_TYPE_CRAYON)
@@ -544,23 +558,7 @@ void enemy_move(int i)
 			else
 				enemy[i].pos.x -= enemy[i].moveSpeed;
 		}
-		else if (enemy[i].type == BOSS_TYPE_ROBOT)
-		{
-			if (enemy[i].pos.y < 500)
-			{
-				float drop_speed = 2.0f + (enemy_anim_timer[i] * 0.3f);
-				enemy[i].pos.y += drop_speed;
-				robot_wait_timer = 120;
-			}
-			else
-			{
-				//しばらく待機する
-				if (robot_wait_timer > 0)
-					robot_wait_timer--;
-				else
-					enemy[i].pos.x -= enemy[i].moveSpeed;
-			}
-		}
+		
 		else if (enemy[i].type == ENEMY_TYPE_BALLOON)
 		{
 			if (enemy[i].pos.y < enemy_target_y[i])
@@ -578,7 +576,61 @@ void enemy_move(int i)
 				balloon_pos_y[i] -= 5;
 			}
 		}
+		else if (enemy[i].type == BOSS_TYPE_BEAR)
+		{
+			//待機中は着地の潰れを少しずつ元のスケールへ戻す
+			enemy[i].scale.x += (1.0f - enemy[i].scale.x) * 0.18f;
+			enemy[i].scale.y += (1.0f - enemy[i].scale.y) * 0.18f;
 
+			//画面上から降下
+			if (bear_dropping)
+			{
+				bear_vy += bear_drop_gravity;
+				enemy[i].pos.y += bear_vy;
+
+				//地面に到達したら潰れ＋待機へ
+				if (enemy[i].pos.y >= bear_ground_y)
+				{
+					enemy[i].pos.y = bear_ground_y;
+					bear_vy = 0.0f;
+					bear_dropping = false;
+					bear_land_wait = bear_land_wait_max;
+
+					//重い着地の潰れ
+					enemy[i].scale = { 1.22f, 0.78f };
+				}
+			}
+			//着地後の待機
+			else if (bear_land_wait > 0)
+			{
+				bear_land_wait--;
+
+				//待機が終わる瞬間ジャンプ
+				if (bear_land_wait == 0)
+				{
+					bear_vy = bear_jump_power;
+					enemy[i].scale = { 0.92f, 1.10f }; //跳び上がるときに少し縦伸び
+				}
+			}
+			//跳ねながら左へ進む
+			else
+			{
+				enemy[i].pos.x -= enemy[i].moveSpeed;
+
+				bear_vy += bear_jump_gravity;
+				enemy[i].pos.y += bear_vy;
+
+				//着地したら再び潰れて待機
+				if (enemy[i].pos.y >= bear_ground_y)
+				{
+					enemy[i].pos.y = bear_ground_y;
+					bear_vy = 0.0f;
+					bear_land_wait = bear_land_wait_max;
+
+					enemy[i].scale = { 1.18f, 0.82f };
+				}
+			}
+		}
 		if (enemy[i].type == ENEMY_TYPE_BOBM)
 		{
 			if (enemy[i].pos.x <= enemy_border[i])
@@ -868,9 +920,11 @@ void enemy_render()
 	//CAR死亡エフェクト
 	tires_render();
 
+	//通常敵の描画
 	for (int i = 0; i < ENEMY_NUMBER; i++)
 	{
 		if (enemy[i].hp <= 0) { continue; }
+		if (enemy_type_render[i] == BOSS) { continue; }
 
 		float render_y = enemy[i].pos.y;
 		float render_scale_x = enemy[i].scale.x;
@@ -891,7 +945,6 @@ void enemy_render()
 				}
 			}
 		}
-		
 
 		//敵画像
 		sprite_render(
@@ -904,6 +957,87 @@ void enemy_render()
 			enemy[i].angle,
 			enemy[i].color.x, enemy[i].color.y, enemy[i].color.z);
 
+		//ボールの影
+		if (enemy[i].type == ENEMY_TYPE_BOLL)
+		{
+			sprite_render(
+				sprShadow,
+				enemy[i].pos.x + 5, render_y + 7,
+				render_scale_x, render_scale_y,
+				0, 0,
+				enemy[i].texSize.x, enemy[i].texSize.y,
+				enemy[i].pivot.x, enemy[i].pivot.y,
+				ToRadian(0),
+				enemy[i].color.x, enemy[i].color.y, enemy[i].color.z);
+		}
+		//風船
+		if (enemy[i].type == ENEMY_TYPE_BALLOON)
+		{
+			sprite_render(
+				sprBalloon,
+				balloon_pos_x[i], balloon_pos_y[i],
+				render_scale_x, render_scale_y,
+				0, 0,
+				80, 122,
+				40, 61,
+				ToRadian(0),
+				enemy[i].color.x, enemy[i].color.y, enemy[i].color.z);
+		}
+
+		//HP割合
+		enemy_hp_rate[i] = (float)enemy[i].hp / (float)enemy_max_hp[i];
+		if (enemy_hp_rate[i] < 0.0f) enemy_hp_rate[i] = 0.0f;
+		if (enemy_hp_rate[i] > 1.0f) enemy_hp_rate[i] = 1.0f;
+
+		//通常敵HPゲージ
+		float bar_pos_y;
+		if (enemy[i].type == ENEMY_TYPE_ROCKET)
+		{
+			enemy_hp_bar_max[i] = 80.0f * enemy_hp_rate[i];
+			bar_pos_y = render_y - 50.0f;
+
+			primitive::rect(enemy[i].pos.x - 25, bar_pos_y, 80, 10, 0, 0, 0, 1, 0, 0);
+			primitive::rect(enemy[i].pos.x - 25, bar_pos_y, enemy_hp_bar_max[i], 10, 0, 0, 0, 0, 1, 0);
+
+			sprite_render(
+				sprEnemy_hp,
+				enemy[i].pos.x - 28, bar_pos_y - 3);
+		}
+		else
+		{
+			enemy_hp_bar_max[i] = 80.0f * enemy_hp_rate[i];
+			bar_pos_y = render_y - 100.0f;
+
+			primitive::rect(enemy[i].pos.x - 40, bar_pos_y, 80, 10, 0, 0, 0, 1, 0, 0);
+			primitive::rect(enemy[i].pos.x - 40, bar_pos_y, enemy_hp_bar_max[i], 10, 0, 0, 0, 0, 1, 0);
+
+			sprite_render(
+				sprEnemy_hp,
+				enemy[i].pos.x - 43, bar_pos_y - 3);
+		}
+	}
+
+	//ボス敵
+	for (int i = 0; i < ENEMY_NUMBER; i++)
+	{
+		if (enemy[i].hp <= 0) { continue; }
+		if (enemy_type_render[i] != BOSS) { continue; }
+
+		float render_y = enemy[i].pos.y;
+		float render_scale_x = enemy[i].scale.x;
+		float render_scale_y = enemy[i].scale.y;
+
+		sprite_render(
+			enemy_sprite[i],
+			enemy[i].pos.x, render_y,
+			render_scale_x, render_scale_y,
+			0, 0,
+			enemy[i].texSize.x, enemy[i].texSize.y,
+			enemy[i].pivot.x, enemy[i].pivot.y,
+			enemy[i].angle,
+			enemy[i].color.x, enemy[i].color.y, enemy[i].color.z);
+
+		//タイヤ
 		if (enemy[i].type == BOSS_TYPE_CAR)
 		{
 			sprite_render(
@@ -926,88 +1060,30 @@ void enemy_render()
 				tire_angle[i],
 				enemy[i].color.x, enemy[i].color.y, enemy[i].color.z);
 		}
-		if (enemy[i].type == ENEMY_TYPE_BOLL)
-		{
-			sprite_render(
-				sprShadow,
-				enemy[i].pos.x + 5, render_y + 7,
-				render_scale_x, render_scale_y,
-				0, 0,
-				enemy[i].texSize.x, enemy[i].texSize.y,
-				enemy[i].pivot.x, enemy[i].pivot.y,
-				ToRadian(0),
-				enemy[i].color.x, enemy[i].color.y, enemy[i].color.z);
-		}
-		if (enemy[i].type == ENEMY_TYPE_BALLOON)
-		{
-			sprite_render(
-				sprBalloon,
-				balloon_pos_x[i], balloon_pos_y[i],
-				render_scale_x, render_scale_y,
-				0, 0,
-				80, 122,
-				40, 61,
-				ToRadian(0),
-				enemy[i].color.x, enemy[i].color.y, enemy[i].color.z);
-		}
 
-
-
-		//HP割合
+		// HP割合
 		enemy_hp_rate[i] = (float)enemy[i].hp / (float)enemy_max_hp[i];
 		if (enemy_hp_rate[i] < 0.0f) enemy_hp_rate[i] = 0.0f;
 		if (enemy_hp_rate[i] > 1.0f) enemy_hp_rate[i] = 1.0f;
 
-		//HPゲージの大きさ
-		if (enemy_type_render[i] == BOSS)
-		{
-			enemy_hp_bar_max[i] = 200.0f * enemy_hp_rate[i];
+		// ボスHPゲージ
+		enemy_hp_bar_max[i] = 200.0f * enemy_hp_rate[i];
 
-			float bar_width = 200.0f;
-			float bar_x = enemy[i].pos.x - (bar_width * 0.5f);
-			float bar_y = enemy[i].pos.y - (enemy[i].texSize.y * enemy[i].scale.y * 0.5f) + 30.0f;
+		float bar_width = 200.0f;
+		float bar_x = enemy[i].pos.x - (bar_width * 0.5f);
+		float bar_y = enemy[i].pos.y - (enemy[i].texSize.y * enemy[i].scale.y * 0.5f) + 30.0f;
 
-			primitive::rect(bar_x, bar_y, bar_width, 20, 0, 0, 0, 1, 0, 0);
-			primitive::rect(bar_x, bar_y, enemy_hp_bar_max[i], 20, 0, 0, 0, 0, 1, 0);
+		primitive::rect(bar_x, bar_y, bar_width, 20, 0, 0, 0, 1, 0, 0);
+		primitive::rect(bar_x, bar_y, enemy_hp_bar_max[i], 20, 0, 0, 0, 0, 1, 0);
 
-			sprite_render(
-				sprBoss_hp,
-				bar_x - 3, bar_y - 3);
-		}
-		else
-		{
-			float bar_pos_y;
-			if (enemy[i].type == ENEMY_TYPE_ROCKET)
-			{
-				enemy_hp_bar_max[i] = 80.0f * enemy_hp_rate[i];
-				bar_pos_y = render_y - 50.0f;
+		sprite_render(
+			sprBoss_hp,
+			bar_x - 3, bar_y - 3);
+	}
 
-				primitive::rect(enemy[i].pos.x - 25, bar_pos_y, 80, 10, 0, 0, 0, 1, 0, 0);
-				primitive::rect(enemy[i].pos.x - 25, bar_pos_y, enemy_hp_bar_max[i], 10, 0, 0, 0, 0, 1, 0);
-
-				sprite_render(
-					sprEnemy_hp,
-					enemy[i].pos.x - 28, bar_pos_y - 3);
-			}
-			else
-			{
-				enemy_hp_bar_max[i] = 80.0f * enemy_hp_rate[i];
-				bar_pos_y = render_y - 100.0f;
-
-				primitive::rect(enemy[i].pos.x - 40, bar_pos_y, 80, 10, 0, 0, 0, 1, 0, 0);
-				primitive::rect(enemy[i].pos.x - 40, bar_pos_y, enemy_hp_bar_max[i], 10, 0, 0, 0, 0, 1, 0);
-
-				sprite_render(
-					sprEnemy_hp,
-					enemy[i].pos.x - 43, bar_pos_y - 3);
-			}
-		}
-    }
-		
+	//警告演出
 	if (respawn == true)
 	{
 		effect_boss_render();
 	}
-
-	debug::setString("etimer:%f", etimer);
 }

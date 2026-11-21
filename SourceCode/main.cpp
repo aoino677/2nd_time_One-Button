@@ -8,6 +8,7 @@
 
 //------< ƒCƒ“ƒNƒ‹[ƒh >---------------------------------------------------------
 #include "all.h"
+#include "effect_scene_change.h"
 #include<ctime>
 #include<stdlib.h>
 
@@ -120,6 +121,9 @@ int APIENTRY wWinMain(HINSTANCE, HINSTANCE, LPWSTR, int)// g—p‚µ‚È‚¢•Ï”‚Í‹Lq‚
 			resulet_render();
 			break;
 		}
+
+		scene_change_update();
+		scene_change_render();
 
 		// ƒfƒoƒbƒO•¶š—ñ‚ğ•`‰æ
 		debug::display(1.0f, 1.0f, 1.0f, 1, 1);

@@ -56,7 +56,7 @@ void result_screen_update()
         //リザルト画面
         if (sprResult == nullptr)
         {
-            sprResult = sprite_load(L"Data/Images/result_screen.png");
+            sprResult = sprite_load(L"Data/Images/result_back_2.png");
         }
 
         result_state++;
