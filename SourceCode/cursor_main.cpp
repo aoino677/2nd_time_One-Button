@@ -114,7 +114,7 @@ void cursor_main_update()
         cursor_main.texPos = {0.0f,0.0f};
         cursor_main.texSize = {CURSOL_MAIN_TEX_W,CURSOL_MAIN_TEX_H};
         cursor_main.pivot   = {CURSOL_MAIN_PIVOT_X,CURSOL_MAIN_PIVOT_Y};
-        cursor_main.color   = {1.0f, 1.0f, 1.0f, 1.0f};
+        cursor_main.color   = {0.0f, 0.05f, 0.05f, 1.0f};
         cursor_main_state++;
 
         // ‚í‚´‚Æbreak‚µ‚È‚¢

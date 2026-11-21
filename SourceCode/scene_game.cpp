@@ -65,6 +65,11 @@ void game_init()
 	result_screen_init();
 	countdown_init();
 	effect_game_start_init();
+
+	// ゲーム開始時はWindows標準カーソルを非表示
+	while (ShowCursor(FALSE) >= 0)
+	{
+	}
 }
 
 //--------------------------------------
@@ -121,6 +126,7 @@ void game_update()
 				effect_danger_update();
 				cursor_main_update();
 				effect_game_start_update();
+
 			}
 			
 		}
