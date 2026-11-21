@@ -146,16 +146,16 @@ void EXP_update()
 					switch (EXP[j].type)
 					{
 					case EXP_TYPE_1YEN:
-						exp_count += 1;
+						exp_count += COUNTER_1Y;
 						break;
 					case EXP_TYPE_2YEN:
-						exp_count += 2;
+						exp_count += COUNTER_10Y;
 						break;
 					case EXP_TYPE_4YEN:
-						exp_count += 4;
+						exp_count += COUNTER_100Y;
 						break;
 					case EXP_TYPE_8YEN:
-						exp_count += 8;
+						exp_count += COUNTER_500Y;
 						break;
 					}
 					EXP[j].color.w = 0;
