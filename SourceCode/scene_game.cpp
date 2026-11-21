@@ -65,6 +65,13 @@ void game_init()
 	result_screen_init();
 	countdown_init();
 	effect_game_start_init();
+
+	// ゲーム開始時はWindows標準カーソルを非表示
+	while (ShowCursor(FALSE) >= 0)
+	{
+	}
+
+	music::load(6, L"Data/Sounds/BGM/game_normal2.wav");
 }
 
 //--------------------------------------
@@ -121,6 +128,7 @@ void game_update()
 				effect_danger_update();
 				cursor_main_update();
 				effect_game_start_update();
+
 			}
 			
 		}

@@ -11,21 +11,15 @@
 #include "Bullet_Ingot.h"
 #include "Bullet_Shell.h"
 #include "Bullet_Bankroll.h"
+#include "bullet_se.h"
+
 #include "power_efficacy.h"
 
 #define IMAGE_COLOR_COUNT 5
 
-float bullet_speed = BULLET_SPEED;//”­ŽË‚·‚é’e‚Ì1•b“–‚½‚è‚Ì‘¬“x
-float shot_per_second = 20.0f; //‚P•bŠÔ‚É”­ŽË‚·‚é’e‚Ì”	
-//float rapid_coolDown = RAPID_COOLDOWN; //˜AŽËŠJŽnŽžŠÔ
-float precision_rad = ToRadian(0); //‘_‚Á‚½•ûŒü‚É”ò‚Ô¸“x
-
-float Y1_shot_timer = 0;
-
 //float shot_timer;			
 //float rapid_timer;		
 //bool is_rapid;			
-
 //bool can_rapid_shot;		
 //int rapidShoted_bullet_count;
 //int cast_bullet;	
@@ -35,6 +29,12 @@ float bullet_lay_gap = ToRadian(7);//’e‚ÌŠÔŠu
 float bullet_scale = BULLET_SCALE;//’e‚Ì‘å‚«‚³
 
 float Y1_damage = Y1_DAMAGE;
+float bullet_speed = BULLET_SPEED;//”­ŽË‚·‚é’e‚Ì1•b“–‚½‚è‚Ì‘¬“x
+float shot_per_second = 20.0f; //‚P•bŠÔ‚É”­ŽË‚·‚é’e‚Ì”	
+//float rapid_coolDown = RAPID_COOLDOWN; //˜AŽËŠJŽnŽžŠÔ
+float precision_rad = ToRadian(0); //‘_‚Á‚½•ûŒü‚É”ò‚Ô¸“x
+
+float Y1_shot_timer = 0;
 
 float ingot_damage = INGOT_DAMAGE;
 float ingot_speed = INGOT_SPEED;
@@ -57,7 +57,6 @@ float bankrool_damage = 20;
 float bankrool_scale = 1.0f;
 
 float player_bullet_Y1_timer = 0;
-
 
 Sprite* sprPlayer;
 #define SPR_BULLET_COUNT 5
@@ -98,8 +97,16 @@ void set_vector_Bullet_Y1_AfterImage(Bullet_Y1_AfterImage* image)
 	y1_after_images.push_back(image);
 }
 
+
 void player_init()
 {
+	music::load(SE_BULLET_BANKROLL	, L"Data/Sounds/SE/weapon/bankroll.wav");
+	music::load(SE_BULLET_INGOT		, L"Data/Sounds/SE/weapon/fall.wav");
+	music::load(SE_BULLET_ISSEN		, L"Data/Sounds/SE/weapon/issen.wav");
+	music::load(SE_BULLET_1YEN		, L"Data/Sounds/SE/weapon/rifle.wav");
+	music::load(SE_BULLET_SHELL		, L"Data/Sounds/SE/weapon/shell.wav");
+	music::load(SE_BULLET_SPECIAL	, L"Data/Sounds/SE/explosion.wav");
+
 	sprPlayer = sprite_load(L"Data/Images/player.png");
 	sprBullet[Y1] = sprite_load(L"Data/Images/bullet.png");
 	sprBullet[INGOT] = sprite_load(L"Data/Images/500yen.png");
@@ -147,7 +154,9 @@ void player_deinit()
 
 #define OLD_SHOT
 //#define NEW_SHOT
+
 //Bullet----------------------------------------------------------
+
 void shot_bullet_single(float zure)
 {
 
@@ -235,7 +244,7 @@ void shot_bullet()
 
 void shot_bullet_Ingot()
 {
-	auto* b_ingot = new Bullet_Ingot();
+	auto* b_ingot = new Bullet_Ingot(Bullet_Ingot::Type::Ingot);
 	b_ingot->spr = sprBullet[INGOT];
 	b_ingot->scale = { ingot_scale, ingot_scale };
 	b_ingot->texSize = { 64, 64 };
@@ -268,7 +277,7 @@ void shot_bullet_Shell()
 }
 void shot_bullet_Beam()
 {
-	auto* b_beem = new Bullet_Ingot();
+	auto* b_beem = new Bullet_Ingot(Bullet_Ingot::Type::Issen);
 	b_beem->spr = sprBullet[BEEM];
 	b_beem->texSize = { 64, 64 };
 	b_beem->pos = { -b_beem->texSize.x, static_cast<float>(getCursorPosY()) };
@@ -319,6 +328,7 @@ void shot_bullet_Special()
 		particles_update(cursor_pos.x, cursor_pos.y, bullet_radius,
 			bullet_special_color.x, bullet_special_color.y, bullet_special_color.z);
 		left_shot_special--;
+		music::play(SE_BULLET_SPECIAL, false);
 	}
 
 }
@@ -423,105 +433,106 @@ void bullet_update()
 
 //#define SHOT_AIM_TARGET
 //#define SHOT_AIM_AND_CLICK_TARGET
+
 //Player----------------------------------------------------------
 
-void player_shot_bullet()
-{
-#ifdef SHOT_AIM_TARGET
-	VECTOR2 cursorPos = { static_cast<float>(getCursorPosX()), static_cast<float>(getCursorPosY()) };
-	if (cursorPos.y < 380) cursorPos.y = 380;
-	bool isShot = false;
-	VECTOR2 shotPos;
-
-	if (shot_timer > 1 / shot_per_second)
-	{
-		for (int i = 0; i < ENEMY_NUMBER; i++)
-		{
-			if (enemy[i].hp <= 0) continue;
-			VECTOR2 k = enemy[i].pos - enemy[i].pivot;
-			VECTOR2 lu, rd;
-			lu.x = k.x * enemy[i].scale.x;
-			lu.y = k.y * enemy[i].scale.y;
-			rd.x = k.x + enemy[i].texSize.x * enemy[i].scale.x;
-			rd.y = k.y + enemy[i].texSize.y * enemy[i].scale.y;
-			if (Collision2D::circle_vs_rect(cursorPos, 20, lu, rd))
-			{
-				isShot = true;
-				shotPos = enemy[i].pos;
-			}
-		}
-
-		if (isShot)
-		{
-			shot_bullet();
-			shot_timer = 0;
-		}
-	}
-	shot_timer += 1 / system::FRAME_RATE;
-
-	if (TRG(0) & PAD_UP)
-	{
-		can_rapid_shot = true;
-	}
-
-#elif defined(SHOT_AIM_AND_CLICK_TARGET)
-
-	if (TRG(0) & PAD_START)
-	{
-		if (shot_timer > 1 / shot_per_second)
-		{
-			shot_timer = 0;
-			shot_bullet();
-		}
-		else if (cast_bullet == 0)
-		{
-			cast_bullet++;
-		}
-		rapid_timer = 0;
-
-		shake(30, 45);
-	}
-
-	if (cast_bullet > 0 && shot_timer > 1 / shot_per_second)
-	{
-		cast_bullet--;
-		shot_timer = 0;
-		shot_bullet();
-	}
-
-	if ((STATE(0) & PAD_START) && can_rapid_shot)
-	{
-		if (is_rapid)
-		{
-			while (shot_timer > 1 / shot_per_second)
-			{
-				shot_timer -= 1 / shot_per_second;
-				shot_bullet();
-			}
-		}
-		else if (rapid_timer > rapid_coolDown)
-		{
-			is_rapid = true;
-			shot_timer = 0;
-		}
-	}
-
-	shot_timer += 1 / system::FRAME_RATE;
-	rapid_timer += 1 / system::FRAME_RATE;
-
-	if (TRG_RELEASE(0) & PAD_START)
-	{
-		rapidShoted_bullet_count = 0;
-		is_rapid = false;
-	}
-
-	if (TRG(0) & PAD_UP)
-	{
-		can_rapid_shot = true;
-	}
-#endif // SHOT_AIM_TARGET
-
-}
+//void player_shot_bullet()
+//{
+//#ifdef SHOT_AIM_TARGET
+//	VECTOR2 cursorPos = { static_cast<float>(getCursorPosX()), static_cast<float>(getCursorPosY()) };
+//	if (cursorPos.y < 380) cursorPos.y = 380;
+//	bool isShot = false;
+//	VECTOR2 shotPos;
+//
+//	if (shot_timer > 1 / shot_per_second)
+//	{
+//		for (int i = 0; i < ENEMY_NUMBER; i++)
+//		{
+//			if (enemy[i].hp <= 0) continue;
+//			VECTOR2 k = enemy[i].pos - enemy[i].pivot;
+//			VECTOR2 lu, rd;
+//			lu.x = k.x * enemy[i].scale.x;
+//			lu.y = k.y * enemy[i].scale.y;
+//			rd.x = k.x + enemy[i].texSize.x * enemy[i].scale.x;
+//			rd.y = k.y + enemy[i].texSize.y * enemy[i].scale.y;
+//			if (Collision2D::circle_vs_rect(cursorPos, 20, lu, rd))
+//			{
+//				isShot = true;
+//				shotPos = enemy[i].pos;
+//			}
+//		}
+//
+//		if (isShot)
+//		{
+//			shot_bullet();
+//			shot_timer = 0;
+//		}
+//	}
+//	shot_timer += 1 / system::FRAME_RATE;
+//
+//	if (TRG(0) & PAD_UP)
+//	{
+//		can_rapid_shot = true;
+//	}
+//
+//#elif defined(SHOT_AIM_AND_CLICK_TARGET)
+//
+//	if (TRG(0) & PAD_START)
+//	{
+//		if (shot_timer > 1 / shot_per_second)
+//		{
+//			shot_timer = 0;
+//			shot_bullet();
+//		}
+//		else if (cast_bullet == 0)
+//		{
+//			cast_bullet++;
+//		}
+//		rapid_timer = 0;
+//
+//		shake(30, 45);
+//	}
+//
+//	if (cast_bullet > 0 && shot_timer > 1 / shot_per_second)
+//	{
+//		cast_bullet--;
+//		shot_timer = 0;
+//		shot_bullet();
+//	}
+//
+//	if ((STATE(0) & PAD_START) && can_rapid_shot)
+//	{
+//		if (is_rapid)
+//		{
+//			while (shot_timer > 1 / shot_per_second)
+//			{
+//				shot_timer -= 1 / shot_per_second;
+//				shot_bullet();
+//			}
+//		}
+//		else if (rapid_timer > rapid_coolDown)
+//		{
+//			is_rapid = true;
+//			shot_timer = 0;
+//		}
+//	}
+//
+//	shot_timer += 1 / system::FRAME_RATE;
+//	rapid_timer += 1 / system::FRAME_RATE;
+//
+//	if (TRG_RELEASE(0) & PAD_START)
+//	{
+//		rapidShoted_bullet_count = 0;
+//		is_rapid = false;
+//	}
+//
+//	if (TRG(0) & PAD_UP)
+//	{
+//		can_rapid_shot = true;
+//	}
+//#endif // SHOT_AIM_TARGET
+//
+//}
 
 void player_move()
 {
