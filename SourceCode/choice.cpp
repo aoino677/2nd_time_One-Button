@@ -21,6 +21,7 @@ int random[3];
 float choice_effect_y = 0.0f;
 float choice_effect_alpha = 0.0f;
 float level_text_scale[CHOICE_MAX] = { 1.0f, 1.0f, 1.0f };
+float efficacy_scale[CHOICE_MAX] = { 1.0f, 1.0f, 1.0f };
 int choice_count = CHOICE_MAX;
 
 void choice_init()
@@ -31,6 +32,11 @@ void choice_init()
 	bullet_lay_count = 1;
 	choice_effect_y = 0.0f;
 	choice_effect_alpha = 0.0f;
+
+	for (int i = 0; i < CHOICE_MAX; i++)
+	{
+		efficacy_scale[i] = 1.0f;
+	}
 
 	// choiceButtonの読み込み
 	sprchoicebar = sprite_load(L"./Data/Images/card_frame.png");
@@ -329,8 +335,13 @@ void choice_update()
 			{
 				choiceButton[i].scale.x = CHOICE_SCALE + 0.1f;
 				choiceButton[i].scale.y = CHOICE_SCALE + 0.1f;
-				power_efficacy[random[i]].scale.x = POWER_EFFICACY_SCALE + 0.1f;
-				power_efficacy[random[i]].scale.y = POWER_EFFICACY_SCALE + 0.1f;
+				efficacy_scale[i] = POWER_EFFICACY_SCALE + 0.1f;
+				// SCORE以外は従来通り拡大
+				if (random[i] != SCORE)
+				{
+					power_efficacy[random[i]].scale.x = POWER_EFFICACY_SCALE + 0.1f;
+					power_efficacy[random[i]].scale.y = POWER_EFFICACY_SCALE + 0.1f;
+				}
 				level_text_scale[i] = 1.2f;
 				if (TRG(0) & PAD_START)
 				{
@@ -495,8 +506,13 @@ void choice_update()
 			{
 				choiceButton[i].scale.x = CHOICE_SCALE;
 				choiceButton[i].scale.y = CHOICE_SCALE;
-				power_efficacy[random[i]].scale.x = POWER_EFFICACY_SCALE;
-				power_efficacy[random[i]].scale.y = POWER_EFFICACY_SCALE;
+				efficacy_scale[i] = POWER_EFFICACY_SCALE;
+				// SCORE以外は従来通り元の大きさに戻す
+				if (random[i] != SCORE)
+				{
+					power_efficacy[random[i]].scale.x = POWER_EFFICACY_SCALE;
+					power_efficacy[random[i]].scale.y = POWER_EFFICACY_SCALE;
+				}
 				level_text_scale[i] = 1.0f;
 			}
 		}
@@ -561,7 +577,7 @@ void choice_render()
 				sprite_render(
 					sprpower_efficacy[SCORE],
 					choiceButton[i].pos.x, choiceButton[i].pos.y + choice_effect_y,
-					power_efficacy[SCORE].scale.x, power_efficacy[SCORE].scale.y,
+					efficacy_scale[i], efficacy_scale[i],
 					0, 0,
 					power_efficacy[SCORE].texSize.x, power_efficacy[SCORE].texSize.y,
 					power_efficacy[SCORE].pivot.x, power_efficacy[SCORE].pivot.y,
@@ -669,6 +685,7 @@ void randoms()
 			break;
 		}
 
+		// 強化できるものだけ登録
 		if (can_level_up)
 		{
 			available[available_count] = i;
@@ -676,35 +693,32 @@ void randoms()
 		}
 	}
 
-	// 全部MAXならスコアアップを3枚
-	if (available_count == 0)
-	{
-		choice_count = CHOICE_MAX;
+	// 常に3枚表示
+	choice_count = CHOICE_MAX;
 
-		for (int i = 0; i < CHOICE_MAX; i++)
-		{
-			random[i] = SCORE;
-		}
+	// 強化候補をランダムに選ぶ
+	int select_count = available_count;
+
+	if (select_count > CHOICE_MAX)
+	{
+		select_count = CHOICE_MAX;
 	}
-	else
+
+	for (int i = 0; i < select_count; i++)
 	{
-		choice_count = available_count;
+		int index = rand() % available_count;
 
-		if (choice_count > CHOICE_MAX)
-		{
-			choice_count = CHOICE_MAX;
-		}
+		random[i] = available[index];
 
-		// 重複しないようにランダム抽選
-		for (int i = 0; i < choice_count; i++)
-		{
-			int index = rand() % available_count;
+		// 選んだ候補を削除して重複を防ぐ
+		available[index] = available[available_count - 1];
+		available_count--;
+	}
 
-			random[i] = available[index];
-
-			available[index] = available[available_count - 1];
-			available_count--;
-		}
+	// 足りない分はスコアアップにする
+	for (int i = select_count; i < CHOICE_MAX; i++)
+	{
+		random[i] = SCORE;
 	}
 
 	// すべての画像を非表示にする
@@ -713,7 +727,6 @@ void randoms()
 		power_efficacy[i].color.w = 0.0f;
 	}
 }
-
 void DrawLevelText(int type, float x, float y, float scale)
 {
 	char str[64];
