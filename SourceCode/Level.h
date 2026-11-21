@@ -15,7 +15,7 @@ enum WEAPON_LEVEL
 
 enum WEAPON_TYPE
 {
-    Y1 = 0,
+    Y1,
     SHELL,
     INGOT,
     BEAM,
@@ -98,7 +98,7 @@ const WEAPON_LEVEL_SETTING INGOT_SETTING =
     1.5f
 };
 
-// 札束ピンタ
+// 札束ビンタ
 const WEAPON_LEVEL_SETTING BANKROLL_SETTING =
 {
     // ダメージ
