@@ -23,11 +23,11 @@ Sprite* sprTitle_logo;
 int title_state = 0;     //状態
 int title_timer = 0;     //タイマー
 
-// ロゴの上下揺れ設定
+//ロゴの上下揺れ設定
 float logo_base_x = 515.0f;
 float logo_base_y = 270.0f;
-float logo_float_amp = 10.0f;   // 上下に揺れる幅（px）
-float logo_float_speed = 0.06f; // 揺れる速さ
+float logo_float_amp = 10.0f;   //上下に揺れる幅
+float logo_float_speed = 0.06f; //揺れる速さ
 
 //--------------------------------------
 //  初期設定
@@ -57,7 +57,7 @@ void title_update()
 		title_state++;
 		/*fallthrough*/
 	case 1:
-		// ブレンドモードの設定
+		//ブレンドモードの設定
 		GameLib::setBlendMode(Blender::BS_ALPHA);
 		title_state++;
 		/*fallthrough*/
@@ -75,7 +75,7 @@ void title_update()
 //--------------------------------------
 void title_render()
 {
-	// 画面をクリアする
+	//画面をクリアする
 	GameLib::clear(0.2f, 0.2f, 0.2f);
 
 	sprite_render(
@@ -83,7 +83,7 @@ void title_render()
 		0, 0
 	);
 
-	// ロゴの現在Y座標（上下にふわふわ揺らす）
+	//上下に揺らす
 	float logo_y = logo_base_y + sinf((float)title_timer * logo_float_speed) * logo_float_amp;
 
 	sprite_render(
