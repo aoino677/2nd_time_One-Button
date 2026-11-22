@@ -71,10 +71,10 @@ void item_init()
     LengthX = 0;
     LengthY = 0;
 
-    music::load(ITEM_BLUE_SE1, L"Data/Sounds/SE/slow_start.wav");
+    music::load(ITEM_BLUE_SE1, L"Data/Sounds/SE/slow_start.wav", 1.0f);
     music::load(ITEM_BLUE_SE2, L"Data/Sounds/SE/slow_end.wav");
     music::load(ITEM_PINK_SE, L"Data/Sounds/SE/click4.wav");
-    music::load(ITEM_RED_SE, L"Data/Sounds/BGM/game_boss1.wav");
+    music::load(ITEM_RED_SE, L"Data/Sounds/BGM/game_boss1.wav", 0.3f);
     music::load(ITME_GREEN_SE, L"Data/Sounds/SE/click1.wav");
 }
 
@@ -229,6 +229,7 @@ void item_update()
 
                         case 1:
                             EXP_levelUp_ALL();
+                            music::setVolume(ITME_GREEN_SE, 1.0f);
                             music::play(ITME_GREEN_SE, false);
                             break;
 

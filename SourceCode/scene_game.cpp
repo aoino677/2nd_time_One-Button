@@ -196,8 +196,8 @@ void game_render()
 		item_render();
 		effect_danger_render();
 		time_limit_render();
-		cursor_main_render();
 		
+		cursor_main_render();
 		choice_render();
 		pause_render(); // ‚±‚êˆÈã‰º‚É‘‚©‚È‚¢
 	}
