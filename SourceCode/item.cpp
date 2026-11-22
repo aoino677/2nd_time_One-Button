@@ -362,7 +362,7 @@ void item_render()
         {
             // æ“¾ƒQ[ƒW
             primitive::rect(item[i].pos.x - 60, bar_pos_y, ITEM_TIMER, 10, 0, 0, 0, 0, 0, 0, 0.5f);
-            primitive::rect(item[i].pos.x - 60, bar_pos_y, item_timer[i], 10, 0, 0, 0, 0, 0, 0, 1.0f);
+            primitive::rect(item[i].pos.x - 60, bar_pos_y, item_timer[i], 10, 0, 0, 0, 1, 1, 1, 1.0f);
         }
     }
     if (fever_red == true)
