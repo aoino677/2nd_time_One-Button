@@ -3,7 +3,6 @@
 #include "enemy.h"
 #include "Hp.h"
 
-// Šù‘¶ID‚Æd•¡‚µ‚È‚¢SE”Ô†‚ğİ’è‚µ‚Ä‚­‚¾‚³‚¢
 #define SE_DRUMROLL     26
 #define SE_SCORE_FINISH 27
 
