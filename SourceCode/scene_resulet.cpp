@@ -25,6 +25,9 @@ void resulet_init()
 	scene_change_init();
 	result_button_init();
 	result_score_init();
+	music::load(RESULET_BGM, L"Data/Sounds/BGM/result_clear3.wav", 0.5f);
+	music::load(EFFECT_MONEY_SE, L"Data/Sounds/SE/money_fall.wav", 1.0f);
+	music::play(RESULET_BGM, true);
 }
 
 void resulet_update()
@@ -100,4 +103,5 @@ void resulet_deinit()
 	safe_delete(sprResult_logo);
 	result_button_deinit();
 	result_score_deinit();
+	music::unload(RESULET_BGM);
 }

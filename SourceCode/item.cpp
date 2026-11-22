@@ -4,6 +4,7 @@
 #include "Collision2D.h"
 #include "EXP.h"
 #include "power_efficacy.h"
+#include "scene_game.h"
 
 OBJ2D item[ITEM_MAX];
 
@@ -235,6 +236,7 @@ void item_update()
 
                         case 2:
                             Fever_Time_Start_Red();
+                            music::setVolume(BGM_BATTLE, 0.0f);
                             music::play(ITEM_RED_SE, false);
                             fever_red = true;
                             break;
@@ -292,6 +294,7 @@ void item_update()
             {
                 Fever_Time_End_Red();
                 music::stop(ITEM_RED_SE);
+                music::setVolume(BGM_BATTLE, 0.2f);
                 fever_red = false;
                 efficacy_timer = 0;
             }
