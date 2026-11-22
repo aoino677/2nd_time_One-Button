@@ -15,8 +15,8 @@
 //------< 定数 >----------------------------------------------------------------
 
 //------< 変数 >----------------------------------------------------------------
-int menu_state = 0;     // 状態
-int menu_timer = 0;     // タイマー
+int menu_state = 0;     //状態
+int menu_timer = 0;     //タイマー
 bool is_effect_cleaned_up = false;
 bool is_wipe_out_cleaned_up = false;
 
@@ -102,8 +102,7 @@ void menu_render()
 		scene_change_deinit();
 		is_effect_cleaned_up = true;
 	}
-
-	// 開く演出はカーソルより手前・画面最前面に出す（開ききったら描画されない）
+	
 	scene_wipe_out_render();
 
 	cursor_render();

@@ -3,12 +3,13 @@
 
 Sprite* sprWipe = nullptr;
 
-// 0:待機, 1:実行中, 2:完了
+// 0:待機, 1:扉が閉まる移動中, 2:中央バウンド中, 3:閉まり完了
 int wipe_in_state = 0;
 float wipe_in_move_x1 = 0.0f;
 float wipe_in_move_x2 = 0.0f;
-float wipe_in_speed_x1 = 50.0f;
-float wipe_in_speed_x2 = -50.0f;
+float wipe_in_speed_x1 = 115.0f;
+float wipe_in_speed_x2 = -115.0f;
+int wipe_in_bounce_count = 0;
 
 // wipe_out_state: 0=未開始, 1=開く演出中, 2=開ききり完了, 3=閉じたまま待機中
 int wipe_out_state = 0;
@@ -28,6 +29,7 @@ void scene_wipe_init()
 	}
 
 	wipe_in_state = 0;
+	wipe_in_bounce_count = 0;
 	wipe_out_state = 0;
 }
 
@@ -35,11 +37,12 @@ void scene_wipe_deinit()
 {
 	safe_delete(sprWipe);
 	wipe_in_state = 0;
+	wipe_in_bounce_count = 0;
 	wipe_out_state = 0;
 }
 
 //--------------------------------------
-// 画面を閉じる演出（イン）
+// 画面を閉じる演出（イン：扉が閉まって中央で2回バウンド）
 //--------------------------------------
 void scene_wipe_in_start()
 {
@@ -51,30 +54,72 @@ void scene_wipe_in_start()
 	wipe_in_state = 1;
 	wipe_in_move_x1 = 0.0f;
 	wipe_in_move_x2 = 0.0f;
-	wipe_in_speed_x1 = 50.0f;
-	wipe_in_speed_x2 = -50.0f;
+	wipe_in_speed_x1 = 115.0f;
+	wipe_in_speed_x2 = -115.0f;
+	wipe_in_bounce_count = 0;
 }
 
 void scene_wipe_in_update()
 {
-	if (wipe_in_state != 1) return;
-
-	// 左右から中央へ移動
-	wipe_in_move_x1 += wipe_in_speed_x1;
-	wipe_in_move_x2 += wipe_in_speed_x2;
-
-	// 徐々に減速（最低速度を下回らないように下限を設定）
-	wipe_in_speed_x1 *= 0.951f;
-	wipe_in_speed_x2 *= 0.951f;
-	if (wipe_in_speed_x1 < 5.0f)  wipe_in_speed_x1 = 5.0f;
-	if (wipe_in_speed_x2 > -5.0f) wipe_in_speed_x2 = -5.0f;
-
-	// 中央（960.0f）まで到達したら停止して完了状態へ
-	if (wipe_in_move_x1 >= 960.0f && wipe_in_move_x2 <= -960.0f)
+	if (wipe_in_state == 1)
 	{
-		wipe_in_move_x1 = 960.0f;
-		wipe_in_move_x2 = -960.0f;
-		wipe_in_state = 2;
+		// 左右から中央へ扉を閉める
+		wipe_in_move_x1 += wipe_in_speed_x1;
+		wipe_in_move_x2 += wipe_in_speed_x2;
+
+		// 勢いよく閉まりつつ重みを出す減速
+		wipe_in_speed_x1 *= 0.91f;
+		wipe_in_speed_x2 *= 0.91f;
+		if (wipe_in_speed_x1 < 18.0f)  wipe_in_speed_x1 = 18.0f;
+		if (wipe_in_speed_x2 > -18.0f) wipe_in_speed_x2 = -18.0f;
+
+		// 中央（960.0f / -960.0f）に到達したらバウンドフェーズへ
+		if (wipe_in_move_x1 >= 960.0f && wipe_in_move_x2 <= -960.0f)
+		{
+			wipe_in_move_x1 = 960.0f;
+			wipe_in_move_x2 = -960.0f;
+
+			// 1回目の跳ね返り（扉がぶつかって少し押し戻される）
+			wipe_in_speed_x1 = -20.0f;
+			wipe_in_speed_x2 = 20.0f;
+			wipe_in_bounce_count = 0;
+			wipe_in_state = 2;
+		}
+	}
+	else if (wipe_in_state == 2)
+	{
+		const float pull_back_x1 = 3.6f;  // 扉を中央へ引き戻す力（左扉）
+		const float pull_back_x2 = -3.6f; // 扉を中央へ引き戻す力（右扉）
+		const float restitution = 0.42f;  // 跳ね返りの減衰率
+		const int max_bounces = 2;        // 中央でバウンドする回数
+
+		wipe_in_speed_x1 += pull_back_x1;
+		wipe_in_speed_x2 += pull_back_x2;
+
+		wipe_in_move_x1 += wipe_in_speed_x1;
+		wipe_in_move_x2 += wipe_in_speed_x2;
+
+		// 再び中央ライン（960.0f / -960.0f）に戻ってきたらバウンド判定
+		if (wipe_in_move_x1 >= 960.0f && wipe_in_move_x2 <= -960.0f)
+		{
+			wipe_in_move_x1 = 960.0f;
+			wipe_in_move_x2 = -960.0f;
+			wipe_in_bounce_count++;
+
+			if (wipe_in_bounce_count < max_bounces)
+			{
+				// 2回目の跳ね返り（素早く小さく弾んで収まる）
+				wipe_in_speed_x1 = -wipe_in_speed_x1 * restitution;
+				wipe_in_speed_x2 = -wipe_in_speed_x2 * restitution;
+			}
+			else
+			{
+				// 2回バウンドし終えたら中央でしっかり閉じて完了
+				wipe_in_speed_x1 = 0.0f;
+				wipe_in_speed_x2 = 0.0f;
+				wipe_in_state = 3;
+			}
+		}
 	}
 }
 
@@ -82,16 +127,16 @@ void scene_wipe_in_render()
 {
 	if (sprWipe == nullptr || wipe_in_state == 0) return;
 
-	// 左側の画像
+	// 左側の扉
 	sprite_render(sprWipe, -960.0f + wipe_in_move_x1, 0.0f);
 
-	// 右側の画像
+	// 右側の扉
 	sprite_render(sprWipe, 1920.0f + wipe_in_move_x2, 0.0f);
 }
 
 bool is_scene_wipe_in_finished()
 {
-	return (wipe_in_state == 2);
+	return (wipe_in_state == 3);
 }
 
 //--------------------------------------
@@ -157,10 +202,10 @@ void scene_wipe_out_render()
 	// 開く演出中（state == 1）だけ描画
 	if (wipe_out_state != 1) return;
 
-	// 左側の画像
+	// 左側の扉
 	sprite_render(sprWipe, wipe_out_move_x1, 0.0f);
 
-	// 右側の画像
+	// 右側の扉
 	sprite_render(sprWipe, 960.0f + wipe_out_move_x2, 0.0f);
 }
 
