@@ -54,9 +54,8 @@ void level_update()
     Y1_damage = Y1_DAMAGE * damage / 100.0f;
 
     // クールタイム
-    float cooltime = CalculateCooltime(Y1_SETTING.cooltime_base, level, Y1_SETTING.cooltime_rate, Y1_SETTING.cooltime_growth, Y1_SETTING.cooltime_min, 1.0f / bullet_interval_rate);
-    timer_down_bullet = static_cast<int>(TIMER * cooltime / Y1_SETTING.cooltime_base + 0.5f);
-
+    float cooltime = CalculateCooltime(Y1_SETTING.cooltime_base, level, Y1_SETTING.cooltime_rate, Y1_SETTING.cooltime_growth, Y1_SETTING.cooltime_min, 1.0f / red_cooltime_rate, 1.0f / bullet_interval_rate);
+    timer_down_bullet = static_cast<int>(cooltime + 0.5f);
     if (timer_down_bullet < 1) { timer_down_bullet = 1; }
 
     // 攻撃範囲
@@ -81,8 +80,7 @@ void level_update()
 
         // クールタイム
         float cooltime = CalculateCooltime(SHELL_SETTING.cooltime_base, shell_level, SHELL_SETTING.cooltime_rate, SHELL_SETTING.cooltime_growth, SHELL_SETTING.cooltime_min, 1.0f / red_cooltime_rate, 1.0f / bullet_interval_rate);
-        timer_down_shell = static_cast<int>(TIMER_SHELL * cooltime / SHELL_SETTING.cooltime_base + 0.5f);
-
+        timer_down_shell = static_cast<int>(cooltime + 0.5f); 
         if (timer_down_shell < 1) { timer_down_shell = 1; }
 
         // 攻撃範囲
@@ -108,8 +106,7 @@ void level_update()
         ingot_damage = INGOT_DAMAGE * damage / 100.0f;
 
         float cooltime = CalculateCooltime(INGOT_SETTING.cooltime_base, ingot_level, INGOT_SETTING.cooltime_rate, INGOT_SETTING.cooltime_growth, INGOT_SETTING.cooltime_min, 1.0f / red_cooltime_rate, 1.0f / bullet_interval_rate);
-        timet_down_ingot =static_cast<int>(TIMER_INGOT * cooltime / INGOT_SETTING.cooltime_base + 0.5f);
-
+        timet_down_ingot = static_cast<int>(cooltime + 0.5f);
         if (timet_down_ingot < 1) { timet_down_ingot = 1; }
 
         float range = CalculateGrowth(INGOT_SETTING.range_base, ingot_level, INGOT_SETTING.range_rate, INGOT_SETTING.range_growth);
@@ -132,8 +129,7 @@ void level_update()
         beem_damage = BEEM_DAMAGE * damage / 100.0f;
 
         float cooltime = CalculateCooltime(BEAM_SETTING.cooltime_base, beam_level, BEAM_SETTING.cooltime_rate, BEAM_SETTING.cooltime_growth, BEAM_SETTING.cooltime_min, 1.0f / red_cooltime_rate, 1.0f / bullet_interval_rate);
-        timer_down_beam = static_cast<int>(TIMER_BEAM * cooltime / BEAM_SETTING.cooltime_base + 0.5f);
-
+        timer_down_beam = static_cast<int>(cooltime + 0.5f);
         if (timer_down_beam < 1) { timer_down_beam = 1; }
 
 
@@ -160,8 +156,7 @@ void level_update()
 
         float cooltime = CalculateCooltime(BANKROLL_SETTING.cooltime_base, bankroll_level, BANKROLL_SETTING.cooltime_rate, BANKROLL_SETTING.cooltime_growth, BANKROLL_SETTING.cooltime_min, 1.0f / red_cooltime_rate, 1.0f / bullet_interval_rate);
 
-        timer_down_bankroll = static_cast<int>(TIMER_BANKROLL * cooltime / BANKROLL_SETTING.cooltime_base + 0.5f);
-
+        timer_down_bankroll = static_cast<int>(cooltime + 0.5f);
         if (timer_down_bankroll < 1) { timer_down_bankroll = 1; }
 
 
