@@ -60,6 +60,8 @@ void choice_init()
 	// 「レベルアップ！」の画像読み込み
 	sprlevelup = sprite_load(L"./Data/Images/levelUP.png");
 
+	music::load(EXP_UP_SE, L"Data/Sounds/SE/levelup.wav");
+
 	// パラメーターの設定
 	for (int i = 0; i < CHOICE_MAX; i++)
 	{
@@ -102,6 +104,7 @@ void choice_update_pause()
 		{
 			level_up_count++;
 			levelup_counter++; //レベルを①足す
+			music::play(EXP_UP_SE, false);
 			for (int i = 1; i <= level_up_count; i++)
 			{
 				for (; T_or_F(level_up_count);)
@@ -625,6 +628,7 @@ void choice_deinit()
 	{
 		safe_delete(sprpower_efficacy[i]);
 	}
+	music::clear();
 }
 
 bool T_or_F(int level_up_count)
