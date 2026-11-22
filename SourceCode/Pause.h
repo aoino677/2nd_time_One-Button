@@ -9,13 +9,22 @@
 #define PAUSE_PIVOT_Y      (100.0f)
 
 // ポーズボタン
-#define PAUSEBUTTON_POS_X   (1870)
-#define PAUSEBUTTON_POS_Y   (60)
+#define PAUSEBUTTON_POS_X   (1870.0f)
+#define PAUSEBUTTON_POS_Y   (60.0f)
 #define PAUSEBUTTON_SCALE   (1.0f)
 #define PAUSEBUTTON_TEX_W   (64.0f)
 #define PAUSEBUTTON_TEX_H   (64.0f)
 #define PAUSEBUTTON_PIVOT_X (34.0f)
 #define PAUSEBUTTON_PIVOT_Y (34.0f)
+
+// ポーズボタン
+#define PAUSE_SPRICT_POS_X   (950.0f)
+#define PAUSE_SPRICT_POS_Y   (140.0f)
+#define PAUSE_SPRICT_SCALE   (1.0f)
+#define PAUSE_SPRICT_TEX_W   (1500.0f)
+#define PAUSE_SPRICT_TEX_H   (200.0f)
+#define PAUSE_SPRICT_PIVOT_X (750.0f)
+#define PAUSE_SPRICT_PIVOT_Y (100.0f)
 
 extern int pause_state;
 extern int pause_timer;
