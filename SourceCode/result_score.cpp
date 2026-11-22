@@ -38,7 +38,7 @@ int count_frame_level = 0;
 int count_frame_hp = 0;
 
 //終わるまでの目標フレーム数
-const int COUNT_DURATION = 45;
+const int COUNT_DURATION = 120;
 
 // 0:キル数, 1:タワーHP, 2:レベル, 3:総合スコア, 4:全完了
 int active_item = 0;
