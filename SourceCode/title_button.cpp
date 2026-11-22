@@ -17,7 +17,6 @@ int title_button_timer = 0;
 extern bool gameEnd;
 
 //初期化
-//初期化
 void title_button_init()
 {
     title_button_state = 0;
@@ -51,7 +50,7 @@ void title_button_update()
         //ゲームスタートボタン初期化
         titleButton = {};
 
-        titleButton.pos = { 1400.0f, 650.0f };
+        titleButton.pos = { 1300.0f, 750.0f };
 
         titleButton.scale =
         {

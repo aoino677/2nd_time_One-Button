@@ -63,6 +63,7 @@ float enemy_hp_bar_max[ENEMY_NUMBER];  //最大HPゲージ
 float enemy_hp_rate[ENEMY_NUMBER];     //HP割合
 
 //エネミー情報
+int enemy_kill_count;
 int enemy_max;                         //最大リスポーン数
 int enemy_type_render[ENEMY_NUMBER];   //敵タイプ描画
 float enemy_border[ENEMY_NUMBER];      //最大移動値
@@ -99,6 +100,8 @@ bool bear_dropping = true;             //上から降下中かどうか
 void enemy_init()
 {
 	particles_init();
+	
+	enemy_kill_count = 0;
 	
 	enemy_state = 0;
 	boss_state = 0;
@@ -195,6 +198,8 @@ void enemy_update()
 			//HPが0以下になった瞬間(死亡＆パーティクル発生)
 			if (enemy[i].hp <= 0 && enemy_prev_hp[i] > 0)
 			{
+				enemy_kill_count++;
+				
 				item_drop(i);
 				if (enemy_type_render[i] == BOSS)
 				{
@@ -784,10 +789,10 @@ void effect_boss_respawn()
 			effect_boss_clear = 0.0f;
 	}
 
-	// 赤みの濃さに反映(最大値は0.8f)
+	//赤みの濃さに反映(最大値は0.8f)
 	effect_boss_clear = 0.8f * effect_boss_clear;
 
-	// 警告画像の横スクロール
+	//警告画像の横スクロール
 	x_1 -= 5;
 	x_2 -= 5;
 	if (x_1 < -1915)

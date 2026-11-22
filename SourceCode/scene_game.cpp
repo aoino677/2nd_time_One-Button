@@ -135,6 +135,7 @@ void game_update()
 				effect_danger_update();
 				cursor_main_update();
 				effect_game_start_update();
+				hp_update();
 
 			}
 			

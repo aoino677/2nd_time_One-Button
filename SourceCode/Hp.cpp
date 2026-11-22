@@ -1,14 +1,24 @@
 #include "Hp.h"
+#include "result_screen.h"
 
 int player_hp;
 int max_hp;
 
 void hp_init()
 {
-	player_hp = 10;
-	max_hp = 10;
+	player_hp = 100;
+	max_hp = 100;
 }
 
+
+void hp_update()
+{
+	if (player_hp <= 0)
+	{
+		player_hp = 0;
+		result_active = true;
+	}
+}
 
 void hp_render()
 {
