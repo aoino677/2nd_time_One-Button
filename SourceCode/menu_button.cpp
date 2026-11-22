@@ -7,7 +7,7 @@
 //--------------------------------------
 // メニューボタン
 //--------------------------------------
-#define MENU_BUTTON_COUNT 3
+#define MENU_BUTTON_COUNT 4
 OBJ2D menuButton[MENU_BUTTON_COUNT];
 
 Sprite* sprmenuButton[MENU_BUTTON_COUNT] = { nullptr };
@@ -39,9 +39,10 @@ void menu_button_update()
     {
     case 0:
         //ボタン画像読み込み
-        sprmenuButton[0] = sprite_load(L"./Data/Images/easy.png");
-        sprmenuButton[1] = sprite_load(L"./Data/Images/normal.png");
-        sprmenuButton[2] = sprite_load(L"./Data/Images/hard.png");
+        sprmenuButton[0] = sprite_load(L"./Data/Images/tutorial.png");
+        sprmenuButton[1] = sprite_load(L"./Data/Images/easy.png");
+        sprmenuButton[2] = sprite_load(L"./Data/Images/normal.png");
+        sprmenuButton[3] = sprite_load(L"./Data/Images/hard.png");
 
         menu_button_state++;
         break;
@@ -52,7 +53,7 @@ void menu_button_update()
         {
             menuButton[i] = {};
 
-            menuButton[i].pos = { static_cast<float>(SCREEN_W) * (0.3f + 0.2f * i), static_cast<float>(SCREEN_H) * 0.7f };
+            menuButton[i].pos = { static_cast<float>(SCREEN_W) * (0.2f + 0.2f * i), static_cast<float>(SCREEN_H) * 0.8f };
 
             menuButton[i].scale =
             {
