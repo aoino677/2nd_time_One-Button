@@ -11,15 +11,23 @@
 #include "effect_scene_change.h"
 #include "title_button.h"
 #include "cursor.h"
+#include <cmath>
 
 //------< ’è” >----------------------------------------------------------------
 
 
 //------< •Ï” >----------------------------------------------------------------
 Sprite* sprTitle;
+Sprite* sprTitle_logo;
 
 int title_state = 0;     //ó‘Ô
 int title_timer = 0;     //ƒ^ƒCƒ}[
+
+// ƒƒS‚Ìã‰º—h‚êİ’è
+float logo_base_x = 515.0f;
+float logo_base_y = 270.0f;
+float logo_float_amp = 10.0f;   // ã‰º‚É—h‚ê‚é•ipxj
+float logo_float_speed = 0.06f; // —h‚ê‚é‘¬‚³
 
 //--------------------------------------
 //  ‰Šúİ’è
@@ -44,7 +52,8 @@ void title_update()
 	switch (title_state)
 	{
 	case 0:
-		sprTitle= sprite_load(L"Data/Images/title.png");
+		sprTitle = sprite_load(L"Data/Images/title.png");
+		sprTitle_logo = sprite_load(L"Data/Images/title_logo.png");
 		title_state++;
 		/*fallthrough*/
 	case 1:
@@ -74,7 +83,18 @@ void title_render()
 		0, 0
 	);
 
-	
+	// ƒƒS‚ÌŒ»İYÀ•Wiã‰º‚É‚Ó‚í‚Ó‚í—h‚ç‚·j
+	float logo_y = logo_base_y + sinf((float)title_timer * logo_float_speed) * logo_float_amp;
+
+	sprite_render(
+		sprTitle_logo,
+		logo_base_x, logo_y,
+		2.5, 2.5,
+		0, 0,
+		351, 162,
+		175.5, 81,
+		ToRadian(-7)
+	);
 
 	title_button_render();
 	scene_change_render();
@@ -86,6 +106,8 @@ void title_render()
 //--------------------------------------
 void title_deinit()
 {
+	safe_delete(sprTitle);
+	safe_delete(sprTitle_logo);
 	title_button_deinit();
 	cursor_deinit();
 }

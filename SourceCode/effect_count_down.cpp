@@ -97,40 +97,48 @@ void countdown_render()
 	if (sprcount[count_phase] == nullptr)
 		return;
 
+	float tex_w = 600.0f;
+	float tex_h = 200.0f;
+	float pivot_x = tex_w * 0.5f;
+	float pivot_y = tex_h * 0.5f;
+
 	float pos_x = 960.0f;
-	float pos_y = 640.0f;
+	float pos_y = 540.0f;
 	float scale_x = 0.5f;
 	float scale_y = 0.5f;
 	float angle = 0.0f;
 
 	if (count_phase == 0)
 	{
-		// 3：少し右側で右傾き
+		//3
 		pos_x = 1040.0f;
+		pos_y = 540.0f;
 		scale_x = 0.45f;
 		scale_y = 0.45f;
 		angle = 0.20f;
 	}
 	else if (count_phase == 1)
 	{
-		// 2：少し左側で左傾き（3より大きく）
-		pos_x = 880.0f;
+		//2
+		pos_y = 540.0f;
 		scale_x = 0.70f;
 		scale_y = 0.70f;
 		angle = -0.20f;
 	}
 	else if (count_phase == 2)
 	{
-		// 1：真ん中で傾きなし（2よりさらに大きく）
+		//1
 		pos_x = 960.0f;
+		pos_y = 540.0f;
 		scale_x = 1.00f;
 		scale_y = 1.00f;
 		angle = 0.0f;
 	}
 	else if (count_phase == 3)
 	{
-		// START
+		//GO!
 		pos_x = 960.0f;
+		pos_y = 540.0f;
 		scale_x = 0.75f;
 		scale_y = 0.75f;
 		angle = 0.0f;
@@ -141,8 +149,8 @@ void countdown_render()
 		pos_x, pos_y,
 		scale_x, scale_y,
 		0.0f, 0.0f,
-		512.0f, 512.0f,
-		256.0f, 256.0f,
+		tex_w, tex_h,
+		pivot_x, pivot_y,
 		angle
 	);
 }
