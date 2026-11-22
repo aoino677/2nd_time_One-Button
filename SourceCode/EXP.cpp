@@ -37,6 +37,8 @@ void EXP_init()
 	EXP_state = 0;
 	exp_count = 0;
 	acquisition_range = 1.0f;
+
+	music::load(EXP_GET_SE, L"Data/Sounds/SE/money_get.wav");
 }
 
 void EXP_update()
@@ -168,6 +170,7 @@ void EXP_update()
 					}
 					EXP[j].color.w = 0;
 					color_w_EXP = 0.0f;
+					music::play(EXP_GET_SE, false);
 				}
 			}
 			else
@@ -262,6 +265,7 @@ void EXP_deinit()
 	{
 		safe_delete(sprEXP[i]);
 	}
+	music::clear();
 }
 
 void EXP_levelUp_ALL()
