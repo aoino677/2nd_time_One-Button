@@ -70,6 +70,7 @@ static void setup_coins()
 
 void scene_change_start(int next_scene_id)
 {
+	music::play(EFFECT_MONEY_SE, false);
 	retry_mode = false;
 	target_scene = next_scene_id;
 	setup_coins();
@@ -77,6 +78,7 @@ void scene_change_start(int next_scene_id)
 
 void scene_change_start_retry()
 {
+
 	target_scene = SCENE_NONE;
 	retry_mode = true;
 	setup_coins();
@@ -91,6 +93,7 @@ void scene_change_init()
 	scene_switched = false;
 	retry_mode = false;
 	target_scene = SCENE_NONE;
+	
 }
 
 void scene_change_deinit()

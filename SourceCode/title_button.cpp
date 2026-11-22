@@ -113,8 +113,10 @@ void title_button_update()
 
             //クリックでコイン演出つきでSCENE_MENUへ遷移開始
             if (TRG(0) & PAD_START)
+            {
+                music::stop(TITLE_BGM);
                 scene_change_start(SCENE_MENU);
-            
+            }
         }
         else
         {
@@ -163,7 +165,6 @@ void title_button_render()
 //--------------------------------------
 // 終了処理
 //--------------------------------------
-// 終了処理
 void title_button_deinit()
 {
     if (sprtitleButton != nullptr)
@@ -171,7 +172,6 @@ void title_button_deinit()
         safe_delete(sprtitleButton);
         sprtitleButton = nullptr;
     }
-
     title_button_state = 0;
     title_button_timer = 0;
 }
