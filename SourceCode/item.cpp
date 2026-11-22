@@ -115,7 +115,7 @@ void item_drop(int enemy_index)
             case ENEMY_TYPE_ROCKET:
                 item_type[i] = rand() % 4;
                 break;
-            case ENEMY_TYPE_BOBM:
+            case ENEMY_TYPE_BOMB:
                 item_type[i] = rand() % 4;
                 break;
             case ENEMY_TYPE_CRAYON:

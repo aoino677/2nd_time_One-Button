@@ -10,6 +10,10 @@ Sprite* sprRankC = nullptr;
 Sprite* sprRankD = nullptr;
 Sprite* sprRankE = nullptr;
 
+Sprite* sprResultText1 = nullptr; // ★ 倒した敵
+Sprite* sprResultText2 = nullptr; // ★ タワーHP
+Sprite* sprResultText3 = nullptr; // ★ レベル
+
 int result_score_state = 0;
 
 //最終目標値
@@ -168,7 +172,7 @@ void result_score_set(int total_score, int kill_count, int level, int remain_hp)
 	score_kill = kill_count;
 	score_level = level;
 	score_hp = remain_hp;
-	start_hp = 100; 
+	start_hp = 100;
 
 	disp_score = 0;
 	disp_kill = 0;
@@ -218,6 +222,9 @@ void result_score_deinit()
 	safe_delete(sprRankC);
 	safe_delete(sprRankD);
 	safe_delete(sprRankE);
+	safe_delete(sprResultText1);
+	safe_delete(sprResultText2);
+	safe_delete(sprResultText3);
 }
 
 void result_score_update()
@@ -233,6 +240,10 @@ void result_score_update()
 		sprRankC = sprite_load(L"./Data/Images/rankC.png");
 		sprRankD = sprite_load(L"./Data/Images/rankD.png");
 		sprRankE = sprite_load(L"./Data/Images/rankE.png");
+
+		sprResultText1 = sprite_load(L"./Data/Images/result_text1.png");
+		sprResultText2 = sprite_load(L"./Data/Images/result_text2.png");
+		sprResultText3 = sprite_load(L"./Data/Images/result_text3.png");
 
 		result_score_state++;
 		break;
@@ -315,28 +326,40 @@ void result_score_render()
 {
 	if (result_score_state == 0) return;
 
-	//1段目：キル数（3桁）
+	//1段目：倒した敵（左隣）＋ キル数（3桁）
 	if (active_item >= 0)
 	{
-		draw_number(disp_kill, 3, 900, 200, 1.7f);
+		if (sprResultText1 != nullptr)
+		{
+			sprite_render(sprResultText1, 320.0f, 195.0f, 1.0f, 1.0f);
+		}
+		draw_number(disp_kill, 3, 1020, 190, 1.7f);
 	}
 
-	//2段目：タワーHP（3桁）
+	//2段目：タワーHP（左隣）＋ タワーHP数値（3桁）
 	if (active_item >= 1)
 	{
-		draw_number(disp_hp, 3, 900, 330, 1.7f);
+		if (sprResultText2 != nullptr)
+		{
+			sprite_render(sprResultText2, 320.0f, 345.0f, 1.0f, 1.0f);
+		}
+		draw_number(disp_hp, 3, 1020, 340, 1.7f);
 	}
 
-	//3段目：レベル（2桁）
+	//3段目：レベル（左隣）＋ レベル数値（2桁）
 	if (active_item >= 2)
 	{
-		draw_number(disp_level, 2, 900, 460, 1.7f);
+		if (sprResultText3 != nullptr)
+		{
+			sprite_render(sprResultText3, 320.0f, 495.0f, 1.0f, 1.0f);
+		}
+		draw_number(disp_level, 2, 1020, 490, 1.7f);
 	}
 
 	//4段目：総合スコア（5桁・少し大きめ）
 	if (active_item >= 3)
 	{
-		draw_number(disp_score, 5, 900, 650, 2.3f);
+		draw_number(disp_score, 5, 1020, 680, 2.3f);
 	}
 
 	//ランク描画（総合スコアが出始めたあとに表示）
@@ -345,7 +368,7 @@ void result_score_render()
 		Sprite* rank_spr = get_rank_sprite(disp_score);
 		if (rank_spr != nullptr)
 		{
-			sprite_render(rank_spr, 1700, 650, 2.3f, 2.3f);
+			sprite_render(rank_spr, 1700, 680, 2.3f, 2.3f);
 		}
 	}
 }

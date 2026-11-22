@@ -13,7 +13,7 @@
 #define ENEMY_TYPE_BOLL      (1)
 #define ENEMY_TYPE_BALLOON   (2)
 #define ENEMY_TYPE_ROCKET    (3)
-#define ENEMY_TYPE_BOBM      (4)
+#define ENEMY_TYPE_BOMB      (4)
 #define ENEMY_TYPE_CRAYON    (5)
 #define BOSS_TYPE_BEAR       (6)
 #define BOSS_TYPE_CRAYON     (7)
