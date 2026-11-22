@@ -63,7 +63,7 @@ void hp_render()
 		hp_bar_max, 100,
 		0, 0,
 		0,
-		1, 0, 0);
+		0.0f, 1.0f, 0.1f);
 
 	sprite_render(
 		sprhp,
@@ -79,7 +79,6 @@ void hp_render()
 		hp.color.w
 	);
 
-	debug::setString("player_hp:%d", player_hp);
 }
 
 void hp_deinit()
