@@ -11,7 +11,6 @@
 #include "menu_button.h"
 #include "effect_scene_change.h"
 #include "effect_start_game.h"
-#include "tutorial_button.h"
 #include "cursor.h"
 //------< ’è” >----------------------------------------------------------------
 
@@ -33,7 +32,6 @@ void menu_init()
 
 	menu_button_init();
 	cursor_init();
-	tutorial_button_init();
 	scene_wipe_init();
 }
 
@@ -63,7 +61,6 @@ void menu_update()
 		scene_wipe_out_update();
 		menu_button_update();
 		cursor_update();
-		tutorial_button_update();
 
 		if (is_scene_wipe_out_finished() && !is_wipe_out_cleaned_up)
 		{
@@ -94,7 +91,6 @@ void menu_render()
 
 	font::textOut(1, "MENU", 640, 200);
 
-	tutorial_button_render();
 	menu_button_render();
 
 	if (!is_scene_change_finished())
@@ -119,6 +115,5 @@ void menu_deinit()
 {
 	menu_button_deinit();
 	cursor_deinit();
-	tutorial_button_deinit();
 	//scene_wipe_deinit();
 }
