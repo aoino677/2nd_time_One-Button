@@ -43,7 +43,7 @@ int time_limit = 0;           //制限時間
 
 bool choice_pause = false;
 bool pause = false;
-bool wipe_out_started = false; // カウントダウン終了後に開き始めたか
+bool wipe_out_started = false; //カウントダウン終了後に開き始めたか
 //--------------------------------------
 //  初期設定
 //--------------------------------------
@@ -73,11 +73,11 @@ void game_init()
 	level_up_init();
 	cursor_init();
 
-	// カウントダウンが終わるまでは閉じたまま待機
+	//カウントダウンが終わるまでは閉じたまま待機
 	scene_wipe_init();
 	scene_wipe_out_hold();
 
-	// ゲーム開始時はWindows標準カーソルを非表示
+	//ゲーム開始時はWindows標準カーソルを非表示
 	while (ShowCursor(FALSE) >= 0)
 	{
 	}
@@ -112,7 +112,7 @@ void game_update()
 	case 2:
 		countdown_update();
 
-		// カウントダウンが終わった瞬間に1回だけ開き始める
+		//カウントダウンが終わった瞬間に1回だけ開き始める
 		if (countdown_finished() && !wipe_out_started)
 		{
 			scene_wipe_out_start();
@@ -208,7 +208,6 @@ void game_render()
 		cursor_render();
 	}
 
-	// カウントダウン中は閉じたまま描画し、終了後に左右へ開く
 	scene_wipe_out_render();
 	countdown_render();
 }

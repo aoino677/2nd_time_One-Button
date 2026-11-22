@@ -7,7 +7,10 @@
 
 int resulet_state = 0;
 int resulet_timer = 0;
-static bool is_score_set = false; 
+bool is_score_set = false;
+float bg_scroll_x = 0.0f;
+float bg_width = 1920.0f;
+float bg_scroll_speed = 1.5f;
 
 Sprite* sprresult;
 Sprite* sprResult_logo;
@@ -17,6 +20,7 @@ void resulet_init()
 	resulet_state = 0;
 	resulet_timer = 0;
 	is_score_set = false;
+	bg_scroll_x = 0.0f;
 	scene_change_init();
 	result_button_init();
 	result_score_init();
@@ -38,15 +42,21 @@ void resulet_update()
 		resulet_state++;
 		/*fallthrough*/
 	case 2:
-		// —áFƒŠƒUƒ‹ƒg‰Šú‰»‚âƒQ[ƒ€I—¹‚É“n‚·
 		if (!is_score_set)
 		{
 			result_score_set(12345, enemy_kill_count, 99, player_hp);
 			is_score_set = true;
 		}
+
+		//”wŒi‚ğ¶‚ÖƒXƒNƒ[ƒ‹‚µ‚Äƒ‹[ƒv
+		bg_scroll_x -= bg_scroll_speed;
+		if (bg_scroll_x <= -bg_width)
+		{
+			bg_scroll_x += bg_width;
+		}
+
 		result_score_update();
 		result_button_update();
-		
 		break;
 	}
 
@@ -58,10 +68,12 @@ void resulet_render()
 	GameLib::clear(1.0f, 0.2f, 0.2f);
 	font::textOut(1, "PRESS SPACE KEY", 640, 300);
 
-	sprite_render(
-		sprresult,
-		0, 0
-	);
+	//”wŒiƒ‹[ƒv•`‰æ
+	if (sprresult != nullptr)
+	{
+		sprite_render(sprresult, bg_scroll_x, 0.0f);
+		sprite_render(sprresult, bg_scroll_x + bg_width, 0.0f);
+	}
 
 	sprite_render(
 		sprResult_logo,
