@@ -39,6 +39,11 @@ VECTOR2 playerLength;
 float color_w = 0;
 bool item_check;
 
+// レッドアイテムの画像
+OBJ2D redItem_effect;
+Sprite* sprRedItem_effect;
+int red_direction;
+float red_base_x;
 
 // 初期化
 void item_init()
@@ -49,6 +54,9 @@ void item_init()
     Green_counter = 0;
     Red_counter = 0;
     Pink_counter = 0;
+
+    red_direction = 1;
+    red_base_x = 0;
 
     for (int i = 0; i < ITEM_MAX; i++)
     {
@@ -130,11 +138,14 @@ void item_update()
     {
     case 0:
 
-        // 画像読み込み
+        // アイテム画像読み込み
         spritem[0] = sprite_load(L"./Data/Images/itemBlue.png");
         spritem[1] = sprite_load(L"./Data/Images/itemGreen.png");
         spritem[2] = sprite_load(L"./Data/Images/itemRed.png");
         spritem[3] = sprite_load(L"./Data/Images/itemPink.png");
+
+        // 炎の画像
+        sprRedItem_effect = sprite_load(L"./Data/Images/fire.png");
 
         item_state++;
         break;
@@ -153,6 +164,15 @@ void item_update()
             item_type[i] = -1;
             item_timer[i] = 1;
         }
+        // 炎の初期設定
+        redItem_effect = {};
+        redItem_effect.pos      = { 0, 0 };
+        redItem_effect.scale    = { REDITEM_EFFECT_SCALE, REDITEM_EFFECT_SCALE };
+        redItem_effect.texSize  = { REDITEM_EFFECT_TEXSIZE_X,REDITEM_EFFECT_TEXSIZE_Y };
+        redItem_effect.pivot    = { REDITEM_EFFECT_PIVOT_X,REDITEM_EFFECT_PIVOT_Y };
+        redItem_effect.color    = { 1, 1, 1, 0.6f };
+        red_base_x = 0;
+        red_direction = 1;
 
         item_state++;
         break;
@@ -267,6 +287,18 @@ void item_update()
         }
         break;
     }
+    // 炎を左右に震わせる
+    redItem_effect.pos.x += 3.0f * red_direction;
+
+    if (redItem_effect.pos.x >= red_base_x + 10.0f)
+    {
+        red_direction = -1;
+    }
+
+    if (redItem_effect.pos.x <= red_base_x - 10.0f)
+    {
+        red_direction = 1;
+    }
 }
 
 
@@ -309,6 +341,30 @@ void item_render()
             primitive::rect(item[i].pos.x - 60, bar_pos_y, item_timer[i], 10, 0, 0, 0, 0, 0, 0, 1.0f);
         }
     }
+    if (fever_red == true)
+    {
+        sprite_render(
+            sprRedItem_effect,
+            player.pos.x + redItem_effect.pos.x, player.pos.y,
+            redItem_effect.scale.x, redItem_effect.scale.y,
+            0, 0,
+            redItem_effect.texSize.x, redItem_effect.texSize.y,
+            redItem_effect.pivot.x, redItem_effect.pivot.y,
+            ToRadian(0),
+            redItem_effect.color.x, redItem_effect.color.y, redItem_effect.color.z, redItem_effect.color.w
+        );
+    }
+
+    if (fever_blue == true)
+    {
+        primitive::rect(
+            0, 0,
+            SCREEN_W, SCREEN_H,
+            0, 0,
+            ToRadian(0),
+            0.70f, 0.85f, 1.00f, 0.3f
+        );
+    }
 }
 
 
@@ -319,4 +375,5 @@ void item_deinit()
     {
         safe_delete(spritem[i]);
     }
+    safe_delete(sprRedItem_effect);
 }
