@@ -57,9 +57,9 @@ struct WEAPON_LEVEL_SETTING
 const WEAPON_LEVEL_SETTING Y1_SETTING =
 {
     // ダメージ
-    100.0f, 1.1f, 0.05f,
+    100.0f, 1.1f, 0.02f,
     // クールタイム
-    100.0f, 1.3f, 0.05f, 10.0f,
+    200.0f, 1.07f, 0.03f, 50.0f,
     // 攻撃範囲
     100.0f, 1.02f, 0.01f,
     // 強化倍率
@@ -72,9 +72,9 @@ const WEAPON_LEVEL_SETTING Y1_SETTING =
 const WEAPON_LEVEL_SETTING SHELL_SETTING =
 {
     // ダメージ
-    300.0f, 1.3f, 0.05f,
+    500.0f, 1.05f, 0.02f,
     // クールタイム
-    500.0f, 0.6f, 0.05f, 100.0f,
+    1600.0f, 1.02f, 0.03f, 700.0f,
     // 攻撃範囲
     100.0f, 1.02f, 0.01f,
     // 強化倍率
@@ -87,11 +87,11 @@ const WEAPON_LEVEL_SETTING SHELL_SETTING =
 const WEAPON_LEVEL_SETTING INGOT_SETTING =
 {
     // ダメージ
-    80.0f, 1.3f, 0.05f,
+    80.0f, 1.02f, 0.05f,
     // クールタイム
-    300.0f, 1.3f, 0.05f, 70.0f,
+    1100.0f, 1.02f, 0.03f, 500.0f,
     // 攻撃範囲
-    50.0f, 1.1f, 0.01f,
+    50.0f, 1.02f, 0.01f,
     // 強化倍率
     1.0f, 1.0f,
     // 弾の基本スケール
@@ -102,11 +102,11 @@ const WEAPON_LEVEL_SETTING INGOT_SETTING =
 const WEAPON_LEVEL_SETTING BANKROLL_SETTING =
 {
     // ダメージ
-    100.0f, 1.3f, 0.05f,
+    100.0f, 1.05f, 0.1f,
     // クールタイム
-    400.0f, 1.3f, 0.05f, 150.0f,
+    1500.0f, 1.05f, 0.03f, 800.0f,
     // 攻撃範囲
-    100.0f, 1.02f, 0.01f,
+    80.0f, 1.01f, 0.01f,
     // 強化倍率
     1.0f, 1.0f,
     // 弾の基本スケール
@@ -117,9 +117,9 @@ const WEAPON_LEVEL_SETTING BANKROLL_SETTING =
 const WEAPON_LEVEL_SETTING BEAM_SETTING =
 {
     // ダメージ
-    30.0f, 1.3f, 0.05f,
+    80.0f, 1.03f, 0.02f,
     // クールタイム
-    300.0f, 1.3f, 0.05f, 70.0f,
+    1200.0f, 1.05f, 0.03f, 600.0f,
     // 攻撃範囲
     100.0f, 1.02f, 0.01f,
     // 強化倍率

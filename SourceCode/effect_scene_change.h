@@ -1,8 +1,8 @@
 #pragma once
 #include "all.h"
 
-#define GRID_COLS 70 
-#define GRID_ROWS 90
+#define GRID_COLS 50 
+#define GRID_ROWS 70
 #define TOTAL_COINS (GRID_COLS * GRID_ROWS)
 
 struct Coin
