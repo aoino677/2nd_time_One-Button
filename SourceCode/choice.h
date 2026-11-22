@@ -20,6 +20,7 @@
 #define LEVELUP_PIVOT_Y  (100.0f)
 
 #define EXP_UP_SE 14
+#define CHOICE_SE 15
 
 void choice_init();
 void choice_update();

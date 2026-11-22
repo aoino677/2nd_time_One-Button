@@ -4,6 +4,7 @@
 #include "player.h"
 #include "cursor_main.h"
 #include "Level.h"
+#include "item.h"
 #include <ctime>
 #include <stdlib.h>
 
@@ -61,6 +62,7 @@ void choice_init()
 	sprlevelup = sprite_load(L"./Data/Images/levelUP.png");
 
 	music::load(EXP_UP_SE, L"Data/Sounds/SE/levelup.wav");
+	music::load(CHOICE_SE, L"Data/Sounds/SE/click5.wav");
 
 	// パラメーターの設定
 	for (int i = 0; i < CHOICE_MAX; i++)
@@ -104,6 +106,7 @@ void choice_update_pause()
 		{
 			level_up_count++;
 			levelup_counter++; //レベルを①足す
+			music::setVolume(ITEM_RED_SE, 0.0f);
 			music::play(EXP_UP_SE, false);
 			for (int i = 1; i <= level_up_count; i++)
 			{
@@ -360,6 +363,8 @@ void choice_update()
 						choice_state = 0;
 						choice_effect_y = 0.0f;
 						choice_effect_alpha = 0.0f;
+						music::setVolume(ITEM_RED_SE, 0.5f);
+						music::play(CHOICE_SE, false);
 						// ここに強化する効果を書く
 						switch (random[0])
 						{
@@ -411,6 +416,8 @@ void choice_update()
 						choice_state = 0;
 						choice_effect_y = 0.0f;
 						choice_effect_alpha = 0.0f;
+						music::setVolume(ITEM_RED_SE, 0.5f);
+						music::play(CHOICE_SE, false);
 						// ここに強化する効果を書く
 						switch (random[1])
 						{
@@ -462,6 +469,8 @@ void choice_update()
 						choice_state = 0;
 						choice_effect_y = 0.0f;
 						choice_effect_alpha = 0.0f;
+						music::setVolume(ITEM_RED_SE, 0.3f);
+						music::play(CHOICE_SE, false);
 						// ここに強化する効果を書く
 						switch (random[2])
 						{

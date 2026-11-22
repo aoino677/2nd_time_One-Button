@@ -38,7 +38,8 @@ void EXP_init()
 	exp_count = 0;
 	acquisition_range = 1.0f;
 
-	music::load(EXP_GET_SE, L"Data/Sounds/SE/money_get.wav");
+	music::load(EXP_GET_SE, L"Data/Sounds/SE/money_get.wav", 0.2f);
+	//music::setVolume(EXP_GET_SE, 0.1f);
 }
 
 void EXP_update()
@@ -137,7 +138,8 @@ void EXP_update()
 					{
 						EXP[j].timer = 0;
 						EXP[j].type++;
-
+						music::play(ITME_GREEN_SE, false);
+						music::setVolume(ITME_GREEN_SE, 0.2f);
 						float range = 5;
 						particles_update
 						(EXP[j].pos.x, EXP[j].pos.y, range, 0, 0, 0);
