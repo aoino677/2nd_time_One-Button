@@ -28,6 +28,8 @@ bool T_or_F(int level_up_count);
 void randoms();
 void DrawLevelText(int type, float x, float y, float scale);
 
+extern int levelup_counter;
+
 enum
 {
 	HP_UP,

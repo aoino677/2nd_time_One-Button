@@ -24,6 +24,8 @@ float level_text_scale[CHOICE_MAX] = { 100.0f, 100.0f, 100.0f };
 float efficacy_scale[CHOICE_MAX] = { 1.0f, 1.0f, 1.0f };
 int choice_count = CHOICE_MAX;
 
+int levelup_counter; // ƒŒƒxƒ‹‚Ì‡Œv
+
 void choice_init()
 {
 	choice_state = 0;
@@ -32,6 +34,8 @@ void choice_init()
 	bullet_lay_count = 1;
 	choice_effect_y = 0.0f;
 	choice_effect_alpha = 0.0f;
+
+	levelup_counter = 0;
 
 	for (int i = 0; i < CHOICE_MAX; i++)
 	{
@@ -97,6 +101,7 @@ void choice_update_pause()
 		if (exp_count >= level_max)
 		{
 			level_up_count++;
+			levelup_counter++; //ƒŒƒxƒ‹‚ğ‡@‘«‚·
 			for (int i = 1; i <= level_up_count; i++)
 			{
 				for (; T_or_F(level_up_count);)
