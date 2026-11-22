@@ -34,6 +34,9 @@
     <Filter Include="ソース ファイル\Effect">
       <UniqueIdentifier>{4f0f03f3-9f43-4958-863d-839596fd5554}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\weapon">
+      <UniqueIdentifier>{cd27acf6-a1e8-4439-9f74-b21b213091e5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameLib\blender.h">
@@ -105,9 +108,6 @@
     <ClInclude Include="SourceCode\EXP.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Bullet.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\shake.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -168,15 +168,6 @@
     <ClInclude Include="SourceCode\item.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Bullet_Ingot.h">
-      <Filter>ソース ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Bullet_Bankroll.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Bullet_Shell.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\effect_scene_change.h">
       <Filter>ソース ファイル\Effect</Filter>
     </ClInclude>
@@ -201,11 +192,23 @@
     <ClInclude Include="SourceCode\effect_game_start.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\bullet_se.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\cursor.h">
       <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Bullet_Ingot.h">
+      <Filter>ソース ファイル\weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Bullet.h">
+      <Filter>ソース ファイル\weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Bullet_Bankroll.h">
+      <Filter>ソース ファイル\weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\bullet_se.h">
+      <Filter>ソース ファイル\weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Bullet_Shell.h">
+      <Filter>ソース ファイル\weapon</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -272,9 +275,6 @@
     <ClCompile Include="SourceCode\shake.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\Background.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\cursor_main.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -323,47 +323,50 @@
     <ClCompile Include="SourceCode\item.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\Bullet.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\Bullet_Ingot.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\Bullet_Bankroll.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\Bullet_Shell.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\effect_scene_change.cpp">
       <Filter>ソース ファイル\Effect</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\effect_burst.cpp">
       <Filter>ソース ファイル\Effect</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\title_button.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\effect_count_down.cpp">
       <Filter>ソース ファイル\Effect</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\result_screen.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\result_button.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\menu_button.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\effect_gemestart.cpp">
-      <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\effect_game_start.cpp">
       <Filter>ソース ファイル\Scenes</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\cursor.cpp">
       <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Bullet.cpp">
+      <Filter>ソース ファイル\weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Bullet_Bankroll.cpp">
+      <Filter>ソース ファイル\weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Bullet_Ingot.cpp">
+      <Filter>ソース ファイル\weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Bullet_Shell.cpp">
+      <Filter>ソース ファイル\weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Background.cpp">
+      <Filter>ソース ファイル\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\effect_gemestart.cpp">
+      <Filter>ソース ファイル\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\menu_button.cpp">
+      <Filter>ソース ファイル\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\result_button.cpp">
+      <Filter>ソース ファイル\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\result_screen.cpp">
+      <Filter>ソース ファイル\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\title_button.cpp">
+      <Filter>ソース ファイル\Scenes</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

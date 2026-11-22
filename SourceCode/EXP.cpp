@@ -239,24 +239,6 @@ void EXP_render()
 			1, 1, 1, EXP[i].color.w
 		);
 	}
-
-	primitive::rect(
-		posX_EXP, posY_EXP,
-		LengthX_EXP, LengthY_EXP,
-		0.0f, 0.0f,
-		0.0f,
-		1.0f, 0.0f, 0.0f, color_w_EXP,
-		false
-	);
-
-	primitive::rect(
-		playerLeftUp_EXP.x, playerLeftUp_EXP.y,
-		playerLength_EXP.x, playerLength_EXP.y,
-		0.0f, 0.0f,
-		0.0f,
-		0.0f, 1.0f, 0.0f, color_w_EXP,
-		false
-	);
 }
 
 void EXP_deinit()
