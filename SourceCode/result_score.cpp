@@ -3,6 +3,10 @@
 #include "enemy.h"
 #include "Hp.h"
 
+// 既存IDと重複しないSE番号を設定してください
+#define SE_DRUMROLL     26
+#define SE_SCORE_FINISH 27
+
 Sprite* sprNumber = nullptr;
 
 Sprite* sprRankS = nullptr;
@@ -47,6 +51,45 @@ int active_item = 0;
 
 int score_W = 64;
 int score_H = 64;
+
+// 総合スコア用SE管理フラグ
+bool drumroll_loaded = false;
+bool drumroll_playing = false;
+bool score_finish_se_played = false;
+bool total_score_calculated = false;
+
+// 総合スコアの計算
+int calc_total_score()
+{
+	int hp_bonus = 0;
+	if (max_hp > 0)
+	{
+		hp_bonus = (int)(((float)score_hp / (float)max_hp) * 100.0f);
+	}
+
+	int total = score_kill + hp_bonus + score_level;
+	if (total < 0)
+	{
+		total = 0;
+	}
+	return total;
+}
+
+// ドラムロール停止＆完了SE再生の共通処理
+void finish_score_drumroll()
+{
+	if (drumroll_playing)
+	{
+		music::stop(SE_DRUMROLL);
+		drumroll_playing = false;
+	}
+
+	if (!score_finish_se_played)
+	{
+		music::play(SE_SCORE_FINISH, false);
+		score_finish_se_played = true;
+	}
+}
 
 //ボタンが押された瞬間トリガーを返す
 bool is_confirm_triggered()
@@ -209,6 +252,9 @@ void result_score_set(int total_score, int kill_count, int level, int remain_hp)
 	count_frame_hp = 0;
 
 	active_item = 0;
+	drumroll_playing = false;
+	score_finish_se_played = false;
+	total_score_calculated = false;
 }
 
 void result_score_init()
@@ -235,10 +281,21 @@ void result_score_init()
 
 	score_W = 64;
 	score_H = 64;
+
+	drumroll_loaded = false;
+	drumroll_playing = false;
+	score_finish_se_played = false;
+	total_score_calculated = false;
 }
 
 void result_score_deinit()
 {
+	if (drumroll_playing)
+	{
+		music::stop(SE_DRUMROLL);
+		drumroll_playing = false;
+	}
+
 	safe_delete(sprNumber);
 	safe_delete(sprRankS);
 	safe_delete(sprRankA);
@@ -269,11 +326,16 @@ void result_score_update()
 		sprResultText2 = sprite_load(L"./Data/Images/result_text2.png");
 		sprResultText3 = sprite_load(L"./Data/Images/result_text3.png");
 
-	    
+		if (!drumroll_loaded)
+		{
+			music::load(SE_DRUMROLL, L"./Data/Sounds/SE/drumRoll_start.wav");
+			music::load(SE_SCORE_FINISH, L"./Data/Sounds/SE/drumRoll_end.wav");
+			drumroll_loaded = true;
+		}
 
+		score = calc_total_score();
+		total_score_calculated = true;
 
-		score= score_kill + score_hp * 100;
-		
 		result_score_state++;
 		break;
 
@@ -321,7 +383,7 @@ void result_score_update()
 
 			if (pressed)
 			{
-				disp_level = levelup_counter;
+				disp_level = score_level;
 				count_frame_level = COUNT_DURATION;
 				active_item = 3;
 			}
@@ -333,6 +395,19 @@ void result_score_update()
 		// 3: 総合スコア
 		else if (active_item == 3)
 		{
+			if (!total_score_calculated)
+			{
+				score = calc_total_score();
+				total_score_calculated = true;
+			}
+
+			//ドラムロール開始
+			if (score > 0 && !drumroll_playing && !score_finish_se_played)
+			{
+				music::play(SE_DRUMROLL, true);
+				drumroll_playing = true;
+			}
+
 			disp_score = calc_count_up_by_time(score, count_frame_score, COUNT_DURATION);
 
 			if (pressed)
@@ -340,10 +415,13 @@ void result_score_update()
 				disp_score = score;
 				count_frame_score = COUNT_DURATION;
 				active_item = 4;
+				finish_score_drumroll();
 			}
-			else if (disp_score >= score)
+			else if (score <= 0 || disp_score >= score)
 			{
+				disp_score = score;
 				active_item = 4;
+				finish_score_drumroll();
 			}
 		}
 		break;
