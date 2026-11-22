@@ -5,6 +5,8 @@
 #define GRID_ROWS 70
 #define TOTAL_COINS (GRID_COLS * GRID_ROWS)
 
+#define EFFECT_MONEY_SE 20
+
 struct Coin
 {
 	float x, y;     // ç¿ïW

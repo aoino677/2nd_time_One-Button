@@ -44,10 +44,9 @@ void menu_init()
 	spr_menu_background = sprite_load(L"Data/Images/result_back.png");
 
 	music::load(SE_CLICK, L"./Data/Sounds/SE/click1.wav", SE_CLICK_VOLUME);
-	//music::load(SE_CLICK, L"./Data/Sounds/SE/click2.wav", SE_CLICK_VOLUME);
-	//music::load(SE_CLICK, L"./Data/Sounds/SE/click3.wav", SE_CLICK_VOLUME);
-	//music::load(SE_CLICK, L"./Data/Sounds/SE/click4.wav", SE_CLICK_VOLUME);
-	//music::load(SE_CLICK, L"./Data/Sounds/SE/click5.wav", SE_CLICK_VOLUME);
+	music::load(MENU_BGM, L"./Data/Sounds/BGM/mode1.wav", SE_CLICK_VOLUME);
+	music::play(MENU_BGM, true);
+	
 }
 
 //--------------------------------------
@@ -151,4 +150,6 @@ void menu_deinit()
 	tutorial_deinit();
 	//scene_wipe_deinit();
 	music::unload(SE_CLICK);
+	music::unload(EFFECT_MONEY_SE);
+	music::unload(MENU_BGM);
 }

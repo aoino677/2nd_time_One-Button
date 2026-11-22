@@ -38,6 +38,9 @@ void title_init()
 	title_timer = 0;
 	title_button_init();
 	cursor_init();
+	music::load(TITLE_BGM, L"Data/Sounds/BGM/title1.wav", 1.0f);
+	music::load(EFFECT_MONEY_SE, L"Data/Sounds/SE/money_fall.wav", 1.0f);
+	music::play(TITLE_BGM, true);
 	// ゲーム開始時はWindows標準カーソルを非表示
 	while (ShowCursor(FALSE) >= 0)
 	{
@@ -64,9 +67,10 @@ void title_update()
 	case 2:
 		title_button_update();
 		cursor_update();
+		
 		break;
 	}
-
+	
 	title_timer++;
 }
 

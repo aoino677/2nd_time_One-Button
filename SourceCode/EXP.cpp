@@ -38,8 +38,9 @@ void EXP_init()
 	exp_count = 0;
 	acquisition_range = 1.0f;
 
+	for (int i = 0; i < ENEMY_NUMBER; i++) prev_enemy_hp[i] = 0;
+
 	music::load(EXP_GET_SE, L"Data/Sounds/SE/money_get.wav", 0.2f);
-	//music::setVolume(EXP_GET_SE, 0.1f);
 }
 
 void EXP_update()
