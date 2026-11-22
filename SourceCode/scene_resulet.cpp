@@ -4,6 +4,7 @@
 #include "effect_scene_change.h"
 #include "result_screen.h"
 #include "enemy.h"
+#include "choice.h"
 #include "Hp.h"
 #include <cmath>
 
@@ -63,7 +64,7 @@ void resulet_update()
 	case 2:
 		if (!is_score_set)
 		{
-			result_score_set(score, enemy_kill_count, 99, player_hp);
+			result_score_set(score, enemy_kill_count, levelup_counter, player_hp);
 			is_score_set = true;
 		}
 

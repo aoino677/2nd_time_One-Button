@@ -11,10 +11,10 @@
 // -------------------------------------------------------
 // Ç®ã‡Ç≤Ç∆ÇÃåoå±ílêî
 // -------------------------------------------------------
-#define COUNTER_1Y	(1)
-#define COUNTER_10Y	(2)
-#define COUNTER_100Y	(4)
-#define COUNTER_500Y	(8)
+#define COUNTER_1Y	(5)
+#define COUNTER_10Y	(10)
+#define COUNTER_100Y	(20)
+#define COUNTER_500Y	(40)
 
 // EXPÇÃè„â∫à⁄ìÆîÕàÕ
 #define EXP_LIMIT_TOP 30.0f
