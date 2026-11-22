@@ -28,12 +28,8 @@ float color_w_EXP = 0;
 //前回HPを記憶する配列
 static int prev_enemy_hp[ENEMY_NUMBER] = { 0 };
 
-//経験値の種類を表す定数
-#define EXP_TYPE_1YEN 0
-#define EXP_TYPE_2YEN 1
-#define EXP_TYPE_4YEN 2
-#define EXP_TYPE_8YEN 3
-
+// EXPごとのランダムなX座標補正値
+float EXP_random_limit[EXP_COUNT];
 
 void EXP_init()
 {
@@ -92,8 +88,19 @@ void EXP_update()
 					if (EXP[exp_index].color.w != 1.0f)
 					{
 						EXP[exp_index].pos = enemy[i].pos;
+						// 出現位置を上下の範囲内に制限
+						if (EXP[exp_index].pos.y < EXP_LIMIT_TOP)
+						{
+							EXP[exp_index].pos.y = EXP_LIMIT_TOP;
+						}
+						else if (EXP[exp_index].pos.y > EXP_LIMIT_BOTTOM)
+						{
+							EXP[exp_index].pos.y = EXP_LIMIT_BOTTOM;
+						}
 						EXP[exp_index].color.w = 1.0f;
 						EXP[exp_index].moveSpeed = 0;
+						// -3.0f ～ +3.0f のランダム値を設定
+						EXP_random_limit[exp_index] = (rand() / static_cast<float>(RAND_MAX)) * 30.0f - 30.0f;
 						float moveY = 150.0f;
 						EXP[exp_index].moveSpeedY = (rand() / static_cast<float>(RAND_MAX) * moveY * 2 - moveY) / 60.0f;
 						EXP[exp_index].type = EXP_TYPE_1YEN;
@@ -116,9 +123,10 @@ void EXP_update()
 			}
 			EXP[j].moveSpeed += 100.0f / 60.0f;
 			EXP[j].pos.x -= EXP[j].moveSpeed;
-			if (EXP[j].pos.x < (SCREEN_H - EXP[j].pos.y) * 0.3584f / 0.9336f)
+			float limit_x =(SCREEN_H - EXP[j].pos.y) * 0.3584f / 0.9336f+ EXP_random_limit[j];
+			if (EXP[j].pos.x < limit_x)
 			{
-				EXP[j].pos.x = (SCREEN_H - EXP[j].pos.y) * 0.3584f / 0.9336f;
+				EXP[j].pos.x = limit_x;
 				color_w_EXP = 0.5f; // 当たり判定の透明度
 				
 				{
@@ -165,8 +173,15 @@ void EXP_update()
 			else
 			{
 				EXP[j].pos.y += EXP[j].moveSpeedY;
-				if (EXP[j].pos.y < 0)EXP[j].pos.y = 0;
-				else if (EXP[j].pos.y > SCREEN_H)EXP[j].pos.y = SCREEN_H;
+
+				if (EXP[j].pos.y < EXP_LIMIT_TOP)
+				{
+					EXP[j].pos.y = EXP_LIMIT_TOP;
+				}
+				else if (EXP[j].pos.y > EXP_LIMIT_BOTTOM)
+				{
+					EXP[j].pos.y = EXP_LIMIT_BOTTOM;
+				}
 			}
 		}
 		break;
