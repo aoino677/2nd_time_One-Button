@@ -11,8 +11,9 @@ void scene_wipe_in_update();
 void scene_wipe_in_render();
 bool is_scene_wipe_in_finished(); // 閉じきったら true
 
-// 画面を開く演出（新しいシーンが始まった直後）
-void scene_wipe_out_start();
+// 画面を開く演出（カウントダウン終了後に開始）
+void scene_wipe_out_hold();     // 閉じたまま待機
+void scene_wipe_out_start();    // 開き始める
 void scene_wipe_out_update();
 void scene_wipe_out_render();
 bool is_scene_wipe_out_finished(); // 開ききったら true

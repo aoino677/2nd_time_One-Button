@@ -35,12 +35,13 @@
 #define BGM_BOSS 7
 
 //------< 変数 >----------------------------------------------------------------
-int game_state = 0;     //状態
-int game_timer = 0;     //タイマー
-int time_limit = 0;       //制限時間
+int game_state = 0;         //状態
+int game_timer = 0;         //タイマー
+int time_limit = 0;           //制限時間
 
 bool choice_pause = false;
 bool pause = false;
+bool wipe_out_started = false; // カウントダウン終了後に開き始めたか
 //--------------------------------------
 //  初期設定
 //--------------------------------------
@@ -50,6 +51,7 @@ void game_init()
 	game_timer = 0;
 	pause = false;
 	choice_pause = false;
+	wipe_out_started = false;
 	player_init();
 	enemy_init();
 	pause_init();
@@ -68,6 +70,10 @@ void game_init()
 	countdown_init();
 	cursor_main_init();
 	level_up_init();
+
+	// カウントダウンが終わるまでは閉じたまま待機
+	scene_wipe_init();
+	scene_wipe_out_hold();
 
 	// ゲーム開始時はWindows標準カーソルを非表示
 	while (ShowCursor(FALSE) >= 0)
@@ -103,7 +109,16 @@ void game_update()
 		/*fallthrough*/
 	case 2:
 		countdown_update();
-		
+
+		// カウントダウンが終わった瞬間に1回だけ開き始める
+		if (countdown_finished() && !wipe_out_started)
+		{
+			scene_wipe_out_start();
+			wipe_out_started = true;
+		}
+
+		scene_wipe_out_update();
+
 		//リザルト表示中はゲーム停止
 		if (result_active)
 		{
@@ -120,8 +135,6 @@ void game_update()
 		//========================================
 		// ゲーム中
 		//========================================
-		
-		
 		if (pause == false && choice_pause == false)
 		{
 			if (countdown_finished())
@@ -137,11 +150,8 @@ void game_update()
 				cursor_main_update();
 				level_up_update();
 			}
-			
 		}
-			
-		
-		
+
 		//仮リザルト
 		if (TRG(0) & PAD_TRG1)
 		{
@@ -185,16 +195,20 @@ void game_render()
 		effect_danger_render();
 		time_limit_render();
 		cursor_main_render();
+		
 		choice_render();
 		pause_render(); // これ以上下に書かない
 	}
-	
-    
+
 	result_screen_render();
 	if (pause == true || choice_pause == true)
 	{
 		cursor_main_render();
 	}
+
+	// カウントダウン中は閉じたまま描画し、終了後に左右へ開く
+	scene_wipe_out_render();
+	countdown_render();
 }
 
 //--------------------------------------
@@ -215,4 +229,5 @@ void game_deinit()
 	cursor_main_deinit();
 	level_up_deinit();
 	hp_deinit();
+	scene_wipe_deinit();
 }

@@ -10,6 +10,7 @@
 #include "all.h"
 #include "menu_button.h"
 #include "effect_scene_change.h"
+#include "effect_start_game.h"
 #include "cursor.h"
 //------< 定数 >----------------------------------------------------------------
 
@@ -17,6 +18,7 @@
 int menu_state = 0;     // 状態
 int menu_timer = 0;     // タイマー
 bool is_effect_cleaned_up = false;
+bool is_wipe_out_cleaned_up = false;
 
 //--------------------------------------
 //  初期設定
@@ -26,8 +28,11 @@ void menu_init()
 	menu_state = 0;
 	menu_timer = 0;
 	is_effect_cleaned_up = false;
+	is_wipe_out_cleaned_up = false;
+
 	menu_button_init();
 	cursor_init();
+	scene_wipe_init();
 }
 
 //--------------------------------------
@@ -52,9 +57,16 @@ void menu_update()
 		/*fallthrough*/
 	case 2:
 		//////// 通常時 ////////
-		
+
+		scene_wipe_out_update();
 		menu_button_update();
 		cursor_update();
+
+		if (is_scene_wipe_out_finished() && !is_wipe_out_cleaned_up)
+		{
+			//scene_wipe_deinit();
+			is_wipe_out_cleaned_up = true;
+		}
 		break;
 	}
 
@@ -73,26 +85,28 @@ void menu_render()
 		0, 0,
 		1920, 1080,
 		0, 0,
-		0, 
+		0,
 		0, 1, 0
 	);
 
 	font::textOut(1, "MENU", 640, 200);
-	
+
 	menu_button_render();
-	
+
 	if (!is_scene_change_finished())
 	{
-		menu_button_render();
 		scene_change_render();
-    }
+	}
 	else if (!is_effect_cleaned_up)
 	{
 		scene_change_deinit();
 		is_effect_cleaned_up = true;
 	}
-	cursor_render();
 
+	// 開く演出はカーソルより手前・画面最前面に出す（開ききったら描画されない）
+	scene_wipe_out_render();
+
+	cursor_render();
 }
 
 //--------------------------------------
@@ -102,4 +116,5 @@ void menu_deinit()
 {
 	menu_button_deinit();
 	cursor_deinit();
+	//scene_wipe_deinit();
 }
