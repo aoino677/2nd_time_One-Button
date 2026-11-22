@@ -5,6 +5,7 @@
 
 int farame_timer;
 int second_timer;
+int second_timer_max;
 
 void time_limit_init()
 {
@@ -12,11 +13,11 @@ void time_limit_init()
 
     if (difficulty_time == 1)
     {
-        second_timer = 180; // 3•ª
+        second_timer_max = second_timer = 180; // 3•ª
     }
     else
     {
-        second_timer = 300; // 5•ª
+        second_timer_max = second_timer = 300; // 5•ª
     }
 }
 
@@ -45,7 +46,7 @@ void time_limit_render()
     float bar_width = 750.0f;
     float bar_height = 30.0f;
 
-    float rate = (float)second_timer / 300.0f;
+    float rate = (float)second_timer / second_timer_max;
 
     // ”wŒi
     primitive::rect(
