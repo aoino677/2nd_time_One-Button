@@ -307,23 +307,24 @@ void enemy_update()
 
 		if (fever_blue == false)
 		{
-			////ボスリスポーン
-			//if (enemy_boss_timer >= 200)
-			//{
-			//	for (int i = enemy_max; i < ENEMY_NUMBER; i++)
-			//	{
-			//		if (enemy[i].hp <= 0)
-			//		{
-			//			respawn = true;
-			//			enemy_boss_respawn(i);
-			//			enemy_boss_timer = 0;
-			//			break;
-			//		}
-			//	}
-			//}
+			//ボスリスポーン
+			if (enemy_boss_timer >= 200)
+			{
+				for (int i = enemy_max; i < ENEMY_NUMBER; i++)
+				{
+					if (enemy[i].hp <= 0)
+					{
+						respawn = true;
+						enemy_boss_respawn(i);
+						enemy_boss_timer = 0;
+						break;
+					}
+				}
+			}
 			if (respawn == true)
 			{
 				effect_boss_respawn();
+				shake_background(30,5);
 				etimer--;
 			}
 
@@ -397,10 +398,10 @@ int roll_enemy_type_by_difficulty()
 	//NORMAL
 	else if (difficulty == 1)
 	{
-		prob_ball = 0;
-		prob_balloon = 0;
-		prob_rocket = 100;
-		prob_bomb = 0;
+		prob_ball = 25;
+		prob_balloon = 25;
+		prob_rocket = 25;
+		prob_bomb = 25;
 	}
 	//HARD
 	else if (difficulty == 2)
@@ -511,7 +512,7 @@ void enemy_respawn(int i)
 			enemy_sprite[i] = sprEnemyRocket;
 			enemy_setting(i, 160, 40, 80, 20, 1, 1, 0);
 		}
-		else if(enemy[i].type == ENEMY_TYPE_BOMB)
+		else if (enemy[i].type == ENEMY_TYPE_BOMB)
 		{
 			enemy_sprite[i] = sprEnemyCrayon;
 			enemy_setting(i, 64, 160, 32, 80, 1, 1, 0);
@@ -551,6 +552,14 @@ void enemy_boss_respawn(int i)
 		switch (boss_state)
 		{
 		case 0:
+			enemy[i].type = BOSS_TYPE_BEAR;
+			enemy_sprite[i] = sprEnemyBear;
+			enemy_setting(i, 514, 560, 257, 280, 1, 1, 0);
+			boss_state++;
+			break;
+		
+		
+		/*case 0:
 			enemy[i].type = BOSS_TYPE_CRAYON;
 			enemy_sprite[i] = sprEnemyCrayon;
 			enemy_setting(i, 64, 160, 32, 80, 3, 3, 0);
@@ -569,7 +578,7 @@ void enemy_boss_respawn(int i)
 			enemy_sprite[i] = sprEnemyBear;
 			enemy_setting(i, 514, 560, 257, 280, 1, 1, 0);
 			boss_state++;
-			break;
+			break;*/
 		}
 
 		//リスポーン
@@ -577,6 +586,9 @@ void enemy_boss_respawn(int i)
 		{
 			enemy[i].pos.x = SCREEN_W - 200.0f;
 			enemy[i].pos.y = -300.0f;
+			bear_dropping = true;
+			bear_land_wait = 0;
+			bear_vy = 0.0f;
 		}
 		else
 		{
@@ -676,6 +688,7 @@ void enemy_move(int i)
 					bear_vy = 0.0f;
 					bear_dropping = false;
 					bear_land_wait = bear_land_wait_max;
+					shake_background(30, 10);
 
 					//重い着地の潰れ
 					enemy[i].scale = { 1.22f, 0.78f };
@@ -714,7 +727,7 @@ void enemy_move(int i)
 					enemy[i].pos.y = bear_ground_y;
 					bear_vy = 0.0f;
 					bear_land_wait = bear_land_wait_max;
-
+					shake_background(30, 10);
 					enemy[i].scale = { 1.18f, 0.82f };
 				}
 			}
@@ -724,7 +737,7 @@ void enemy_move(int i)
 			if (enemy[i].pos.x <= enemy_border[i])
 			{
 				player_hp -= (enemy[i].attack * 3);
-				shake(50, 50);
+				shake_player(50, 50);
 				enemy_bomb_explosion(i);
 				enemy[i].hp = 0;
 			}
@@ -742,7 +755,7 @@ void enemy_attack_action(int i)
 	else if (enemy_attack_timer[i] == 15)
 	{
 		player_hp -= enemy[i].attack;
-		shake(30, 30);
+		shake_player(30, 30);
 	}
 	else if (enemy_attack_timer[i] > 15 && enemy_attack_timer[i] < 45)
 		enemy[i].pos.x += 1.5f;
@@ -805,6 +818,7 @@ void enemy_bomb_explosion(int i)
 		if (enemy_Vec < 250.0f)
 		{
 			enemy[j].hp -= 15;
+			shake_background(20, 20);
 		}
 	}
 }
@@ -1025,6 +1039,8 @@ void enemy_render()
 			}
 		}
 
+		
+
 		//敵画像
 		sprite_render(
 			enemy_sprite[i],
@@ -1067,13 +1083,45 @@ void enemy_render()
 		{
 			sprite_render(
 				sprDynamite,
-				enemy[i].pos.x, render_y ,
+				enemy[i].pos.x, render_y,
 				1.2f, 1.2f,
 				0, 0,
 				40, 35,
 				20, 17.5,
 				0.0f,
 				enemy[i].color.x, enemy[i].color.y, enemy[i].color.z);
+		}
+		//ロケットの後ろ噴射・流線プリミティブ
+		if (enemy[i].type == ENEMY_TYPE_ROCKET)
+		{
+			float trail_offsets_y[3] = { -10.0f, 0.0f, 10.0f };
+			float trail_speeds[3] = { 14.0f, 20.0f, 12.0f };
+			float trail_lengths[3] = { 36.0f, 52.0f, 30.0f };
+			float trail_heights[3] = { 5.0f, 8.0f, 5.0f };
+
+			for (int t = 0; t < 3; t++)
+			{
+				float cycle = fmodf((float)enemy_anim_timer[i] * trail_speeds[t] + (t * 25.0f), 90.0f);
+				float trail_x = enemy[i].pos.x + 80.0f + cycle;
+				float trail_y = render_y + trail_offsets_y[t];
+				float alpha = 1.0f - (cycle / 90.0f);
+
+				//外側の炎・流線
+				primitive::rect(
+					trail_x, trail_y,
+					trail_lengths[t], trail_heights[t],
+					0.0f, trail_heights[t] * 0.5f,
+					0.0f,
+					1.0f, 0.45f, 0.1f, alpha * 0.85f);
+
+				//内側の明るい芯
+				primitive::rect(
+					trail_x, trail_y,
+					trail_lengths[t] * 0.55f, trail_heights[t] * 0.5f,
+					0.0f, trail_heights[t] * 0.25f,
+					0.0f,
+					1.0f, 0.9f, 0.3f, alpha);
+			}
 		}
 
 		//HP割合
@@ -1153,7 +1201,7 @@ void enemy_render()
 				enemy[i].color.x, enemy[i].color.y, enemy[i].color.z);
 		}
 
-		// HP割合
+		//HP割合
 		enemy_hp_rate[i] = 0.0f;
 		if (enemy_max_hp[i] > 0)
 		{
@@ -1162,7 +1210,7 @@ void enemy_render()
 		if (enemy_hp_rate[i] < 0.0f) enemy_hp_rate[i] = 0.0f;
 		if (enemy_hp_rate[i] > 1.0f) enemy_hp_rate[i] = 1.0f;
 
-		// ボスHPゲージ
+		//ボスHPゲージ
 		float bar_width = 300.0f;
 		enemy_hp_bar_max[i] = bar_width * enemy_hp_rate[i];
 

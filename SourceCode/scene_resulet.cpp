@@ -4,6 +4,7 @@
 #include "effect_scene_change.h"
 #include "enemy.h"
 #include "Hp.h"
+#include <cmath>
 
 int resulet_state = 0;
 int resulet_timer = 0;
@@ -75,11 +76,18 @@ void resulet_render()
 		sprite_render(sprresult, bg_scroll_x + bg_width, 0.0f);
 	}
 
-	sprite_render(
-		sprResult_logo,
-		400, 0,
-		0.8, 0.8
-	);
+	//ƒƒS‚ğã‰º‚É‚Ó‚í‚Ó‚í•`‰æ
+	if (sprResult_logo != nullptr)
+	{
+		float logo_base_y = 20.0f;
+		float logo_float_y = sinf(resulet_timer * 0.06f) * 12.0f;
+
+		sprite_render(
+			sprResult_logo,
+			400.0f, logo_base_y + logo_float_y,
+			0.8f, 0.8f
+		);
+	}
 
 	result_score_render();
 	result_button_render();

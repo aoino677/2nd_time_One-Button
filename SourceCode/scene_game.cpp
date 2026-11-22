@@ -147,7 +147,8 @@ void game_update()
 				EXP_update();
 				hp_update();
 				enemy_update();
-				shake_update();
+				shake_player_update();
+				shake_background_update();
 				effect_danger_update();
 				cursor_main_update();
 				level_up_update();
@@ -182,7 +183,7 @@ void game_update()
 void game_render()
 {
 	// ‰æ–Ê‚ğƒNƒŠƒA‚·‚é
-	GameLib::clear(0.2f, 0.0f, 0.75f);
+	GameLib::clear(0.0f, 0.0f, 0.0f);
 	debug::setString("title_state:%d", time_limit);
 
 	if (countdown_finished())
