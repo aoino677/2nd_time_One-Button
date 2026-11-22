@@ -26,7 +26,7 @@
 #include "result_screen.h"
 #include "effect_scene_change.h"
 #include "effect_count_down.h"
-#include "effect_game_start.h"
+#include "effect_start_game.h"
 
 
 //------< ’è” >----------------------------------------------------------------
@@ -66,7 +66,6 @@ void game_init()
 	efficacy_init();
 	result_screen_init();
 	countdown_init();
-	effect_game_start_init();
 	cursor_main_init();
 	level_up_init();
 
@@ -136,7 +135,6 @@ void game_update()
 				shake_update();
 				effect_danger_update();
 				cursor_main_update();
-				effect_game_start_update();
 				level_up_update();
 			}
 			
@@ -175,7 +173,6 @@ void game_render()
 	GameLib::clear(0.2f, 0.0f, 0.75f);
 	debug::setString("title_state:%d", time_limit);
 
-	effect_game_start_render();
 	if (countdown_finished())
 	{
 		background_render();
@@ -215,7 +212,6 @@ void game_deinit()
 	item_deinit();
 	result_screen_deinit();
 	countdown_deinit();
-	effect_game_start_deinit();
 	cursor_main_deinit();
 	level_up_deinit();
 	hp_deinit();

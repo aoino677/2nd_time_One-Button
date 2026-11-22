@@ -15,9 +15,8 @@ extern int max_hp;
 void hp_init();
 void hp_update();
 void hp_render();
-<<<<<<< HEAD
+
 
 extern int player_hp;
-=======
 void hp_deinit();
->>>>>>> 4201f7e03b25e8b27c669a98c2c476a1ac490436
+
