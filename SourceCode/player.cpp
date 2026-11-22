@@ -100,12 +100,12 @@ void set_vector_Bullet_Y1_AfterImage(Bullet_Y1_AfterImage* image)
 
 void player_init()
 {
-	music::load(SE_BULLET_BANKROLL	, L"Data/Sounds/SE/weapon/bankroll.wav");
-	music::load(SE_BULLET_INGOT		, L"Data/Sounds/SE/weapon/fall.wav");
-	music::load(SE_BULLET_ISSEN		, L"Data/Sounds/SE/weapon/issen.wav");
-	music::load(SE_BULLET_1YEN		, L"Data/Sounds/SE/weapon/rifle.wav");
-	music::load(SE_BULLET_SHELL		, L"Data/Sounds/SE/weapon/shell.wav");
-	music::load(SE_BULLET_SPECIAL	, L"Data/Sounds/SE/explosion.wav");
+	music::load(SE_BULLET_BANKROLL, L"Data/Sounds/SE/weapon/bankroll.wav");
+	music::load(SE_BULLET_INGOT, L"Data/Sounds/SE/weapon/fall.wav");
+	music::load(SE_BULLET_ISSEN, L"Data/Sounds/SE/weapon/issen.wav");
+	music::load(SE_BULLET_1YEN, L"Data/Sounds/SE/weapon/rifle.wav");
+	music::load(SE_BULLET_SHELL, L"Data/Sounds/SE/weapon/shell.wav");
+	music::load(SE_BULLET_SPECIAL, L"Data/Sounds/SE/explosion.wav");
 
 	sprPlayer = sprite_load(L"Data/Images/player.png");
 	sprBullet[Y1] = sprite_load(L"Data/Images/bullet.png");
@@ -150,6 +150,13 @@ void player_deinit()
 		image = nullptr;
 	}
 	y1_after_images.clear();
+
+	music::unload(SE_BULLET_BANKROLL);
+	music::unload(SE_BULLET_INGOT);
+	music::unload(SE_BULLET_ISSEN);
+	music::unload(SE_BULLET_1YEN);
+	music::unload(SE_BULLET_SHELL);
+	music::unload(SE_BULLET_SPECIAL);
 }
 
 #define OLD_SHOT
