@@ -19,6 +19,12 @@ OBJ2D pauseIcon;
 Sprite* sprPauseIcon = nullptr;
 
 //--------------------------------------
+// ポーズボタン
+//--------------------------------------
+OBJ2D pause_sprict;
+Sprite* sprpause_sprict = nullptr;
+
+//--------------------------------------
 // ポーズ画面の特殊演出
 //--------------------------------------
 float pause_effect_y = 0.0f;
@@ -41,6 +47,10 @@ void pause_init()
     //----------------------------------
     sprPauseIcon = sprite_load(L"./Data/Images/pause_button.png");
     //----------------------------------
+    // ポーズボタン画像
+    //----------------------------------
+    sprpause_sprict = sprite_load(L"./Data/Images/pause.png");
+    //----------------------------------
     // ポーズ画面のボタン画像
     //----------------------------------
     sprPauseButton[0] = sprite_load(L"./Data/Images/game_back_sin.png");
@@ -55,6 +65,15 @@ void pause_init()
     pauseIcon.texSize =  { static_cast<float>(PAUSEBUTTON_TEX_W),static_cast<float>(PAUSEBUTTON_TEX_H) };
     pauseIcon.pivot   =  { static_cast<float>(PAUSEBUTTON_PIVOT_X),static_cast<float>(PAUSEBUTTON_PIVOT_Y) };
     pauseIcon.color   =  { 1.0f, 1.0f, 1.0f, 1.0f };
+    //----------------------------------
+    // ポーズボタン
+    //----------------------------------
+    pause_sprict = {};
+    pause_sprict.pos     =  { static_cast<float>(PAUSE_SPRICT_POS_X),static_cast<float>(PAUSE_SPRICT_POS_Y) };
+    pause_sprict.scale   =  { static_cast<float>(PAUSE_SPRICT_SCALE),static_cast<float>(PAUSE_SPRICT_SCALE) };
+    pause_sprict.texSize =  { static_cast<float>(PAUSE_SPRICT_TEX_W),static_cast<float>(PAUSE_SPRICT_TEX_H) };
+    pause_sprict.pivot   =  { static_cast<float>(PAUSE_SPRICT_PIVOT_X),static_cast<float>(PAUSE_SPRICT_PIVOT_Y) };
+    pause_sprict.color   =  { 1.0f, 1.0f, 1.0f, 1.0f };
     //----------------------------------
     // CONTINUE
     //----------------------------------
@@ -265,21 +284,13 @@ void pause_render()
         {
             sprite_render(
                 sprPauseIcon,
-                pauseIcon.pos.x,
-                pauseIcon.pos.y,
-                pauseIcon.scale.x,
-                pauseIcon.scale.y,
-                pauseIcon.texPos.x,
-                pauseIcon.texPos.y,
-                pauseIcon.texSize.x,
-                pauseIcon.texSize.y,
-                pauseIcon.pivot.x,
-                pauseIcon.pivot.y,
+                pauseIcon.pos.x, pauseIcon.pos.y,
+                pauseIcon.scale.x, pauseIcon.scale.y,
+                pauseIcon.texPos.x, pauseIcon.texPos.y,
+                pauseIcon.texSize.x, pauseIcon.texSize.y,
+                pauseIcon.pivot.x, pauseIcon.pivot.y,
                 ToRadian(0.0f),
-                pauseIcon.color.x,
-                pauseIcon.color.y,
-                pauseIcon.color.z,
-                pauseIcon.color.w
+                pauseIcon.color.x, pauseIcon.color.y, pauseIcon.color.z, pauseIcon.color.w
             );
         }
         return;
@@ -294,8 +305,19 @@ void pause_render()
         static_cast<float>(SCREEN_H),
         0.0f, 0.0f,
         0.0f,
-        0.0f, 0.0f, 0.0f,
+        1.00f, 0.78f, 0.55f,
         pause_effect_alpha
+    );
+
+    sprite_render(
+        sprpause_sprict,
+        pause_sprict.pos.x, pause_sprict.pos.y,
+        pause_sprict.scale.x, pause_sprict.scale.y,
+        pause_sprict.texPos.x, pause_sprict.texPos.y,
+        pause_sprict.texSize.x, pause_sprict.texSize.y,
+        pause_sprict.pivot.x, pause_sprict.pivot.y,
+        ToRadian(0.0f),
+        pause_sprict.color.x, pause_sprict.color.y, pause_sprict.color.z, pause_sprict.color.w
     );
 
     //----------------------------------
