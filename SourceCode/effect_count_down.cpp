@@ -1,7 +1,7 @@
 #include "all.h"
 #include "effect_count_down.h"
 
-Sprite* sprcount[4] = { nullptr }; // 3, 2, 1, START の画像
+Sprite* sprcount[4] = { nullptr }; //3, 2, 1, START の画像
 int frame_timer = 0;                 //フレームカウンター
 int start_delay_timer = 0;           //開始前の待機フレームカウンター
 int countdown_state;
@@ -44,6 +44,7 @@ void countdown_update()
 		sprcount[1] = sprite_load(L"./Data/Images/count_2.png");
 		sprcount[2] = sprite_load(L"./Data/Images/count_1.png");
 		sprcount[3] = sprite_load(L"./Data/Images/count_start.png");
+
 
 		start_delay_timer = START_DELAY_FRAMES;
 		countdown_state = 1;

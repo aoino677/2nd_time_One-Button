@@ -5,6 +5,6 @@ void countdown_update();
 void countdown_render();
 void countdown_deinit();
 
-// カウントダウンが終了したかを取得する関数
+//カウントダウンが終了したかを
 bool countdown_finished();
 

@@ -29,7 +29,8 @@
 #include "effect_start_game.h"
 #include "cursor.h"
 
-
+extern int second_timer;
+extern bool result_active;
 
 //------< 定数 >----------------------------------------------------------------
 #define BGM_BATTLE 6
@@ -152,6 +153,12 @@ void game_update()
 				effect_danger_update();
 				cursor_main_update();
 				level_up_update();
+
+				//リザルト演出を開始
+				if (player_hp <= 0 || second_timer <= 0)
+				{
+					result_active = true;
+				}
 			}
 		}
 
@@ -196,7 +203,7 @@ void game_render()
 		item_render();
 		effect_danger_render();
 		time_limit_render();
-		
+
 		cursor_main_render();
 		choice_render();
 		pause_render(); // これ以上下に書かない
