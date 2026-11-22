@@ -42,6 +42,8 @@ void pause_init()
     pause_effect_y = 0.0f;
     pause_effect_alpha = 0.0f;
 
+    music::load(31, L"./Data/Sounds/SE/click1.wav", 1.0f);
+
     //----------------------------------
     // 右下のポーズボタン画像
     //----------------------------------
@@ -133,6 +135,7 @@ void pause_update()
 
             if (TRG(0) & PAD_START)
             {
+                music::play(31, false);
                 pause = true;
 
                 pause_effect_y = static_cast<float>(SCREEN_H);
@@ -231,6 +234,7 @@ void pause_update()
                         // CONTINUE
                         //----------------------------------
                     case 0:
+                        music::play(31, false);
                         pause = false;
                
                         pause_state = 0;
@@ -242,6 +246,7 @@ void pause_update()
                         // RESTART
                         //----------------------------------
                     case 1:
+                        music::play(31, false);
                         game_deinit();
                         game_init();
 
@@ -255,6 +260,7 @@ void pause_update()
                         // TITLE
                         //----------------------------------
                     case 2:
+                        music::play(31, false);
                         nextScene = SCENE_TITLE;
                         break;
                     }
