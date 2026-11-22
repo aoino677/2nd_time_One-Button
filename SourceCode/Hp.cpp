@@ -35,6 +35,8 @@ void hp_update()
 		hp.pivot		= { HP_PIVOT_X ,	 HP_PIVOT_Y };
 		hp.color		= { 1.0f, 1.0f, 1.0f, 1.0f };
 
+		hp_state++;
+
 		//level_up_state++;
 		break;
 	case 2:

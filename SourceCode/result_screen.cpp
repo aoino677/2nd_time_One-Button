@@ -3,12 +3,70 @@
 #include "result_screen.h"
 #include "scene_game.h"
 #include "effect_scene_change.h"
+#include "Hp.h"
+
+extern int second_timer;
+
+namespace
+{
+    enum ResultMode
+    {
+        RESULT_MODE_NONE = 0,
+        RESULT_MODE_GAMEOVER,
+        RESULT_MODE_GAMECLEAR
+    };
+
+    // 落下＆バウンド用の共通計算
+    void update_drop_bounce(float& pos_y, float& speed_y, float stop_y, int& bounce_count, bool& landed)
+    {
+        if (landed)
+        {
+            return;
+        }
+
+        const float gravity = 2.2f;      // 重力加速度
+        const float restitution = 0.45f; // 跳ね返りの強さ
+        const int maxBounces = 2;        // バウンド回数
+
+        speed_y += gravity;
+        pos_y += speed_y;
+
+        if (pos_y >= stop_y)
+        {
+            pos_y = stop_y;
+
+            if (bounce_count < maxBounces)
+            {
+                speed_y = -speed_y * restitution;
+                bounce_count++;
+            }
+            else
+            {
+                speed_y = 0.0f;
+                landed = true;
+            }
+        }
+    }
+}
 
 Sprite* sprResult = nullptr;
+Sprite* sprGameOver = nullptr;
+Sprite* sprGameClear = nullptr;
 
+ResultMode current_mode = RESULT_MODE_NONE;
+
+// 演出タイトル（ゲームオーバー / ゲームクリア）用
+float banner_pos_y = -1080.0f;
+float banner_speed_y = 0.0f;
+int banner_bounce_count = 0;
+bool banner_landed = false;
+int banner_wait_timer = 0;
+
+// リザルト背景用
 float result_pos_y = -1080.0f;
 float result_speed_y = 0.0f;
 float result_stop_y = 0.0f;
+bool result_bg_landed = false;
 
 int result_state = 0;
 extern int result_bounce_count = 0;
@@ -28,12 +86,18 @@ void result_screen_init()
     result_finished = false;
     result_landed = false;
 
-    //リザルト画面を画面外の初期位置に
+    current_mode = RESULT_MODE_NONE;
+
+    banner_pos_y = -1080.0f;
+    banner_speed_y = 0.0f;
+    banner_bounce_count = 0;
+    banner_landed = false;
+    banner_wait_timer = 0;
+
     result_pos_y = -1080.0f;
     result_speed_y = 0.0f;
     result_stop_y = 0.0f;
-
-    
+    result_bg_landed = false;
 
     while (ShowCursor(TRUE) < 0)
     {
@@ -50,24 +114,58 @@ void result_screen_update()
         return;
     }
 
+    // まだモードが決まっていなければ、HP0（ゲームオーバー）か時間切れ（ゲームクリア）かを判定
+    if (current_mode == RESULT_MODE_NONE)
+    {
+        if (player_hp <= 0)
+        {
+            player_hp = 0;
+            current_mode = RESULT_MODE_GAMEOVER;
+            result_state = 0;
+        }
+        else if (second_timer <= 0)
+        {
+            second_timer = 0;
+            current_mode = RESULT_MODE_GAMECLEAR;
+            result_state = 0;
+        }
+    }
+
     switch (result_state)
     {
     case 0:
-        //リザルト画面
+        // 必要な画像を読み込み
         if (sprResult == nullptr)
         {
             sprResult = sprite_load(L"Data/Images/result_back_2.png");
+        }
+        if (current_mode == RESULT_MODE_GAMEOVER && sprGameOver == nullptr)
+        {
+            sprGameOver = sprite_load(L"Data/Images/game_over.png");
+        }
+        if (current_mode == RESULT_MODE_GAMECLEAR && sprGameClear == nullptr)
+        {
+            sprGameClear = sprite_load(L"Data/Images/game_clear.png");
         }
 
         result_state++;
         break;
 
     case 1:
-        //落下・2回バウンドの準備
+        // 1段階目：ゲームオーバー / ゲームクリア演出の準備
+        banner_pos_y = -1080.0f;
+        banner_speed_y = 28.0f;
+        banner_bounce_count = 0;
+        banner_landed = false;
+        banner_wait_timer = 45; // バウンド後に余韻を見せるフレーム数
+
+        // 2段階目：リザルト画面の準備
         result_pos_y = -1080.0f;
         result_speed_y = 28.0f;
         result_stop_y = 0.0f;
         result_bounce_count = 0;
+        result_bg_landed = false;
+
         result_finished = false;
         result_landed = false;
 
@@ -75,37 +173,37 @@ void result_screen_update()
         break;
 
     case 2:
-        //落下＆2回バウンド処理
-        if (!result_landed)
+        // 1段階目：ゲームオーバー / ゲームクリアが降ってくる
+        update_drop_bounce(banner_pos_y, banner_speed_y, 0.0f, banner_bounce_count, banner_landed);
+
+        if (banner_landed)
         {
-            const float gravity = 2.2f;       //重力加速度
-            const float restitution = 0.45f;  //跳ね返りの強さ
-            const int maxBounces = 2;         //バウンドする回数
-
-            result_speed_y += gravity;
-            result_pos_y += result_speed_y;
-
-            //0.0fに到達したら着地・バウンド判定
-            if (result_pos_y >= result_stop_y)
+            if (banner_wait_timer > 0)
             {
-                result_pos_y = result_stop_y;
-
-                if (result_bounce_count < maxBounces)
-                {
-                    //上向きに跳ね返る
-                    result_speed_y = -result_speed_y * restitution;
-                    result_bounce_count++;
-                }
-                else
-                {
-                    //2回バウンドし終えたらピタッと停止
-                    result_speed_y = 0.0f;
-                    result_landed = true;
-                    nextScene = SCENE_RESULT;
-                }
+                banner_wait_timer--;
+            }
+            else
+            {
+                result_state++;
             }
         }
-        
+        break;
+
+    case 3:
+        // 2段階目：リザルト画面が降ってくる
+        update_drop_bounce(result_pos_y, result_speed_y, result_stop_y, result_bounce_count, result_bg_landed);
+
+        if (result_bg_landed)
+        {
+            result_landed = true;
+            result_finished = true;
+            nextScene = SCENE_RESULT;
+            result_state++;
+        }
+        break;
+
+    case 4:
+        // 完了待機
         break;
     }
 }
@@ -119,9 +217,34 @@ void result_screen_render()
     {
         return;
     }
+    
+    // 2. ゲームオーバー / ゲームクリア画像（前面に描画）
+    Sprite* active_banner = nullptr;
+    if (current_mode == RESULT_MODE_GAMEOVER)
+    {
+        active_banner = sprGameOver;
+    }
+    else if (current_mode == RESULT_MODE_GAMECLEAR)
+    {
+        active_banner = sprGameClear;
+    }
 
-    //リザルト画面
-    if (sprResult != nullptr)
+    if (active_banner != nullptr)
+    {
+        sprite_render(
+            active_banner,
+            0.0f, banner_pos_y,
+            1.0f, 1.0f,
+            0.0f, 0.0f,
+            1920.0f, 1080.0f,
+            0.0f, 0.0f,
+            ToRadian(0.0f),
+            1.0f, 1.0f, 1.0f, 1.0f
+        );
+    }
+
+    // 1. リザルト背景（case 3 以降で降下・表示）
+    if (result_state >= 3 && sprResult != nullptr)
     {
         sprite_render(
             sprResult,
@@ -134,8 +257,6 @@ void result_screen_render()
             1.0f, 1.0f, 1.0f, 1.0f
         );
     }
-
-    
 }
 
 //------------------------------------------------------------
@@ -156,9 +277,23 @@ void result_screen_deinit()
         safe_delete(sprResult);
         sprResult = nullptr;
     }
+    if (sprGameOver != nullptr)
+    {
+        safe_delete(sprGameOver);
+        sprGameOver = nullptr;
+    }
+    if (sprGameClear != nullptr)
+    {
+        safe_delete(sprGameClear);
+        sprGameClear = nullptr;
+    }
 
+    current_mode = RESULT_MODE_NONE;
     result_state = 0;
     result_bounce_count = 0;
     result_active = false;
+    result_finished = false;
     result_landed = false;
+    result_bg_landed = false;
+    banner_landed = false;
 }

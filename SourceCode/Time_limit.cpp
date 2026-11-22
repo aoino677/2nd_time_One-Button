@@ -8,7 +8,7 @@ int second_timer;
 void time_limit_init()
 {
     farame_timer = 0;
-    second_timer = 300; // 5•ª
+    second_timer = 2; // 5•ª
 }
 
 void time_limit_update()
