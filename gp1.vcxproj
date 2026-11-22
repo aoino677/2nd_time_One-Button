@@ -143,6 +143,7 @@ attrib +h SourceCode\gp1.log
     <ClInclude Include="SourceCode\player.h" />
     <ClInclude Include="SourceCode\power_efficacy.h" />
     <ClInclude Include="SourceCode\result_button.h" />
+    <ClInclude Include="SourceCode\result_score.h" />
     <ClInclude Include="SourceCode\result_screen.h" />
     <ClInclude Include="SourceCode\scene_game.h" />
     <ClInclude Include="SourceCode\scene_menu.h" />
@@ -197,6 +198,7 @@ attrib +h SourceCode\gp1.log
     <ClCompile Include="SourceCode\player.cpp" />
     <ClCompile Include="SourceCode\power_efficacy.cpp" />
     <ClCompile Include="SourceCode\result_button.cpp" />
+    <ClCompile Include="SourceCode\result_score.cpp" />
     <ClCompile Include="SourceCode\result_screen.cpp" />
     <ClCompile Include="SourceCode\scene_game.cpp" />
     <ClCompile Include="SourceCode\scene_menu.cpp" />

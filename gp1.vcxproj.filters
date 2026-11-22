@@ -195,6 +195,10 @@
     <ClInclude Include="SourceCode\cursor.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+<<<<<<< HEAD
+    <ClInclude Include="SourceCode\result_score.h">
+      <Filter>ヘッダー ファイル</Filter>
+=======
     <ClInclude Include="SourceCode\Bullet_Ingot.h">
       <Filter>ソース ファイル\weapon</Filter>
     </ClInclude>
@@ -209,6 +213,7 @@
     </ClInclude>
     <ClInclude Include="SourceCode\Bullet_Shell.h">
       <Filter>ソース ファイル\weapon</Filter>
+>>>>>>> 4201f7e03b25e8b27c669a98c2c476a1ac490436
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -332,8 +337,26 @@
     <ClCompile Include="SourceCode\effect_count_down.cpp">
       <Filter>ソース ファイル\Effect</Filter>
     </ClCompile>
+<<<<<<< HEAD
+    <ClCompile Include="SourceCode\result_screen.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\result_button.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\menu_button.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\effect_gemestart.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\result_score.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+=======
+>>>>>>> 4201f7e03b25e8b27c669a98c2c476a1ac490436
     <ClCompile Include="SourceCode\effect_game_start.cpp">
-      <Filter>ソース ファイル\Scenes</Filter>
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="SourceCode\cursor.cpp">
       <Filter>ソース ファイル</Filter>

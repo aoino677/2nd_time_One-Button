@@ -16,6 +16,8 @@
 
 
 //------< 変数 >----------------------------------------------------------------
+Sprite* sprTitle;
+
 int title_state = 0;     //状態
 int title_timer = 0;     //タイマー
 
@@ -26,7 +28,6 @@ void title_init()
 {
 	title_state = 0;
 	title_timer = 0;
-	scene_change_init();
 	title_button_init();
 	cursor_init();
 	// ゲーム開始時はWindows標準カーソルを非表示
@@ -43,6 +44,7 @@ void title_update()
 	switch (title_state)
 	{
 	case 0:
+		sprTitle= sprite_load(L"Data/Images/title.png");
 		title_state++;
 		/*fallthrough*/
 	case 1:
@@ -53,11 +55,6 @@ void title_update()
 	case 2:
 		title_button_update();
 		cursor_update();
-		break;
-
-	case 3:
-		//アニメーションを更新し続ける
-		scene_change_update();
 		break;
 	}
 
@@ -72,19 +69,12 @@ void title_render()
 	// 画面をクリアする
 	GameLib::clear(0.2f, 0.2f, 0.2f);
 
-	primitive::rect(
-		0, 0,
-		1920, 1080,
-		0, 0,
-		0,
-		1, 0, 0
+	sprite_render(
+		sprTitle,
+		0, 0
 	);
 
-	font::textOut(1, "GAME", 640, 200);
-	if ((title_timer / 20) % 2 == 0)
-	{
-		font::textOut(1, "PRESS SPACE KEY", 640, 300);
-	}
+	
 
 	title_button_render();
 	scene_change_render();
