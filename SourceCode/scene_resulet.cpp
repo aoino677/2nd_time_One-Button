@@ -30,6 +30,7 @@ void resulet_init()
 	scene_change_init();
 	result_button_init();
 	result_score_init();
+	music::load(EFFECT_MONEY_SE, L"Data/Sounds/SE/money_fall.wav", 1.0f);
 }
 
 void resulet_update()
