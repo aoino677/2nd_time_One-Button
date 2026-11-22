@@ -187,19 +187,19 @@ void result_screen_update()
         update_drop_bounce(banner_pos_y, banner_speed_y, 0.0f, banner_bounce_count, banner_landed);
 
         //文字が出始めた瞬間に1回だけ再生
-        if (!result_bgm_played )
+        
+        
+        music::clear();
+        if (active_mode == RESULT_MODE_GAMEOVER)
         {
-            music::clear();
-            if (active_mode == RESULT_MODE_GAMEOVER)
-            {
-                music::play(RESULT_OVER, false);
-            }
-            else if (active_mode == RESULT_MODE_GAMECLEAR)
-            {
-                music::play(RESULT_CLEAR, false);
-            }
-            result_bgm_played = true;
+            music::play(RESULT_OVER, false);
         }
+        else if (active_mode == RESULT_MODE_GAMECLEAR)
+        {
+            music::play(RESULT_CLEAR, false);
+        }
+        result_bgm_played = true;
+        
 
         if (banner_landed)
         {
