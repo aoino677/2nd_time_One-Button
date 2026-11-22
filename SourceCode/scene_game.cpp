@@ -29,6 +29,7 @@
 #include "effect_game_start.h"
 
 
+
 //------< ’è” >----------------------------------------------------------------
 #define BGM_BATTLE 6
 #define BGM_BATTLE_VOLUME (0.2f)

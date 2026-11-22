@@ -10,10 +10,8 @@ int hp_state;
 
 void hp_init()
 {
-<<<<<<< HEAD
 	player_hp = 100;
 	max_hp = 100;
-=======
 	player_hp = 10;
 	max_hp = 10;
 	hp_state = 0;
@@ -39,19 +37,16 @@ void hp_update()
 
 		//level_up_state++;
 		break;
-	}
->>>>>>> 4201f7e03b25e8b27c669a98c2c476a1ac490436
-}
-
-
-void hp_update()
-{
-	if (player_hp <= 0)
-	{
-		player_hp = 0;
-		result_active = true;
+	case 2:
+		if (player_hp <= 0)
+		{
+			player_hp = 0;
+			result_active = true;
+		}
+		break;
 	}
 }
+
 
 void hp_render()
 {
