@@ -3,6 +3,13 @@
 #pragma once
 #include "all.h"
 
+
+
+#define   RESULT_MODE_NONE 0
+#define   RESULT_MODE_GAMEOVER 1
+#define   RESULT_MODE_GAMECLEAR 2
+
+
 void result_screen_init();
 void result_screen_deinit();
 void result_screen_update();
@@ -17,6 +24,12 @@ bool result_screen_is_finished();
 #define SCREEN_RESULT_H   1080.0f  // 縦幅
 #define SCREEN_SPEED      30.0f   // 落下スピード
 
+#define RESULT_CLEAR 24
+#define RESULT_OVER 25
+
 extern bool result_active;
 extern bool result_finished;
 extern bool result_landed;
+extern bool result_bgm_played;
+extern int current_mode;
+extern int confirmed_result_mode;
