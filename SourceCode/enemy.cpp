@@ -349,7 +349,7 @@ void enemy_update()
 			//ボスリスポーン
 			if (difficulty == 0)
 			{
-				if (enemy_boss_timer >=200)
+				if (enemy_boss_timer >=7200)
 				{
 					for (int i = enemy_max; i < ENEMY_NUMBER; i++)
 					{
@@ -366,7 +366,7 @@ void enemy_update()
 			}
 			if (difficulty == 1 || difficulty == 2)
 			{
-				if (enemy_boss_timer >= 400)
+				if (enemy_boss_timer >= 7200)
 				{
 					for (int i = enemy_max; i < ENEMY_NUMBER; i++)
 					{
@@ -585,8 +585,8 @@ void enemy_powerup()
 	if (enemy_powerup_timer > 3000)
 	{
 		enemy_hp_up += 2.0f;
-		enemy_speed_up += 0.2f;
-		enemy_attack_up += 1;
+		enemy_speed_up += 0.0f;
+		enemy_attack_up += 0;
 		enemy_powerup_timer = 0;
 	}
 }

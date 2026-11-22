@@ -362,7 +362,7 @@ void item_render()
         {
             // éÊìæÉQÅ[ÉW
             primitive::rect(item[i].pos.x - 60, bar_pos_y, ITEM_TIMER, 10, 0, 0, 0, 0, 0, 0, 0.5f);
-            primitive::rect(item[i].pos.x - 60, bar_pos_y, item_timer[i], 10, 0, 0, 0, 0, 0, 0, 1.0f);
+            primitive::rect(item[i].pos.x - 60, bar_pos_y, item_timer[i], 10, 0, 0, 0, 1, 1, 1, 1.0f);
         }
     }
     if (fever_red == true)
@@ -411,5 +411,9 @@ void item_deinit()
         safe_delete(spritem[i]);
     }
     safe_delete(sprRedItem_effect);
-    music::clear();
+    music::unload(ITEM_BLUE_SE1);
+    music::unload(ITEM_BLUE_SE2);
+    music::unload(ITEM_PINK_SE);
+    music::unload(ITEM_RED_SE);
+    music::unload(ITME_GREEN_SE);
 }
