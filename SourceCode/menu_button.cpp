@@ -5,6 +5,7 @@
 #include "cursor_main.h"
 #include "effect_start_game.h"
 #include "tutorial_button.h"
+#include "button_se.h"
 
 //--------------------------------------
 // メニューボタン
@@ -165,6 +166,7 @@ void menu_button_update()
                         menu_wipe_closing = true;
                         scene_wipe_in_start();
                     }
+                    music::play(SE_CLICK, false);
                 }
             }
             else

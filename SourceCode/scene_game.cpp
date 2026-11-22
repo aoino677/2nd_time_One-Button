@@ -232,5 +232,8 @@ void game_deinit()
 	hp_deinit();
 	scene_wipe_deinit();
 
+	music::stop(BGM_BATTLE);
+	music::unload(BGM_BATTLE);
+
 	cursor_deinit();
 }
