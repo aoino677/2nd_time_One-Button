@@ -16,7 +16,5 @@ void hp_init();
 void hp_update();
 void hp_render();
 
-
 extern int player_hp;
 void hp_deinit();
-

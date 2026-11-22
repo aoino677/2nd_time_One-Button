@@ -27,6 +27,8 @@
 #include "effect_scene_change.h"
 #include "effect_count_down.h"
 #include "effect_start_game.h"
+#include "cursor.h"
+
 
 
 //------< 定数 >----------------------------------------------------------------
@@ -68,8 +70,8 @@ void game_init()
 	efficacy_init();
 	result_screen_init();
 	countdown_init();
-	cursor_main_init();
 	level_up_init();
+	cursor_init();
 
 	// カウントダウンが終わるまでは閉じたまま待機
 	scene_wipe_init();
@@ -123,7 +125,7 @@ void game_update()
 		if (result_active)
 		{
 			result_screen_update();
-			cursor_main_update();
+			cursor_update();
 			break;
 		}
 
@@ -164,7 +166,7 @@ void game_update()
 		//========================================
 		if (pause == true || choice_pause == true)
 		{
-			cursor_main_update();
+			cursor_update();
 			choice_update();
 		}
 
@@ -203,7 +205,7 @@ void game_render()
 	result_screen_render();
 	if (pause == true || choice_pause == true)
 	{
-		cursor_main_render();
+		cursor_render();
 	}
 
 	// カウントダウン中は閉じたまま描画し、終了後に左右へ開く
@@ -229,5 +231,9 @@ void game_deinit()
 	cursor_main_deinit();
 	level_up_deinit();
 	hp_deinit();
+<<<<<<< HEAD
 	scene_wipe_deinit();
+=======
+	cursor_deinit();
+>>>>>>> 69ea42706059a554b9355da04ae1f17e1a761c63
 }

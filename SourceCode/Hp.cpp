@@ -29,26 +29,24 @@ void hp_update()
 	case 1:
 		// パラメーターの設定
 		hp = {};
-		hp.pos = { HP_POS_X ,		 HP_POS_Y };
-		hp.scale = { HP_SCALE,		 HP_SCALE };
-		hp.texSize = { HP_TEX_W ,	 HP_TEX_H };
-		hp.pivot = { HP_PIVOT_X ,	 HP_PIVOT_Y };
-		hp.color = { 1.0f, 1.0f, 1.0f, 1.0f };
+		hp.pos		= { HP_POS_X ,		 HP_POS_Y };
+		hp.scale		= { HP_SCALE,		 HP_SCALE };
+		hp.texSize	= { HP_TEX_W ,	 HP_TEX_H };
+		hp.pivot		= { HP_PIVOT_X ,	 HP_PIVOT_Y };
+		hp.color		= { 1.0f, 1.0f, 1.0f, 1.0f };
 
-
-		hp_state++;
 		//level_up_state++;
 		break;
-
 	case 2:
 		if (player_hp <= 0)
 		{
 			player_hp = 0;
 			result_active = true;
 		}
-
+		break;
 	}
 }
+
 
 void hp_render()
 {
