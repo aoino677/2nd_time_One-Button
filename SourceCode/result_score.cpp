@@ -1,4 +1,5 @@
 #include "result_score.h"
+#include "choice.h"
 #include "enemy.h"
 #include "Hp.h"
 
@@ -268,6 +269,9 @@ void result_score_update()
 		sprResultText2 = sprite_load(L"./Data/Images/result_text2.png");
 		sprResultText3 = sprite_load(L"./Data/Images/result_text3.png");
 
+	    
+
+
 		score= score_kill + score_hp * 100;
 		
 		result_score_state++;
@@ -317,7 +321,7 @@ void result_score_update()
 
 			if (pressed)
 			{
-				disp_level = score_level;
+				disp_level = levelup_counter;
 				count_frame_level = COUNT_DURATION;
 				active_item = 3;
 			}
@@ -384,7 +388,7 @@ void result_score_render()
 	//4段目：総合スコア（5桁・少し大きめ）
 	if (active_item >= 3)
 	{
-		draw_number(disp_score, 5, 1020, 680, 2.3f);
+		draw_number(disp_score, 5, 400, 680, 2.3f);
 	}
 
 	//ランク描画（総合スコアが出始めたあとに表示）
@@ -393,7 +397,7 @@ void result_score_render()
 		Sprite* rank_spr = get_rank_sprite(disp_score);
 		if (rank_spr != nullptr)
 		{
-			sprite_render(rank_spr, 1700, 680, 2.3f, 2.3f);
+			sprite_render(rank_spr, 1250, 680, 2.3f, 2.3f);
 		}
 	}
 }
