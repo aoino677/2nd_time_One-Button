@@ -191,6 +191,8 @@ void enemy_deinit()
 	safe_delete(sprWarning);
 	safe_delete(sprBalloon);
 	safe_delete(sprDynamite);
+
+	music::clear();
 }
 
 void enemy_update()
@@ -216,6 +218,10 @@ void enemy_update()
 		sprWarning = sprite_load(L"Data/Images/warning.png");
 		sprBalloon = sprite_load(L"Data/Images/balloon.png");
 		sprDynamite = sprite_load(L"Data/Images/dynamite.png");
+
+		music::load(ENEMY_ATTACK, L"Data/Sounds/SE/enemy_attack.wav");
+		music::load(ENEMY_WARNING, L"Data/Sounds/SE/warning.wav");
+		music::load(ENEMY_EXPLOSION, L"Data/Sounds/SE/explosion.wav");
 
 		enemy_state++;
 		break;
@@ -252,7 +258,11 @@ void enemy_update()
 						tires_move(enemy[i].pos.x, enemy[i].pos.y);
 				}
 				else if (enemy[i].type == ENEMY_TYPE_BOMB)
+				{
 					particles_update(enemy[i].pos.x, enemy[i].pos.y, 15, 1.0f, 0.2f, 0.2f);
+					music::play(ENEMY_EXPLOSION, false);
+				}
+					
 				else if (enemy[i].type == ENEMY_TYPE_CRAYON)
 					particles_update(enemy[i].pos.x, enemy[i].pos.y, 8, 1.0f, 0.0f, 0.0f);
 				else
@@ -337,9 +347,9 @@ void enemy_update()
 		if (fever_blue == false)
 		{
 			//ボスリスポーン
-			if (difficulty == 1)
+			if (difficulty == 0)
 			{
-				if (enemy_boss_timer >= 2500)
+				if (enemy_boss_timer >=200)
 				{
 					for (int i = enemy_max; i < ENEMY_NUMBER; i++)
 					{
@@ -353,9 +363,9 @@ void enemy_update()
 					}
 				}
 			}
-			if (difficulty == 2 || difficulty == 3)
+			if (difficulty == 1 || difficulty == 2)
 			{
-				if (enemy_boss_timer >= 4800)
+				if (enemy_boss_timer >= 400)
 				{
 					for (int i = enemy_max; i < ENEMY_NUMBER; i++)
 					{
@@ -418,7 +428,7 @@ void get_enemy_status_by_difficulty(int type, int& hp, float& speed, int& attack
 		if (type == ENEMY_TYPE_BOMB) { hp = 10;   speed = 1.0f;  attack = 1; }
 		if (type == ENEMY_TYPE_CRAYON) { hp = 1;    speed = 1.0f;  attack = 1; }
 		if (type == ENEMY_TYPE_SOLDIER) { hp = 4;   speed = 2.2f;  attack = 1; }
-		if (type == BOSS_TYPE_CRAYON) { hp = 500;  speed = 12.0f;  attack = 1; }
+		if (type == BOSS_TYPE_CRAYON) { hp = 500;  speed = 2.0f;  attack = 1; }
 		if (type == BOSS_TYPE_CAR) { hp = 600;  speed = 2.5f;  attack = 1; }
 		if (type == BOSS_TYPE_BEAR) { hp = 700;  speed = 13.8f; attack = 1; }
 	}
@@ -676,7 +686,7 @@ void enemy_boss_respawn(int i)
 		//リスポーン
 		if (enemy[i].type == BOSS_TYPE_BEAR)
 		{
-			enemy[i].pos.x = SCREEN_W - 200.0f;
+			enemy[i].pos.x = SCREEN_W - 500.0f;
 			enemy[i].pos.y = -300.0f;
 			bear_dropping = true;
 			bear_land_wait = 0;
@@ -684,7 +694,7 @@ void enemy_boss_respawn(int i)
 		}
 		else
 		{
-			enemy[i].pos.x = SCREEN_W + 200.0f;
+			enemy[i].pos.x = SCREEN_W + 300.0f;
 			enemy[i].pos.y = SCREEN_H * 0.5f;
 		}
 
@@ -713,8 +723,6 @@ void enemy_move(int i)
 			enemy[i].type == ENEMY_TYPE_ROCKET ||
 			enemy[i].type == ENEMY_TYPE_SOLDIER ||
 			enemy[i].type == BOSS_TYPE_CRAYON ||
-			enemy[i].type == BOSS_TYPE_HORSE ||
-			enemy[i].type == BOSS_TYPE_PENCIL ||
 			enemy[i].type == ENEMY_TYPE_CRAYON)
 		{
 			enemy[i].pos.x -= enemy[i].moveSpeed;
@@ -849,6 +857,7 @@ void enemy_attack_action(int i)
 	{
 		player_hp -= enemy[i].attack;
 		shake_player(30, 30);
+		music::play(ENEMY_ATTACK, false);
 	}
 	else if (enemy_attack_timer[i] > 15 && enemy_attack_timer[i] < 45)
 		enemy[i].pos.x += 1.5f;
@@ -945,12 +954,13 @@ void tires_move(float boss_x, float boss_y)
 		}
 
 		tire_particles[i].rot = (float)(rand() % 360);
-		tire_particles[i].rot_speed = (float)(rand() % 40 - 20) * 0.1f; // ぐるぐる高速回転
+		tire_particles[i].rot_speed = (float)(rand() % 40 - 20) * 0.1f; 
 	}
 }
 
 void effect_boss_respawn()
 {
+	music::play(ENEMY_WARNING, false);
 	effect_boss_clear = 1.0f;
 
 	if (etimer >= 0.0f)
