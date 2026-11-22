@@ -400,7 +400,6 @@ void enemy_setting(int i, float a, float b, float x, float y, float n, float m, 
 	float speed = 1.0f;
 	int attack = 1;
 
-	//enemy[i].type が決まったあとに呼ぶ前提で、難易度＆敵タイプから取得
 	get_enemy_status_by_difficulty(enemy[i].type, hp, speed, attack);
 
 	enemy_max_hp[i] = hp + (int)enemy_hp_up;
