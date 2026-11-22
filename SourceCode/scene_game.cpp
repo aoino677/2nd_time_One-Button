@@ -231,9 +231,7 @@ void game_deinit()
 	cursor_main_deinit();
 	level_up_deinit();
 	hp_deinit();
-<<<<<<< HEAD
 	scene_wipe_deinit();
-=======
+
 	cursor_deinit();
->>>>>>> 69ea42706059a554b9355da04ae1f17e1a761c63
 }
