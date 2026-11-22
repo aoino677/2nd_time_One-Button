@@ -191,9 +191,9 @@ void game_render()
 		level_up_render();
 		hp_render();
 		EXP_render();
+		player_render();
 		item_render();
 		enemy_render();
-		player_render();
 		effect_danger_render();
 		time_limit_render();
 		cursor_main_render();
