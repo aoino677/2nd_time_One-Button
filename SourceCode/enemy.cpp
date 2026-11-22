@@ -349,7 +349,7 @@ void enemy_update()
 			//ボスリスポーン
 			if (difficulty == 0)
 			{
-				if (enemy_boss_timer >=7200)
+				if (enemy_boss_timer >=9000)
 				{
 					for (int i = enemy_max; i < ENEMY_NUMBER; i++)
 					{
@@ -364,9 +364,26 @@ void enemy_update()
 					}
 				}
 			}
-			if (difficulty == 1 || difficulty == 2)
+			if (difficulty == 1)
 			{
 				if (enemy_boss_timer >= 7200)
+				{
+					for (int i = enemy_max; i < ENEMY_NUMBER; i++)
+					{
+						if (enemy[i].hp <= 0)
+						{
+							respawn = true;
+							enemy_boss_respawn(i);
+							music::play(ENEMY_WARNING, false);
+							enemy_boss_timer = 0;
+							break;
+						}
+					}
+				}
+			}
+			if (difficulty == 2)
+			{
+				if (enemy_boss_timer >= 5400)
 				{
 					for (int i = enemy_max; i < ENEMY_NUMBER; i++)
 					{
@@ -415,8 +432,8 @@ void get_enemy_status_by_difficulty(int type, int& hp, float& speed, int& attack
 		if (type == ENEMY_TYPE_BOMB) { hp = 2;    speed = 0.8f; attack = 1; }
 		if (type == ENEMY_TYPE_CRAYON) { hp = 2;    speed = 0.8f; attack = 1; }
 		if (type == ENEMY_TYPE_SOLDIER) { hp = 3;   speed = 1.6f; attack = 1; }
-		if (type == BOSS_TYPE_CRAYON) { hp = 300;  speed = 1.5f; attack = 1; }
-		if (type == BOSS_TYPE_CAR) { hp = 400;  speed = 1.8f; attack = 1; }
+		if (type == BOSS_TYPE_CRAYON) { hp = 200;  speed = 1.5f; attack = 1; }
+		if (type == BOSS_TYPE_CAR) { hp = 300;  speed = 1.8f; attack = 1; }
 		if (type == BOSS_TYPE_BEAR) { hp = 450;  speed = 0.6f; attack = 1; }
 	}
 	// NORMAL
@@ -428,9 +445,9 @@ void get_enemy_status_by_difficulty(int type, int& hp, float& speed, int& attack
 		if (type == ENEMY_TYPE_BOMB) { hp = 10;   speed = 1.0f;  attack = 1; }
 		if (type == ENEMY_TYPE_CRAYON) { hp = 1;    speed = 1.0f;  attack = 1; }
 		if (type == ENEMY_TYPE_SOLDIER) { hp = 4;   speed = 2.2f;  attack = 1; }
-		if (type == BOSS_TYPE_CRAYON) { hp = 500;  speed = 2.0f;  attack = 1; }
-		if (type == BOSS_TYPE_CAR) { hp = 600;  speed = 2.5f;  attack = 1; }
-		if (type == BOSS_TYPE_BEAR) { hp = 700;  speed = 13.8f; attack = 1; }
+		if (type == BOSS_TYPE_CRAYON) { hp = 300;  speed = 1.5f;  attack = 1; }
+		if (type == BOSS_TYPE_CAR) { hp = 400;  speed = 1.8f;  attack = 1; }
+		if (type == BOSS_TYPE_BEAR) { hp = 600;  speed = 1.0f; attack = 1; }
 	}
 	// HARD
 	else if (difficulty == 2)
@@ -441,9 +458,9 @@ void get_enemy_status_by_difficulty(int type, int& hp, float& speed, int& attack
 		if (type == ENEMY_TYPE_BOMB) { hp = 5;    speed = 1.4f; attack = 2; }
 		if (type == ENEMY_TYPE_CRAYON) { hp = 5;    speed = 1.4f; attack = 2; }
 		if (type == ENEMY_TYPE_SOLDIER) { hp = 6;   speed = 3.0f; attack = 2; }
-		if (type == BOSS_TYPE_CRAYON) { hp = 800;  speed = 2.5f; attack = 2; }
-		if (type == BOSS_TYPE_CAR) { hp = 900;  speed = 3.0f; attack = 2; }
-		if (type == BOSS_TYPE_BEAR) { hp = 1000; speed = 1.2f; attack = 2; }
+		if (type == BOSS_TYPE_CRAYON) { hp = 400;  speed = 1.8f; attack = 2; }
+		if (type == BOSS_TYPE_CAR) { hp = 500;  speed = 2.0f; attack = 2; }
+		if (type == BOSS_TYPE_BEAR) { hp = 1000; speed = 0.8f; attack = 2; }
 	}
 }
 
@@ -584,7 +601,7 @@ void enemy_powerup()
 {
 	if (enemy_powerup_timer > 3000)
 	{
-		enemy_hp_up += 2.0f;
+		enemy_hp_up += 0.3f;
 		enemy_speed_up += 0.0f;
 		enemy_attack_up += 0;
 		enemy_powerup_timer = 0;
