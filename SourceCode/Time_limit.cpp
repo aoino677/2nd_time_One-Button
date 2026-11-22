@@ -1,5 +1,6 @@
 #include "all.h"
 #include "result_screen.h"
+#include "menu_button.h"
 #include <stdio.h>
 
 int farame_timer;
@@ -8,7 +9,15 @@ int second_timer;
 void time_limit_init()
 {
     farame_timer = 0;
-    second_timer = 300; // 5•ª
+
+    if (difficulty_time == 1)
+    {
+        second_timer = 180; // 3•ª
+    }
+    else
+    {
+        second_timer = 300; // 5•ª
+    }
 }
 
 void time_limit_update()

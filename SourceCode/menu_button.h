@@ -1,5 +1,4 @@
 #pragma once
-
 #include "all.h"
 
 // ポーズボタン
@@ -20,3 +19,5 @@ void menu_button_init();
 void menu_button_deinit();
 void menu_button_update();
 void menu_button_render();
+
+extern int difficulty_time;

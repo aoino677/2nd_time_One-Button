@@ -19,6 +19,7 @@ int menu_button_timer = 0;
 bool menu_wipe_closing = false; // ”à‚ğ•Â‚¶‚ÄƒV[ƒ“‘JˆÚ‘Ò‚¿’†‚©‚Ç‚¤‚©
 
 extern bool gameEnd;
+int difficulty_time;
 
 
 //‰Šú‰»
@@ -27,6 +28,7 @@ void menu_button_init()
     menu_button_state = 0;
     menu_button_timer = 0;
     menu_wipe_closing = false;
+    difficulty_time = 0;
 
     for(int i = 0; i < MENU_BUTTON_COUNT; i++)
     menuButton[i] = {};
@@ -141,8 +143,15 @@ void menu_button_update()
                         is_tutorial = true;
                         tutorial_number = 0;
                     }
-                    else
+                    else if (i == 1)
                     {
+                        difficulty_time = 1; // 3•ª
+                        menu_wipe_closing = true;
+                        scene_wipe_in_start();
+                    }
+                    else if (i == 2 || i == 3)
+                    {
+                        difficulty_time = 2; // 5•ª
                         menu_wipe_closing = true;
                         scene_wipe_in_start();
                     }
