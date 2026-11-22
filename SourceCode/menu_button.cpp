@@ -53,7 +53,7 @@ void menu_button_update()
         {
             menuButton[i] = {};
 
-            menuButton[i].pos = { static_cast<float>(SCREEN_W) * (0.2f + 0.2f * i), static_cast<float>(SCREEN_H) * 0.7f };
+            menuButton[i].pos = { static_cast<float>(SCREEN_W) * (0.2f + 0.2f * i), static_cast<float>(SCREEN_H) * 0.8f };
 
             menuButton[i].scale =
             {
