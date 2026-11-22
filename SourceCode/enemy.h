@@ -20,11 +20,9 @@
 #define BOSS_TYPE_CAR      (8)
 #define BOSS_TYPE_BEAR      (9)
 
-
-#define BOSS_TYPE_ROBOT      (10)
-#define BOSS_TYPE_HORSE      (11)
-#define BOSS_TYPE_PENCIL     (12)
-#define BOSS_TYPE_EXCAVATOR  (13)
+#define ENEMY_ATTACK 16
+#define ENEMY_WARNING 17
+#define ENEMY_EXPLOSION 18
 
 // 描画種別（通常敵 / ボス）
 #define ENEMY                (0)
