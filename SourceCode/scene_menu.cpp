@@ -11,7 +11,6 @@
 #include "menu_button.h"
 #include "effect_scene_change.h"
 #include "effect_start_game.h"
-#include "tutorial_button.h"
 #include "cursor.h"
 //------< 定数 >----------------------------------------------------------------
 
@@ -20,6 +19,9 @@ int menu_state = 0;     //状態
 int menu_timer = 0;     //タイマー
 bool is_effect_cleaned_up = false;
 bool is_wipe_out_cleaned_up = false;
+
+Sprite* spr_menu_background;
+float menu_background_posX;
 
 //--------------------------------------
 //  初期設定
@@ -30,11 +32,13 @@ void menu_init()
 	menu_timer = 0;
 	is_effect_cleaned_up = false;
 	is_wipe_out_cleaned_up = false;
+	menu_background_posX = 0;
 
 	menu_button_init();
 	cursor_init();
-	tutorial_button_init();
 	scene_wipe_init();
+
+	spr_menu_background = sprite_load(L"Data/Images/result_back.png");
 }
 
 //--------------------------------------
@@ -63,13 +67,14 @@ void menu_update()
 		scene_wipe_out_update();
 		menu_button_update();
 		cursor_update();
-		tutorial_button_update();
 
 		if (is_scene_wipe_out_finished() && !is_wipe_out_cleaned_up)
 		{
 			//scene_wipe_deinit();
 			is_wipe_out_cleaned_up = true;
 		}
+		menu_background_posX--;
+		if (menu_background_posX < 0)menu_background_posX = SCREEN_W;
 		break;
 	}
 
@@ -84,17 +89,24 @@ void menu_render()
 	// 画面をクリアする
 	GameLib::clear(0.2f, 0.2f, 0.2f);
 
-	primitive::rect(
-		0, 0,
-		1920, 1080,
-		0, 0,
-		0,
-		0, 1, 0
+	//primitive::rect(
+	//	0, 0,
+	//	1920, 1080,
+	//	0, 0,
+	//	0,
+	//	0, 1, 0
+	//);
+
+	sprite_render(
+		spr_menu_background,
+		menu_background_posX,0
+		);
+
+	sprite_render(
+		spr_menu_background,
+		menu_background_posX - SCREEN_W, 0
 	);
 
-	font::textOut(1, "MENU", 640, 200);
-
-	tutorial_button_render();
 	menu_button_render();
 
 	if (!is_scene_change_finished())
@@ -119,6 +131,5 @@ void menu_deinit()
 {
 	menu_button_deinit();
 	cursor_deinit();
-	tutorial_button_deinit();
 	//scene_wipe_deinit();
 }
