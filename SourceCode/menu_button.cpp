@@ -10,7 +10,8 @@
 #define MENU_BUTTON_COUNT 4
 OBJ2D menuButton[MENU_BUTTON_COUNT];
 
-Sprite* sprmenuButton[MENU_BUTTON_COUNT] = { nullptr };
+Sprite* spr_menuText;
+Sprite* spr_menuButton[MENU_BUTTON_COUNT] = { nullptr };
 
 int menu_button_state = 0;
 int menu_button_timer = 0;
@@ -39,10 +40,12 @@ void menu_button_update()
     {
     case 0:
         //ボタン画像読み込み
-        sprmenuButton[0] = sprite_load(L"./Data/Images/tutorial.png");
-        sprmenuButton[1] = sprite_load(L"./Data/Images/easy.png");
-        sprmenuButton[2] = sprite_load(L"./Data/Images/normal.png");
-        sprmenuButton[3] = sprite_load(L"./Data/Images/hard.png");
+        spr_menuText = sprite_load(L"./Data/Images/mode.png");
+
+        spr_menuButton[0] = sprite_load(L"./Data/Images/tutorial.png");
+        spr_menuButton[1] = sprite_load(L"./Data/Images/easy.png");
+        spr_menuButton[2] = sprite_load(L"./Data/Images/normal.png");
+        spr_menuButton[3] = sprite_load(L"./Data/Images/hard.png");
 
         menu_button_state++;
         break;
@@ -155,15 +158,38 @@ void menu_button_update()
 void menu_button_render()
 {
     //----------------------------------
+    // テキスト
+    //----------------------------------
+    {
+
+        sprite_render(
+            spr_menuText,
+            MENU_TEXT_POS_X,
+            MENU_TEXT_POS_Y,
+            MENU_TEXT_SCALE_X,
+            MENU_TEXT_SCALE_Y,
+            0,
+            0,
+            MENU_TEXT_TEX_W,
+            MENU_TEXT_TEX_H,
+            MENU_TEXT_TEX_W * 0.5f,
+            MENU_TEXT_TEX_H * 0.5f,
+            ToRadian(0),
+            1,
+            1,
+            1,
+            1
+        );
+    }
+    //----------------------------------
     // ゲームスタートボタン
     //----------------------------------
-
     for (int i = 0; i < MENU_BUTTON_COUNT; i++)
     {
-        if (sprmenuButton[i] != nullptr)
+        if (spr_menuButton[i] != nullptr)
         {
             sprite_render(
-                sprmenuButton[i],
+                spr_menuButton[i],
                 menuButton[i].pos.x,
                 menuButton[i].pos.y,
                 menuButton[i].scale.x,
@@ -197,7 +223,7 @@ void menu_button_deinit()
 {
     for (int i = 0; i < MENU_BUTTON_COUNT; i++)
     {
-        safe_delete(sprmenuButton[i]);
+        safe_delete(spr_menuButton[i]);
     }
 
     menu_button_state = 0;

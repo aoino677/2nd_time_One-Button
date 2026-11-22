@@ -107,8 +107,6 @@ void menu_render()
 		menu_background_posX - SCREEN_W, 0
 	);
 
-	font::textOut(1, "MENU", 640, 200);
-
 	menu_button_render();
 
 	if (!is_scene_change_finished())

@@ -9,6 +9,12 @@
 #define MENU_BUTTON_PIVOT_Y      (600)     // スタートボタンの縦方向の下端
 #define MENU_BUTTON_SCALE        (0.8f)       // スタートボタンのスケール
 
+#define MENU_TEXT_POS_X (SCREEN_W * 0.5f)
+#define MENU_TEXT_POS_Y (SCREEN_H * 0.2f)
+#define MENU_TEXT_SCALE_X (0.5f)
+#define MENU_TEXT_SCALE_Y (0.5f)
+#define MENU_TEXT_TEX_W (1500)
+#define MENU_TEXT_TEX_H  (200)
 
 void menu_button_init();
 void menu_button_deinit();
