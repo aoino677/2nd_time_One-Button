@@ -7,24 +7,12 @@
 
 extern int second_timer;
 
-
-
-enum ResultMode
-{
-    RESULT_MODE_NONE = 0,
-    RESULT_MODE_GAMEOVER,
-    RESULT_MODE_GAMECLEAR
-};
-
-
-    
-
-
 Sprite* sprResult = nullptr;
 Sprite* sprGameOver = nullptr;
 Sprite* sprGameClear = nullptr;
 
-ResultMode current_mode = RESULT_MODE_NONE;
+int current_mode = RESULT_MODE_NONE;
+int confirmed_result_mode = RESULT_MODE_NONE;
 
 //ゲームオーバー / ゲームクリア用
 float banner_pos_y = -1080.0f;
@@ -40,11 +28,15 @@ float result_stop_y = 0.0f;
 bool result_bg_landed = false;
 
 int result_state = 0;
-extern int result_bounce_count = 0;
+int result_bounce_count = 0;
 
-extern bool result_active = false;
-extern bool result_finished = false;
-extern bool result_landed = false;
+bool result_active = false;
+bool result_finished = false;
+bool result_landed = false;
+
+//BGM再生制御用
+bool result_bgm_loaded = false;
+bool result_bgm_played = false;
 
 //------------------------------------------------------------
 // 初期化
@@ -58,6 +50,7 @@ void result_screen_init()
     result_landed = false;
 
     current_mode = RESULT_MODE_NONE;
+    confirmed_result_mode = RESULT_MODE_NONE;
 
     banner_pos_y = -1080.0f;
     banner_speed_y = 0.0f;
@@ -70,8 +63,12 @@ void result_screen_init()
     result_stop_y = 0.0f;
     result_bg_landed = false;
 
-    while (ShowCursor(TRUE) < 0)
+    result_bgm_loaded = false;
+    result_bgm_played = false;
+
+    if (ShowCursor(TRUE) < 0)
     {
+        ShowCursor(TRUE);
     }
 }
 
@@ -117,22 +114,26 @@ void result_screen_update()
         return;
     }
 
-    //ゲームオーバーゲームクリアかを判定
-    if (current_mode == RESULT_MODE_NONE)
+    //ゲームオーバーかゲームクリアかを判定して確定値を保存
+    if (confirmed_result_mode == RESULT_MODE_NONE)
     {
         if (player_hp <= 0)
         {
             player_hp = 0;
             current_mode = RESULT_MODE_GAMEOVER;
+            confirmed_result_mode = RESULT_MODE_GAMEOVER;
             result_state = 0;
         }
         else if (second_timer <= 0)
         {
             second_timer = 0;
             current_mode = RESULT_MODE_GAMECLEAR;
+            confirmed_result_mode = RESULT_MODE_GAMECLEAR;
             result_state = 0;
         }
     }
+
+    int active_mode = (current_mode != RESULT_MODE_NONE) ? current_mode : confirmed_result_mode;
 
     switch (result_state)
     {
@@ -141,13 +142,20 @@ void result_screen_update()
         {
             sprResult = sprite_load(L"Data/Images/result_back_2.png");
         }
-        if (current_mode == RESULT_MODE_GAMEOVER && sprGameOver == nullptr)
+        if (active_mode == RESULT_MODE_GAMEOVER && sprGameOver == nullptr)
         {
             sprGameOver = sprite_load(L"Data/Images/game_over.png");
         }
-        if (current_mode == RESULT_MODE_GAMECLEAR && sprGameClear == nullptr)
+        if (active_mode == RESULT_MODE_GAMECLEAR && sprGameClear == nullptr)
         {
             sprGameClear = sprite_load(L"Data/Images/game_clear.png");
+        }
+
+        if (!result_bgm_loaded)
+        {
+            music::load(RESULT_CLEAR, L"Data/Sounds/BGM/result_clear2.wav");
+            music::load(RESULT_OVER, L"Data/Sounds/BGM/result_gameover2.wav");
+            result_bgm_loaded = true;
         }
 
         result_state++;
@@ -177,6 +185,21 @@ void result_screen_update()
     case 2:
         //ゲームオーバー / ゲームクリアが降ってくる
         update_drop_bounce(banner_pos_y, banner_speed_y, 0.0f, banner_bounce_count, banner_landed);
+
+        //文字が出た瞬間に1回だけ再生
+        if (!result_bgm_played && banner_pos_y > -1080.0f && active_mode != RESULT_MODE_NONE)
+        {
+            music::clear();
+            if (active_mode == RESULT_MODE_GAMEOVER)
+            {
+                music::play(RESULT_OVER, true);
+            }
+            else if (active_mode == RESULT_MODE_GAMECLEAR)
+            {
+                music::play(RESULT_CLEAR, true);
+            }
+            result_bgm_played = true;
+        }
 
         if (banner_landed)
         {
@@ -219,14 +242,16 @@ void result_screen_render()
     {
         return;
     }
-    
+
+    int active_mode = (current_mode != RESULT_MODE_NONE) ? current_mode : confirmed_result_mode;
+
     //ゲームオーバー / ゲームクリア画像
     Sprite* active_banner = nullptr;
-    if (current_mode == RESULT_MODE_GAMEOVER)
+    if (active_mode == RESULT_MODE_GAMEOVER)
     {
         active_banner = sprGameOver;
     }
-    else if (current_mode == RESULT_MODE_GAMECLEAR)
+    else if (active_mode == RESULT_MODE_GAMECLEAR)
     {
         active_banner = sprGameClear;
     }
@@ -298,4 +323,5 @@ void result_screen_deinit()
     result_landed = false;
     result_bg_landed = false;
     banner_landed = false;
+    result_bgm_played = false;
 }
