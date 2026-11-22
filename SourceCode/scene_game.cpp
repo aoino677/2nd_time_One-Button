@@ -33,9 +33,7 @@ extern int second_timer;
 extern bool result_active;
 
 //------< íËêî >----------------------------------------------------------------
-#define BGM_BATTLE 6
-#define BGM_BATTLE_VOLUME (0.2f)
-#define BGM_BOSS 7
+
 
 //------< ïœêî >----------------------------------------------------------------
 int game_state = 0;         //èÛë‘
@@ -83,11 +81,11 @@ void game_init()
 	{
 	}
 
-	music::load(BGM_BATTLE, L"Data/Sounds/BGM/game_normal3.wav");
+	music::load(BGM_BATTLE, L"Data/Sounds/BGM/game_normal3.wav", BGM_BATTLE_VOLUME);
 	music::load(BGM_BOSS, L"Data/Sounds/BGM/game_boss2.wav");
 
 	music::play(BGM_BATTLE, true);
-	music::setVolume(BGM_BATTLE, BGM_BATTLE_VOLUME);
+	
 }
 
 //--------------------------------------

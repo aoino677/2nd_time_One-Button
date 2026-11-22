@@ -409,41 +409,41 @@ void get_enemy_status_by_difficulty(int type, int& hp, float& speed, int& attack
 	// EASY
 	if (difficulty == 0)
 	{
-		if (type == ENEMY_TYPE_BOLL) { hp = 2;    speed = 3.8f; attack = 1; }
+		if (type == ENEMY_TYPE_BOLL) { hp = 1;    speed = 3.8f; attack = 1; }
 		if (type == ENEMY_TYPE_BALLOON) { hp = 1;    speed = 1.5f; attack = 1; }
 		if (type == ENEMY_TYPE_ROCKET) { hp = 1;    speed = 2.2f; attack = 1; }
-		if (type == ENEMY_TYPE_BOMB) { hp = 2;    speed = 0.8f; attack = 1; }
+		if (type == ENEMY_TYPE_BOMB) { hp = 3;    speed = 0.8f; attack = 1; }
 		if (type == ENEMY_TYPE_CRAYON) { hp = 2;    speed = 0.8f; attack = 1; }
 		if (type == ENEMY_TYPE_SOLDIER) { hp = 3;   speed = 1.6f; attack = 1; }
 		if (type == BOSS_TYPE_CRAYON) { hp = 300;  speed = 1.5f; attack = 1; }
-		if (type == BOSS_TYPE_CAR) { hp = 400;  speed = 1.8f; attack = 1; }
+		if (type == BOSS_TYPE_CAR) { hp = 400;  speed = 1.3f; attack = 1; }
 		if (type == BOSS_TYPE_BEAR) { hp = 450;  speed = 0.6f; attack = 1; }
 	}
 	// NORMAL
 	else if (difficulty == 1)
 	{
-		if (type == ENEMY_TYPE_BOLL) { hp = 1;    speed = 10.0f; attack = 1; }
+		if (type == ENEMY_TYPE_BOLL) { hp = 2;    speed = 5.0f; attack = 1; }
 		if (type == ENEMY_TYPE_BALLOON) { hp = 1;    speed = 2.0f;  attack = 1; }
-		if (type == ENEMY_TYPE_ROCKET) { hp = 1;    speed = 3.0f;  attack = 1; }
-		if (type == ENEMY_TYPE_BOMB) { hp = 10;   speed = 1.0f;  attack = 1; }
-		if (type == ENEMY_TYPE_CRAYON) { hp = 1;    speed = 1.0f;  attack = 1; }
-		if (type == ENEMY_TYPE_SOLDIER) { hp = 4;   speed = 2.2f;  attack = 1; }
-		if (type == BOSS_TYPE_CRAYON) { hp = 500;  speed = 2.0f;  attack = 1; }
-		if (type == BOSS_TYPE_CAR) { hp = 600;  speed = 2.5f;  attack = 1; }
-		if (type == BOSS_TYPE_BEAR) { hp = 700;  speed = 13.8f; attack = 1; }
+		if (type == ENEMY_TYPE_ROCKET) { hp = 2;    speed = 3.0f;  attack = 1; }
+		if (type == ENEMY_TYPE_BOMB) { hp = 7;   speed = 1.0f;  attack = 1; }
+		if (type == ENEMY_TYPE_CRAYON) { hp = 3;    speed = 1.0f;  attack = 1; }
+		if (type == ENEMY_TYPE_SOLDIER) { hp = 5;   speed = 2.2f;  attack = 1; }
+		if (type == BOSS_TYPE_CRAYON) { hp = 500;  speed = 1.0f;  attack = 1; }
+		if (type == BOSS_TYPE_CAR) { hp = 300;  speed = 1.5f;  attack = 1; }
+		if (type == BOSS_TYPE_BEAR) { hp = 700;  speed = 0.6f; attack = 1; }
 	}
 	// HARD
 	else if (difficulty == 2)
 	{
-		if (type == ENEMY_TYPE_BOLL) { hp = 5;    speed = 6.5f; attack = 2; }
+		if (type == ENEMY_TYPE_BOLL) { hp = 2;    speed = 6.5f; attack = 2; }
 		if (type == ENEMY_TYPE_BALLOON) { hp = 2;    speed = 2.8f; attack = 1; }
-		if (type == ENEMY_TYPE_ROCKET) { hp = 2;    speed = 4.2f; attack = 2; }
-		if (type == ENEMY_TYPE_BOMB) { hp = 5;    speed = 1.4f; attack = 2; }
-		if (type == ENEMY_TYPE_CRAYON) { hp = 5;    speed = 1.4f; attack = 2; }
-		if (type == ENEMY_TYPE_SOLDIER) { hp = 6;   speed = 3.0f; attack = 2; }
-		if (type == BOSS_TYPE_CRAYON) { hp = 800;  speed = 2.5f; attack = 2; }
-		if (type == BOSS_TYPE_CAR) { hp = 900;  speed = 3.0f; attack = 2; }
-		if (type == BOSS_TYPE_BEAR) { hp = 1000; speed = 1.2f; attack = 2; }
+		if (type == ENEMY_TYPE_ROCKET) { hp = 3;    speed = 3.5f; attack = 2; }
+		if (type == ENEMY_TYPE_BOMB) { hp = 10;    speed = 1.1f; attack = 2; }
+		if (type == ENEMY_TYPE_CRAYON) { hp = 4;    speed = 1.0f; attack = 2; }
+		if (type == ENEMY_TYPE_SOLDIER) { hp = 7;   speed = 2.4f; attack = 2; }
+		if (type == BOSS_TYPE_CRAYON) { hp = 700;  speed = 1.0f; attack = 2; }
+		if (type == BOSS_TYPE_CAR) { hp = 500;  speed = 1.7f; attack = 2; }
+		if (type == BOSS_TYPE_BEAR) { hp = 1000; speed = 0.6f; attack = 2; }
 	}
 }
 
