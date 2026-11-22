@@ -10,15 +10,17 @@
 
 // “Gƒ^ƒCƒv
 #define ENEMY_TYPE_NONE      (0)
-#define ENEMY_TYPE_BOLL      (1)
-#define ENEMY_TYPE_BALLOON   (2)
-#define ENEMY_TYPE_ROCKET    (3)
-#define ENEMY_TYPE_BOMB      (4)
-#define ENEMY_TYPE_CRAYON    (5)
-#define BOSS_TYPE_BEAR       (6)
-#define BOSS_TYPE_CRAYON     (7)
-#define ENEMY_TYPE_SOLDIER    8
-#define BOSS_TYPE_CAR        (9)
+#define ENEMY_TYPE_CRAYON    (1)
+#define ENEMY_TYPE_BOLL      (2)
+#define ENEMY_TYPE_BALLOON   (3)
+#define ENEMY_TYPE_ROCKET    (4)
+#define ENEMY_TYPE_BOMB      (5)
+#define ENEMY_TYPE_SOLDIER   (6)
+#define BOSS_TYPE_CRAYON    (7)
+#define BOSS_TYPE_CAR      (8)
+#define BOSS_TYPE_BEAR      (9)
+
+
 #define BOSS_TYPE_ROBOT      (10)
 #define BOSS_TYPE_HORSE      (11)
 #define BOSS_TYPE_PENCIL     (12)
