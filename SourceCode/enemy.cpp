@@ -10,6 +10,10 @@
 #include <cstdlib>
 #include <cmath>
 
+#ifndef ENEMY_TYPE_SOLDIER
+#define ENEMY_TYPE_SOLDIER (ENEMY_TYPE_BALLOON + 10)
+#endif
+
 //enemy構造体
 OBJ2D enemy[ENEMY_NUMBER];
 
@@ -21,10 +25,14 @@ int difficulty = 1;
 //敵画像
 Sprite* enemy_sprite[ENEMY_NUMBER];
 Sprite* sprEnemyCrayon;                      //クレヨン画像
+Sprite* sprEnemyCrayon_over;                 //クレヨン重ね画像
 Sprite* sprEnemyBall;                        //ボール画像
 Sprite* sprEnemyRocket;                      //ロケット画像
 Sprite* sprEnemyCar;                         //カー画像
 Sprite* sprEnemyBear;                        //クマ画像
+Sprite* sprEnemySoldierL;                    //兵隊画像（歩み1）
+Sprite* sprEnemySoldierR;                    //兵隊画像（歩み2）
+
 
 //敵サブ画像
 Sprite* sprBalloon;
@@ -56,6 +64,11 @@ bool enemy_half_knockback_done[ENEMY_NUMBER]; //HP半分以下のノックバッ
 int enemy_prev_hp[ENEMY_NUMBER];              //ダメージ検知用の前回HP記憶配列
 float hit_buck;                               //ノックバックをプラスする数値
 
+//クレヨンランダム色（赤・青・黄）
+float crayon_color_r[ENEMY_NUMBER];
+float crayon_color_g[ENEMY_NUMBER];
+float crayon_color_b[ENEMY_NUMBER];
+
 //強化類
 float enemy_hp_up;               //HP増加量
 float enemy_speed_up;            //スピード増加量
@@ -69,6 +82,8 @@ float enemy_hp_rate[ENEMY_NUMBER];     //HP割合
 //エネミー情報
 int enemy_kill_count;
 int enemy_max;                         //最大リスポーン数
+int boss_count;
+int boss_max;
 int enemy_type_render[ENEMY_NUMBER];   //敵タイプ描画
 float enemy_border[ENEMY_NUMBER];      //最大移動値
 float enemy_target_y[ENEMY_NUMBER];    //着地地点
@@ -83,6 +98,7 @@ int prob_ball;
 int prob_balloon;
 int prob_rocket;
 int prob_bomb;
+int prob_soldier;
 
 
 //仮変数
@@ -108,6 +124,8 @@ bool bear_dropping = true;             //上から降下中かどうか
 
 
 
+
+
 //エネミー初期化
 void enemy_init()
 {
@@ -121,6 +139,8 @@ void enemy_init()
 	enemy_boss_timer = 0;
 	crayon_spawn_timer = 0;
 	enemy_max = 3;
+	boss_count = 0;
+	boss_max = 6;
 
 	enemy_hp_up = 0.0f;
 	enemy_speed_up = 0.0f;
@@ -140,6 +160,9 @@ void enemy_init()
 		enemy_knockback_timer[i] = 0;
 		enemy_half_knockback_done[i] = false;
 		enemy_prev_hp[i] = 0;
+		crayon_color_r[i] = 1.0f;
+		crayon_color_g[i] = 1.0f;
+		crayon_color_b[i] = 1.0f;
 		enemy[i].type = ENEMY_TYPE_NONE;
 		enemy[i].pos = { 0.0f, 0.0f };
 	}
@@ -153,11 +176,14 @@ void enemy_init()
 void enemy_deinit()
 {
 	safe_delete(sprEnemyCrayon);
+	safe_delete(sprEnemyCrayon_over);
 	safe_delete(sprEnemyBall);
 	safe_delete(sprShadow);
 	safe_delete(sprEnemyRocket);
 	safe_delete(sprEnemyCar);
 	safe_delete(sprEnemyBear);
+	safe_delete(sprEnemySoldierL);
+	safe_delete(sprEnemySoldierR);
 	safe_delete(sprTirefront);
 	safe_delete(sprTireback);
 	safe_delete(sprEnemy_hp);
@@ -173,10 +199,13 @@ void enemy_update()
 	{
 	case 0:
 		sprEnemyCrayon = sprite_load(L"Data/Images/crayon.png");
+		sprEnemyCrayon_over = sprite_load(L"Data/Images/crayon_over.png");
 		sprEnemyBall = sprite_load(L"Data/Images/ball.png");
 		sprEnemyRocket = sprite_load(L"Data/Images/rocket.png");
 		sprEnemyCar = sprite_load(L"Data/Images/car.png");
 		sprEnemyBear = sprite_load(L"Data/Images/bear.png");
+		sprEnemySoldierL = sprite_load(L"Data/Images/soldierL.png");
+		sprEnemySoldierR = sprite_load(L"Data/Images/soldierR.png");
 
 		sprShadow = sprite_load(L"Data/Images/ball_shadow.png");
 
@@ -308,7 +337,7 @@ void enemy_update()
 		if (fever_blue == false)
 		{
 			//ボスリスポーン
-			if (enemy_boss_timer >= 200)
+			if (enemy_boss_timer >= 3000)
 			{
 				for (int i = enemy_max; i < ENEMY_NUMBER; i++)
 				{
@@ -323,9 +352,14 @@ void enemy_update()
 			}
 			if (respawn == true)
 			{
-				effect_boss_respawn();
-				shake_background(30,5);
-				etimer--;
+				if (boss_count < boss_max)
+				{
+					effect_boss_respawn();
+					shake_background(30, 5);
+					etimer--;
+					boss_count++;
+				}
+				
 			}
 
 			//クレヨンリスポーン
@@ -353,7 +387,8 @@ void get_enemy_status_by_difficulty(int type, int& hp, float& speed, int& attack
 		if (type == ENEMY_TYPE_BALLOON) { hp = 1;    speed = 1.5f; attack = 1; }
 		if (type == ENEMY_TYPE_ROCKET) { hp = 1;    speed = 2.2f; attack = 1; }
 		if (type == ENEMY_TYPE_BOMB) { hp = 2;    speed = 0.8f; attack = 1; }
-		if (type == ENEMY_TYPE_CRAYON) { hp = 2;    speed = 0.8f; attack = 1; }
+		if (type == ENEMY_TYPE_CRAYON) { hp = 1;    speed = 0.8f; attack = 1; }
+		if (type == ENEMY_TYPE_SOLDIER) { hp = 3;   speed = 1.6f; attack = 1; }
 		if (type == BOSS_TYPE_CRAYON) { hp = 300;  speed = 1.5f; attack = 1; }
 		if (type == BOSS_TYPE_CAR) { hp = 400;  speed = 1.8f; attack = 1; }
 		if (type == BOSS_TYPE_BEAR) { hp = 450;  speed = 0.6f; attack = 1; }
@@ -365,7 +400,8 @@ void get_enemy_status_by_difficulty(int type, int& hp, float& speed, int& attack
 		if (type == ENEMY_TYPE_BALLOON) { hp = 1;    speed = 2.0f;  attack = 1; }
 		if (type == ENEMY_TYPE_ROCKET) { hp = 1;    speed = 3.0f;  attack = 1; }
 		if (type == ENEMY_TYPE_BOMB) { hp = 10;   speed = 1.0f;  attack = 1; }
-		if (type == ENEMY_TYPE_CRAYON) { hp = 1;    speed = 1.0f;  attack = 1; }
+		if (type == ENEMY_TYPE_CRAYON) { hp = 300;    speed = 1.0f;  attack = 1; }
+		if (type == ENEMY_TYPE_SOLDIER) { hp = 4;   speed = 2.2f;  attack = 1; }
 		if (type == BOSS_TYPE_CRAYON) { hp = 500;  speed = 12.0f;  attack = 1; }
 		if (type == BOSS_TYPE_CAR) { hp = 600;  speed = 2.5f;  attack = 1; }
 		if (type == BOSS_TYPE_BEAR) { hp = 700;  speed = 13.8f; attack = 1; }
@@ -378,6 +414,7 @@ void get_enemy_status_by_difficulty(int type, int& hp, float& speed, int& attack
 		if (type == ENEMY_TYPE_ROCKET) { hp = 2;    speed = 4.2f; attack = 2; }
 		if (type == ENEMY_TYPE_BOMB) { hp = 5;    speed = 1.4f; attack = 2; }
 		if (type == ENEMY_TYPE_CRAYON) { hp = 5;    speed = 1.4f; attack = 2; }
+		if (type == ENEMY_TYPE_SOLDIER) { hp = 6;   speed = 3.0f; attack = 2; }
 		if (type == BOSS_TYPE_CRAYON) { hp = 800;  speed = 2.5f; attack = 2; }
 		if (type == BOSS_TYPE_CAR) { hp = 900;  speed = 3.0f; attack = 2; }
 		if (type == BOSS_TYPE_BEAR) { hp = 1000; speed = 1.2f; attack = 2; }
@@ -390,33 +427,37 @@ int roll_enemy_type_by_difficulty()
 	//EASY
 	if (difficulty == 0)
 	{
-		prob_ball = 40;
-		prob_balloon = 30;
+		prob_ball = 30;
+		prob_balloon = 25;
 		prob_rocket = 20;
 		prob_bomb = 10;
+		prob_soldier = 15;
 	}
 	//NORMAL
 	else if (difficulty == 1)
 	{
-		prob_ball = 25;
-		prob_balloon = 25;
-		prob_rocket = 25;
-		prob_bomb = 25;
+		prob_ball = 20;
+		prob_balloon = 20;
+		prob_rocket = 20;
+		prob_bomb = 20;
+		prob_soldier = 20;
 	}
 	//HARD
 	else if (difficulty == 2)
 	{
-		prob_ball = 20;
-		prob_balloon = 20;
-		prob_rocket = 30;
-		prob_bomb = 30;
+		prob_ball = 15;
+		prob_balloon = 15;
+		prob_rocket = 25;
+		prob_bomb = 25;
+		prob_soldier = 20;
 	}
 
 	int r = rand() % 100;
-	if (r < prob_ball)                                return ENEMY_TYPE_BOLL;
-	if (r < prob_ball + prob_balloon)                 return ENEMY_TYPE_BALLOON;
-	if (r < prob_ball + prob_balloon + prob_rocket)   return ENEMY_TYPE_ROCKET;
-	return ENEMY_TYPE_BOMB;
+	if (r < prob_ball)                                                return ENEMY_TYPE_BOLL;
+	if (r < prob_ball + prob_balloon)                                 return ENEMY_TYPE_BALLOON;
+	if (r < prob_ball + prob_balloon + prob_rocket)                   return ENEMY_TYPE_ROCKET;
+	if (r < prob_ball + prob_balloon + prob_rocket + prob_bomb)       return ENEMY_TYPE_BOMB;
+	return ENEMY_TYPE_SOLDIER;
 }
 
 
@@ -464,13 +505,10 @@ void enemy_crayon_respawn()
 
 				enemy[idx].type = is_bomb ? ENEMY_TYPE_BOMB : ENEMY_TYPE_CRAYON;
 				enemy_sprite[idx] = sprEnemyCrayon;
+				set_random_crayon_color(idx);
 				enemy_setting(i, 64, 160, 32, 80, 1, 1, 0);
 
-				if (is_bomb)
-					enemy[idx].color = { 1.0f, 0.3f, 0.3f, 1.0f };
-				else
-					enemy[idx].color = { 1.0f, 1.0f, 1.0f, 1.0f };
-
+				enemy[idx].color = { 1.0f, 1.0f, 1.0f, 1.0f };
 				enemy_type_render[idx] = ENEMY;
 
 				enemy[idx].pos.x = SCREEN_W + 180.0f - (spawned_count * 20.0f);
@@ -485,6 +523,45 @@ void enemy_crayon_respawn()
 				}
 			}
 		}
+	}
+}
+
+//クレヨン本体色を赤・青・黄からランダム決定
+void set_random_crayon_color(int idx)
+{
+	int c = rand() % 3;
+	if (c == 0)
+	{
+		// 赤
+		crayon_color_r[idx] = 1.0f;
+		crayon_color_g[idx] = 0.2f;
+		crayon_color_b[idx] = 0.2f;
+	}
+	else if (c == 1)
+	{
+		// 青
+		crayon_color_r[idx] = 0.2f;
+		crayon_color_g[idx] = 0.55f;
+		crayon_color_b[idx] = 1.0f;
+	}
+	else
+	{
+		// 黄
+		crayon_color_r[idx] = 1.0f;
+		crayon_color_g[idx] = 0.9f;
+		crayon_color_b[idx] = 0.2f;
+	}
+}
+
+//パワーアップ
+void enemy_powerup()
+{
+	if (enemy_powerup_timer > 3000)
+	{
+		enemy_hp_up += 2.0f;
+		enemy_speed_up += 0.2f;
+		enemy_attack_up += 1;
+		enemy_powerup_timer = 0;
 	}
 }
 
@@ -505,6 +582,7 @@ void enemy_respawn(int i)
 		else if (enemy[i].type == ENEMY_TYPE_BALLOON)
 		{
 			enemy_sprite[i] = sprEnemyCrayon;
+			set_random_crayon_color(i);
 			enemy_setting(i, 64, 160, 32, 80, 1, 1, 0);
 		}
 		else if (enemy[i].type == ENEMY_TYPE_ROCKET)
@@ -515,7 +593,13 @@ void enemy_respawn(int i)
 		else if (enemy[i].type == ENEMY_TYPE_BOMB)
 		{
 			enemy_sprite[i] = sprEnemyCrayon;
+			set_random_crayon_color(i);
 			enemy_setting(i, 64, 160, 32, 80, 1, 1, 0);
+		}
+		else if (enemy[i].type == ENEMY_TYPE_SOLDIER)
+		{
+			enemy_sprite[i] = sprEnemySoldierL;
+			enemy_setting(i, 80, 192, 40, 96, 1.0f, 1.0f, 0);
 		}
 
 		//出現場所
@@ -534,7 +618,7 @@ void enemy_respawn(int i)
 		else
 		{
 			enemy[i].pos.x = SCREEN_W + 100.0f;
-			enemy[i].pos.y = rand() % 724 + 340;
+			enemy[i].pos.y = rand() % 724 + 325;
 		}
 
 		enemy_prev_hp[i] = enemy[i].hp;
@@ -552,14 +636,6 @@ void enemy_boss_respawn(int i)
 		switch (boss_state)
 		{
 		case 0:
-			enemy[i].type = BOSS_TYPE_BEAR;
-			enemy_sprite[i] = sprEnemyBear;
-			enemy_setting(i, 514, 560, 257, 280, 1, 1, 0);
-			boss_state++;
-			break;
-		
-		
-		/*case 0:
 			enemy[i].type = BOSS_TYPE_CRAYON;
 			enemy_sprite[i] = sprEnemyCrayon;
 			enemy_setting(i, 64, 160, 32, 80, 3, 3, 0);
@@ -578,7 +654,27 @@ void enemy_boss_respawn(int i)
 			enemy_sprite[i] = sprEnemyBear;
 			enemy_setting(i, 514, 560, 257, 280, 1, 1, 0);
 			boss_state++;
-			break;*/
+			break;
+
+		case 3:
+			enemy[i].type = BOSS_TYPE_CRAYON;
+			enemy_sprite[i] = sprEnemyCrayon;
+			enemy_setting(i, 64, 160, 32, 80, 3, 3, 0);
+			boss_state++;
+			break;
+
+		case 4:
+			enemy[i].type = BOSS_TYPE_CAR;
+			enemy_sprite[i] = sprEnemyCar;
+			enemy_setting(i, 128, 80, 64, 40, 3, 3, 0);
+			boss_state++;
+			break;
+
+		case 5:
+			enemy[i].type = BOSS_TYPE_BEAR;
+			enemy_sprite[i] = sprEnemyBear;
+			enemy_setting(i, 514, 560, 257, 280, 1, 1, 0);
+			break;
 		}
 
 		//リスポーン
@@ -619,6 +715,7 @@ void enemy_move(int i)
 		if (enemy[i].type == ENEMY_TYPE_BOLL ||
 			enemy[i].type == ENEMY_TYPE_BOMB ||
 			enemy[i].type == ENEMY_TYPE_ROCKET ||
+			enemy[i].type == ENEMY_TYPE_SOLDIER ||
 			enemy[i].type == BOSS_TYPE_CRAYON ||
 			enemy[i].type == BOSS_TYPE_HORSE ||
 			enemy[i].type == BOSS_TYPE_PENCIL ||
@@ -765,17 +862,7 @@ void enemy_attack_action(int i)
 	}
 }
 
-//パワーアップ
-void enemy_powerup()
-{
-	if (enemy_powerup_timer > 3000)
-	{
-		enemy_hp_up += 2.0f;
-		enemy_speed_up += 0.2f;
-		enemy_attack_up += 1;
-		enemy_powerup_timer = 0;
-	}
-}
+
 
 //ノックバック
 void enemy_knockback_check(int i)
@@ -1037,11 +1124,33 @@ void enemy_render()
 					render_y -= jump_height;
 				}
 			}
+
+			//兵隊の歩きアニメーション（一定間隔でLとRを切り替え）
+			if (enemy[i].type == ENEMY_TYPE_SOLDIER)
+			{
+				int walk_step = (enemy_anim_timer[i] / 12) % 2;
+				if (walk_step == 0)
+					enemy_sprite[i] = sprEnemySoldierL;
+				else
+					enemy_sprite[i] = sprEnemySoldierR;
+			}
 		}
 
-		
+		//描画色の決定（通常クレヨン・爆弾は赤・青・黄ランダム色）
+		float draw_r = enemy[i].color.x;
+		float draw_g = enemy[i].color.y;
+		float draw_b = enemy[i].color.z;
+		bool is_crayon_sprite = (enemy_sprite[i] == sprEnemyCrayon);
+		bool is_damaged_red = (enemy_damage_timer[i] > 0 || enemy_knockback_timer[i] > 0);
 
-		//敵画像
+		if (is_crayon_sprite && !is_damaged_red)
+		{
+			draw_r = crayon_color_r[i];
+			draw_g = crayon_color_g[i];
+			draw_b = crayon_color_b[i];
+		}
+
+		//本体画像
 		sprite_render(
 			enemy_sprite[i],
 			enemy[i].pos.x, render_y,
@@ -1050,7 +1159,21 @@ void enemy_render()
 			enemy[i].texSize.x, enemy[i].texSize.y,
 			enemy[i].pivot.x, enemy[i].pivot.y,
 			enemy[i].angle,
-			enemy[i].color.x, enemy[i].color.y, enemy[i].color.z);
+			draw_r, draw_g, draw_b);
+
+		//クレヨンの上に sprEnemyCrayon_over を重ね描き
+		if (is_crayon_sprite && sprEnemyCrayon_over != nullptr)
+		{
+			sprite_render(
+				sprEnemyCrayon_over,
+				enemy[i].pos.x, render_y,
+				render_scale_x, render_scale_y,
+				0, 0,
+				enemy[i].texSize.x, enemy[i].texSize.y,
+				enemy[i].pivot.x, enemy[i].pivot.y,
+				enemy[i].angle,
+				enemy[i].color.x, enemy[i].color.y, enemy[i].color.z);
+		}
 
 		//ボールの影
 		if (enemy[i].type == ENEMY_TYPE_BOLL)
@@ -1078,7 +1201,7 @@ void enemy_render()
 				ToRadian(0),
 				enemy[i].color.x, enemy[i].color.y, enemy[i].color.z);
 		}
-		//ボム
+		//ボム（上からダイナマイトを貼る）
 		if (enemy[i].type == ENEMY_TYPE_BOMB && sprDynamite != nullptr)
 		{
 			sprite_render(
@@ -1087,7 +1210,7 @@ void enemy_render()
 				1.2f, 1.2f,
 				0, 0,
 				40, 35,
-				20, 17.5,
+				20, 17.5f,
 				0.0f,
 				enemy[i].color.x, enemy[i].color.y, enemy[i].color.z);
 		}
@@ -1157,7 +1280,7 @@ void enemy_render()
 		}
 	}
 
-	//ボス敵
+	//ボス敵（ボスクレヨンは緑色）
 	for (int i = 0; i < ENEMY_NUMBER; i++)
 	{
 		if (enemy[i].hp <= 0) { continue; }
@@ -1167,6 +1290,19 @@ void enemy_render()
 		float render_scale_x = enemy[i].scale.x;
 		float render_scale_y = enemy[i].scale.y;
 
+		float boss_r = enemy[i].color.x;
+		float boss_g = enemy[i].color.y;
+		float boss_b = enemy[i].color.z;
+		bool is_boss_crayon = (enemy[i].type == BOSS_TYPE_CRAYON);
+		bool is_damaged_red = (enemy_damage_timer[i] > 0 || enemy_knockback_timer[i] > 0);
+
+		if (is_boss_crayon && !is_damaged_red)
+		{
+			boss_r = 0.2f;
+			boss_g = 0.9f;
+			boss_b = 0.25f;
+		}
+
 		sprite_render(
 			enemy_sprite[i],
 			enemy[i].pos.x, render_y,
@@ -1175,7 +1311,20 @@ void enemy_render()
 			enemy[i].texSize.x, enemy[i].texSize.y,
 			enemy[i].pivot.x, enemy[i].pivot.y,
 			enemy[i].angle,
-			enemy[i].color.x, enemy[i].color.y, enemy[i].color.z);
+			boss_r, boss_g, boss_b);
+
+		if (is_boss_crayon && sprEnemyCrayon_over != nullptr)
+		{
+			sprite_render(
+				sprEnemyCrayon_over,
+				enemy[i].pos.x, render_y,
+				render_scale_x, render_scale_y,
+				0, 0,
+				enemy[i].texSize.x, enemy[i].texSize.y,
+				enemy[i].pivot.x, enemy[i].pivot.y,
+				enemy[i].angle,
+				enemy[i].color.x, enemy[i].color.y, enemy[i].color.z);
+		}
 
 		//タイヤ
 		if (enemy[i].type == BOSS_TYPE_CAR)

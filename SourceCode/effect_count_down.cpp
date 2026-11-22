@@ -111,18 +111,19 @@ void countdown_render()
 	if (count_phase == 0)
 	{
 		//3
-		pos_x = 1040.0f;
+		pos_x = 1160.0f;
 		pos_y = 540.0f;
-		scale_x = 0.45f;
-		scale_y = 0.45f;
+		scale_x = 0.6f;
+		scale_y = 0.6f;
 		angle = 0.20f;
 	}
 	else if (count_phase == 1)
 	{
 		//2
+		pos_x = 760.0f;
 		pos_y = 540.0f;
-		scale_x = 0.70f;
-		scale_y = 0.70f;
+		scale_x = 0.85f;
+		scale_y = 0.85f;
 		angle = -0.20f;
 	}
 	else if (count_phase == 2)
@@ -139,8 +140,8 @@ void countdown_render()
 		//GO!
 		pos_x = 960.0f;
 		pos_y = 540.0f;
-		scale_x = 0.75f;
-		scale_y = 0.75f;
+		scale_x = 1.2f;
+		scale_y = 1.2f;
 		angle = 0.0f;
 	}
 

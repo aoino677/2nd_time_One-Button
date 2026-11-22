@@ -17,11 +17,12 @@
 #define ENEMY_TYPE_CRAYON    (5)
 #define BOSS_TYPE_BEAR       (6)
 #define BOSS_TYPE_CRAYON     (7)
-#define BOSS_TYPE_CAR        (8)
-#define BOSS_TYPE_ROBOT      (9)
-#define BOSS_TYPE_HORSE      (10)
-#define BOSS_TYPE_PENCIL     (11)
-#define BOSS_TYPE_EXCAVATOR  (12)
+#define ENEMY_TYPE_SOLDIER    8
+#define BOSS_TYPE_CAR        (9)
+#define BOSS_TYPE_ROBOT      (10)
+#define BOSS_TYPE_HORSE      (11)
+#define BOSS_TYPE_PENCIL     (12)
+#define BOSS_TYPE_EXCAVATOR  (13)
 
 // 描画種別（通常敵 / ボス）
 #define ENEMY                (0)
@@ -80,6 +81,7 @@ void effect_boss_respawn();
 void enemy_damage_effect(int i);
 void tires_render();
 void effect_boss_render();
+void set_random_crayon_color(int idx);
 
 
 #define ENEMY_SCALE     (1)

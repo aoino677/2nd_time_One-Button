@@ -1,4 +1,5 @@
 #include "obj2d.h"
+#include "enemy.h"
 #include "menu_button.h"
 #include "scene_menu.h"
 #include "cursor_main.h"
@@ -147,12 +148,21 @@ void menu_button_update()
                     else if (i == 1)
                     {
                         difficulty_time = 1; // 3•ª
+                        difficulty = 0;
                         menu_wipe_closing = true;
                         scene_wipe_in_start();
                     }
-                    else if (i == 2 || i == 3)
+                    else if (i == 2 )
                     {
                         difficulty_time = 2; // 5•ª
+                        difficulty = 1;
+                        menu_wipe_closing = true;
+                        scene_wipe_in_start();
+                    }
+                    else if (i == 3)
+                    {
+                        difficulty_time = 2; // 5•ª
+                        difficulty = 2;
                         menu_wipe_closing = true;
                         scene_wipe_in_start();
                     }
