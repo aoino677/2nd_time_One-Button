@@ -637,7 +637,8 @@ void choice_deinit()
 	{
 		safe_delete(sprpower_efficacy[i]);
 	}
-	music::clear();
+	music::unload(EXP_UP_SE);
+	music::unload(CHOICE_SE);
 }
 
 bool T_or_F(int level_up_count)

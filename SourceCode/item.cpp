@@ -411,5 +411,9 @@ void item_deinit()
         safe_delete(spritem[i]);
     }
     safe_delete(sprRedItem_effect);
-    music::clear();
+    music::unload(ITEM_BLUE_SE1);
+    music::unload(ITEM_BLUE_SE2);
+    music::unload(ITEM_PINK_SE);
+    music::unload(ITEM_RED_SE);
+    music::unload(ITME_GREEN_SE);
 }
