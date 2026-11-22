@@ -3,6 +3,7 @@
 #include "scene_menu.h"
 #include "cursor_main.h"
 #include "effect_start_game.h"
+#include "tutorial_button.h"
 
 //--------------------------------------
 // メニューボタン
@@ -135,8 +136,16 @@ void menu_button_update()
                 //クリックで扉を閉じてからゲーム開始
                 if (TRG(0) & PAD_START)
                 {
-                    menu_wipe_closing = true;
-                    scene_wipe_in_start();
+                    if (i == 0)//チュートリアルボタン
+                    {
+                        is_tutorial = true;
+                        tutorial_number = 0;
+                    }
+                    else
+                    {
+                        menu_wipe_closing = true;
+                        scene_wipe_in_start();
+                    }
                 }
             }
             else

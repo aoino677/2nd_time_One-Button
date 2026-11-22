@@ -11,6 +11,7 @@
 #include "menu_button.h"
 #include "effect_scene_change.h"
 #include "effect_start_game.h"
+#include "tutorial_button.h"
 #include "cursor.h"
 //------< íËêî >----------------------------------------------------------------
 
@@ -37,6 +38,7 @@ void menu_init()
 	menu_button_init();
 	cursor_init();
 	scene_wipe_init();
+	tutorial_init();
 
 	spr_menu_background = sprite_load(L"Data/Images/result_back.png");
 }
@@ -65,7 +67,12 @@ void menu_update()
 		//////// í èÌéû ////////
 
 		scene_wipe_out_update();
-		menu_button_update();
+		if (is_tutorial) { tutorial_update(); }
+		else
+		{
+			menu_button_update();
+
+		}
 		cursor_update();
 
 		if (is_scene_wipe_out_finished() && !is_wipe_out_cleaned_up)
@@ -99,15 +106,18 @@ void menu_render()
 
 	sprite_render(
 		spr_menu_background,
-		menu_background_posX,0
-		);
+		menu_background_posX, 0
+	);
 
 	sprite_render(
 		spr_menu_background,
 		menu_background_posX - SCREEN_W, 0
 	);
 
+	if (is_tutorial) { tutorial_render(); }
+	else{
 	menu_button_render();
+}
 
 	if (!is_scene_change_finished())
 	{
@@ -118,7 +128,7 @@ void menu_render()
 		scene_change_deinit();
 		is_effect_cleaned_up = true;
 	}
-	
+
 	scene_wipe_out_render();
 
 	cursor_render();
@@ -131,5 +141,6 @@ void menu_deinit()
 {
 	menu_button_deinit();
 	cursor_deinit();
+	tutorial_deinit();
 	//scene_wipe_deinit();
 }

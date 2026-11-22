@@ -7,7 +7,11 @@
 #define TUTORIAL_BUTTON_SCALE_X (0.5f)
 #define TUTORIAL_BUTTON_SCALE_Y (0.5f)
 
-void tutorial_button_init();
-void tutorial_button_deinit();
-void tutorial_button_update();
-void tutorial_button_render();
+void tutorial_init();
+void tutorial_deinit();
+void tutorial_update();
+void tutorial_render();
+
+extern bool is_tutorial;
+extern int tutorial_number;
+
