@@ -131,6 +131,7 @@ void game_update()
 				player_update();
 				item_update();
 				EXP_update();
+				hp_update();
 				enemy_update();
 				shake_update();
 				effect_danger_update();
@@ -178,13 +179,12 @@ void game_render()
 	if (countdown_finished())
 	{
 		background_render();
-		enemy_render();
-		EXP_render();
-		player_render();
-		item_render();
-		level_up_render();
 		level_up_render();
 		hp_render();
+		EXP_render();
+		item_render();
+		enemy_render();
+		player_render();
 		effect_danger_render();
 		time_limit_render();
 		cursor_main_render();
@@ -218,4 +218,5 @@ void game_deinit()
 	effect_game_start_deinit();
 	cursor_main_deinit();
 	level_up_deinit();
+	hp_deinit();
 }

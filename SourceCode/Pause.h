@@ -9,7 +9,7 @@
 #define PAUSE_PIVOT_Y      (100.0f)
 
 // ポーズボタン
-#define PAUSEBUTTON_POS_X   (1840)
+#define PAUSEBUTTON_POS_X   (1870)
 #define PAUSEBUTTON_POS_Y   (60)
 #define PAUSEBUTTON_SCALE   (1.0f)
 #define PAUSEBUTTON_TEX_W   (64.0f)

@@ -25,16 +25,13 @@ void level_up_update()
 	case 1:
 		// パラメーターの設定
 		level_up = {};
-		level_up.pos = { LEVEL_UP_POS_X , LEVEL_UP_POS_Y };
-		level_up.scale = { LEVEL_UP_SCALE , LEVEL_UP_SCALE };
-		level_up.texSize = { LEVEL_UP_TEX_W , LEVEL_UP_TEX_H };
-		level_up.pivot = { LEVEL_UP_PIVOT_X , LEVEL_UP_PIVOT_Y };
-		level_up.color = { 1.0f, 1.0f, 1.0f, 1.0f };
+		level_up.pos			= { LEVEL_UP_POS_X , LEVEL_UP_POS_Y };
+		level_up.scale		= { LEVEL_UP_SCALE , LEVEL_UP_SCALE };
+		level_up.texSize		= { LEVEL_UP_TEX_W , LEVEL_UP_TEX_H };
+		level_up.pivot		= { LEVEL_UP_PIVOT_X , LEVEL_UP_PIVOT_Y };
+		level_up.color		= { 1.0f, 1.0f, 1.0f, 1.0f };
 
-		//level_up_state++;
 		break;
-	//case 2:
-
 	}
 }
 void level_up_render()
@@ -44,7 +41,7 @@ void level_up_render()
 	float levelbar_max = 700.0f * rate;
 
 	primitive::rect(
-		570.0f, 55.0f,
+		495.0f, 25.0f,
 		levelbar_max, 50.0f
 		
 	);
