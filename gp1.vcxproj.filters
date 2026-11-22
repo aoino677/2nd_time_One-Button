@@ -53,6 +53,7 @@
     <ClCompile Include="SourceCode\title_button.cpp" />
     <ClCompile Include="SourceCode\Time_limit.cpp" />
     <ClCompile Include="SourceCode\effect_start_game.cpp" />
+    <ClCompile Include="SourceCode\tutorial_button.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameLib\blender.h" />
@@ -113,5 +114,6 @@
     <ClInclude Include="SourceCode\title_button.h" />
     <ClInclude Include="SourceCode\Time_limit.h" />
     <ClInclude Include="SourceCode\effect_start_game.h" />
+    <ClInclude Include="SourceCode\tutorial_button.h" />
   </ItemGroup>
 </Project>

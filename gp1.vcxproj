@@ -152,6 +152,7 @@ attrib +h SourceCode\gp1.log
     <ClInclude Include="SourceCode\shake.h" />
     <ClInclude Include="SourceCode\title_button.h" />
     <ClInclude Include="SourceCode\Time_limit.h" />
+    <ClInclude Include="SourceCode\tutorial_button.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameLib\debug.cpp" />
@@ -206,6 +207,7 @@ attrib +h SourceCode\gp1.log
     <ClCompile Include="SourceCode\shake.cpp" />
     <ClCompile Include="SourceCode\title_button.cpp" />
     <ClCompile Include="SourceCode\Time_limit.cpp" />
+    <ClCompile Include="SourceCode\tutorial_button.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
