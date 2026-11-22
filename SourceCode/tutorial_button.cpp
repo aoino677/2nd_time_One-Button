@@ -1,5 +1,6 @@
 #include "tutorial_button.h"
 #include "OBJ2D.h"
+#include "button_se.h"
 
 namespace tutorial
 {
@@ -151,6 +152,7 @@ void tutorial_prev_button_update()
 				is_tutorial = false;
 			}
 			timer = 0;
+			music::play(SE_CLICK, false);
 		}
 	}
 	else
@@ -207,6 +209,7 @@ void tutorial_next_button_update()
 				is_tutorial = false;
 			}
 			timer = 0;
+			music::play(SE_CLICK, false);
 		}
 	}
 	else

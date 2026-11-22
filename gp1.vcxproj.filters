@@ -115,5 +115,6 @@
     <ClInclude Include="SourceCode\Time_limit.h" />
     <ClInclude Include="SourceCode\effect_start_game.h" />
     <ClInclude Include="SourceCode\tutorial_button.h" />
+    <ClInclude Include="SourceCode\button_se.h" />
   </ItemGroup>
 </Project>
