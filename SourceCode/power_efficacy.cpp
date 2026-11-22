@@ -27,12 +27,12 @@ void efficacy_init()
 	red_cooltime_rate = 1.0f;
 	bullet_interval_rate = 1.0f;
 
-	hp_level = 1;
-	lucky_level = 1;
-	bullet_damage_level = 1;
-	cursor_level = 1;
-	bullet_interval_level = 1;
-	hit_buck_level = 1;
+	hp_level = 0;
+	lucky_level = 0;
+	bullet_damage_level = 0;
+	cursor_level = 0;
+	bullet_interval_level = 0;
+	hit_buck_level = 0;
 }
 // ƒvƒŒƒCƒ„[‚ÌHP‚ªã‚ª‚é
 void HP()

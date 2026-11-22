@@ -10,7 +10,7 @@
 #include "all.h"
 #include "effect_scene_change.h"
 #include "title_button.h"
-#include "cursor_main.h"
+#include "cursor.h"
 
 //------< 定数 >----------------------------------------------------------------
 
@@ -29,7 +29,7 @@ void title_init()
 	title_state = 0;
 	title_timer = 0;
 	title_button_init();
-	cursor_main_init();
+	cursor_init();
 	// ゲーム開始時はWindows標準カーソルを非表示
 	while (ShowCursor(FALSE) >= 0)
 	{
@@ -54,7 +54,7 @@ void title_update()
 		/*fallthrough*/
 	case 2:
 		title_button_update();
-		cursor_main_update();
+		cursor_update();
 		break;
 	}
 
@@ -78,7 +78,7 @@ void title_render()
 
 	title_button_render();
 	scene_change_render();
-	cursor_main_render();
+	cursor_render();
 }
 
 //--------------------------------------
@@ -87,5 +87,5 @@ void title_render()
 void title_deinit()
 {
 	title_button_deinit();
-	cursor_main_deinit();
+	cursor_deinit();
 }

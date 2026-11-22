@@ -10,7 +10,7 @@
 #include "all.h"
 #include "menu_button.h"
 #include "effect_scene_change.h"
-
+#include "cursor.h"
 //------< íËêî >----------------------------------------------------------------
 
 //------< ïœêî >----------------------------------------------------------------
@@ -27,6 +27,7 @@ void menu_init()
 	menu_timer = 0;
 	is_effect_cleaned_up = false;
 	menu_button_init();
+	cursor_init();
 }
 
 //--------------------------------------
@@ -53,7 +54,7 @@ void menu_update()
 		//////// í èÌéû ////////
 		
 		menu_button_update();
-		
+		cursor_update();
 		break;
 	}
 
@@ -79,6 +80,19 @@ void menu_render()
 	font::textOut(1, "MENU", 640, 200);
 	
 	menu_button_render();
+	
+	if (!is_scene_change_finished())
+	{
+		menu_button_render();
+		scene_change_render();
+    }
+	else if (!is_effect_cleaned_up)
+	{
+		scene_change_deinit();
+		is_effect_cleaned_up = true;
+	}
+	cursor_render();
+
 }
 
 //--------------------------------------
@@ -87,5 +101,5 @@ void menu_render()
 void menu_deinit()
 {
 	menu_button_deinit();
-
+	cursor_deinit();
 }

@@ -68,6 +68,7 @@ void game_init()
 	countdown_init();
 	effect_game_start_init();
 	cursor_main_init();
+	level_up_init();
 
 	// ゲーム開始時はWindows標準カーソルを非表示
 	while (ShowCursor(FALSE) >= 0)
@@ -130,13 +131,13 @@ void game_update()
 				player_update();
 				item_update();
 				EXP_update();
+				hp_update();
 				enemy_update();
 				shake_update();
 				effect_danger_update();
 				cursor_main_update();
 				effect_game_start_update();
-				hp_update();
-
+				level_up_update();
 			}
 			
 		}
@@ -178,12 +179,12 @@ void game_render()
 	if (countdown_finished())
 	{
 		background_render();
-		enemy_render();
-		EXP_render();
-		player_render();
-		item_render();
 		level_up_render();
 		hp_render();
+		EXP_render();
+		item_render();
+		enemy_render();
+		player_render();
 		effect_danger_render();
 		time_limit_render();
 		cursor_main_render();
@@ -216,4 +217,6 @@ void game_deinit()
 	countdown_deinit();
 	effect_game_start_deinit();
 	cursor_main_deinit();
+	level_up_deinit();
+	hp_deinit();
 }

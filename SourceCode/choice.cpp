@@ -20,7 +20,7 @@ int level_up_count = 0;
 int random[3];
 float choice_effect_y = 0.0f;
 float choice_effect_alpha = 0.0f;
-float level_text_scale[CHOICE_MAX] = { 1.0f, 1.0f, 1.0f };
+float level_text_scale[CHOICE_MAX] = { 100.0f, 100.0f, 100.0f };
 float efficacy_scale[CHOICE_MAX] = { 1.0f, 1.0f, 1.0f };
 int choice_count = CHOICE_MAX;
 
@@ -342,7 +342,7 @@ void choice_update()
 					power_efficacy[random[i]].scale.x = POWER_EFFICACY_SCALE + 0.1f;
 					power_efficacy[random[i]].scale.y = POWER_EFFICACY_SCALE + 0.1f;
 				}
-				level_text_scale[i] = 1.2f;
+				level_text_scale[i] = 2.1f;
 				if (TRG(0) & PAD_START)
 				{
 					switch (i)
@@ -513,7 +513,7 @@ void choice_update()
 					power_efficacy[random[i]].scale.x = POWER_EFFICACY_SCALE;
 					power_efficacy[random[i]].scale.y = POWER_EFFICACY_SCALE;
 				}
-				level_text_scale[i] = 1.0f;
+				level_text_scale[i] = 2.0f;
 			}
 		}
 		break;
@@ -603,8 +603,8 @@ void choice_render()
 		{
 			DrawLevelText(
 				random[i],
-				choiceButton[i].pos.x - 120,
-				choiceButton[i].pos.y + 210 + choice_effect_y,
+				choiceButton[i].pos.x - 60,
+				choiceButton[i].pos.y + 230 + choice_effect_y,
 				level_text_scale[i]
 			);
 		}
@@ -731,7 +731,7 @@ void DrawLevelText(int type, float x, float y, float scale)
 {
 	char str[64];
 
-	int lv = 1;
+	int lv = 0;
 	int maxLv = level_8;
 
 	switch (type)
@@ -742,22 +742,22 @@ void DrawLevelText(int type, float x, float y, float scale)
 		break;
 
 	case WEAPON_SHELL:
-		lv = (level_up_weapon[SHELL] == 0) ? 1 : level_up_weapon[SHELL];
+		lv = level_up_weapon[SHELL];
 		maxLv = level_8;
 		break;
 
 	case WEAPON_BEAM:
-		lv = (level_up_weapon[BEAM] == 0) ? 1 : level_up_weapon[BEAM];
+		lv = level_up_weapon[BEAM];
 		maxLv = level_8;
 		break;
 
 	case WEAPON_INGOT:
-		lv = (level_up_weapon[INGOT] == 0) ? 1 : level_up_weapon[INGOT];
+		lv = level_up_weapon[INGOT];
 		maxLv = level_8;
 		break;
 
 	case WEAPON_BANKROLL:
-		lv = (level_up_weapon[BANKROLL] == 0) ? 1 : level_up_weapon[BANKROLL];
+		lv = level_up_weapon[BANKROLL];
 		maxLv = level_8;
 		break;
 
@@ -767,7 +767,14 @@ void DrawLevelText(int type, float x, float y, float scale)
 		break;
 
 	case WEAPON_BULLET:
-		lv = (level_up_weapon[Y1] == 0) ? 1 : level_up_weapon[Y1];
+		if (level_up_weapon[Y1] == 0)
+		{
+			lv = 1;
+		}
+		else
+		{
+			lv = level_up_weapon[Y1];
+		}
 		maxLv = level_8;
 		break;
 
@@ -792,14 +799,22 @@ void DrawLevelText(int type, float x, float y, float scale)
 		break;
 	}
 
+	// Å‘åƒŒƒxƒ‹‚È‚çMAX‚ð•\Ž¦
 	if (lv >= maxLv)
 	{
 		sprintf_s(str, "MAX");
 	}
 	else
 	{
-		sprintf_s(str, "Lv.%d -> Lv.%d", lv, lv + 1);
+		sprintf_s(str, "%d %d", lv, lv + 1);
 	}
 
-	font::textOut(6, str, x, y, scale, scale, 1.0f, 0.8f, 0.2f, 1.0f, TEXT_ALIGN::UPPER_LEFT, false);
+	font::textOut(
+		6, str,
+		x, y,
+		scale, scale,
+		1.0f, 0.8f, 0.2f, 1.0f,
+		TEXT_ALIGN::UPPER_LEFT,
+		false
+	);
 }
