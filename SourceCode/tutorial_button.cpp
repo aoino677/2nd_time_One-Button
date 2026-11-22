@@ -1,71 +1,62 @@
 #include "tutorial_button.h"
 #include "OBJ2D.h"
-
-OBJ2D tutorial_button;
-Sprite* sprButton;
-
-
-void tutorial_button_init()
+namespace tutorial
 {
-	tutorial_button = {};
-	tutorial_button.pos = { static_cast<float>(SCREEN_W) * 0.5f,static_cast<float>(SCREEN_H) * 0.8f };
-	tutorial_button.texSize = { TUTORIAL_BUTTON_TEX_SIZE_W , TUTORIAL_BUTTON_TEX_SIZE_H };
-	tutorial_button.pivot = { TUTORIAL_BUTTON_PIVOT_X, TUTORIAL_BUTTON_PIVOT_Y };
-	tutorial_button.scale = { TUTORIAL_BUTTON_SCALE_X, TUTORIAL_BUTTON_SCALE_Y };
+	Sprite** sprTutorial;
+	int timer;
+}
+int tutorial_number = 0;
+using namespace tutorial;
 
-	sprButton = sprite_load(L"Data/Images/tutorial_sin.png");
+bool is_tutorial;
+
+void tutorial_init()
+{
+	sprTutorial = new Sprite * [4];
+	sprTutorial[0] = sprite_load(L"Data/Images/tutorial1.png");
+	sprTutorial[1] = sprite_load(L"Data/Images/tutorial2.png");
+	sprTutorial[2] = sprite_load(L"Data/Images/tutorial3.png");
+	sprTutorial[3] = sprite_load(L"Data/Images/tutorial4.png");
+	tutorial_number = 0;
 }
 
-void tutorial_button_deinit()
+void tutorial_deinit()
 {
-	safe_delete(sprButton);
+	safe_delete_array(sprTutorial);
 }
 
-void tutorial_button_update()
+void tutorial_update()
 {
-	auto mouseX{ static_cast<float>(getCursorPosX()) };
-	auto mouseY{ static_cast<float>(getCursorPosY()) };
+	timer++;
 
-	float left =
-		tutorial_button.pos.x -
-		tutorial_button.pivot.x * tutorial_button.scale.x;
-
-	float right =
-		tutorial_button.pos.x +
-		(tutorial_button.texSize.x - tutorial_button.pivot.x) * tutorial_button.scale.x;
-
-	float top =
-		tutorial_button.pos.y -
-		tutorial_button.pivot.y * tutorial_button.scale.y;
-
-	float bottom =
-		tutorial_button.pos.y +
-		(tutorial_button.texSize.y - tutorial_button.pivot.y) * tutorial_button.scale.y;
-
-	if (mouseX >= left &&
-		mouseX <= right &&
-		mouseY >= top &&
-		mouseY <= bottom)
+	if (timer > 60)
 	{
-		tutorial_button.scale.x = static_cast<float>(TUTORIAL_BUTTON_SCALE_X) + 0.1f;
-		tutorial_button.scale.y = static_cast<float>(TUTORIAL_BUTTON_SCALE_Y) + 0.1f;
-	}
-	else
-	{
-		tutorial_button.scale.x = static_cast<float>(TUTORIAL_BUTTON_SCALE_X);
-		tutorial_button.scale.y = static_cast<float>(TUTORIAL_BUTTON_SCALE_Y);
+		timer = 60;
+		if (TRG(0) & PAD_START)
+		{
+			tutorial_number++;
+			if (tutorial_number >= 4)
+			{
+				tutorial_number = 0;
+				is_tutorial = false;
+			}
+			timer = 0;
+		}
 	}
 }
 
-void tutorial_button_render()
+void tutorial_render()
 {
 	sprite_render(
-		sprButton,
-		tutorial_button.pos.x, tutorial_button.pos.y,
-		tutorial_button.scale.x, tutorial_button.scale.y,
-		tutorial_button.texPos.x, tutorial_button.texPos.y,
-		tutorial_button.texSize.x, tutorial_button.texSize.y,
-		tutorial_button.pivot.x, tutorial_button.pivot.y,
-		tutorial_button.angle
+		sprTutorial[tutorial_number],
+		(1 - timer / 60.0f) * SCREEN_W, 0
 	);
+
+	if (tutorial_number > 0)
+	{
+		sprite_render(
+			sprTutorial[tutorial_number - 1],
+			-(timer / 60.0f) * SCREEN_W, 0
+		);
+	}
 }

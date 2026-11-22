@@ -21,6 +21,9 @@ int menu_timer = 0;     //タイマー
 bool is_effect_cleaned_up = false;
 bool is_wipe_out_cleaned_up = false;
 
+Sprite* spr_menu_background;
+float menu_background_posX;
+
 //--------------------------------------
 //  初期設定
 //--------------------------------------
@@ -30,11 +33,14 @@ void menu_init()
 	menu_timer = 0;
 	is_effect_cleaned_up = false;
 	is_wipe_out_cleaned_up = false;
+	menu_background_posX = 0;
 
 	menu_button_init();
 	cursor_init();
-	tutorial_button_init();
 	scene_wipe_init();
+	tutorial_init();
+
+	spr_menu_background = sprite_load(L"Data/Images/result_back.png");
 }
 
 //--------------------------------------
@@ -61,15 +67,21 @@ void menu_update()
 		//////// 通常時 ////////
 
 		scene_wipe_out_update();
-		menu_button_update();
+		if (is_tutorial) { tutorial_update(); }
+		else
+		{
+			menu_button_update();
+
+		}
 		cursor_update();
-		tutorial_button_update();
 
 		if (is_scene_wipe_out_finished() && !is_wipe_out_cleaned_up)
 		{
 			//scene_wipe_deinit();
 			is_wipe_out_cleaned_up = true;
 		}
+		menu_background_posX--;
+		if (menu_background_posX < 0)menu_background_posX = SCREEN_W;
 		break;
 	}
 
@@ -84,18 +96,28 @@ void menu_render()
 	// 画面をクリアする
 	GameLib::clear(0.2f, 0.2f, 0.2f);
 
-	primitive::rect(
-		0, 0,
-		1920, 1080,
-		0, 0,
-		0,
-		0, 1, 0
+	//primitive::rect(
+	//	0, 0,
+	//	1920, 1080,
+	//	0, 0,
+	//	0,
+	//	0, 1, 0
+	//);
+
+	sprite_render(
+		spr_menu_background,
+		menu_background_posX, 0
 	);
 
-	font::textOut(1, "MENU", 640, 200);
+	sprite_render(
+		spr_menu_background,
+		menu_background_posX - SCREEN_W, 0
+	);
 
-	tutorial_button_render();
+	if (is_tutorial) { tutorial_render(); }
+	else{
 	menu_button_render();
+}
 
 	if (!is_scene_change_finished())
 	{
@@ -106,7 +128,7 @@ void menu_render()
 		scene_change_deinit();
 		is_effect_cleaned_up = true;
 	}
-	
+
 	scene_wipe_out_render();
 
 	cursor_render();
@@ -119,6 +141,6 @@ void menu_deinit()
 {
 	menu_button_deinit();
 	cursor_deinit();
-	tutorial_button_deinit();
+	tutorial_deinit();
 	//scene_wipe_deinit();
 }

@@ -20,13 +20,9 @@ int item_state = 0;
 int random;
 int lucky;
 
-int Blue_counter;
-int Green_counter;
-int Red_counter;
-int Pink_counter;
-
 bool fever_blue;
 bool fever_red;
+bool fever_pink;
 
 float posX;
 float posY;
@@ -50,11 +46,6 @@ void item_init()
 {
     item_state = 0;
 
-    Blue_counter = 0;
-    Green_counter = 0;
-    Red_counter = 0;
-    Pink_counter = 0;
-
     red_direction = 1;
     red_base_x = 0;
 
@@ -69,6 +60,7 @@ void item_init()
 
     fever_blue     = false ;
     fever_red      = false ;
+    fever_pink      = false;
 
     random = 0;
     lucky = ITEM_RANDOM;
@@ -239,6 +231,7 @@ void item_update()
 
                         case 3:
                             HP();
+                            fever_pink = true;
                             break;
                         }
 
@@ -282,6 +275,16 @@ void item_update()
             {
                 Fever_Time_End_Red();
                 fever_red = false;
+                efficacy_timer = 0;
+            }
+        }
+        // ƒsƒ“ƒN‚ÌŒø‰Ê
+        if (fever_pink == true)
+        {
+            efficacy_timer++;
+            if (efficacy_timer >= 15)
+            {
+                fever_pink = false;
                 efficacy_timer = 0;
             }
         }
@@ -363,6 +366,17 @@ void item_render()
             0, 0,
             ToRadian(0),
             0.70f, 0.85f, 1.00f, 0.3f
+        );
+    }
+
+    if (fever_pink == true)
+    {
+        primitive::rect(
+            0, 0,
+            SCREEN_W, SCREEN_H,
+            0, 0,
+            ToRadian(0),
+            1.000f, 0.714f, 0.757f, 0.5f
         );
     }
 }
