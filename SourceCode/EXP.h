@@ -16,6 +16,16 @@
 #define COUNTER_100Y	(4)
 #define COUNTER_500Y	(8)
 
+// EXP‚Ìã‰ºˆÚ“®”ÍˆÍ
+#define EXP_LIMIT_TOP 30.0f
+#define EXP_LIMIT_BOTTOM (SCREEN_H - 30.0f)
+
+//ŒoŒ±’l‚Ìí—Ş‚ğ•\‚·’è”
+#define EXP_TYPE_1YEN 0
+#define EXP_TYPE_2YEN 1
+#define EXP_TYPE_4YEN 2
+#define EXP_TYPE_8YEN 3
+
 
 void EXP_init();
 void EXP_update();
