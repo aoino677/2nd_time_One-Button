@@ -2,7 +2,7 @@
 #include "all.h"
 
 #define ITEM_MAX (256)
-#define ITEM_RANDOM (50) // 50‰ñ‚É1‰ñ
+#define ITEM_RANDOM (10) // 50‰ñ‚É1‰ñ
 #define ITEM_TIMER (120) // ƒAƒCƒeƒ€Žæ“¾‚Ü‚Å‚ÌŽžŠÔ
 
 #define ITEM_SCALE       (1.0f)
@@ -10,6 +10,12 @@
 #define ITEM_TEXSIZE_Y (40.0f)
 #define ITEM_PIVOT_X    (20.0f)
 #define ITEM_PIVOT_Y    (20.0f)
+
+#define REDITEM_EFFECT_SCALE       (3.0f)
+#define REDITEM_EFFECT_TEXSIZE_X (64.0f)
+#define REDITEM_EFFECT_TEXSIZE_Y (47.0f)
+#define REDITEM_EFFECT_PIVOT_X    (32.0f)
+#define REDITEM_EFFECT_PIVOT_Y    (23.5f)
 
 void item_init();
 void item_update();

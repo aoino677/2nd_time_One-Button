@@ -143,6 +143,10 @@ int APIENTRY wWinMain(HINSTANCE, HINSTANCE, LPWSTR, int)// g—p‚µ‚È‚¢•Ï”‚Í‹Lq‚
 		title_deinit();
 		break;
 
+	case SCENE_MENU:
+		menu_deinit();
+		break;
+
 	case SCENE_GAME:
 		game_deinit();
 		break;

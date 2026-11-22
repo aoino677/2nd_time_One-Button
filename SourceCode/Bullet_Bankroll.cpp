@@ -60,6 +60,7 @@ void Bullet_Bankroll::attack(OBJ2D enemies[])
 
 	for (int i = 0; i < ENEMY_NUMBER; i++)
 	{
+		if (enemies[i].hp <= 0) continue;
 		VECTOR2 enemy_begin = enemies[i].pos;
 		VECTOR2 enemy_pivot = VECTOR2{ enemies[i].scale.x * enemies[i].pivot.x, enemies[i].scale.y * enemies[i].pivot.y };//enemies[e]‚Ì¶ã
 		VECTOR2 enemy_size = { enemies[i].scale.x * enemies[i].texSize.x, enemies[i].scale.y * enemies[i].texSize.y };
