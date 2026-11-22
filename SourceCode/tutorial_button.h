@@ -1,7 +1,7 @@
 #pragma once
 
 #define TUTORIAL_SLIDE_FLAME (30.0f)
-#define TUTORIAL_COUNT 4
+#define TUTORIAL_COUNT 6
 
 #define TUTORIAL_BUTTON_PREV_PAGE_POS_X			(SCREEN_W * 0.6f)
 #define TUTORIAL_BUTTON_PREV_PAGE_POS_Y			(900)

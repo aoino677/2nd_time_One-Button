@@ -22,11 +22,13 @@ void tutorial_next_button_update();
 
 void tutorial_init()
 {
-	sprTutorial = new Sprite * [4];
+	sprTutorial = new Sprite * [TUTORIAL_COUNT];
 	sprTutorial[0] = sprite_load(L"Data/Images/tutorial1.png");
 	sprTutorial[1] = sprite_load(L"Data/Images/tutorial2.png");
 	sprTutorial[2] = sprite_load(L"Data/Images/tutorial3.png");
 	sprTutorial[3] = sprite_load(L"Data/Images/tutorial4.png");
+	sprTutorial[4] = sprite_load(L"Data/Images/tutorial5.png");
+	sprTutorial[5] = sprite_load(L"Data/Images/tutorial6.png");
 	sprPrev = sprite_load(L"Data/Images/prev_page.png");
 	prevButton = {};
 	prevButton.pos = { TUTORIAL_BUTTON_PREV_PAGE_POS_X, TUTORIAL_BUTTON_PREV_PAGE_POS_Y };
