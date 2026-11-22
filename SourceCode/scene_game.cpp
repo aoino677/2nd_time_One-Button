@@ -27,6 +27,7 @@
 #include "effect_scene_change.h"
 #include "effect_count_down.h"
 #include "effect_start_game.h"
+#include "cursor.h"
 
 
 
@@ -67,8 +68,8 @@ void game_init()
 	efficacy_init();
 	result_screen_init();
 	countdown_init();
-	cursor_main_init();
 	level_up_init();
+	cursor_init();
 
 	// ゲーム開始時はWindows標準カーソルを非表示
 	while (ShowCursor(FALSE) >= 0)
@@ -109,7 +110,7 @@ void game_update()
 		if (result_active)
 		{
 			result_screen_update();
-			cursor_main_update();
+			cursor_update();
 			break;
 		}
 
@@ -155,7 +156,7 @@ void game_update()
 		//========================================
 		if (pause == true || choice_pause == true)
 		{
-			cursor_main_update();
+			cursor_update();
 			choice_update();
 		}
 
@@ -194,7 +195,7 @@ void game_render()
 	result_screen_render();
 	if (pause == true || choice_pause == true)
 	{
-		cursor_main_render();
+		cursor_render();
 	}
 }
 
@@ -216,4 +217,5 @@ void game_deinit()
 	cursor_main_deinit();
 	level_up_deinit();
 	hp_deinit();
+	cursor_deinit();
 }
