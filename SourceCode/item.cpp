@@ -70,6 +70,12 @@ void item_init()
     posY = 0;
     LengthX = 0;
     LengthY = 0;
+
+    music::load(ITEM_BLUE_SE1, L"Data/Sounds/SE/slow_start.wav");
+    music::load(ITEM_BLUE_SE2, L"Data/Sounds/SE/slow_end.wav");
+    music::load(ITEM_PINK_SE, L"Data/Sounds/SE/click4.wav");
+    music::load(ITEM_RED_SE, L"Data/Sounds/BGM/game_boss1.wav");
+    music::load(ITME_GREEN_SE, L"Data/Sounds/SE/click1.wav");
 }
 
 
@@ -217,20 +223,24 @@ void item_update()
                         {
                         case 0:
                             Fever_Time_Start_Blue();
+                            music::play(ITEM_BLUE_SE1, false);
                             fever_blue = true;
                             break;
 
                         case 1:
                             EXP_levelUp_ALL();
+                            music::play(ITME_GREEN_SE, false);
                             break;
 
                         case 2:
                             Fever_Time_Start_Red();
+                            music::play(ITEM_RED_SE, false);
                             fever_red = true;
                             break;
 
                         case 3:
                             HP();
+                            music::play(ITEM_PINK_SE, false);
                             fever_pink = true;
                             break;
                         }
@@ -260,9 +270,15 @@ void item_update()
         if (fever_blue == true)
         {
             efficacy_timer++;
+            if (efficacy_timer >= 230)
+            {
+                music::stop(ITEM_BLUE_SE1);
+                music::play(ITEM_BLUE_SE2, false);
+            }
             if (efficacy_timer >= 300)
             {
                 Fever_Time_End_Blue();
+                music::stop(ITEM_BLUE_SE2);
                 fever_blue = false;
                 efficacy_timer = 0;
             }
@@ -274,6 +290,7 @@ void item_update()
             if (efficacy_timer >= 300)
             {
                 Fever_Time_End_Red();
+                music::stop(ITEM_RED_SE);
                 fever_red = false;
                 efficacy_timer = 0;
             }
@@ -390,4 +407,5 @@ void item_deinit()
         safe_delete(spritem[i]);
     }
     safe_delete(sprRedItem_effect);
+    music::clear();
 }
