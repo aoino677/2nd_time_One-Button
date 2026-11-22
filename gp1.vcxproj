@@ -128,8 +128,8 @@ attrib +h SourceCode\gp1.log
     <ClInclude Include="SourceCode\effect_burst.h" />
     <ClInclude Include="SourceCode\effect_count_down.h" />
     <ClInclude Include="SourceCode\effect_danger.h" />
-    <ClInclude Include="SourceCode\effect_game_start.h" />
     <ClInclude Include="SourceCode\effect_scene_change.h" />
+    <ClInclude Include="SourceCode\effect_start_game.h" />
     <ClInclude Include="SourceCode\enemy.h" />
     <ClInclude Include="SourceCode\EXP.h" />
     <ClInclude Include="SourceCode\hitbox.h" />
@@ -182,9 +182,8 @@ attrib +h SourceCode\gp1.log
     <ClCompile Include="SourceCode\effect_burst.cpp" />
     <ClCompile Include="SourceCode\effect_count_down.cpp" />
     <ClCompile Include="SourceCode\effect_danger.cpp" />
-    <ClCompile Include="SourceCode\effect_game_start.cpp" />
-    <ClCompile Include="SourceCode\effect_gemestart.cpp" />
     <ClCompile Include="SourceCode\effect_scene_change.cpp" />
+    <ClCompile Include="SourceCode\effect_start_game.cpp" />
     <ClCompile Include="SourceCode\enemy.cpp" />
     <ClCompile Include="SourceCode\EXP.cpp" />
     <ClCompile Include="SourceCode\hitbox.cpp" />

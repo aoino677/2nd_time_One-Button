@@ -1,395 +1,117 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="ソース ファイル">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="ヘッダー ファイル">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
-    <Filter Include="リソース ファイル">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="GameLib">
-      <UniqueIdentifier>{e8684ae8-4ca5-440a-aa38-9956d6ade6e0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameLib\ヘッダー ファイル">
-      <UniqueIdentifier>{54c58a80-657d-4c6b-b427-c6e2147cc487}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameLib\ソース ファイル">
-      <UniqueIdentifier>{15a79219-72c0-40d4-be4e-8448d9e789eb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\Scenes">
-      <UniqueIdentifier>{9c47da73-944f-42ee-83e0-e57a2214d37d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\Collision">
-      <UniqueIdentifier>{6be260fe-7c8d-4cca-bb63-b5121b66df0b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\Main">
-      <UniqueIdentifier>{8589a1c7-ca21-4a79-a9e5-59fd1ae61c6b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\Effect">
-      <UniqueIdentifier>{4f0f03f3-9f43-4958-863d-839596fd5554}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\weapon">
-      <UniqueIdentifier>{cd27acf6-a1e8-4439-9f74-b21b213091e5}</UniqueIdentifier>
-    </Filter>
+    <ClCompile Include="GameLib\debug.cpp" />
+    <ClCompile Include="GameLib\depth_stencil.cpp" />
+    <ClCompile Include="GameLib\dxtk_audio.cpp" />
+    <ClCompile Include="GameLib\font.cpp" />
+    <ClCompile Include="GameLib\frame_rate.cpp" />
+    <ClCompile Include="GameLib\game_lib.cpp" />
+    <ClCompile Include="GameLib\input_manager.cpp" />
+    <ClCompile Include="GameLib\obj2d_data.cpp" />
+    <ClCompile Include="GameLib\primitive.cpp" />
+    <ClCompile Include="GameLib\resource_manager.cpp" />
+    <ClCompile Include="GameLib\sprite.cpp" />
+    <ClCompile Include="GameLib\texture.cpp" />
+    <ClCompile Include="GameLib\vector.cpp" />
+    <ClCompile Include="GameLib\view_settings.cpp" />
+    <ClCompile Include="GameLib\wnd_proc.cpp" />
+    <ClCompile Include="SourceCode\AttackCollision.cpp" />
+    <ClCompile Include="SourceCode\Background.cpp" />
+    <ClCompile Include="SourceCode\Bullet.cpp" />
+    <ClCompile Include="SourceCode\Bullet_Bankroll.cpp" />
+    <ClCompile Include="SourceCode\Bullet_Ingot.cpp" />
+    <ClCompile Include="SourceCode\Bullet_Shell.cpp" />
+    <ClCompile Include="SourceCode\choice.cpp" />
+    <ClCompile Include="SourceCode\Collision2D.cpp" />
+    <ClCompile Include="SourceCode\cursor.cpp" />
+    <ClCompile Include="SourceCode\cursor_main.cpp" />
+    <ClCompile Include="SourceCode\effect_burst.cpp" />
+    <ClCompile Include="SourceCode\effect_count_down.cpp" />
+    <ClCompile Include="SourceCode\effect_danger.cpp" />
+    <ClCompile Include="SourceCode\effect_scene_change.cpp" />
+    <ClCompile Include="SourceCode\enemy.cpp" />
+    <ClCompile Include="SourceCode\EXP.cpp" />
+    <ClCompile Include="SourceCode\hitbox.cpp" />
+    <ClCompile Include="SourceCode\Hp.cpp" />
+    <ClCompile Include="SourceCode\item.cpp" />
+    <ClCompile Include="SourceCode\Level.cpp" />
+    <ClCompile Include="SourceCode\level_up.cpp" />
+    <ClCompile Include="SourceCode\main.cpp" />
+    <ClCompile Include="SourceCode\menu_button.cpp" />
+    <ClCompile Include="SourceCode\Pause.cpp" />
+    <ClCompile Include="SourceCode\player.cpp" />
+    <ClCompile Include="SourceCode\power_efficacy.cpp" />
+    <ClCompile Include="SourceCode\result_button.cpp" />
+    <ClCompile Include="SourceCode\result_score.cpp" />
+    <ClCompile Include="SourceCode\result_screen.cpp" />
+    <ClCompile Include="SourceCode\scene_game.cpp" />
+    <ClCompile Include="SourceCode\scene_menu.cpp" />
+    <ClCompile Include="SourceCode\scene_resulet.cpp" />
+    <ClCompile Include="SourceCode\scene_title.cpp" />
+    <ClCompile Include="SourceCode\shake.cpp" />
+    <ClCompile Include="SourceCode\title_button.cpp" />
+    <ClCompile Include="SourceCode\Time_limit.cpp" />
+    <ClCompile Include="SourceCode\effect_start_game.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GameLib\blender.h">
-      <Filter>GameLib\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="GameLib\debug.h">
-      <Filter>GameLib\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="GameLib\dxtk_audio.h">
-      <Filter>GameLib\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="GameLib\font.h">
-      <Filter>GameLib\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="GameLib\frame_rate.h">
-      <Filter>GameLib\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="GameLib\game_lib.h">
-      <Filter>GameLib\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="GameLib\high_resolution_timer.h">
-      <Filter>GameLib\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="GameLib\input_manager.h">
-      <Filter>GameLib\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="GameLib\misc.h">
-      <Filter>GameLib\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="GameLib\obj2d_data.h">
-      <Filter>GameLib\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="GameLib\primitive.h">
-      <Filter>GameLib\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="GameLib\resource_manager.h">
-      <Filter>GameLib\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="GameLib\sprite.h">
-      <Filter>GameLib\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="GameLib\texture.h">
-      <Filter>GameLib\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="GameLib\util.h">
-      <Filter>GameLib\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="GameLib\vector.h">
-      <Filter>GameLib\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="GameLib\view_settings.h">
-      <Filter>GameLib\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="GameLib\depth_stencil.h">
-      <Filter>GameLib\ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\player.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\enemy.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Pause.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Level.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\EXP.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\shake.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Background.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\cursor_main.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\level_up.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Hp.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\choice.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Time_limit.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\power_efficacy.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\all.h">
-      <Filter>ソース ファイル\Main</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\common.h">
-      <Filter>ソース ファイル\Main</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\OBJ2D.h">
-      <Filter>ソース ファイル\Main</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\AttackCollision.h">
-      <Filter>ソース ファイル\Collision</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Collision2D.h">
-      <Filter>ソース ファイル\Collision</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\hitbox.h">
-      <Filter>ソース ファイル\Collision</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\scene_game.h">
-      <Filter>ソース ファイル\Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\scene_menu.h">
-      <Filter>ソース ファイル\Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\scene_resulet.h">
-      <Filter>ソース ファイル\Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\scene_title.h">
-      <Filter>ソース ファイル\Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\effect_danger.h">
-      <Filter>ソース ファイル\Effect</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\item.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\effect_scene_change.h">
-      <Filter>ソース ファイル\Effect</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\effect_burst.h">
-      <Filter>ソース ファイル\Effect</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\title_button.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\effect_count_down.h">
-      <Filter>ソース ファイル\Effect</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\result_screen.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\result_button.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\menu_button.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\effect_game_start.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\cursor.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-<<<<<<< HEAD
-    <ClInclude Include="SourceCode\result_score.h">
-      <Filter>ヘッダー ファイル</Filter>
-=======
-    <ClInclude Include="SourceCode\Bullet_Ingot.h">
-      <Filter>ソース ファイル\weapon</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Bullet.h">
-      <Filter>ソース ファイル\weapon</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Bullet_Bankroll.h">
-      <Filter>ソース ファイル\weapon</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\bullet_se.h">
-      <Filter>ソース ファイル\weapon</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\Bullet_Shell.h">
-      <Filter>ソース ファイル\weapon</Filter>
->>>>>>> 4201f7e03b25e8b27c669a98c2c476a1ac490436
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="GameLib\debug.cpp">
-      <Filter>GameLib\ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="GameLib\dxtk_audio.cpp">
-      <Filter>GameLib\ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="GameLib\font.cpp">
-      <Filter>GameLib\ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="GameLib\frame_rate.cpp">
-      <Filter>GameLib\ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="GameLib\game_lib.cpp">
-      <Filter>GameLib\ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="GameLib\input_manager.cpp">
-      <Filter>GameLib\ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="GameLib\obj2d_data.cpp">
-      <Filter>GameLib\ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="GameLib\resource_manager.cpp">
-      <Filter>GameLib\ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="GameLib\primitive.cpp">
-      <Filter>GameLib\ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="GameLib\texture.cpp">
-      <Filter>GameLib\ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="GameLib\sprite.cpp">
-      <Filter>GameLib\ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="GameLib\vector.cpp">
-      <Filter>GameLib\ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="GameLib\view_settings.cpp">
-      <Filter>GameLib\ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="GameLib\wnd_proc.cpp">
-      <Filter>GameLib\ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="GameLib\depth_stencil.cpp">
-      <Filter>GameLib\ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\player.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\enemy.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\Pause.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\Level.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\EXP.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\shake.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\cursor_main.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\level_up.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\Hp.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\Time_limit.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\choice.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\power_efficacy.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\scene_game.cpp">
-      <Filter>ソース ファイル\Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\scene_menu.cpp">
-      <Filter>ソース ファイル\Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\scene_resulet.cpp">
-      <Filter>ソース ファイル\Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\scene_title.cpp">
-      <Filter>ソース ファイル\Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\AttackCollision.cpp">
-      <Filter>ソース ファイル\Collision</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\Collision2D.cpp">
-      <Filter>ソース ファイル\Collision</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\hitbox.cpp">
-      <Filter>ソース ファイル\Collision</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\main.cpp">
-      <Filter>ソース ファイル\Main</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\effect_danger.cpp">
-      <Filter>ソース ファイル\Effect</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\item.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\effect_scene_change.cpp">
-      <Filter>ソース ファイル\Effect</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\effect_burst.cpp">
-      <Filter>ソース ファイル\Effect</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\effect_count_down.cpp">
-      <Filter>ソース ファイル\Effect</Filter>
-    </ClCompile>
-<<<<<<< HEAD
-    <ClCompile Include="SourceCode\result_screen.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\result_button.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\menu_button.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\effect_gemestart.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\result_score.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-=======
->>>>>>> 4201f7e03b25e8b27c669a98c2c476a1ac490436
-    <ClCompile Include="SourceCode\effect_game_start.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\cursor.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\Bullet.cpp">
-      <Filter>ソース ファイル\weapon</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\Bullet_Bankroll.cpp">
-      <Filter>ソース ファイル\weapon</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\Bullet_Ingot.cpp">
-      <Filter>ソース ファイル\weapon</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\Bullet_Shell.cpp">
-      <Filter>ソース ファイル\weapon</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\Background.cpp">
-      <Filter>ソース ファイル\Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\effect_gemestart.cpp">
-      <Filter>ソース ファイル\Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\menu_button.cpp">
-      <Filter>ソース ファイル\Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\result_button.cpp">
-      <Filter>ソース ファイル\Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\result_screen.cpp">
-      <Filter>ソース ファイル\Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceCode\title_button.cpp">
-      <Filter>ソース ファイル\Scenes</Filter>
-    </ClCompile>
+    <ClInclude Include="GameLib\blender.h" />
+    <ClInclude Include="GameLib\debug.h" />
+    <ClInclude Include="GameLib\depth_stencil.h" />
+    <ClInclude Include="GameLib\dxtk_audio.h" />
+    <ClInclude Include="GameLib\font.h" />
+    <ClInclude Include="GameLib\frame_rate.h" />
+    <ClInclude Include="GameLib\game_lib.h" />
+    <ClInclude Include="GameLib\high_resolution_timer.h" />
+    <ClInclude Include="GameLib\input_manager.h" />
+    <ClInclude Include="GameLib\misc.h" />
+    <ClInclude Include="GameLib\obj2d_data.h" />
+    <ClInclude Include="GameLib\primitive.h" />
+    <ClInclude Include="GameLib\resource_manager.h" />
+    <ClInclude Include="GameLib\sprite.h" />
+    <ClInclude Include="GameLib\texture.h" />
+    <ClInclude Include="GameLib\util.h" />
+    <ClInclude Include="GameLib\vector.h" />
+    <ClInclude Include="GameLib\view_settings.h" />
+    <ClInclude Include="SourceCode\all.h" />
+    <ClInclude Include="SourceCode\AttackCollision.h" />
+    <ClInclude Include="SourceCode\Background.h" />
+    <ClInclude Include="SourceCode\Bullet.h" />
+    <ClInclude Include="SourceCode\Bullet_Bankroll.h" />
+    <ClInclude Include="SourceCode\Bullet_Ingot.h" />
+    <ClInclude Include="SourceCode\bullet_se.h" />
+    <ClInclude Include="SourceCode\Bullet_Shell.h" />
+    <ClInclude Include="SourceCode\choice.h" />
+    <ClInclude Include="SourceCode\Collision2D.h" />
+    <ClInclude Include="SourceCode\common.h" />
+    <ClInclude Include="SourceCode\cursor.h" />
+    <ClInclude Include="SourceCode\cursor_main.h" />
+    <ClInclude Include="SourceCode\effect_burst.h" />
+    <ClInclude Include="SourceCode\effect_count_down.h" />
+    <ClInclude Include="SourceCode\effect_danger.h" />
+    <ClInclude Include="SourceCode\effect_scene_change.h" />
+    <ClInclude Include="SourceCode\enemy.h" />
+    <ClInclude Include="SourceCode\EXP.h" />
+    <ClInclude Include="SourceCode\hitbox.h" />
+    <ClInclude Include="SourceCode\Hp.h" />
+    <ClInclude Include="SourceCode\item.h" />
+    <ClInclude Include="SourceCode\Level.h" />
+    <ClInclude Include="SourceCode\level_up.h" />
+    <ClInclude Include="SourceCode\menu_button.h" />
+    <ClInclude Include="SourceCode\OBJ2D.h" />
+    <ClInclude Include="SourceCode\Pause.h" />
+    <ClInclude Include="SourceCode\player.h" />
+    <ClInclude Include="SourceCode\power_efficacy.h" />
+    <ClInclude Include="SourceCode\result_button.h" />
+    <ClInclude Include="SourceCode\result_score.h" />
+    <ClInclude Include="SourceCode\result_screen.h" />
+    <ClInclude Include="SourceCode\scene_game.h" />
+    <ClInclude Include="SourceCode\scene_menu.h" />
+    <ClInclude Include="SourceCode\scene_resulet.h" />
+    <ClInclude Include="SourceCode\scene_title.h" />
+    <ClInclude Include="SourceCode\shake.h" />
+    <ClInclude Include="SourceCode\title_button.h" />
+    <ClInclude Include="SourceCode\Time_limit.h" />
+    <ClInclude Include="SourceCode\effect_start_game.h" />
   </ItemGroup>
 </Project>
