@@ -140,7 +140,7 @@ void enemy_init()
 	crayon_spawn_timer = 0;
 	enemy_max = 3;
 	boss_count = 0;
-	boss_max = 6;
+	boss_max = 3;
 
 	enemy_hp_up = 0.0f;
 	enemy_speed_up = 0.0f;
@@ -337,29 +337,45 @@ void enemy_update()
 		if (fever_blue == false)
 		{
 			//ボスリスポーン
-			if (enemy_boss_timer >= 3000)
+			if (difficulty == 1)
 			{
-				for (int i = enemy_max; i < ENEMY_NUMBER; i++)
+				if (enemy_boss_timer >= 2500)
 				{
-					if (enemy[i].hp <= 0)
+					for (int i = enemy_max; i < ENEMY_NUMBER; i++)
 					{
-						respawn = true;
-						enemy_boss_respawn(i);
-						enemy_boss_timer = 0;
-						break;
+						if (enemy[i].hp <= 0)
+						{
+							respawn = true;
+							enemy_boss_respawn(i);
+							enemy_boss_timer = 0;
+							break;
+						}
 					}
 				}
 			}
+			if (difficulty == 2 || difficulty == 3)
+			{
+				if (enemy_boss_timer >= 4800)
+				{
+					for (int i = enemy_max; i < ENEMY_NUMBER; i++)
+					{
+						if (enemy[i].hp <= 0)
+						{
+							respawn = true;
+							enemy_boss_respawn(i);
+							enemy_boss_timer = 0;
+							break;
+						}
+					}
+				}
+			}
+
 			if (respawn == true)
 			{
-				if (boss_count < boss_max)
-				{
-					effect_boss_respawn();
-					shake_background(30, 5);
-					etimer--;
-					boss_count++;
-				}
 				
+				effect_boss_respawn();
+				shake_background(30, 5);
+				etimer--;
 			}
 
 			//クレヨンリスポーン
@@ -387,7 +403,7 @@ void get_enemy_status_by_difficulty(int type, int& hp, float& speed, int& attack
 		if (type == ENEMY_TYPE_BALLOON) { hp = 1;    speed = 1.5f; attack = 1; }
 		if (type == ENEMY_TYPE_ROCKET) { hp = 1;    speed = 2.2f; attack = 1; }
 		if (type == ENEMY_TYPE_BOMB) { hp = 2;    speed = 0.8f; attack = 1; }
-		if (type == ENEMY_TYPE_CRAYON) { hp = 1;    speed = 0.8f; attack = 1; }
+		if (type == ENEMY_TYPE_CRAYON) { hp = 2;    speed = 0.8f; attack = 1; }
 		if (type == ENEMY_TYPE_SOLDIER) { hp = 3;   speed = 1.6f; attack = 1; }
 		if (type == BOSS_TYPE_CRAYON) { hp = 300;  speed = 1.5f; attack = 1; }
 		if (type == BOSS_TYPE_CAR) { hp = 400;  speed = 1.8f; attack = 1; }
@@ -400,7 +416,7 @@ void get_enemy_status_by_difficulty(int type, int& hp, float& speed, int& attack
 		if (type == ENEMY_TYPE_BALLOON) { hp = 1;    speed = 2.0f;  attack = 1; }
 		if (type == ENEMY_TYPE_ROCKET) { hp = 1;    speed = 3.0f;  attack = 1; }
 		if (type == ENEMY_TYPE_BOMB) { hp = 10;   speed = 1.0f;  attack = 1; }
-		if (type == ENEMY_TYPE_CRAYON) { hp = 300;    speed = 1.0f;  attack = 1; }
+		if (type == ENEMY_TYPE_CRAYON) { hp = 1;    speed = 1.0f;  attack = 1; }
 		if (type == ENEMY_TYPE_SOLDIER) { hp = 4;   speed = 2.2f;  attack = 1; }
 		if (type == BOSS_TYPE_CRAYON) { hp = 500;  speed = 12.0f;  attack = 1; }
 		if (type == BOSS_TYPE_CAR) { hp = 600;  speed = 2.5f;  attack = 1; }
@@ -654,26 +670,6 @@ void enemy_boss_respawn(int i)
 			enemy_sprite[i] = sprEnemyBear;
 			enemy_setting(i, 514, 560, 257, 280, 1, 1, 0);
 			boss_state++;
-			break;
-
-		case 3:
-			enemy[i].type = BOSS_TYPE_CRAYON;
-			enemy_sprite[i] = sprEnemyCrayon;
-			enemy_setting(i, 64, 160, 32, 80, 3, 3, 0);
-			boss_state++;
-			break;
-
-		case 4:
-			enemy[i].type = BOSS_TYPE_CAR;
-			enemy_sprite[i] = sprEnemyCar;
-			enemy_setting(i, 128, 80, 64, 40, 3, 3, 0);
-			boss_state++;
-			break;
-
-		case 5:
-			enemy[i].type = BOSS_TYPE_BEAR;
-			enemy_sprite[i] = sprEnemyBear;
-			enemy_setting(i, 514, 560, 257, 280, 1, 1, 0);
 			break;
 		}
 

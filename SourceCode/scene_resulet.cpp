@@ -45,7 +45,7 @@ void resulet_update()
 	case 2:
 		if (!is_score_set)
 		{
-			result_score_set(12345, enemy_kill_count, 99, player_hp);
+			result_score_set(score, enemy_kill_count, 99, player_hp);
 			is_score_set = true;
 		}
 

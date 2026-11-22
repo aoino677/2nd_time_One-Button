@@ -26,6 +26,8 @@
 #define EXP_TYPE_4YEN 2
 #define EXP_TYPE_8YEN 3
 
+#define EXP_GET_SE 13
+
 
 void EXP_init();
 void EXP_update();
