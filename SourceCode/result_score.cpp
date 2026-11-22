@@ -466,7 +466,7 @@ void result_score_render()
 	//4段目：総合スコア（5桁・少し大きめ）
 	if (active_item >= 3)
 	{
-		draw_number(disp_score, 5, 400, 680, 2.3f);
+		draw_number(disp_score, 5, 250, 680, 2.3f);
 	}
 
 	//ランク描画（総合スコアが出始めたあとに表示）
