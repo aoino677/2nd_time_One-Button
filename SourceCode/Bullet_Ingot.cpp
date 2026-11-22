@@ -79,8 +79,6 @@ void Bullet_Ingot::update()
 		}
 	}
 
-	debug::setString("%d", ingots.size());
-
 	if (timer > INGOT_LATE)
 	{
 		timer -= INGOT_LATE;

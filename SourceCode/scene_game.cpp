@@ -184,7 +184,6 @@ void game_render()
 {
 	// ‰æ–Ê‚ğƒNƒŠƒA‚·‚é
 	GameLib::clear(0.0f, 0.0f, 0.0f);
-	debug::setString("title_state:%d", time_limit);
 
 	if (countdown_finished())
 	{

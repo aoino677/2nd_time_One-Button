@@ -109,69 +109,69 @@ void tutorial_render()
 void tutorial_prev_button_update()
 {
 	//----------------------------------
-	   // マウス座標
-	   //----------------------------------
+	//    マウス座標
+	//----------------------------------
 	float mouseX = static_cast<float>(getCursorPosX());
 	float mouseY = static_cast<float>(getCursorPosY());
 
 	//----------------------------------
-	// ゲームスタートボタンの当たり判定
+	//    ボタン当たり判定
 	//----------------------------------
-		float left =
-			prevButton.pos.x -
-			prevButton.pivot.x * prevButton.scale.x;
+	float left =
+		prevButton.pos.x -
+		prevButton.pivot.x * prevButton.scale.x;
 
-		float right =
-			left + prevButton.texSize.x * prevButton.scale.x;
+	float right =
+		left + prevButton.texSize.x * prevButton.scale.x;
 
-		float top =
-			prevButton.pos.y -
-			prevButton.pivot.y * prevButton.scale.y;
+	float top =
+		prevButton.pos.y -
+		prevButton.pivot.y * prevButton.scale.y;
 
-		float bottom =
-			top + prevButton.texSize.y * prevButton.scale.y;
+	float bottom =
+		top + prevButton.texSize.y * prevButton.scale.y;
 
-		if (mouseX >= left &&
-			mouseX <= right &&
-			mouseY >= top &&
-			mouseY <= bottom)
+	if (mouseX >= left &&
+		mouseX <= right &&
+		mouseY >= top &&
+		mouseY <= bottom)
+	{
+		//マウスを乗せると少し拡大
+		prevButton.scale.x = TUTORIAL_BUTTON_PREV_PAGE_SCALE_X + 0.1f;
+		prevButton.scale.y = TUTORIAL_BUTTON_PREV_PAGE_SCALE_Y + 0.1f;
+
+		if (TRG(0) & PAD_START && timer >= TUTORIAL_SLIDE_FLAME)
 		{
-			//マウスを乗せると少し拡大
-			prevButton.scale.x = TUTORIAL_BUTTON_PREV_PAGE_SCALE_X + 0.1f;
-			prevButton.scale.y = TUTORIAL_BUTTON_PREV_PAGE_SCALE_Y + 0.1f;
-
-			if (TRG(0) & PAD_START && timer >= TUTORIAL_SLIDE_FLAME)
+			prev_tutorial_number = tutorial_number;
+			tutorial_number--;
+			if (tutorial_number < 0)
 			{
-				prev_tutorial_number = tutorial_number;
-				tutorial_number--;
-				if (tutorial_number < 0)
-				{
-					tutorial_number = 0;
-					prev_tutorial_number = -1;
-					is_tutorial = false;
-				}
-				timer = 0;
+				tutorial_number = 0;
+				prev_tutorial_number = -1;
+				is_tutorial = false;
 			}
+			timer = 0;
 		}
-		else
-		{
-			//通常サイズ
-			prevButton.scale.x = TUTORIAL_BUTTON_PREV_PAGE_SCALE_X;
-			prevButton.scale.y = TUTORIAL_BUTTON_PREV_PAGE_SCALE_Y;
-		}
+	}
+	else
+	{
+		//通常サイズ
+		prevButton.scale.x = TUTORIAL_BUTTON_PREV_PAGE_SCALE_X;
+		prevButton.scale.y = TUTORIAL_BUTTON_PREV_PAGE_SCALE_Y;
+	}
 }
 
 void tutorial_next_button_update()
 {
 
 	//----------------------------------
-	   // マウス座標
-	   //----------------------------------
+	//    マウス座標
+	//----------------------------------
 	float mouseX = static_cast<float>(getCursorPosX());
 	float mouseY = static_cast<float>(getCursorPosY());
 
 	//----------------------------------
-	// ゲームスタートボタンの当たり判定
+	//    ボタンの当たり判定
 	//----------------------------------
 	float left =
 		nextButton.pos.x -

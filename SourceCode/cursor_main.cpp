@@ -138,6 +138,8 @@ void cursor_main_update()
         
         for (int i = 0; i < ENEMY_NUMBER; i++)
         {
+            //“G‚Ì‘Ì—Í‚ª‚O‚È‚ç”»’è‚µ‚È‚¢
+            if (enemy[i].hp <= 0) continue;
             // “G‚Ì“–‚½‚è”»’è
             float enemy_left = enemy[i].pos.x - enemy[i].pivot.x * ENEMY_SCALE;
             float enemy_right = enemy[i].pos.x + (enemy[i].texSize.x - enemy[i].pivot.x) * ENEMY_SCALE;

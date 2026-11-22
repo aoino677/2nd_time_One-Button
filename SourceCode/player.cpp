@@ -543,7 +543,6 @@ void player_move()
 	//player.pos.y += vec.y * 1000.0f / system::FRAME_RATE;
 	float targetY = cursorPos.y; //- 300;
 	player.pos.y += (targetY - player.pos.y) * PLAYER_EASING / system::FRAME_RATE;
-	debug::setString("cursor : %f", cursorPos.y);
 	player.pos.x = (SCREEN_H - player.pos.y) * 0.3584f / 0.9336f;
 	player.scale.x = player.scale.y = 1.0f - ((SCREEN_H - player.pos.y) / SCREEN_H) * 0.2f;//âìÇ≠Ç…çsÇØÇŒçsÇ≠ÇŸÇ«è¨Ç≥Ç≠Ç»ÇÈÅB
 
@@ -564,21 +563,6 @@ void player_update()
 		}
 	}
 
-#ifdef _DEBUG
-	debug::setString("[player debug]------------------------");
-	debug::setString("shot_per_second:%f", shot_per_second);
-	debug::setString("bullet_speed:%f", bullet_speed);
-	debug::setString("bullet_attack:%f", Y1_damage);
-	debug::setString("bullet_scale:%f", bullet_scale);
-	debug::setString("bullet_lay_count:%d", bullet_lay_count);
-	debug::setString("bullet_lay_gap:%f", ToDegree(bullet_lay_gap));
-	debug::setString("bullet_precision:%f", ToDegree(precision_rad));
-	debug::setString("");
-	debug::setString("bullet_count:%d", player_bullets.size());
-	debug::setString("after_images:%d", y1_after_images.size());
-	debug::setString("--------------------------------------");
-#endif // DEBUG
-
 	//int enemy_count = 0;
 	//for (int e = 0; e < ENEMY_NUMBER; e++)
 	//{
@@ -592,7 +576,6 @@ void player_update()
 	//		enemy_count++;
 	//	}
 	//}
-	//debug::setString("enemies : %d", enemy_count);
 
 }
 
