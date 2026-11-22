@@ -10,17 +10,17 @@ Sprite* spr100yen = nullptr;
 Sprite* spr500yen = nullptr;
 
 Coin coins[TOTAL_COINS];
-int change_state = 0;        // 0: 待機中, 1: 演出中, 2: 完了
-int coin_count = 0;          // 画面内にいるコイン数
-int coin_number = 0;         // コイン番号
-int out_count = 0;           // 画面外へ落ち切ったコイン数
-float coin_width = 0.0f;     // 横幅
-float coin_height = 0.0f;    // 縦幅
-float coin_random_x = 0.0f;  // X軸のずれ
-float coin_random_y = 0.0f;  // Y軸のずれ
+int change_state = 0;        //0: 待機中, 1: 演出中, 2: 完了
+int coin_count = 0;          //画面内にいるコイン数
+int coin_number = 0;         //コイン番号
+int out_count = 0;           //画面外へ落ち切ったコイン数
+float coin_width = 0.0f;     //横幅
+float coin_height = 0.0f;    //縦幅
+float coin_random_x = 0.0f;  //X軸のずれ
+float coin_random_y = 0.0f;  //Y軸のずれ
 
-bool scene_switched = false; // 切り替え処理済みか
-bool retry_mode = false;     // リトライ演出中か
+bool scene_switched = false; //切り替え処理済みか
+bool retry_mode = false;     //リトライ演出中か
 int target_scene = SCENE_NONE;
 
 extern bool result_active;
@@ -103,58 +103,56 @@ void scene_change_deinit()
 
 void scene_change_update()
 {
-	switch (change_state)
+	if (change_state != 1)
 	{
-	case 0:
-		break;
+		return;
+	}
 
-	case 1:
-		coin_count = 0;
+	coin_count = 0;
+	out_count = 0;
 
-		for (int i = 0; i < TOTAL_COINS; i++)
+	for (int i = 0; i < TOTAL_COINS; i++)
+	{
+		//すでに画面外へ落ち切ったコインはスキップ
+		if (coins[i].y >= SCREEN_H + 200.0f)
 		{
-			coins[i].y += coins[i].vy;
-			coins[i].rot += 0.05f;
-
-			if (coins[i].y >= 0.0f && coins[i].y <= SCREEN_H)
-			{
-				coin_count++;
-			}
+			out_count++;
+			continue;
 		}
 
-		if (!scene_switched && coin_count >= TOTAL_COINS * 0.85f)
-		{
-			scene_switched = true;
+		coins[i].y += coins[i].vy;
+		coins[i].rot += 0.05f;
 
-			if (retry_mode)
-			{
-				result_active = false;
-			}
-			else if (target_scene != SCENE_NONE)
-			{
-				nextScene = target_scene;
-			}
+		if (coins[i].y >= 0.0f && coins[i].y <= SCREEN_H)
+		{
+			coin_count++;
 		}
 
-		out_count = 0;
-		for (int i = 0; i < TOTAL_COINS; i++)
+		if (coins[i].y >= SCREEN_H + 200.0f)
 		{
-			if (coins[i].y >= SCREEN_H + 200.0f)
-			{
-				out_count++;
-			}
+			out_count++;
 		}
+	}
 
-		if (out_count >= TOTAL_COINS)
+	if (!scene_switched && coin_count >= TOTAL_COINS * 0.85f)
+	{
+		scene_switched = true;
+
+		if (retry_mode)
 		{
-			retry_mode = false;
-			target_scene = SCENE_NONE;
-			change_state = 2;
+			result_active = false;
 		}
-		break;
+		else if (target_scene != SCENE_NONE)
+		{
+			nextScene = target_scene;
+		}
+	}
 
-	case 2:
-		break;
+	if (out_count >= TOTAL_COINS)
+	{
+		retry_mode = false;
+		target_scene = SCENE_NONE;
+		change_state = 2;
 	}
 }
 
@@ -165,18 +163,23 @@ void scene_change_render()
 		return;
 	}
 
+	Sprite* coin_sprites[4] = { spr1yen, spr10yen, spr100yen, spr500yen };
+
 	for (int i = 0; i < TOTAL_COINS; i++)
 	{
-		if (coins[i].y < -200.0f || coins[i].y > SCREEN_H + 600.0f)
+		//画面外にあるコインは描画しない
+		if (coins[i].y < -100.0f || coins[i].y > SCREEN_H + 100.0f)
 		{
 			continue;
 		}
 
-		Sprite* target_sprite = spr1yen;
-		if (coins[i].type == 1)      target_sprite = spr10yen;
-		else if (coins[i].type == 2) target_sprite = spr100yen;
-		else if (coins[i].type == 3) target_sprite = spr500yen;
+		int type = coins[i].type;
+		if (type < 0 || type > 3)
+		{
+			type = 0;
+		}
 
+		Sprite* target_sprite = coin_sprites[type];
 		if (target_sprite != nullptr)
 		{
 			sprite_render(
