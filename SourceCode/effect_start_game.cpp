@@ -10,7 +10,7 @@ float wipe_in_move_x2 = 0.0f;
 float wipe_in_speed_x1 = 50.0f;
 float wipe_in_speed_x2 = -50.0f;
 
-// 0:待機, 1:実行中, 2:完了
+// wipe_out_state: 0=未開始, 1=開く演出中, 2=開ききり完了, 3=閉じたまま待機中
 int wipe_out_state = 0;
 float wipe_out_move_x1 = 0.0f;
 float wipe_out_move_x2 = 0.0f;
@@ -97,6 +97,16 @@ bool is_scene_wipe_in_finished()
 //--------------------------------------
 // 画面を開く演出（アウト）
 //--------------------------------------
+void scene_wipe_out_hold()
+{
+	if (sprWipe == nullptr)
+	{
+		sprWipe = sprite_load(L"./Data/Images/effect_scene1.png");
+	}
+
+	wipe_out_state = 3; // 閉じたまま待機
+}
+
 void scene_wipe_out_start()
 {
 	if (sprWipe == nullptr)
@@ -107,8 +117,8 @@ void scene_wipe_out_start()
 	wipe_out_state = 1;
 	wipe_out_move_x1 = 0.0f;
 	wipe_out_move_x2 = 0.0f;
-	wipe_out_speed_x1 = -50.0f;
-	wipe_out_speed_x2 = 50.0f;
+	wipe_out_speed_x1 = -18.0f;
+	wipe_out_speed_x2 = 18.0f;
 }
 
 void scene_wipe_out_update()
@@ -134,8 +144,18 @@ void scene_wipe_out_update()
 
 void scene_wipe_out_render()
 {
-	// 実行中（state == 1）だけ描画する（開ききったら消える）
-	if (sprWipe == nullptr || wipe_out_state != 1) return;
+	if (sprWipe == nullptr) return;
+
+	// カウントダウン終了までは閉じた位置のままキープ
+	if (wipe_out_state == 3)
+	{
+		sprite_render(sprWipe, 0.0f, 0.0f);
+		sprite_render(sprWipe, 960.0f, 0.0f);
+		return;
+	}
+
+	// 開く演出中（state == 1）だけ描画
+	if (wipe_out_state != 1) return;
 
 	// 左側の画像
 	sprite_render(sprWipe, wipe_out_move_x1, 0.0f);

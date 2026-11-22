@@ -2,6 +2,7 @@
 #include "menu_button.h"
 #include "scene_menu.h"
 #include "cursor_main.h"
+#include "effect_start_game.h"
 
 //--------------------------------------
 // メニューボタン
@@ -12,7 +13,7 @@ Sprite* sprMenuButton = nullptr;
 
 int menu_button_state = 0;
 int menu_button_timer = 0;
-
+bool menu_wipe_closing = false; // 扉を閉じてシーン遷移待ち中かどうか
 
 extern bool gameEnd;
 
@@ -21,6 +22,7 @@ void menu_button_init()
 {
     menu_button_state = 0;
     menu_button_timer = 0;
+    menu_wipe_closing = false;
 
     menuButton = {};
 }
@@ -33,7 +35,6 @@ void menu_button_update()
     switch (menu_button_state)
     {
     case 0:
-
         //ボタン画像読み込み
         sprMenuButton = sprite_load(L"./Data/Images/NewGame_sin.png");
 
@@ -72,6 +73,18 @@ void menu_button_update()
         break;
 
     case 2:
+    {
+        // すでに扉を閉じている最中なら、閉じきったかだけ監視する
+        if (menu_wipe_closing)
+        {
+            scene_wipe_in_update();
+
+            if (is_scene_wipe_in_finished())
+            {
+                nextScene = SCENE_GAME;
+            }
+            break;
+        }
 
         //----------------------------------
         // マウス座標
@@ -105,10 +118,11 @@ void menu_button_update()
             menuButton.scale.x = MENU_BUTTON_SCALE + 0.1f;
             menuButton.scale.y = MENU_BUTTON_SCALE + 0.1f;
 
-            //クリックでゲーム開始
+            //クリックで扉を閉じてからゲーム開始
             if (TRG(0) & PAD_START)
             {
-                nextScene = SCENE_GAME;
+                menu_wipe_closing = true;
+                scene_wipe_in_start();
             }
         }
         else
@@ -120,7 +134,7 @@ void menu_button_update()
 
         menu_button_timer = 0;
         break;
-
+    }
     }
 }
 
@@ -129,7 +143,6 @@ void menu_button_update()
 //--------------------------------------
 void menu_button_render()
 {
-
     //----------------------------------
     // ゲームスタートボタン
     //----------------------------------
@@ -154,6 +167,12 @@ void menu_button_render()
             menuButton.color.w
         );
     }
+
+    // 閉じている最中はボタンの上に描画する
+    if (menu_wipe_closing)
+    {
+        scene_wipe_in_render();
+    }
 }
 
 //--------------------------------------
@@ -165,4 +184,5 @@ void menu_button_deinit()
 
     menu_button_state = 0;
     menu_button_timer = 0;
+    menu_wipe_closing = false;
 }
