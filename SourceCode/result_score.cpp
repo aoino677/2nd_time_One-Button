@@ -1,5 +1,6 @@
 #include "result_score.h"
-#include "all.h"
+#include "enemy.h"
+#include "Hp.h"
 
 Sprite* sprNumber = nullptr;
 
@@ -10,9 +11,9 @@ Sprite* sprRankC = nullptr;
 Sprite* sprRankD = nullptr;
 Sprite* sprRankE = nullptr;
 
-Sprite* sprResultText1 = nullptr; // ★ 倒した敵
-Sprite* sprResultText2 = nullptr; // ★ タワーHP
-Sprite* sprResultText3 = nullptr; // ★ レベル
+Sprite* sprResultText1 = nullptr; //倒した敵
+Sprite* sprResultText2 = nullptr; //タワーHP
+Sprite* sprResultText3 = nullptr; //レベル
 
 int result_score_state = 0;
 
@@ -40,13 +41,13 @@ int count_frame_hp = 0;
 //終わるまでの目標フレーム数
 const int COUNT_DURATION = 120;
 
-// 0:キル数, 1:タワーHP, 2:レベル, 3:総合スコア, 4:全完了
+//0:キル数, 1:タワーHP, 2:レベル, 3:総合スコア, 4:全完了
 int active_item = 0;
 
 int score_W = 64;
 int score_H = 64;
 
-//ボタンが押された瞬間（トリガー）を返す
+//ボタンが押された瞬間トリガーを返す
 bool is_confirm_triggered()
 {
 	if (TRG(0) & PAD_START)
@@ -55,7 +56,7 @@ bool is_confirm_triggered()
 	return false;
 }
 
-// target まで duration フレームかけて到達するように計算（カウントアップ用）
+//target まで duration フレームかけて到達するように計算（カウントアップ用）
 int calc_count_up_by_time(int target, int& elapsed_frame, int duration)
 {
 	if (target <= 0)
@@ -154,14 +155,36 @@ void draw_number(int value, int digits, int x, int y, float scale)
 	}
 }
 
-//スコアに応じたランクスプライトを取得
-Sprite* get_rank_sprite(int total_score)
+Sprite* get_rank_sprite(int target_score)
 {
-	if (total_score >= 40000) return sprRankS;
-	if (total_score >= 30000) return sprRankA;
-	if (total_score >= 20000) return sprRankB;
-	if (total_score >= 10000) return sprRankC;
-	if (total_score >= 5000)  return sprRankD;
+	if (difficulty == 0) // EASY
+	{
+		if (target_score >= 3000) return sprRankS;
+		if (target_score >= 2200) return sprRankA;
+		if (target_score >= 1500) return sprRankB;
+		if (target_score >= 800)  return sprRankC;
+		if (target_score >= 300)  return sprRankD;
+		return sprRankE;
+	}
+	else if (difficulty == 1) // NORMAL
+	{
+		if (target_score >= 5000) return sprRankS;
+		if (target_score >= 3800) return sprRankA;
+		if (target_score >= 2600) return sprRankB;
+		if (target_score >= 1500) return sprRankC;
+		if (target_score >= 600)  return sprRankD;
+		return sprRankE;
+	}
+	else if (difficulty == 2) // HARD
+	{
+		if (target_score >= 7000) return sprRankS;
+		if (target_score >= 5200) return sprRankA;
+		if (target_score >= 3600) return sprRankB;
+		if (target_score >= 2000) return sprRankC;
+		if (target_score >= 900)  return sprRankD;
+		return sprRankE;
+	}
+
 	return sprRankE;
 }
 
@@ -245,6 +268,8 @@ void result_score_update()
 		sprResultText2 = sprite_load(L"./Data/Images/result_text2.png");
 		sprResultText3 = sprite_load(L"./Data/Images/result_text3.png");
 
+		score= score_kill + score_hp * 100;
+		
 		result_score_state++;
 		break;
 
