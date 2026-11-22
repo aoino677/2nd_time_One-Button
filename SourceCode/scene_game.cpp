@@ -151,20 +151,7 @@ void game_update()
 				effect_danger_update();
 				cursor_main_update();
 				level_up_update();
-
-				//リザルト演出を開始
-				if (player_hp <= 0 || second_timer <= 0)
-				{
-					result_active = true;
-				}
 			}
-		}
-
-		//仮リザルト
-		if (TRG(0) & PAD_TRG1)
-		{
-			result_active = true;
-			break;
 		}
 
 		//========================================
