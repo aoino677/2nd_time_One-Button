@@ -109,6 +109,7 @@ void HP_Max()
 	{
 		hp_level++;
 		max_hp += HP_MAX_UP;
+		player_hp += HP_MAX_UP;
 	}
 }
 

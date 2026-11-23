@@ -439,23 +439,23 @@ void get_enemy_status_by_difficulty(int type, int& hp, float& speed, int& attack
 	// NORMAL
 	else if (difficulty == 1)
 	{
-		if (type == ENEMY_TYPE_BOLL) { hp = 1;    speed = 10.0f; attack = 1; }
+		if (type == ENEMY_TYPE_BOLL) { hp = 1;    speed = 8.0f; attack = 1; }
 		if (type == ENEMY_TYPE_BALLOON) { hp = 1;    speed = 2.0f;  attack = 1; }
 		if (type == ENEMY_TYPE_ROCKET) { hp = 1;    speed = 3.0f;  attack = 1; }
 		if (type == ENEMY_TYPE_BOMB) { hp = 10;   speed = 1.0f;  attack = 1; }
 		if (type == ENEMY_TYPE_CRAYON) { hp = 1;    speed = 1.0f;  attack = 1; }
-		if (type == ENEMY_TYPE_SOLDIER) { hp = 4;   speed = 2.2f;  attack = 1; }
-		if (type == BOSS_TYPE_CRAYON) { hp = 300;  speed = 1.5f;  attack = 1; }
-		if (type == BOSS_TYPE_CAR) { hp = 400;  speed = 1.8f;  attack = 1; }
-		if (type == BOSS_TYPE_BEAR) { hp = 600;  speed = 1.0f; attack = 1; }
+		if (type == ENEMY_TYPE_SOLDIER) { hp = 4;   speed = 2.2f;  attack = 2; }
+		if (type == BOSS_TYPE_CRAYON) { hp = 300;  speed = 1.5f;  attack = 3; }
+		if (type == BOSS_TYPE_CAR) { hp = 400;  speed = 1.8f;  attack = 2; }
+		if (type == BOSS_TYPE_BEAR) { hp = 600;  speed = 1.0f; attack = 2; }
 	}
 	// HARD
 	else if (difficulty == 2)
 	{
-		if (type == ENEMY_TYPE_BOLL) { hp = 5;    speed = 6.5f; attack = 2; }
+		if (type == ENEMY_TYPE_BOLL) { hp = 5;    speed = 8.0f; attack = 2; }
 		if (type == ENEMY_TYPE_BALLOON) { hp = 2;    speed = 2.8f; attack = 1; }
 		if (type == ENEMY_TYPE_ROCKET) { hp = 2;    speed = 4.2f; attack = 2; }
-		if (type == ENEMY_TYPE_BOMB) { hp = 5;    speed = 1.4f; attack = 2; }
+		if (type == ENEMY_TYPE_BOMB) { hp = 5;    speed = 1.4f; attack = 3; }
 		if (type == ENEMY_TYPE_CRAYON) { hp = 5;    speed = 1.4f; attack = 2; }
 		if (type == ENEMY_TYPE_SOLDIER) { hp = 6;   speed = 3.0f; attack = 2; }
 		if (type == BOSS_TYPE_CRAYON) { hp = 400;  speed = 1.8f; attack = 2; }
@@ -755,17 +755,17 @@ void enemy_move(int i)
 			if (enemy[i].pos.x <= 1600 && enemy[i].pos.x >= 1400)
 			{
 				enemy[i].pos.x -= enemy[i].moveSpeed * 3;
-				enemy[i].pos.y += enemy[i].moveSpeed * 8;
+				enemy[i].pos.y += enemy[i].moveSpeed * 5;
 			}
 			else if (enemy[i].pos.x <= 1200 && enemy[i].pos.x >= 1000)
 			{
 				enemy[i].pos.x -= enemy[i].moveSpeed * 3;
-				enemy[i].pos.y -= enemy[i].moveSpeed * 8;
+				enemy[i].pos.y -= enemy[i].moveSpeed * 5;
 			}
 			else if (enemy[i].pos.x <= 800 && enemy[i].pos.x >= 600)
 			{
 				enemy[i].pos.x -= enemy[i].moveSpeed * 3;
-				enemy[i].pos.y += enemy[i].moveSpeed * 8;
+				enemy[i].pos.y += enemy[i].moveSpeed * 5;
 			}
 			else
 				enemy[i].pos.x -= enemy[i].moveSpeed;

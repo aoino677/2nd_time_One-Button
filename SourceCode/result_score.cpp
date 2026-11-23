@@ -64,10 +64,10 @@ int calc_total_score()
 	int hp_bonus = 0;
 	if (max_hp > 0)
 	{
-		hp_bonus = (int)(((float)score_hp / (float)max_hp) * 100.0f);
+		hp_bonus = (int)(((float)score_hp / (float)max_hp) * 1500.0f);
 	}
 
-	int total = score_kill + hp_bonus + score_level;
+	int total = score_kill * 5 + score_level * 15 + hp_bonus;
 	if (total < 0)
 	{
 		total = 0;
