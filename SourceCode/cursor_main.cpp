@@ -140,23 +140,23 @@ void cursor_main_update()
         {
             //敵の体力が０なら判定しない
             if (enemy[i].hp <= 0) continue;
-            // 敵の当たり判定
-            float enemy_left = enemy[i].pos.x - enemy[i].pivot.x * ENEMY_SCALE;
-            float enemy_right = enemy[i].pos.x + (enemy[i].texSize.x - enemy[i].pivot.x) * ENEMY_SCALE;
-            float enemy_top = enemy[i].pos.y - enemy[i].pivot.y * ENEMY_SCALE;
-            float enemy_bottom = enemy[i].pos.y + (enemy[i].texSize.y - enemy[i].pivot.y) * ENEMY_SCALE;
+            //// 敵の当たり判定
+            //float enemy_left = enemy[i].pos.x - enemy[i].pivot.x * ENEMY_SCALE;
+            //float enemy_right = enemy[i].pos.x + (enemy[i].texSize.x - enemy[i].pivot.x) * ENEMY_SCALE;
+            //float enemy_top = enemy[i].pos.y - enemy[i].pivot.y * ENEMY_SCALE;
+            //float enemy_bottom = enemy[i].pos.y + (enemy[i].texSize.y - enemy[i].pivot.y) * ENEMY_SCALE;
 
-            // カーソル中央の当たり判定
-            float cursor_left = cursor_main_posX - cursor_hitbox_half_width;
-            float cursor_right = cursor_main_posX + cursor_hitbox_half_width;
-            float cursor_top = cursor_main_posY - cursor_hitbox_half_height;
-            float cursor_bottom = cursor_main_posY + cursor_hitbox_half_height;
+            //// カーソル中央の当たり判定
+            //float cursor_left = cursor_main_posX - cursor_hitbox_half_width;
+            //float cursor_right = cursor_main_posX + cursor_hitbox_half_width;
+            //float cursor_top = cursor_main_posY - cursor_hitbox_half_height;
+            //float cursor_bottom = cursor_main_posY + cursor_hitbox_half_height;
 
-            // 敵とカーソルの衝突判定
-            if (cursor_left <= enemy_right &&
-                cursor_right >= enemy_left &&
-                cursor_top <= enemy_bottom &&
-                cursor_bottom >= enemy_top)
+            //// 敵とカーソルの衝突判定
+            //if (cursor_left <= enemy_right &&
+            //    cursor_right >= enemy_left &&
+            //    cursor_top <= enemy_bottom &&
+            //    cursor_bottom >= enemy_top)
             {
                 //==========================================
                 // 一円玉マシンガン
