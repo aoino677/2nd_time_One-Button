@@ -61,16 +61,18 @@ bool total_score_calculated = false;
 int calc_total_score()
 {
 	int hp_bonus = 0;
-	if (max_hp > 0)
 
+	if (max_hp > 0)
 	{
 		hp_bonus = (int)(((float)score_hp / (float)max_hp) * 1500.0f);
 	}
 
 	int total = score_kill * 5 + score_level * 15 + hp_bonus;
+
 	
 
-	/*int total = score_kill + score_hp / max_hp * 100 + score_level;*/
+	//int total = score_kill + score_hp / max_hp * 100 + score_level;
+
 	if (total < 0)
 	{
 		total = 0;
@@ -78,7 +80,7 @@ int calc_total_score()
 	return total;
 }
 
-// ƒhƒ‰ƒ€ƒ[ƒ‹’âŽ~•Š®—¹SEÄ¶‚Ì‹¤’Êˆ—
+//ƒhƒ‰ƒ€ƒ[ƒ‹’âŽ~•Š®—¹SEÄ¶‚Ì‹¤’Êˆ—
 void finish_score_drumroll()
 {
 	if (drumroll_playing)
